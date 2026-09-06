@@ -1,0 +1,106 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay — Accela Records API
+  version: 1.0.0
+  x-generated: '2026-09-06'
+  x-method: generated
+  x-source: >-
+    Derived from the Accela Construct documentation set (auth, headers, pagination, partial response,
+    errors, permission scopes) and applied over the provider's own published Swagger 2.0 document. The
+    overlay never mutates openapi/accela-records-openapi.yml — apply it to produce an enriched copy.
+extends: ../openapi/accela-records-openapi.yml
+actions:
+  - target: $.info
+    description: >-
+      Record the base URL, the current Construct release and the tenancy contract the document itself omits.
+    update:
+      x-base-url: https://apis.accela.com/v4
+      x-construct-release: 4.6.5.4
+      x-documentation: https://developer.accela.com/docs/api_reference/api-records.html
+      x-tenancy: >-
+        Every request is executed inside one government agency. Send x-accela-agency and
+        x-accela-environment, or an access token that embeds them; when both are present the values must
+        match. Record types, statuses and custom fields are agency-configured, so the response shape for a
+        given operation differs between agencies.
+  - target: $
+    description: >-
+      Declare the security schemes the published document leaves undeclared. The Construct API is OAuth 2.0
+      against auth.accela.com, and additionally accepts app credentials and anonymous citizen headers, but no
+      securityDefinitions object appears in any of the fifteen published specs.
+    update:
+      securityDefinitions:
+        accela_oauth2:
+          type: oauth2
+          flow: accessCode
+          authorizationUrl: https://auth.accela.com/oauth2/authorize
+          tokenUrl: https://auth.accela.com/oauth2/token
+          description: >-
+            Accela Construct access token. Scopes are declared per operation in each operation's description
+            as a "**Scope**:" line; the registry is reproduced in scopes/accela-scopes.yml.
+          scopes:
+            records: Transactional records and every child resource attached to a record.
+            costs: Record cost items.
+        accela_app_credentials:
+          type: apiKey
+          name: x-accela-appid
+          in: header
+          description: >-
+            App id issued at registration on the Accela Developer Portal, paired with x-accela-appsecret.
+            Used by operations whose authorization type is "App credentials", and by anonymous citizen
+            access alongside x-accela-agency and x-accela-environment.
+  - target: $.paths
+    description: >-
+      Record the cross-cutting request/response conventions that apply to every operation in this document
+      and are documented only in prose.
+    update:
+      x-conventions:
+        pagination:
+          style: offset-limit
+          params: [offset, limit]
+          default_limit: 25
+          max_limit: 1000
+          response: page.offset, page.limit, page.hasMore
+        partial_response:
+          param: fields
+          note: Comma-separated first-level fields under `result`; `id` is always returned; case-sensitive.
+        error_envelope: '{status, code, message, more, traceId}'
+        trace_header: x-accela-traceId
+        rate_limit_headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+        rate_limit_status: 429
+        idempotency: none
+  - target: $.paths..responses
+    description: >-
+      Add the 429 response that the June 2026 Construct release introduced at runtime and that no published
+      operation declares.
+    update:
+      '429':
+        description: >-
+          Too Many Requests. The per-app rate limit configured by the agency in the Agency Admin Portal has
+          been exceeded. Read X-RateLimit-Reset before retrying. Enforced since Construct 4.6.5.3 (June 2026);
+          not declared in the provider's published contract.
+  - target: $.paths['/v4/records'].post
+    description: Flag the create-record write path for agent safety.
+    update:
+      x-agent-safety:
+        idempotent: false
+        idempotency_key: null
+        reversible: false
+        reversal_operation: null
+        note: >-
+          No idempotency key exists. A retry after a timeout may file a second permit application in a
+          government system of record. Call v4.get.records.describe.create first to learn the agency's
+          required attributes, and treat a timeout as unknown rather than failed.
+        emse: >-
+          Agency-authored EMSE scripts run before and after this transaction. A 200 response may still carry
+          an emse_error message meaning an agency script failed after the record was created.
+  - target: $.paths['/v4/records/{ids}'].delete
+    description: Flag the irreversible delete.
+    update:
+      x-agent-safety:
+        idempotent: false
+        reversible: false
+        reversal_operation: null
+        restore_window: null
+        note: >-
+          There is no restore, undelete or recovery operation anywhere in the Accela Construct contract. This
+          permanently removes a record from a government system of record and cannot be undone through the API.

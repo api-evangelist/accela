@@ -1,0 +1,25 @@
+generated: '2026-09-06'
+method: searched
+source: https://www.npmjs.com/package/@accela/design-system
+summary: >-
+  Accela publishes one client-side component library, @accela/design-system, under its own npm scope. It is a
+  design system for building UI consistent with Accela's products, not an embeddable API surface: there are no
+  hosted or prebuilt widgets, no embedded dashboards, and no drop-in payment or permit-application elements
+  that a third party can mount against an agency tenant. It is included here because it is the only actively
+  released first-party package Accela ships, and because it is frequently mistaken for an SDK.
+families:
+  - name: Accela Design System
+    package: '@accela/design-system'
+    registry: npm
+    url: https://www.npmjs.com/package/@accela/design-system
+    version: 15.3.87
+    published: '2026-03-23'
+    kind: design-system
+    license: UNLICENSED
+    repository: https://github.com/Accela-Inc/AccelaDesignSystem
+    embeddable_against_api: false
+    note: >-
+      Published UNLICENSED, and the linked repository is not in the public Accela-Inc org listing, so this is
+      distributed for Accela's own product teams rather than for integrators.
+loaders: []
+hosted_surfaces: []

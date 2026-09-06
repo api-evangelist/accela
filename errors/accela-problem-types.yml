@@ -1,0 +1,162 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct-errors.html
+docs:
+  - https://developer.accela.com/docs/construct-errors.html
+derived_from:
+  - openapi/accela-records-openapi.yml
+  - openapi/accela-inspections-openapi.yml
+  - openapi/accela-settings-openapi.yml
+  - and the twelve other specs in openapi/
+format: custom-json
+rfc9457: false
+summary: >-
+  Accela publishes a single flat error envelope for the whole Construct API and a closed registry of twelve
+  error codes. It is not RFC 9457 problem+json — the media type is application/json and the fields are
+  Accela's own. Every one of the 417 published operations declares exactly the same five failure responses
+  (400, 401, 403, 404, 500), which makes the failure surface completely uniform and machine-predictable, but
+  also means the spec itself carries no per-operation error detail: the meaning of a 400 on any given call has
+  to come from the code in the body, not from the contract.
+envelope:
+  media_type: application/json
+  fields:
+    - name: status
+      type: integer
+      description: The HTTP status, repeated in the body.
+    - name: message
+      type: string
+      description: Human-readable summary.
+    - name: code
+      type: string
+      description: The stable machine-readable error code. This is the field to branch on.
+    - name: more
+      type: string
+      nullable: true
+      description: Additional remediation detail; null when there is none.
+    - name: traceId
+      type: string
+      description: >-
+        Per-request correlation id, also returned in the x-accela-traceId response header. Quote it to Accela
+        or agency support.
+  example: |
+    {
+      "status": 403,
+      "message": "You are not authorized to access the resource.",
+      "code": "forbidden",
+      "more": null,
+      "traceId": "130527090003731-9b30f89c"
+    }
+  observed_live:
+    url: https://apis.accela.com/v4/agencies
+    probed: '2026-09-06'
+    http_status: 400
+    body: >-
+      {"status":400,"code":"bad_request","message":"App ID or access token is required.","more":"Please set App
+      ID to request HTTP header 'x-accela-appid' for anonymous access, or set access token to request HTTP
+      header 'Authorization' for authenticated access.","traceId":"260906171613821-4b814612"}
+    response_headers:
+      - x-accela-traceid
+      - x-accela-resp-code
+      - x-accela-resp-message
+    note: >-
+      Unauthenticated probe. Confirms the documented envelope is what the API actually returns, and that the
+      code and message are additionally mirrored into response headers, which is not stated in the docs.
+problem_types:
+  - code: bad_request
+    status: 400
+    title: Bad request
+    remediation: Check required headers and parameters; the `more` field usually names the missing one.
+  - code: data_validation_error
+    status: 400
+    title: Data validation error
+    remediation: A field in the request body failed agency-configured validation. Re-read the record type's settings.
+  - code: invalid_uri
+    status: 400
+    title: Invalid URL
+    remediation: The path does not resolve to a Construct operation.
+  - code: unauthorized
+    status: 401
+    title: Unauthorized
+    remediation: Credentials were rejected. Re-authenticate at https://auth.accela.com/oauth2/token.
+  - code: no_token
+    status: 401
+    title: A token is required for the current request
+    remediation: >-
+      The operation's authorization type is "Access token". Send an Authorization header, or use an operation
+      whose type is "No authorization required".
+  - code: token_expired
+    status: 401
+    title: The current token is expired
+    remediation: Refresh the access token and retry.
+  - code: invalid_token
+    status: 401
+    title: The current token is invalid
+    remediation: >-
+      Also returned when the agency or environment embedded in the token does not match the x-accela-agency /
+      x-accela-environment headers sent with the request.
+  - code: unauthorized_app
+    status: 401
+    title: Unauthorized app
+    remediation: >-
+      The app is not enabled for this agency. An agency administrator enables it in Agency Admin Portal >
+      Agencies.
+  - code: no_app_credential
+    status: 401
+    title: The app credentials are required
+    remediation: Send x-accela-appid and x-accela-appsecret.
+  - code: forbidden
+    status: 403
+    title: The current request is forbidden
+    remediation: >-
+      The token is valid but the Civic Platform permissions for this user (or for the anonymous user) do not
+      cover the resource. This is an agency configuration matter, not an API one.
+  - code: resource_not_found
+    status: 404
+    title: The current request resource is not found
+    remediation: Check the id and that it belongs to the agency in x-accela-agency.
+  - code: internal_server_error
+    status: 500
+    title: An internal server error occurred
+    remediation: Retry; if it persists, quote the traceId to support.
+  - code: connection_failure
+    status: 500
+    title: A server connection error occurred
+    remediation: Transient backend connectivity. Retry with backoff.
+  - code: api_not_found
+    status: 404
+    title: The requested api is not found
+    remediation: Returned by apis.accela.com for any path that is not a Construct operation.
+    source: >-
+      Observed on live probes of https://apis.accela.com/.well-known/* on 2026-09-06. Not listed on the docs
+      error page.
+  - code: emse_error
+    status: 200
+    title: EMSE operation failed
+    remediation: >-
+      NOT AN HTTP FAILURE, AND THE MOST IMPORTANT ONE HERE FOR AN AGENT. Civic Platform's Event Manager
+      Scripting Engine runs agency-authored before/after scripts around POST, PUT and DELETE transactions. A
+      before-event script error cancels the transaction and surfaces as HTTP 500. An after-event script error
+      returns HTTP 200 with an emse_error message — the API call succeeded, a script attached to it did not.
+      A client that branches only on HTTP status will read that as a clean success. Capture the message and
+      escalate to the agency's Accela administrator.
+    source: https://developer.accela.com/docs/construct-errors.html
+declared_responses:
+  note: >-
+    Derived from openapi/. All 417 published operations declare the same response set; three also declare 206.
+  '200': 417
+  '206': 3
+  '400': 417
+  '401': 417
+  '403': 417
+  '404': 417
+  '500': 417
+  descriptions:
+    '400': Invalid request.
+    '401': Authorization failed.
+    '403': Forbidden request.
+    '404': Requested resource not found.
+    '500': Internal server error or bad connection.
+gaps:
+  - No 429 response is declared on any of the 417 operations, although the June 2026 release notes state that
+    exceeding a per-app rate limit now returns HTTP 429. The contract is behind the runtime here.
+  - The specs bind no response schema to any 4xx/5xx, so the envelope above is documented only in prose.

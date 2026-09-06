@@ -1,0 +1,209 @@
+generated: '2026-09-06'
+method: probed
+source: live probes of /.well-known/ and /llms.txt on every Accela host this record knows
+summary: >-
+  Two real documents were found across seven hosts. www.accela.com (and the apex accela.com) serves a
+  genuine llms.txt — a Yoast-SEO-generated marketing index of pages, posts, customer stories and white
+  papers, with no API content in it. success.accela.com serves a real RFC 8414 / OIDC discovery document,
+  which is the Salesforce Experience Cloud identity configuration behind the Accela Success Community —
+  it is a real served document on a host Accela controls, but it is NOT the Construct API authorization
+  server (that is auth.accela.com, which serves nothing at /.well-known/). No security.txt anywhere, no
+  api-catalog, no ai-plugin.json, and no A2A agent card on any host at either the canonical or the
+  legacy path.
+pointer_basis: >-
+  WellKnown pointer emitted on the strength of the 200 at success.accela.com/.well-known/openid-configuration.
+  SecurityTxt pointer NOT emitted — RFC 9116 is unimplemented on every Accela host probed.
+  LLMsTxt pointer emitted separately for the served /llms.txt.
+false_positive_watch: >-
+  admin.accela.com answers HTTP 200 with the Construct Admin Portal SPA shell for EVERY /.well-known/*
+  path and for /llms.txt, including paths that cannot exist. Those 200s are recorded below as MISSES,
+  not hits. Any future round that reads an admin.accela.com /.well-known/ 200 as a served document is wrong.
+hosts:
+  - host: https://www.accela.com
+    documents:
+      - path: /llms.txt
+        status: 200
+        file: ../llms/accela-llms.txt
+        note: Yoast SEO v28.3 generated llms.txt; marketing index only, no API surface described.
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+    note: >-
+      WordPress site; every /.well-known/* path returns the themed 404 page. Identical results on the
+      apex accela.com, which 301s to www.
+  - host: https://developer.accela.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 404
+    note: IIS-hosted developer portal; plain "The resource you are looking for has been removed" 404.
+  - host: https://apis.accela.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 404
+    note: >-
+      The Construct API host itself. Every unknown path returns the API's own JSON error envelope
+      {"status":404,"code":"api_not_found",...} rather than HTML, so these are confirmed absences.
+  - host: https://auth.accela.com
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+    note: >-
+      NOTABLE GAP. auth.accela.com is the OAuth 2.0 authorization server for the whole Construct API
+      (POST /oauth2/authorize, /oauth2/token, GET /oauth2/tokeninfo) and it publishes neither RFC 8414
+      authorization-server metadata nor OIDC discovery. Every 404 here is an empty body, not a page.
+  - host: https://admin.accela.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        served_document: false
+        body: SPA shell (HTML, Construct Admin Portal)
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/openid-configuration
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/api-catalog
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/agent-card.json
+        status: 200
+        served_document: false
+        body: SPA shell (HTML, <!DOCTYPE html><html><head>...)
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /.well-known/agent.json
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+      - path: /llms.txt
+        status: 200
+        served_document: false
+        verdict: MISS — soft-200 catch-all, not a document
+  - host: https://success.accela.com
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: accela-success-openid-configuration.json
+        note: >-
+          Real OIDC discovery document. issuer https://success.accela.com, authorization_endpoint
+          /services/oauth2/authorize, token_endpoint /services/oauth2/token, jwks_uri /id/keys, plus a
+          registration and an introspection endpoint. The scopes_supported list (cdp_ingest_api,
+          pardot_api, einstein_gpt_api, wave_api, visualforce, lightning …) identifies it as Salesforce
+          Experience Cloud, which is what the Accela Success Community runs on. It governs community
+          login, not the Construct API.
+      - path: /.well-known/security.txt
+        status: 401
+      - path: /.well-known/oauth-authorization-server
+        status: 401
+      - path: /.well-known/oauth-protected-resource
+        status: 401
+      - path: /.well-known/api-catalog
+        status: 401
+      - path: /.well-known/ai-plugin.json
+        status: 401
+      - path: /.well-known/agent-card.json
+        status: 401
+      - path: /.well-known/agent.json
+        status: 401
+      - path: /llms.txt
+        status: 401
+    note: >-
+      Salesforce Experience Cloud returns 401 for unrecognised paths, so everything except the OIDC
+      document is "unreachable", not "confirmed absent".
+  - host: https://trust.accela.com
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+    note: >-
+      trust.accela.com is a CNAME onto Atlassian Statuspage and is not a trust center — it serves the
+      login-gated "Accela Status" page (same page as accela.statuspage.io).
+a2a:
+  agent_card_found: false
+  hosts_probed:
+    - accela.com
+    - www.accela.com
+    - developer.accela.com
+    - apis.accela.com
+    - auth.accela.com
+    - admin.accela.com
+    - success.accela.com
+    - trust.accela.com
+  paths_probed: ['/.well-known/agent-card.json', '/.well-known/agent.json']
+  checked: '2026-09-06'
+  result: >-
+    No A2A agent card on any host at either the canonical or the legacy path. The only 200s were the
+    admin.accela.com SPA catch-all, which is the dominant false positive on this probe and is recorded
+    as a miss. No a2a/ artifact and no AgentCard pointer are written.

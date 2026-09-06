@@ -1,0 +1,324 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct-permissionScopes.html
+docs:
+- https://developer.accela.com/docs/construct-permissionScopes.html
+- https://developer.accela.com/docs/construct-apiAuth.html
+- https://developer.accela.com/docs/api_reference/api-index.html
+summary: Accela Construct permission scopes. Each scope represents a group of API resources an access token may
+  reach; a token is requested with an explicit scope list and the user is prompted to consent to it. The scope registry
+  is not published as a standalone reference page and does not appear in any securityDefinitions block — Accela
+  declares the scope for each operation inline, as a "**Scope**:" line in that operation's description in the published
+  Swagger 2.0 documents. This file is that registry, extracted operation by operation from all fifteen specs in
+  openapi/ and cross-checked against the docs page that describes how scopes are consented to.
+flows:
+- authorization_code
+- implicit
+- password
+consent: An app requests a scope list at token time; the user is shown the list and must Allow. The get_civicid_profile
+  scope is always included whether or not it is requested.
+always_granted:
+- get_civicid_profile
+scope_count: 32
+operations_mapped: 411
+unmapped_operations: 6
+unmapped_note: Operations with no "**Scope**:" line in their published description. Most are the three oauth2 endpoints
+  on auth.accela.com, which are not scope-gated, plus a small number of operations whose description omits the field.
+scopes:
+- name: records
+  description: Transactional records (permits, licenses, service requests, applications) and every child resource
+    that hangs off a record — addresses, contacts, conditions, comments, costs, fees, documents, owners, parcels,
+    professionals, workflows and votes.
+  operations: 117
+  specs:
+  - accela-assets-assessments-openapi.yml
+  - accela-records-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.assets.records
+  - v4.get.records
+  - v4.post.records
+- name: inspections
+  description: Inspections, inspection scheduling and results, checklists and checklist items, inspection conditions
+    and approvals, inspectors and inspection time accounting.
+  operations: 68
+  specs:
+  - accela-inspections-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.inspections
+  - v4.get.inspections.ids
+  - v4.delete.inspections.ids
+- name: contacts
+  description: Reference contacts and their addresses, conditions, custom forms and custom tables.
+  operations: 27
+  specs:
+  - accela-contacts-professionals-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.contacts
+  - v4.post.contacts
+  - v4.get.contacts.ids
+- name: settings
+  description: 'Read-only Civic Platform Administration configuration: standard choices, record/inspection/asset
+    types, departments, priorities, statuses, pick lists and drilldowns.'
+  operations: 25
+  specs:
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.settings.activities.priorities
+  - v4.get.settings.activities.statuses
+  - v4.get.settings.activities.types
+- name: users
+  description: Citizen Access user accounts, self-registration, delegates and delegate privileges, and CivicID-linked
+    citizen profiles.
+  operations: 23
+  specs:
+  - accela-citizens-openapi.yml
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.post.citizenaccess.register
+  - v4.get.civicid.citizenaccess.profile
+  - v4.get.civicid.citizenaccess.contacts
+- name: assets
+  description: Assets, asset attributes, linked assets, asset documents and the records attached to an asset.
+  operations: 20
+  specs:
+  - accela-assets-assessments-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.assets
+  - v4.get.assets.ids
+  - v4.delete.assets.ids
+- name: documents
+  description: Document metadata, upload, download and thumbnails, plus the document review surface and document
+    settings.
+  operations: 20
+  specs:
+  - accela-addresses-parcels-owners-openapi.yml
+  - accela-documents-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.delete.parcels.id.documents.ids
+  - v4.get.documents.documentIds
+  - v4.get.documents.documentId.download
+- name: addresses
+  description: Reference addresses, their conditions, the parcels and records they are attached to.
+  operations: 16
+  specs:
+  - accela-addresses-parcels-owners-openapi.yml
+  - accela-records-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.addresses
+  - v4.get.addresses.id
+  - v4.put.addresses.id
+- name: professionals
+  description: Licensed professionals, their conditions and the records they appear on.
+  operations: 16
+  specs:
+  - accela-contacts-professionals-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.professionals
+  - v4.get.professionals.ids
+  - v4.delete.professionals.ids
+- name: assessments
+  description: Condition assessments against assets — observations, attributes, documents and generated work orders.
+  operations: 15
+  specs:
+  - accela-assets-assessments-openapi.yml
+  - accela-search-openapi.yml
+  example_operations:
+  - v4.post.assets.id.assessments
+  - v4.get.assessments.mine
+  - v4.get.assessments.id
+- name: parcels
+  description: Reference parcels, their conditions, owners, addresses and records.
+  operations: 8
+  specs:
+  - accela-addresses-parcels-owners-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.parcels
+  - v4.get.parcels.id
+  - v4.get.parcels.id.addresses
+- name: agencies
+  description: Agency directory, agency environments, environment status and agency logo.
+  operations: 6
+  specs:
+  - accela-agencies-openapi.yml
+  - accela-search-openapi.yml
+  example_operations:
+  - v4.get.agencies
+  - v4.get.agencies.name
+  - v4.get.agencies.name.logo
+- name: conditions
+  description: Standard conditions and standard approval conditions defined at the agency level.
+  operations: 6
+  specs:
+  - accela-miscellaneous-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.conditions.standard
+  - v4.get.conditionApprovals.standard
+  - v4.get.settings.conditionApprovals.statuses
+- name: civicid
+  description: CivicId accounts and profile — the cross-agency identity that links multiple agency Citizen Access
+    accounts to one login.
+  operations: 5
+  specs:
+  - accela-civicid-openapi.yml
+  example_operations:
+  - v4.post.civicid.accounts
+  - v4.get.civicid.accounts.id
+  - v4.delete.civicid.accounts.id
+- name: owners
+  description: Reference property owners and their conditions.
+  operations: 5
+  specs:
+  - accela-addresses-parcels-owners-openapi.yml
+  - accela-search-openapi.yml
+  - accela-settings-openapi.yml
+  example_operations:
+  - v4.get.owners
+  - v4.get.owners.id
+  - v4.get.owners.ownerId.conditions
+- name: shoppingcart
+  description: Citizen shopping carts used to assemble fees before payment.
+  operations: 5
+  specs:
+  - accela-payments-openapi.yml
+  example_operations:
+  - v4.get.shoppingCart
+  - v4.post.shoppingCart
+  - v4.get.shoppingCart.ids
+- name: payments
+  description: Payment initialization, commit and void, and transaction fees.
+  operations: 4
+  specs:
+  - accela-payments-openapi.yml
+  example_operations:
+  - v4.post.payments.initialize
+  - v4.put.payments.id
+  - v4.put.payments.paymentId.void
+- name: reports
+  description: Report definitions, report categories and report execution.
+  operations: 4
+  specs:
+  - accela-reports-openapi.yml
+  example_operations:
+  - v4.post.reports.reportId
+  - v4.get.settings.reports.categories
+  - v4.get.settings.reports.definitions
+- name: timeaccounting
+  description: Time accounting entries against records and inspections.
+  operations: 4
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.get.timeAccounting
+  - v4.post.timeAccounting
+  - v4.delete.timeAccounting.ids
+- name: announcements
+  description: Agency announcements shown to citizens, and marking them read.
+  operations: 2
+  specs:
+  - accela-citizens-openapi.yml
+  example_operations:
+  - v4.get.announcements
+  - v4.put.announcements.ids.read
+- name: app_data
+  description: App settings and Civic Platform server properties (AA version).
+  operations: 2
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.get.serverProperties
+  - v4.get.appsettings
+- name: filters
+  description: Saved filters and filter result execution.
+  operations: 2
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.get.filters
+  - v4.post.filters.id.results
+- name: gis
+  description: Reverse geocoding and GIS dynamic themes.
+  operations: 2
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.get.geo.geocode.reverse
+  - v4.get.gis.dynamic.themes
+- name: batch_request
+  description: The batch endpoint, which composes multiple Construct calls into one request.
+  operations: 1
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.post.batch
+- name: costs
+  description: Record cost items.
+  operations: 1
+  specs:
+  - accela-records-openapi.yml
+  example_operations:
+  - v4.put.records.recordId.costs.id
+- name: global_search
+  description: The cross-object global search endpoint.
+  operations: 1
+  specs:
+  - accela-search-openapi.yml
+  example_operations:
+  - v4.get.search.global
+- name: invoices
+  description: Invoices attached to records.
+  operations: 1
+  specs:
+  - accela-payments-openapi.yml
+  example_operations:
+  - v4.get.invoices.invoiceIds
+- name: mileage
+  description: Mileage entries created by field staff.
+  operations: 1
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.post.mileage
+- name: parts
+  description: The parts search endpoint.
+  operations: 1
+  specs:
+  - accela-search-openapi.yml
+  example_operations:
+  - v4.post.search.parts
+- name: search_costs
+  description: The cost search endpoint.
+  operations: 1
+  specs:
+  - accela-search-openapi.yml
+  example_operations:
+  - v4.post.search.costs
+- name: trustaccounts
+  description: Citizen and record trust accounts.
+  operations: 1
+  specs:
+  - accela-payments-openapi.yml
+  example_operations:
+  - v4.get.trustAccounts
+- name: workflows
+  description: Workflow tasks assigned to the authenticated user.
+  operations: 1
+  specs:
+  - accela-miscellaneous-openapi.yml
+  example_operations:
+  - v4.get.workflowTasks.mine

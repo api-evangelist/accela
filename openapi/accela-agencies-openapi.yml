@@ -1,0 +1,302 @@
+basePath: /
+schemes:
+- https
+swagger: '2.0'
+host: apis.accela.com
+info:
+  description: The Agencies API provides agency information as configured in the [Construct Admin Portal](https://admin.accela.com).
+  title: Agencies
+  version: v4
+paths:
+  /v4/agencies:
+    get:
+      description: "Gets all enabled agencies that are configured on the [Construct Admin Portal](https://admin.accela.com).\n\
+        \n\n\n**API Endpoint**:  GET /v4/agencies\n\n**Scope**:  agencies \n\n**App Type**:  All \n\n**Authorization Type**:\
+        \  No authorization required \n\n**Civic Platform version**: All\n\n"
+      summary: Get All Agencies
+      operationId: v4.get.agencies
+      tags:
+      - Agencies
+      parameters:
+      - in: query
+        name: name
+        description: The name of the object to be queried.
+        required: false
+        type: string
+      - in: query
+        name: offset
+        description: The offset position of the first record in the results response array. For example, if offset is 100,
+          the first item in the results array in the response is the 100th record in the search result list.
+        required: false
+        type: integer
+      - in: query
+        name: limit
+        description: Search result size limit.
+        required: false
+        type: integer
+      - in: query
+        name: order
+        required: false
+        type: string
+      - in: query
+        name: direction
+        required: false
+        type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_agencyArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/agencies/{name}:
+    get:
+      description: "Gets information for the specified agency, as configured on the [Construct Admin Portal](https://admin.accela.com).\n\
+        \n\n\n**API Endpoint**:  GET /v4/agencies/{name}\n\n**Scope**:  agencies \n\n**App Type**:  All \n\n**Authorization\
+        \ Type**:  No authorization required \n\n**Civic Platform version**: All\n\n"
+      summary: Get Agency
+      operationId: v4.get.agencies.name
+      tags:
+      - Agencies
+      parameters:
+      - in: path
+        name: name
+        description: The name of the agency to be queried.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_agency'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/agencies/{name}/logo:
+    get:
+      description: "Gets the logo for the specified agency, as configured on the [Construct Admin Portal](https://admin.accela.com).\n\
+        \n\n\n**API Endpoint**:  GET /v4/agencies/{name}/logo\n\n**Scope**:  agencies \n\n**App Type**:  All \n\n**Authorization\
+        \ Type**:  No authorization required \n\n**Civic Platform version**: All\n\n"
+      summary: Get Agency Logo
+      operationId: v4.get.agencies.name.logo
+      tags:
+      - Agencies
+      parameters:
+      - in: path
+        name: name
+        description: The name of the agency to be queried.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_logo'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/agencies/{name}/environments:
+    get:
+      description: "Gets the API runtime environments for the specified agency, including the environment's API provider and\
+        \ version. The environments are configured on [Construct Admin Portal](https://admin.accela.com) > Agencies > {agencyHost}:AgencyInfo\
+        \ > Environments.\n\n\n\n**API Endpoint**:  GET /v4/agencies/{name}/environments\n\n**Scope**:  agencies \n\n**App\
+        \ Type**:  All \n\n**Authorization Type**:  No authorization required \n\n**Civic Platform version**: All\n\n"
+      summary: Get Agency Environments
+      operationId: v4.get.agencies.name.environments
+      tags:
+      - Agencies
+      parameters:
+      - in: path
+        name: name
+        description: The name of the agency to be queried.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_environmentArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/agencies/{name}/environments/{env}/status:
+    get:
+      description: "Gets the status of the specified agency environment. If the environment is unavailable or has been disabled\
+        \ on the [Construct Admin Portal](https://admin.accela.com), \"isAvailable\":\"false\" is returned. If Accela Gateway\
+        \ is unreachable, the Get Environment Status API returns 500.\n\n**API Endpoint**: GET /v4/agencies/{name}/environments/{env}/status\
+        \ \n\n**Scope**:  agencies \n\n**App Type**:  All \n\n**Authorization Type**:  No authorization required \n\n**Civic\
+        \ Platform version**: All\n\n"
+      summary: Get Agency Environment Status
+      operationId: v4.get.agencies.name.environments.env.status
+      tags:
+      - Agencies
+      parameters:
+      - in: path
+        name: env
+        description: The name of the environment to be queried.
+        required: true
+        type: string
+      - in: path
+        name: name
+        description: The name of the agency to be queried.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_environmentStatus'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  response_agencyArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/agency'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_agency:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/agency'
+      status:
+        type: integer
+        description: The HTTP return status.
+  agency:
+    type: object
+    properties:
+      displayName:
+        type: string
+        description: The display name of the agency.
+      enabled:
+        type: boolean
+        description: Indicates whether or not the agency is enabled on the [Construct Admin Portal](https://admin.accela.com).
+      hostedACA:
+        type: boolean
+        description: Indicates whether or not the agency has deployed Citizen Access for the public user.
+      iconName:
+        type: string
+        description: The icon filename.
+      isForDemo:
+        type: boolean
+        description: Indicates whether or not the agency is used for demo purposes only.
+      name:
+        type: string
+        description: The agency name.
+      serviceProviderCode:
+        type: string
+        description: The unique agency identifier, the system assigns, on the Accela Civic Platform.
+      state:
+        type: string
+        description: The two-character code for the state that the agency belongs to, as configured on [Construct Admin Portal](https://admin.accela.com)
+          > Agencies > Agency Info.
+      country:
+        type: string
+        description: The two-character code for the country that the agency belongs to, as configured on [Construct Admin
+          Portal](https://admin.accela.com) > Agencies > {Agency} > Agency Info.
+  response_environmentStatus:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/environmentStatus'
+      status:
+        type: integer
+        description: The HTTP return status.
+  environmentStatus:
+    type: object
+    properties:
+      isAvailable:
+        type: boolean
+        description: Indicates whether or not the requested environment is available. If the environment is unavailable or
+          has been disabled on the [Construct Admin Portal](https://admin.accela.com), false is returned.
+      appServerVersion:
+        type: string
+        description: The Civic Platform app server version. Note that this API requires Accela Gateway 3.2.0+ to return an
+          accurate version of the Civic Platform app server.
+  response_logo:
+    type: object
+    properties:
+      result:
+        type: string
+        description: A binary stream containing the requested object. The return type is "file".
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_environmentArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/environment'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  environment:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The name of an agency's API runtime environment, as configured on [Construct Admin Portal](https://admin.accela.com)
+          > Agencies > {Host} > Environments.
+      product:
+        type: string
+        description: The API provider product, such as "AA" for (Civic Platform) Automation.
+      version:
+        type: string
+        description: The version of the API provider product, as specified on [Construct Admin Portal](https://admin.accela.com)
+          > Agencies > {Host} > Environments.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-agencies.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.

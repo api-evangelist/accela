@@ -1,0 +1,91 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+docs:
+  - https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+  - https://developer.accela.com/docs/api_reference/api-index.html
+  - https://www.accela.com/services/technical-support/
+summary: >-
+  Accela versions the Construct API in the URI (/v4) and has held that major version stable since May 2014 —
+  twelve years and 63 dated releases without a v5. Change is additive and announced in the release notes.
+  What is missing is a stated policy: there is no published deprecation policy, no Sunset or Deprecation
+  header, no SLA on the public developer portal, and no publicly readable status page. Not one of the 417
+  published operations carries a `deprecated: true` flag.
+versioning:
+  scheme: uri-path
+  current_major: v4
+  current_release: 4.6.5.4
+  major_since: '2014-05'
+  policy_published: false
+  note: >-
+    The interesting version number for a caller is not Accela's but the AGENCY's. Every operation declares a
+    minimum Civic Platform version in its description, ranging from 7.3.2 (224 operations) to 23.1.0
+    (5 operations). Agencies upgrade on their own schedule, so the effective contract at any given agency is a
+    subset of the published one. GET /v4/serverProperties (v4.get.serverProperties) returns that agency's AA
+    version and is the correct pre-flight call before using any newer operation.
+  minimum_platform_version_distribution:
+    7.3.2: 224
+    7.3.3: 35
+    7.3.3.4: 28
+    7.3.3.5: 14
+    9.0.0: 50
+    'All': 13
+    9.3.0: 8
+    7.3.3.2: 7
+    8.0.3: 7
+    23.1.0: 5
+    22.1.0: 4
+    9.2.0: 4
+    other: 18
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  deprecated_operation_count: 0
+  note: >-
+    No RFC 8594 Sunset header, no Deprecation header, no deprecation policy page, and no operation in any of
+    the fifteen specs is marked deprecated. The February 2024 release note carries an "Announcement of
+    upcoming token changes" section, which is the only forward-notice of a breaking change found anywhere in
+    the changelog. No `Deprecation` pointer is emitted, because there is no deprecation policy to point at.
+status_page:
+  exists: true
+  publicly_readable: false
+  url: https://trust.accela.com/
+  alias: https://accela.statuspage.io/
+  probed: '2026-09-06'
+  http_status: 200
+  verdict: >-
+    Atlassian Statuspage, but a PRIVATE one. Both hosts land on /access/login with "Authentication Required
+    To View This Page — the Email you use with Accela" and a separate status-page password. An agent, or a
+    prospective integrator, cannot see whether the Construct API is up. No `StatusPage` pointer is emitted:
+    the page exists, but it is not a public status surface.
+  stale_hostname_warning:
+    host: https://status.accela.com/
+    probed: '2026-09-06'
+    http_status: 302
+    redirects_to: https://status.springbrooksoftware.com/
+    finding: >-
+      status.accela.com is a stale CNAME. It resolves to status.springbrooksoftware.com and serves the status
+      page of Springbrook Software — a company Accela owned from 2015 and SOLD to Accel-KKR in 2020. The most
+      obvious status hostname on Accela's own domain has pointed at a divested company's incidents for six
+      years. Anyone (or anything) monitoring status.accela.com for Civic Platform health is watching the wrong
+      product. Recorded here rather than wired as a pointer, because it is not Accela's status page.
+sla:
+  published: false
+  note: >-
+    No SLA on the developer portal. Availability commitments live in the Accela Subscription Services
+    Agreement, which is a PDF attached to a customer contract rather than a developer-facing document.
+support:
+  channels:
+    - name: Technical Support
+      url: https://www.accela.com/services/technical-support/
+      audience: agency customers
+    - name: Accela Success Community
+      url: https://success.accela.com/s/
+      audience: agency customers (Salesforce Experience Cloud, login required for most content)
+    - name: Developer Portal
+      url: https://developer.accela.com/
+      audience: registered developers
+release_notes: changelog/accela-changelog.yml

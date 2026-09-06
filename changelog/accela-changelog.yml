@@ -1,0 +1,101 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+docs:
+  - https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+summary: >-
+  Accela keeps a real, dated, continuously-maintained changelog for the Construct V4 API on the developer
+  portal — 63 dated release entries running from the original May 2014 V4 release to August 2026, each naming
+  a version number and listing new functionality and resolved issues, with affected endpoints named by URI.
+  For a 2014-era enterprise API this is unusually good operational hygiene. What it does not have is any
+  machine-readable form: no feed, no JSON, no per-entry anchor URLs — it is one long HTML page.
+scheme: date-and-semver
+version_pattern: Construct <major>.<minor>.<patch>[.<build>]
+current_version: 4.6.5.4
+current_version_observed:
+  url: https://apis.accela.com/
+  probed: '2026-09-06'
+  body: Construct API Host Server. Version 4.6.5.4
+  note: The running host self-reports the same version the newest release note announces.
+first_entry: May 2014 V4 Release
+entry_count: 63
+cadence: roughly quarterly, with hotfix releases between
+machine_readable: false
+feed: null
+entries:
+  - version: 4.6.5.4
+    date: '2026-08'
+    breaking: false
+    highlights:
+      - >-
+        Developer Portal registration became an approval workflow: the Registration button is now "Send
+        Request", the new developer account is created disabled, and a human must enable it in the admin
+        portal before it works. Materially changes time-to-first-call for a new integrator.
+  - version: 4.6.5.3
+    date: '2026-06'
+    breaking: false
+    highlights:
+      - >-
+        Per-app rate limits configured in the Agency Admin Portal are now actually enforced. Requests over the
+        limit return HTTP 429 with X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset. Before this
+        release the configured limits were not enforced at all.
+      - >-
+        The Developer Portal Terms of Use page no longer requires a login to view.
+      - >-
+        Added an Agency Admin Portal setting controlling which agencies may access the Civic Data (Open Data)
+        section.
+  - version: 4.6.5
+    date: '2026-01'
+    breaking: false
+    additions:
+      - path: /v4/records/types/security
+        method: GET
+        title: Enforce Record Type Security
+      - path: /v4/inspections/permissions
+        method: GET
+        title: Enforce Inspection Type Security
+    highlights:
+      - GET /v4/documents/{documentId}/thumbnail now honours the advised height and width parameters.
+  - version: 4.6.4
+    date: '2025-08'
+    breaking: false
+    highlights:
+      - Resolved an internally discovered security vulnerability.
+      - GET /v4/settings/drillDowns/ no longer fails when the parent value contains an ampersand.
+      - Disabling a tenant now correctly rejects that tenant at oauth2/token.
+  - version: 4.6.3.1
+    date: '2025-07'
+    breaking: false
+    highlights:
+      - Fixed intermittent "The requested api is not found" failures.
+  - version: 4.6.3
+    date: '2025-06'
+    breaking: false
+    additions:
+      - path: /v4/gis/getParcels
+        method: POST
+      - path: /v4/gis/getAssets
+        method: POST
+    highlights:
+      - Fixed intermittent HTTP 500 "Cannot access a disposed object" errors.
+      - >-
+        Authorization Code Flow without an agency in the URL now returns "The Agency is required" instead of
+        the misleading "The environment is required".
+  - version: 4.6.2
+    date: '2025-03'
+    breaking: false
+  - version: 4.6.1
+    date: '2025-01'
+    breaking: false
+  - version: 4.5.2.5
+    date: '2024-12'
+    breaking: false
+  - version: 4.5.0.3
+    date: '2024-02'
+    breaking: false
+    highlights:
+      - >-
+        Carries a separate "Announcement of upcoming token changes" section — the closest thing in this
+        changelog to a breaking-change notice.
+window: >-
+  Recent entries only (2025-01 to 2026-08). The full 63-entry history back to May 2014 is on the source page.

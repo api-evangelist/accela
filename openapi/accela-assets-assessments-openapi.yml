@@ -1,0 +1,2664 @@
+basePath: /
+host: apis.accela.com
+info:
+  description: The Assets and Assessments APIs enable apps to manage assets and their related condition assessments.
+  title: Assets and Assessments
+  version: v4
+schemes:
+- https
+swagger: '2.0'
+tags:
+- name: Assets
+  description: 'Assets can be any object that an agency owns or maintains. Assets have standard properties such as date of
+    service, start value, current value, depreciation value, salvage value, size, etc.
+
+
+    To manage and organize assets and asset types, Civic Platform supports several levels of asset classifications. Each asset
+    is classified with an asset type, and each asset type can be organized within a group or by class type.
+
+
+    In general, assets are classified by the following standard class types:
+
+
+    <br/>- **Linear** - The linear class type indicates a relationship between two assets. For example, a section of street,
+    sidewalk, or runway at the city municipal airport.<br/>- **Node** - Node-link linear combines assets to indicate an explicit
+    relationship between the assets. Node-link linear requires the user to define the asset ID by identifying the assets on
+    each end of the linear asset. For example, define a sewer main by identifying its end points such as Manholes. Manhole
+    ''MH-01'' flows to manhole ''MH-02'' which flows to manhole ''MH-03.'' The node-link linear allows for the creation of
+    the Sewer Main asset by naming the beginning and end point assets of each pipe. In this example, the agency can create
+    two Sewer Main assets such as class type of node-link linear defined as ''MH-01 - MH-02'' and ''MH-02 - MH-03.''<br/>-
+    **Component** - The component class specifies assets that are independent and do not connect assets as a building or tools.
+    A component is free of lines and nodes.<br/>- **Polygon** - The polygon class type includes assets such as water drainage
+    area, a storm drainage area, or a catch basin.'
+- name: Assets/Assessments
+  description: Condition assessments apply to assets that change or deteriorate over time. These assets may require a visual
+    condition assessment to effectively manage their life cycle. Transaction records and documents can also be attached to
+    assets. In Civic Platform, an asset is created based on its asset type. An asset type can be associated to specific work
+    order types ("record types"), rating types, and usage types.
+- name: Assets/Attributes
+  description: In addition to these asset properties, assets can also have custom attributes which are customized characteristics
+    of assets, structures, and establishments. Asset custom attributes can be grouped into a template, which can be used to
+    create an asset. In addition to custom attributes, asset attribute data can be collected into an attribute table.
+- name: Assets/Documents
+  description: Document collaterals can be attached to assets.
+- name: Assets/Records
+  description: Assets can be associated to transactional records when an asset assessment necessitates a service work order
+    or if an application pertains to an agency asset.
+- name: Assessments
+  description: 'In Civic Platform, an assessment is synonymous to an asset condition assessment. An asset condition assessment
+    is a scheduled maintenance review and/or a quality review of a group of assets. Agencies may require such assessments
+    for many different asset types such as vehicles, buildings, and water lines. Agencies may set different intervals for
+    different asset types as well. For example, agency vehicles might require safety and emissions inspections yearly, while
+    water lines might require an assessment every three months.
+
+
+    In Civic Platform, an assessment is created based on its assessment type. An assessment type defines the assessment''s
+    custom attributes, rating types, and observation attributes.'
+- name: Assessments/Attributes
+  description: An agency can define custom attributes for each type of assessment.
+- name: Assessments/Documents
+  description: Inspectors can attach documents and photos as needed to the asset condition assessment record, and record the
+    assignments and costs that occur on the assessment.
+- name: Assessments/Observations
+  description: 'During an assessment, an inspector may make observations about the condition of the asset. For example, he
+    may go to a certain area to look at the condition of the sidewalk and determine if there any cracks or whether the sidewalk
+    is level. The inspector also looks at the area around the section sidewalk to determine whether trees or brushes block
+    the walking path. After the inspector completes the assessment, the inspector can log his findings assessment observation,
+    which he can modify later as more information becomes available. '
+- name: Assessments/Work Orders
+  description: Asset assessments often alert agencies to problems that need attention. A work order is the starting point
+    in the repair process. Associating a work order with an assessment helps track the work order's progress.
+paths:
+  /v4/assets:
+    get:
+      description: "Returns all assets. Specify at least one URI filter parameter: asssetId, group, type, name.\n\n\n\n**API\
+        \ Endpoint**:  GET /v4/assets \n\n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access\
+        \ token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Get All Assets
+      operationId: v4.get.assets
+      tags:
+      - Assets
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: 'Filter by asset ID. '
+        in: query
+        name: assetId
+        type: string
+      - description: Filter by asset name.
+        in: query
+        name: name
+        type: string
+      - description: Filter by asset group. See [Get All Asset Groups](./api-settings.html#operation/v4.get.settings.assets.groups).
+        in: query
+        name: group
+        type: string
+      - description: Filter by asset type. See [Get All Asset Types](./api-settings.html#operation/v4.get.settings.assettypes.types).
+        in: query
+        name: type
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetMasterModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{ids}:
+    get:
+      description: "Returns asset information for one or more given assets, identified in comma-separated {ids}. Associated\
+        \ records can be requested via the expand parameter.\n\n\n\n**API Endpoint**:  GET /v4/assets/{ids} \n\n**Scope**:\
+        \  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\
+        \n"
+      summary: Get Assets
+      operationId: v4.get.assets.ids
+      tags:
+      - Assets
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of assets to fetch.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - description: Comma-delimited list of related objects to be returned with the response. The related object(s) will
+          be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        enum:
+        - records
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetExtModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: "Deletes one or more assets.\n\n\n\n**API Endpoint**:  DELETE /v4/assets/{ids} \n\n**Scope**:  assets \n\
+        \n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Delete Assets
+      operationId: v4.delete.assets.ids
+      tags:
+      - Assets
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of assets to delete.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{id}:
+    put:
+      description: "Updates a given asset.\n\n\n\n**API Endpoint**:  PUT /v4/assets/{id} \n\n**Scope**:  assets \n\n**App\
+        \ Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Update Asset
+      operationId: v4.put.assets.id
+      tags:
+      - Assets
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssetPathParam'
+      - description: The asset information to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/assetWithAttributesModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{id}/linkedAssets:
+    get:
+      description: "Returns all linked assets for a given asset ID.\n\n\n\n**API Endpoint**:  GET /v4/assets/{id}/linkedAssets\
+        \ \n\n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get All Linked Assets
+      operationId: v4.get.assets.id.linkedAssets
+      tags:
+      - Assets
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the asset whose linked assets need to be fetched.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Comma-delimited list of related objects to be returned with the response. The related object(s) will
+          be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        enum:
+        - records
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetRelatedModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{id}/usages:
+    post:
+      description: "Create Asset Usages.\n\n\n\n**API Endpoint**:  POST /v4/assets/{id}/usages \n\n**Scope**:  assets \n\n\
+        **App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 22.1.0\n\n"
+      summary: Create Asset Usages
+      operationId: v4.post.assets.id.usages
+      tags:
+      - Assets
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the asset.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The asset information to be created.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request_assetUsageModel'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetUsageModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{id}/assessments:
+    post:
+      description: "Creates condition assessments for a given asset.\n\n\n\n**API Endpoint**:  POST /v4/assets/{id}/assessments\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Create Asset Assessment
+      operationId: v4.post.assets.id.assessments
+      tags:
+      - Assets/Assessments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssetPathParam'
+      - description: 'Asset attributes to be added. Ex. [{ "field1": "field1Val", "field2": "field2Val"}]'
+        in: body
+        name: attributes
+        required: true
+        schema:
+          $ref: '#/definitions/request_assessmentModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{id}/attributes:
+    get:
+      description: "Returns the custom attribute values for a given asset. The custom attributes are configured in an attribute\
+        \ template which is assigned to the asset type in Civic Platform Administration.\n\n\n\n**API Endpoint**:  GET /v4/assets/{id}/attributes\
+        \ \n\n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get Asset Custom Attributes
+      operationId: ''
+      tags:
+      - Assets/Attributes
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssetPathParam'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Updates the custom attributes for a given asset. The response returns an array containing any custom attribute\
+        \ validation error and the status of the asset update.\n\n\n\n**API Endpoint**:  PUT /v4/assets/{id}/attributes \n\
+        \n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 9.0.0\n\n"
+      summary: Update Asset Custom Attributes
+      operationId: v4.put.assets.id.attributes
+      tags:
+      - Assets/Attributes
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the asset to be updated.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'The custom attributes to be updated. Ex. [{ "field1": "field1Val", "field2": "field2Val"}]'
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/customAttributeModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{id}/attributes/meta:
+    get:
+      description: "Returns an array containing the metadata of the asset custom attributes. The metadata is configured in\
+        \ an attributes template which is assigned to the asset type in Civic Platform Administration.\n\n\n\n**API Endpoint**:\
+        \  GET /v4/assets/{id}/attributes/meta \n\n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:\
+        \  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Get Metadata of Asset Custom Attributes
+      operationId: v4.get.assets.id.attributes.meta
+      tags:
+      - Assets/Attributes
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the asset to fetch.
+        in: path
+        name: id
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_attributeMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{assetId}/documents:
+    get:
+      description: "Returns all documents for a given asset.\n\n\n\n**API Endpoint**:  GET /v4/assets/{assetId}/documents\
+        \ \n\n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get All Asset Documents
+      operationId: v4.get.assets.assetId.documents
+      tags:
+      - Assets/Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assetIdPathParam'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_documentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates one or more document attachments for the given asset. To specify the documents to be attached,\
+        \ use the HTTP header \"Content-Type:multipart/form-data\" and form-data for \"uploadedFile\" and \"fileInfo\". Note\
+        \ that the \"fileInfo\" is a string containing an array of file attributes. Use \"fileInfo\" to specify one or more\
+        \ documents to be attached. For example:\n\n\tContent - Disposition: form - data;name = \"uploadedFile\"; filename=\"\
+        summaryReport.pdf\"\n\n\tContent - Disposition: form - data;name = \"fileInfo\"\n\n\t[\n\t\t {\n\t\t\t\"serviceProviderCode\"\
+        : \"BPTDEV\",\n\t\t\t\"fileName\": \"CXA12-pipe.png\",\n\t\t\t\"type\": \"image/png\",\n\t\t\t\"description\": \"\
+        Inspected pipe\"\n\t\t}\n\t]\n\n\n\n \n\n\n\n**API Endpoint**:  POST /v4/assets/{assetId}/documents \n\n**Scope**:\
+        \  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\
+        \n"
+      summary: Create Asset Documents
+      operationId: v4.post.assets.assetId.documents
+      tags:
+      - Assets/Documents
+      consumes:
+      - multipart/form-data
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assetIdPathParam'
+      - description: Specify the filename parameter with the file to be uploaded. See example for details.
+        in: formData
+        name: uploadedFile
+        required: true
+        type: file
+      - description: A string array containing the file metadata for each specified filename. See example for details.
+        in: formData
+        name: fileInfo
+        type: string
+        required: true
+      - description: The document group.
+        in: query
+        name: group
+        type: string
+      - description: The document category.
+        in: query
+        name: category
+        type: string
+      - description: The EDMS Adapter User ID. It's required for user level authentication
+        in: query
+        name: userId
+        type: string
+      - description: The EMDS Adapter password. It's required for user level authentication
+        in: query
+        name: password
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{assetId}/documents/{documentIds}:
+    delete:
+      description: "Deletes one or more documents for the given asset.\n\n\n\n**API Endpoint**:  DELETE /v4/assets/{assetId}/documents/{documentIds}\
+        \ \n\n**Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Delete Asset Documents
+      operationId: v4.delete.assets.assetId.documents.documentIds
+      tags:
+      - Assets/Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assetIdPathParam'
+      - description: Comma-delimited IDs of documents to be deleted.
+        in: path
+        name: documentIds
+        required: true
+        type: string
+      - description: The standard EDMS Adapter userid. It's required for user level authentication
+        in: query
+        name: userId
+        type: string
+      - description: The standard EDMS Adapter password. It's required for user level authentication
+        in: query
+        name: password
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/records?assetIds={assetIds}:
+    get:
+      summary: Get Records By Asset Ids
+      description: "Gets the list of records associated with the given asset ID(s). \n\n\n\n**API Endpoint**:  GET /v4/assets/records?assetIds={assetIds}\
+        \ \n\n**Scope**:  records \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ \t22.1.0\n\n"
+      operationId: v4.get.assets.records
+      tags:
+      - Assets/Records
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The IDs of the assets.
+        in: path
+        name: assetIds
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      - $ref: '#/parameters/limit'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetsRecordsModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{assetId}/records:
+    get:
+      description: "Returns all records for a given asset.\n\n\n\n**API Endpoint**:  GET /v4/assets/{assetId}/records \n\n\
+        **Scope**:  assets \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 9.0.0\n\n"
+      summary: Get All Asset Records
+      operationId: v4.get.assets.assetId.records
+      tags:
+      - Assets/Records
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assetIdPathParam'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_simpleRecordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/mine:
+    get:
+      description: "Returns the condition assessments assigned to the currently logged-in agency user.\n\n\n\n**API Endpoint**:\
+        \  GET /v4/assessments/mine \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access\
+        \ token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Get My Condition Assessments
+      operationId: v4.get.assessments.mine
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetConditionAssessmentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{id}:
+    get:
+      description: "Gets condition assessment information for one or more given assessments, identified in comma-separated\
+        \ {ids}.\n\n\n\n**API Endpoint**:  GET /v4/assessments/{id}  \n\n**Scope**:  assessments \n\n**App Type**:  Agency\
+        \ \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Get Assessments
+      operationId: v4.get.assessments.id
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssessmentPathParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_assetConditionAssessmentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Updates a given condition assessment.\n\n\n\n**API Endpoint**:  PUT /v4/assessments/{id} \n\n**Scope**:\
+        \  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 9.0.0\n\n"
+      summary: Update Assessment
+      operationId: v4.put.assessments.id
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssessmentPathParam'
+      - description: The assessment information to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request_assessmentModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{ids}:
+    delete:
+      description: "Deletes one or more condition assessments.\n\n\n\n**API Endpoint**:  DELETE /v4/assessments/{ids} \n\n\
+        **Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 9.0.0\n\n"
+      summary: Delete Assessments
+      operationId: v4.delete.assessments.ids
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of the condition assessments to be deleted
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{id}/attributes/meta:
+    get:
+      description: "Returns the custom attributes metadata of the condition assessment type. The attributes metadata is configured\
+        \ for the condition assessment type in Civic Platform Administration.\n\n\n\n**API Endpoint**:  GET /v4/assessments/{id}/attributes/meta\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get Attributes Metadata for Condition Assessment Type
+      operationId: v4.get.assessments.id.attributes.meta
+      tags:
+      - Assessments/Attributes
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssessmentPathParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_attributeMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{assessmentId}/documents:
+    get:
+      description: "Returns the documents for a given condition assessment.\n\n\n\n**API Endpoint**:  GET /v4/assessments/{assessmentId}/documents\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get All Assessment Documents
+      operationId: v4.get.assessments.assessmentId.documents
+      tags:
+      - Assessments/Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assessmentIdPathParam'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_documentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates one or more document attachments for the given condition assessment. To specify the documents\
+        \ to be attached, use the HTTP header \"Content-Type:multipart/form-data\" and form-data for \"uploadedFile\" and\
+        \ \"fileInfo\". Note that the \"fileInfo\" is a string containing an array of file attributes. Use \"fileInfo\" to\
+        \ specify one or more documents to be attached. For example:\n\n\tContent - Disposition: form - data;name = \"uploadedFile\"\
+        ; filename=\"summaryReport.pdf\"\n\n\tContent - Disposition: form - data;name = \"fileInfo\"\n\n\t[\n\t\t {\n\t\t\t\
+        \"serviceProviderCode\": \"BPTDEV\",\n\t\t\t\"fileName\": \"CXA12-pipe.png\",\n\t\t\t\"type\": \"image/png\",\n\t\t\
+        \t\"description\": \"Condition assessment on pipe\"\n\t\t}\n\t]\n\n\n\n\n\n\n\n**API Endpoint**:  POST /v4/assessments/{assessmentId}/documents\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Create Assessment Documents
+      operationId: v4.post.assessments.assessmentId.documents
+      tags:
+      - Assessments/Documents
+      consumes:
+      - multipart/form-data
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assessmentIdPathParam'
+      - description: Specify the filename parameter with the file to be uploaded. See example for details.
+        in: formData
+        name: uploadedFile
+        required: true
+        type: file
+      - description: A string array containing the file metadata for each specified filename. See example for details.
+        in: formData
+        name: fileInfo
+        type: string
+        required: true
+      - description: The document group.
+        in: query
+        name: group
+        type: string
+      - description: The document category.
+        in: query
+        name: category
+        type: string
+      - description: The standard EDMS Adapter userid. It's required for user level authentication
+        in: query
+        name: userId
+        type: string
+      - description: The standard EMDS Adapter password. It's required for user level authentication
+        in: query
+        name: password
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{assessmentId}/documents/{documentIds}:
+    delete:
+      description: "Deletes one or more documents for the given condition assessment.\n\n\n\n**API Endpoint**:  DELETE /v4/assessments/{assessmentId}/documents/{documentIds}\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Delete Assessment Documents
+      operationId: v4.delete.assessments.assessmentId.documents.documentIds
+      tags:
+      - Assessments/Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/assessmentIdPathParam'
+      - description: Comma-delimited IDs of the documents to be deleted.
+        in: path
+        name: documentIds
+        required: true
+        type: string
+      - description: The standard EDMS adapter userid. It's required for user level authentication
+        in: query
+        name: userId
+        type: string
+      - description: The standard EDMS adapter password. It's required for user level authentication
+        in: query
+        name: password
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{caId}/records:
+    get:
+      description: "Returns the work order records associated to a given condition assessment.\n\n\n\n**API Endpoint**:  GET\
+        \ /v4/assessments/{caId}/records \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:\
+        \  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Get All Records for an Assessment
+      operationId: v4.get.assessments.caId.records
+      tags:
+      - Assessments/Work Orders
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the condition assessment to fetch.
+        in: path
+        name: caId
+        required: true
+        type: string
+      - description: Filter by record type. See [Get All Record Types](./api-settings.html#operation/v4.get.settings.records.types).
+        in: query
+        name: type
+        type: string
+      - description: Filter by record status. See [Get All Record Type Statuses](./api-settings.html#operation/v4.get.settings.records.types.id.statuses).
+        in: query
+        name: status
+        type: string
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_simpleRecordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{id}/observations:
+    get:
+      description: "Returns observation data associated to a given condition assessment.\n\n\n\n**API Endpoint**:  GET /v4/assessments/{id}/observations\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get Condition Assessment Observations
+      operationId: v4.get.assessments.id.observations
+      tags:
+      - Assessments/Observations
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssessmentPathParam'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Creates, updates, and deletes observations for a given condition assessment. Use the {action} field in\
+        \ the request array item to specify whether the observation is to be created, updated, or deleted. To create or update\
+        \ an observation, specify the observation custom fields in the fields{} request array item. To determine the observation\
+        \ custom fields for the given assessment:\n 1.For the requested assessment {id}, get the assessment type.value from\
+        \ [Get Condition Assessment](./api-assets-assessments.html#operation/v4.get.assessments.id).\n 2. For the assessment\
+        \ type.value, get the custom field metadata identified by {attributeName} from [Get Observations Metadata for Condition\
+        \ Assessment Type](./api-assets-assessments.html#operation/v4.get.assessments.id.observations.meta).\n\n\n\n**API\
+        \ Endpoint**:  PUT /v4/assessments/{id}/observations \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Update Assessment Observations
+      operationId: v4.put.assessments.id.observations
+      tags:
+      - Assessments/Observations
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the observation to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Observation information to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/customAttributeModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{id}/observations/meta:
+    get:
+      description: "Returns the custom observations metadata of the condition assessment type. The observations metadata is\
+        \ configured for the condition assessment type in Civic Platform Administration.\n\n\n\n**API Endpoint**:  GET /v4/assessments/{id}/observations/meta\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get Observations Metadata for Condition Assessment Type
+      operationId: v4.get.assessments.id.observations.meta
+      tags:
+      - Assessments/Observations
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssessmentPathParam'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_attributeMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{id}/workorders:
+    post:
+      description: "Adds or links work orders to a given condition assessment.\n\n\n\n**API Endpoint**:  POST /v4/assessments/{id}/workorders\
+        \ \n\n**Scope**:  assessments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Add Work Orders to Condition Assessments
+      operationId: v4.post.assessments.id.workorders
+      tags:
+      - Assessments/Work Orders
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idAssessmentPathParam'
+      - description: An array of work order record IDs to be linked to the assessment. See [Get All Records](./api-records.html#operation/v4.get.records),
+          [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+        in: body
+        name: relatedRecordIds
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  identifierModel:
+    type: object
+    properties:
+      text:
+        description: ''
+        type: string
+      value:
+        description: ''
+        type: string
+  response_attributeMetadataModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/attributeMetadataModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  attributeMetadataModel:
+    type: object
+    properties:
+      attributeGroup:
+        description: The group the attribute belongs to.
+        type: string
+      attributeLabel:
+        description: The attribute's display label.
+        type: string
+      attributeLength:
+        description: The number of characters the attribute field allows.
+        type: string
+      attributeName:
+        description: The unique name of the attribute. This name is for administrative use only; it is not used for display
+          purposes.
+        type: string
+      defaultValue:
+        description: The attribute's default value.
+        type: string
+      description:
+        description: The attribute's description.
+        type: string
+      displayOrder:
+        description: The attribute's display position.
+        format: int64
+        type: integer
+      displayStatus:
+        description: The attribute's display status.
+        type: string
+      isDropdownList:
+        description: Indicates whether or not the attribute is a dropdown list.
+        enum:
+        - Y
+        - N
+        type: string
+      options:
+        description: Contains the dropdown list values.
+        items:
+          type: string
+        type: array
+      rangeSearchFlag:
+        description: Indicates whether or not the attribute allows a search range.
+        type: string
+      recordStatus:
+        description: Indicates whether or not the attribute is active.
+        type: string
+      searchableFlag:
+        description: Indicates whether or not the attribute is searchable.
+        type: string
+      unitType:
+        description: The unit of measure used with the attribute.
+        type: string
+      updatedBy:
+        description: The user who last updated the attribute.
+        type: string
+      updatedDate:
+        description: The date and time the attribute was last updated.
+        format: date-time
+        type: string
+      valueDataType:
+        description: The data type of the attribute value.
+        type: string
+      valueRequired:
+        description: Indicates whether or not the attribute value is required.
+        type: string
+  response_assetMasterModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/assetMasterModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  assetMasterModel:
+    type: object
+    properties:
+      assetId:
+        description: 'The unique alpha-numeric asset ID in an asset group.
+
+
+          **Added in Civic Platform version**: 9.2.0
+
+
+          '
+        type: string
+      classType:
+        description: "A Class Type is how Civic Platform groups objects that an agency owns or maintains. The five class types\
+          \ are component, linear, node-link linear, point, and polygon. Asset class types provide the ability to assign or\
+          \ group multiple asset types together.\t"
+        type: string
+      comments:
+        type: object
+        description: General comments about the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      currentValue:
+        description: The current value of the asset.
+        format: double
+        type: number
+      dateOfService:
+        description: The date the asset was initially placed into service.
+        format: date-time
+        type: string
+      dependentFlag:
+        description: Indicates whether or not the parent asset is dependent on this asset.
+        enum:
+        - Y
+        - N
+        type: string
+      depreciationAmount:
+        description: The decline in the asset value by the asset depreciation calculation.
+        format: double
+        type: number
+      depreciationEndDate:
+        description: The end date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationStartDate:
+        description: The start date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationValue:
+        description: The asset value after the asset depreciation calculation, which is based on the start value, depreciation
+          start and end dates, useful life, and salvage value.
+        format: double
+        type: number
+      description:
+        type: object
+        description: The description of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      endID:
+        description: The ending point asset ID.
+        type: string
+      gisObjects:
+        items:
+          $ref: '#/definitions/gISObjectModel'
+        type: array
+      id:
+        description: The asset system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        type: object
+        description: The descriptive name of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      number:
+        description: The unique, alpha-numeric asset ID.
+        type: string
+      salvageValue:
+        description: The residual value of the asset at the end of it’s useful life.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      size:
+        description: A positive numeric value for the asset size.
+        format: double
+        type: number
+      sizeUnit:
+        description: The unit of measure corresponding to the asset size.
+        type: string
+      startID:
+        description: The starting point asset ID.
+        type: string
+      startValue:
+        description: The beginning value or purchase price of the asset.
+        format: double
+        type: number
+      status:
+        type: object
+        description: The status of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date the asset status changed.
+        format: date-time
+        type: string
+      type:
+        type: object
+        description: The type of asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  assetWithAttributesModel:
+    type: object
+    properties:
+      attributeTables:
+        items:
+          $ref: '#/definitions/tableModel'
+        type: array
+      attributes:
+        $ref: '#/definitions/customAttributeModel'
+      classType:
+        description: "A Class Type is how Civic Platform groups objects that an agency owns or maintains. The five class types\
+          \ are component, linear, node-link linear, point, and polygon. Asset class types provide the ability to assign or\
+          \ group multiple asset types together.\t"
+        type: string
+      comments:
+        type: object
+        description: General comments about the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      currentValue:
+        description: The current value of the asset.
+        format: double
+        type: number
+      dateOfService:
+        description: The date the asset was initially placed into service.
+        format: date-time
+        type: string
+      dependentFlag:
+        description: Indicates whether or not the parent asset is dependent on this asset.
+        enum:
+        - Y
+        - N
+        type: string
+      depreciationAmount:
+        description: The decline in the asset value by the asset depreciation calculation.
+        format: double
+        type: number
+      depreciationEndDate:
+        description: The end date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationStartDate:
+        description: The start date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationValue:
+        description: The asset value after the asset depreciation calculation, which is based on the start value, depreciation
+          start and end dates, useful life, and salvage value.
+        format: double
+        type: number
+      description:
+        type: object
+        description: The description of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      endID:
+        description: The ending point asset ID.
+        type: string
+      gisObjects:
+        items:
+          $ref: '#/definitions/gISObjectModel'
+        type: array
+      group:
+        type: object
+        description: The asset group.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The asset system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        type: object
+        description: The descriptive name of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      number:
+        description: The unique, alpha-numeric asset ID.
+        type: string
+      salvageValue:
+        description: The residual value of the asset at the end of it’s useful life.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      size:
+        description: A positive numeric value for the asset size.
+        format: double
+        type: number
+      sizeUnit:
+        description: The unit of measure corresponding to the asset size.
+        type: string
+      startID:
+        description: The starting point asset ID.
+        type: string
+      startValue:
+        description: The beginning value or purchase price of the asset.
+        format: double
+        type: number
+      status:
+        type: object
+        description: The status of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date the asset status changed.
+        format: date-time
+        type: string
+      type:
+        type: object
+        description: The type of asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_assetRelatedModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/assetRelatedModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  assetRelatedModel:
+    type: object
+    properties:
+      assetId:
+        description: 'The unique alpha-numeric asset ID in an asset group.
+
+
+          **Added in Civic Platform version**: 9.2.0
+
+
+          '
+        type: string
+      classType:
+        description: "A Class Type is how Civic Platform groups objects that an agency owns or maintains. The five class types\
+          \ are component, linear, node-link linear, point, and polygon. Asset class types provide the ability to assign or\
+          \ group multiple asset types together.\t"
+        type: string
+      comments:
+        type: object
+        description: General comments about the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      currentValue:
+        description: The current value of the asset.
+        format: double
+        type: number
+      dateOfService:
+        description: The date the asset was initially placed into service.
+        format: date-time
+        type: string
+      dependentFlag:
+        description: Indicates whether or not the parent asset is dependent on this asset.
+        enum:
+        - Y
+        - N
+        type: string
+      depreciationAmount:
+        description: The decline in the asset value by the asset depreciation calculation.
+        format: double
+        type: number
+      depreciationEndDate:
+        description: The end date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationStartDate:
+        description: The start date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationValue:
+        description: The asset value after the asset depreciation calculation, which is based on the start value, depreciation
+          start and end dates, useful life, and salvage value.
+        format: double
+        type: number
+      description:
+        type: object
+        description: The description of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      endID:
+        description: The ending point asset ID.
+        type: string
+      gisObjects:
+        items:
+          $ref: '#/definitions/gISObjectModel'
+        type: array
+      group:
+        type: object
+        description: The asset group.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      hasChild:
+        description: Indicates whether or not the asset has child assets.
+        enum:
+        - Y
+        - N
+        type: string
+      id:
+        description: The asset system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      linkedAssetID:
+        description: The asset ID of the linked asset.
+        type: string
+      linkedAssetSeqNbr:
+        description: The unique sequence id of the linked asset, assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        type: object
+        description: The descriptive name of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      number:
+        description: The unique, alpha-numeric asset ID.
+        type: string
+      salvageValue:
+        description: The residual value of the asset at the end of it’s useful life.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      size:
+        description: A positive numeric value for the asset size.
+        format: double
+        type: number
+      sizeUnit:
+        description: The unit of measure corresponding to the asset size.
+        type: string
+      startID:
+        description: The starting point asset ID.
+        type: string
+      startValue:
+        description: The beginning value or purchase price of the asset.
+        format: double
+        type: number
+      status:
+        type: object
+        description: The status of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date the asset status changed.
+        format: date-time
+        type: string
+      type:
+        type: object
+        description: The type of asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  request_assetUsageModel:
+    type: array
+    items:
+      $ref: '#/definitions/request_assetUsageArray'
+  request_assetUsageArray:
+    type: object
+    properties:
+      usageReading:
+        type: string
+      unitType:
+        type: string
+  response_assetUsageModel:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/assetUsageArray'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  assetUsageArray:
+    type: object
+    properties:
+      id:
+        type: integer
+      isSuccess:
+        type: boolean
+  assetDescriptionModel:
+    type: object
+    properties:
+      description:
+        description: The asset description.
+        type: string
+      group:
+        description: The group the asset belongs to.
+        type: string
+      id:
+        description: The asset system id assigned by the Civic Platform server.
+        type: string
+      status:
+        type: object
+        description: The asset status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        description: The asset type.
+        type: string
+  gISObjectModel:
+    type: object
+    properties:
+      gisId:
+        description: The GIS object id.
+        type: string
+      layerId:
+        description: The map layer id.
+        type: string
+      serviceId:
+        description: The map service id.
+        type: string
+  tableModel:
+    type: object
+    properties:
+      id:
+        description: The custom table id.
+        type: string
+      rows:
+        items:
+          $ref: '#/definitions/rowModel'
+        description: A table row containing custom fields.
+        type: array
+  rowModel:
+    type: object
+    properties:
+      action:
+        description: The requested operation on the row.
+        enum:
+        - add
+        - update
+        - delete
+        type: string
+      fields:
+        $ref: '#/definitions/customAttributeModel'
+      id:
+        description: The row id.
+        type: string
+  response_assetExtModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/assetExtModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  assetExtModel:
+    type: object
+    properties:
+      assetId:
+        description: 'The unique alpha-numeric asset ID in an asset group.
+
+
+          **Added in Civic Platform version**: 9.2.0
+
+
+          '
+        type: string
+      classType:
+        description: "A Class Type is how Civic Platform groups objects that an agency owns or maintains. The five class types\
+          \ are component, linear, node-link linear, point, and polygon. Asset class types provide the ability to assign or\
+          \ group multiple asset types together.\t"
+        type: string
+      comments:
+        type: object
+        description: General comments about the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      currentValue:
+        description: The current value of the asset.
+        format: double
+        type: number
+      dateOfService:
+        description: The date the asset was initially placed into service.
+        format: date-time
+        type: string
+      dependentFlag:
+        description: Indicates whether or not the parent asset is dependent on this asset.
+        enum:
+        - Y
+        - N
+        type: string
+      depreciationAmount:
+        description: The decline in the asset value by the asset depreciation calculation.
+        format: double
+        type: number
+      depreciationEndDate:
+        description: The end date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationStartDate:
+        description: The start date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+        format: date-time
+        type: string
+      depreciationValue:
+        description: The asset value after the asset depreciation calculation, which is based on the start value, depreciation
+          start and end dates, useful life, and salvage value.
+        format: double
+        type: number
+      description:
+        type: object
+        description: The description of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      endID:
+        description: The ending point asset ID.
+        type: string
+      gisObjects:
+        items:
+          $ref: '#/definitions/gISObjectModel'
+        type: array
+      id:
+        description: The asset system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        type: object
+        description: The descriptive name of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      number:
+        description: The unique, alpha-numeric asset ID.
+        type: string
+      records:
+        items:
+          $ref: '#/definitions/simpleRecordModel'
+        type: array
+      salvageValue:
+        description: The residual value of the asset at the end of it’s useful life.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      size:
+        description: A positive numeric value for the asset size.
+        format: double
+        type: number
+      sizeUnit:
+        description: The unit of measure corresponding to the asset size.
+        type: string
+      startID:
+        description: The starting point asset ID.
+        type: string
+      startValue:
+        description: The beginning value or purchase price of the asset.
+        format: double
+        type: number
+      status:
+        type: object
+        description: The status of the asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date the asset status changed.
+        format: date-time
+        type: string
+      type:
+        type: object
+        description: The type of asset.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_assetsRecordsModel:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/assetsRecordsArray'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  assetsRecordsArray:
+    type: object
+    properties:
+      id:
+        type: string
+      page:
+        type: object
+        properties:
+          offset:
+            type: string
+          limit:
+            type: string
+          hasmore:
+            type: boolean
+      records:
+        items:
+          $ref: '#/definitions/recordsArrayInAssetsRecordsArray'
+        type: array
+  recordsArrayInAssetsRecordsArray:
+    type: object
+    properties:
+      name:
+        type: string
+      id:
+        type: string
+  response_simpleRecordModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/simpleRecordModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  simpleRecordModel:
+    type: object
+    properties:
+      actualProductionUnit:
+        description: Estimated cost per production unit.
+        format: double
+        type: number
+      appearanceDate:
+        description: The date for a hearing appearance.
+        format: date-time
+        type: string
+      appearanceDayOfWeek:
+        description: The day for a hearing appearance.
+        type: string
+      assignedDate:
+        description: The date the application was assigned.
+        format: date-time
+        type: string
+      assignedToDepartment:
+        description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      assignedUser:
+        description: The staff member responsible for the action.
+        type: string
+      balance:
+        description: The amount due.
+        format: double
+        type: number
+      booking:
+        description: Indicates whether or not there was a booking in addition to a citation.
+        type: boolean
+      closedByDepartment:
+        description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      closedByUser:
+        description: The staff member responsible for closure.
+        type: string
+      closedDate:
+        description: The date the application was closed.
+        format: date-time
+        type: string
+      completedByDepartment:
+        description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      completedByUser:
+        description: The staff member responsible for completion.
+        type: string
+      completedDate:
+        description: The date the application was completed.
+        format: date-time
+        type: string
+      constructionType:
+        type: object
+        description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      costPerUnit:
+        description: The cost for one unit associated to the record.
+        format: double
+        type: number
+      createdBy:
+        description: The unique user id of the individual that created the entry.
+        type: string
+      createdByCloning:
+        description: Indictes whether or not the record was cloned.
+        enum:
+        - Y
+        - N
+        type: string
+      customId:
+        description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx).
+          Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+        type: string
+      defendantSignature:
+        description: Indicates whether or not a defendant's signature has been obtained.
+        type: boolean
+      description:
+        description: The description of the record or item.
+        type: string
+      enforceDepartment:
+        description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      enforceUser:
+        description: Name of the enforcement officer.
+        type: string
+      enforceUserId:
+        description: ID number of the enforcement officer.
+        type: string
+      estimatedCostPerUnit:
+        description: The estimated cost per unit.
+        format: double
+        type: number
+      estimatedDueDate:
+        description: The estimated date of completion.
+        format: date-time
+        type: string
+      estimatedProductionUnit:
+        description: The estimated number of production units.
+        format: double
+        type: number
+      estimatedTotalJobCost:
+        description: The estimated cost of the job.
+        format: double
+        type: number
+      firstIssuedDate:
+        description: The first issued date for license
+        format: date-time
+        type: string
+      housingUnits:
+        description: The number of housing units.
+        format: int64
+        type: integer
+      id:
+        description: The record system id assigned by the Civic Platform server.
+        type: string
+      infraction:
+        description: Indicates whether or not an infraction occurred.
+        type: boolean
+      initiatedProduct:
+        description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA"
+          : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela
+          Asset Management, Accela Land Management.'
+        type: string
+      inPossessionTime:
+        description: The application level in possession time of the time tracking feature.
+        format: double
+        type: number
+      inspectorDepartment:
+        description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      inspectorId:
+        description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      inspectorName:
+        description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      jobValue:
+        description: The value of the job.
+        format: double
+        type: number
+      misdemeanor:
+        description: Indicates whether or not a misdemeanor occurred.
+        type: boolean
+      module:
+        description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+        type: string
+      name:
+        description: The name associated to the record.
+        type: string
+      numberOfBuildings:
+        description: The number of buildings.
+        format: int64
+        type: integer
+      offenseWitnessed:
+        description: Indicates whether or not  there was a witness to the alleged offense.
+        type: boolean
+      openedDate:
+        description: The date the application was opened.
+        format: date-time
+        type: string
+      overallApplicationTime:
+        description: The amount of elapsed time from the time tracking start date to the completion of the application.
+        format: double
+        type: number
+      priority:
+        type: object
+        description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicOwned:
+        description: Indicates whether or not the record is for the public.
+        type: boolean
+      recordClass:
+        description: General information about the record.
+        type: string
+      renewalInfo:
+        $ref: '#/definitions/recordExpirationModel'
+      reportedChannel:
+        type: object
+        description: The incoming channel through which the applicant submitted the application.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      reportedDate:
+        description: The date the complaint was reported.
+        format: date-time
+        type: string
+      reportedType:
+        type: object
+        description: The type of complaint or incident being reported.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      scheduledDate:
+        description: The date when the inspection gets scheduled.
+        format: date-time
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier,
+        type: string
+      severity:
+        type: object
+        description: Indicates the severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortNotes:
+        description: A brief note about the record subject.
+        type: string
+      status:
+        type: object
+        description: The record status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: "The date when the current status changed.\t"
+        format: date-time
+        type: string
+      statusReason:
+        type: object
+        description: "\tThe reason for the status setting on the record."
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusType:
+        description: The record status type.
+        enum:
+        - APPROVED
+        - CLOSED
+        - COMPLETE
+        - DENIED
+        - INCOMPLETE
+        - OPEN
+        - PENDING
+        - UNASSIGNED
+        - VOID
+        type: string
+      totalFee:
+        description: The total amount of the fees invoiced to the record.
+        format: double
+        type: number
+      totalJobCost:
+        description: The combination of work order assignments (labor) and costs.
+        format: double
+        type: number
+      totalPay:
+        description: The total amount of pay.
+        format: double
+        type: number
+      trackingId:
+        description: The application tracking number (IVR tracking number).
+        format: int64
+        type: integer
+      type:
+        $ref: '#/definitions/recordTypeModel'
+      undistributedCost:
+        description: The undistributed costs for this work order.
+        format: double
+        type: number
+      updateDate:
+        description: The date the record was last updated.
+        format: date-time
+        type: string
+      value:
+        description: The record value.
+        type: string
+  recordExpirationModel:
+    type: object
+    properties:
+      expirationDate:
+        description: The date when the condition expires.
+        format: date-time
+        type: string
+      expirationStatus:
+        type: object
+        description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  recordTypeModel:
+    type: object
+    properties:
+      alias:
+        description: The record type alias.
+        type: string
+      category:
+        description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      filterName:
+        description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+        type: string
+      group:
+        description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      id:
+        description: The record type id.
+        type: string
+      module:
+        description: The module the record type belongs to.
+        type: string
+      subType:
+        description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      text:
+        description: The localized display text.
+        type: string
+      type:
+        description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      value:
+        description: The stored value.
+        type: string
+  response_resultModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/resultModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_resultModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/resultModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultModel:
+    type: object
+    properties:
+      code:
+        description: The error code, if an error is encountered.
+        type: string
+      id:
+        description: The system id of the object in this operation.
+        format: int64
+        type: integer
+      isSuccess:
+        description: Indicates whether or not the operation on the object is successful.
+        type: boolean
+      message:
+        description: The error message, if an error is encountered
+        type: string
+  request_assessmentModel:
+    type: object
+    required:
+    - status
+    properties:
+      attributes:
+        $ref: '#/definitions/customAttributeModel'
+      comment:
+        description: Comments or notes about the assessment.
+        type: string
+      conditionAssessment:
+        description: The condition assessment type. See [Get All Condition Assessment Types](./api-settings.html#operation/v4.get.settings.assessments.types).
+        type: string
+      inspectionDate:
+        description: The inspection date for the assessment, in yyyy-mm-dd format.
+        type: string
+      inspectionTime:
+        description: The inspection time for the assessment, in hh:mm AM/PM format.
+        type: string
+      inspectorId:
+        description: The ID of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      scheduleDate:
+        description: The scheduled assessment date, in yyyy-mm-dd format.
+        type: string
+      scheduleTime:
+        description: The scheduled assessment time, in hh:mm AM/PM format.
+        type: string
+      status:
+        description: The status of the condition assessment
+        enum:
+        - Completed
+        - Scheduled
+        type: string
+      timeSpent:
+        description: The number of hours spent on the assessment.
+        type: string
+  response_customAttributeModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/customAttributeModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  customAttributeModel:
+    type: object
+    properties:
+      aCustomFieldName:
+        description: The name of a custom field.
+        type: string
+      aCustomFieldValue:
+        description: The value of a custom field.
+        type: string
+  response_assetConditionAssessmentModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/assetConditionAssessmentModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  assetConditionAssessmentModel:
+    type: object
+    properties:
+      asset:
+        $ref: '#/definitions/assetDescriptionModel'
+      assetCAID:
+        description: The asset condition assessment ID.
+        format: int64
+        type: integer
+      assignedToDepartment:
+        description: The department responsible for the assessment.
+        type: string
+      attributes:
+        $ref: '#/definitions/customAttributeModel'
+      comments:
+        description: The name of the inspector performing the assessment.
+        type: string
+      inspectorFullName:
+        description: The unique identifier of the inspector.
+        type: string
+      inspectorId:
+        description: The inspector id.
+        type: string
+      scheduledDate:
+        description: The scheduled assessment date, in yyyy-mm-dd format.
+        format: date-time
+        type: string
+      scheduledTime:
+        description: The scheduled assessment time, in hh:mm AM/PM format.
+        type: string
+      status:
+        description: The assessment status.
+        type: string
+      timeSpent:
+        description: The number of hours spent on the assessment.
+        format: double
+        type: number
+      type:
+        description: The type of assessment.
+        type: string
+  response_documentModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/documentModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  documentModel:
+    type: object
+    properties:
+      category:
+        type: object
+        description: The document category. The list of category options varies depending on the document group.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      deletable:
+        description: Contains permission assignments for deleting documents.
+        $ref: '#/definitions/userRolePrivilegeModel'
+      department:
+        description: The name of the department the document belongs to.
+        type: string
+      description:
+        description: The document description.
+        type: string
+      downloadable:
+        description: Contains permission assignments for downloading documents.
+        $ref: '#/definitions/userRolePrivilegeModel'
+      entityId:
+        description: The unique ID of the entity or record.
+        type: string
+      entityType:
+        description: The type of entity.
+        type: string
+      fileName:
+        description: The name of the file as it displays in the source location.
+        type: string
+      group:
+        type: object
+        description: The document group.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The document id.
+        format: int64
+        type: integer
+      modifiedBy:
+        description: The user account that last modified the document.
+        type: string
+      modifiedDate:
+        description: The date the document was last modified.
+        format: date-time
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      size:
+        description: The file size of the document.
+        format: double
+        type: number
+      source:
+        description: The name for your agency's electronic document management system.
+        type: string
+      status:
+        type: object
+        description: The documet status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      titleViewable:
+        description: Contains permission assignments for viewing document names.
+        $ref: '#/definitions/userRolePrivilegeModel'
+      type:
+        description: The document type.
+        type: string
+      uploadedBy:
+        description: The user who uploaded the document to the record.
+        type: string
+      uploadedDate:
+        description: The date when the document was uploaded.
+        format: date-time
+        type: string
+      virtualFolders:
+        description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded
+          attachments in groups
+        type: string
+  userRolePrivilegeModel:
+    type: object
+    properties:
+      contactAllowed:
+        description: Indicates whether or not the permission is given to a contact.
+        type: boolean
+      deleteAllowed:
+        description: "Indicates whether or not the permission to delete a document is allowed.\t"
+        type: boolean
+      downloadAllowed:
+        description: Indicates whether or not the permission to download a document is allowed.
+        type: boolean
+      licenseTypeRules:
+        items:
+          type: string
+          description: "A string array containing the types of licensed professionals who are given the permission.\t"
+        type: array
+      licensendProfessionalAllowed:
+        description: Indicates whether or not the permission is given to a licensed professional.
+        type: boolean
+      ownerAllowed:
+        description: Indicates whether or not the permission is given to an owner.
+        type: boolean
+      recordCreatorAllowed:
+        description: Indicates whether or not the permission is given to a record creator.
+        type: boolean
+      registeredUserAllowed:
+        description: Indicates whether or not the permission is given to a registered public user.
+        type: boolean
+      titleViewAllowed:
+        description: Indicates whether or not the permission to view a document name is allowed.
+        type: boolean
+      uploadAllowed:
+        description: Indicates whether or not the permission to upload a document is allowed.
+        type: boolean
+parameters:
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+  fields:
+    description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+  assetIdPathParam:
+    description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+    in: path
+    name: assetId
+    required: true
+    type: string
+  idAssetPathParam:
+    description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+    in: path
+    name: id
+    required: true
+    type: string
+  assetIdQueryParam:
+    description: Filter by asset ID.
+    in: query
+    name: assetId
+    type: string
+  assessmentIdPathParam:
+    description: The ID of the assessment to fetch.
+    in: path
+    name: assessmentId
+    required: true
+    type: string
+  idAssessmentPathParam:
+    description: The ID of the condition assessment to fetch.
+    in: path
+    name: id
+    required: true
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-assets-assessments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.

@@ -1,0 +1,235 @@
+generated: '2026-09-06'
+method: derived
+source: openapi/ (fifteen Swagger 2.0 documents, 417 operations, 488 unique definitions)
+docs:
+  - https://developer.accela.com/docs/construct-apiNamingConventions.html
+summary: >-
+  Derived from the URI hierarchy of the published contract, which is the authoritative relationship signal in
+  this API — Accela's naming convention makes /<parent>s/{parentId}/<object>s a literal statement of
+  containment, and the contract follows it consistently across all 417 operations. RECORD is the hub: it is
+  the permit, licence, application or service request, and eighteen resource families hang off it. The other
+  three roots are the REFERENCE entities (address, parcel, owner, contact, professional), which exist
+  independently of any record and are attached to many; ASSET, with its condition assessments; and SETTINGS,
+  which is not data at all but the agency's own configured vocabulary.
+caveat: >-
+  The schema definitions cannot carry the whole model. 488 definitions across fifteen specs include heavy
+  near-duplication (recordModel, recordSimpleModel, simpleRecordModel, recordExtModel_1, recordSearchModel,
+  request_recordModel are six shapes of one entity) and there are no shared components across documents —
+  each spec redeclares what it needs. More importantly, an agency's custom forms, custom tables and standard
+  choices extend every one of these entities at runtime, so the real schema at any agency is a superset of
+  the published one. Read GET /v4/settings/... and the */customForms/meta and */customTables/meta operations
+  before assuming a field list.
+entities:
+  - name: Record
+    description: >-
+      The central transactional object — a permit, licence, application, service request, case or complaint.
+      Identified by a composite id of the form AGENCY-YYCAP-NNNNN-NNNXX plus a human-facing customId.
+    primary_operations: [v4.get.records, v4.get.records.ids, v4.post.records, v4.put.records.id, v4.delete.records.ids]
+    key_definitions: [recordModel, simpleRecordModel, recordSearchModel, request_createRecordModel]
+    id_shape: 'ISLANDTON-14CAP-00000-000BR (serviceProviderCode-value)'
+    relationships:
+      - has_many: Address
+        via: /v4/records/{recordId}/addresses
+      - has_many: Contact
+        via: /v4/records/{recordId}/contacts
+      - has_many: Parcel
+        via: /v4/records/{recordId}/parcels
+      - has_many: Owner
+        via: /v4/records/{recordId}/owners
+      - has_many: Professional
+        via: /v4/records/{recordId}/professionals
+      - has_many: Inspection
+        via: /v4/records/{recordId}/inspections
+      - has_many: Document
+        via: /v4/records/{recordId}/documents
+      - has_many: Condition
+        via: /v4/records/{recordId}/conditions
+      - has_many: ConditionApproval
+        via: /v4/records/{recordId}/conditionApprovals
+      - has_many: Fee
+        via: /v4/records/{recordId}/fees
+      - has_many: Payment
+        via: /v4/records/{recordId}/payments
+      - has_many: Invoice
+        via: /v4/records/{recordId}/invoices
+      - has_many: Cost
+        via: /v4/records/{recordId}/costs
+      - has_many: Comment
+        via: /v4/records/{recordId}/comments
+      - has_many: Activity
+        via: /v4/records/{recordId}/activities
+      - has_many: WorkflowTask
+        via: /v4/records/{recordId}/workflowTasks
+      - has_many: Asset
+        via: /v4/records/{recordId}/assets
+      - has_many: PartTransaction
+        via: /v4/records/{recordId}/partTransaction
+      - has_many: Vote
+        via: /v4/records/{recordId}/votes
+      - has_many: TrustAccount
+        via: /v4/records/{recordId}/trustAccounts
+      - has_many: Record
+        via: /v4/records/{recordId}/related
+        note: Records relate to other records as parent/child.
+      - belongs_to: RecordType
+        via: settings, /v4/settings/records/types
+  - name: Address
+    description: Reference address. Exists independently and may be attached to many records.
+    primary_operations: [v4.get.addresses, v4.get.addresses.id, v4.put.addresses.id]
+    relationships:
+      - has_many: Parcel
+        via: /v4/addresses/{id}/parcels
+      - has_many: Record
+        via: /v4/addresses/{id}/records
+      - has_many: Condition
+        via: /v4/addresses/{id}/conditions
+  - name: Parcel
+    description: Reference land parcel. The APO (Address-Parcel-Owner) triangle is the land-management core.
+    primary_operations: [v4.get.parcels, v4.get.parcels.id]
+    relationships:
+      - has_many: Address
+        via: /v4/parcels/{id}/addresses
+      - has_many: Owner
+        via: /v4/parcels/{parcelId}/owners
+      - has_many: Record
+        via: /v4/parcels/{id}/records
+      - has_many: Condition
+        via: /v4/parcels/{parcelId}/conditions
+  - name: Owner
+    description: Reference property owner.
+    primary_operations: [v4.get.owners, v4.get.owners.id]
+    relationships:
+      - has_many: Condition
+        via: /v4/owners/{ownerId}/conditions
+  - name: Contact
+    description: Reference person or organisation attached to records.
+    primary_operations: [v4.get.contacts, v4.get.contacts.ids, v4.post.contacts]
+    relationships:
+      - has_many: Address
+        via: /v4/contacts/{id}/addresses
+      - has_many: Condition
+        via: /v4/contacts/{contactId}/conditions
+      - has_many: Record
+        via: /v4/contacts/{id}/records
+      - has_many: CustomForm
+        via: /v4/contacts/{contactId}/customForms
+      - has_many: CustomTable
+        via: /v4/contacts/{contactId}/customTables
+  - name: Professional
+    description: Licensed professional (contractor, architect, engineer) with a licence board and expiry.
+    primary_operations: [v4.get.professionals, v4.get.professionals.ids]
+    relationships:
+      - has_many: Record
+        via: /v4/professionals/{id}/records
+      - has_many: Condition
+        via: /v4/professionals/{id}/conditions
+      - belongs_to: LicenseBoard
+        via: settings, /v4/settings/professionals/licenseBoards
+  - name: Inspection
+    description: A scheduled or completed inspection against a record. The deepest sub-tree in the contract.
+    primary_operations: [v4.get.inspections, v4.get.inspections.ids, v4.post.inspections.schedule, v4.put.inspections.id]
+    relationships:
+      - belongs_to: Record
+        via: /v4/records/{recordId}/inspections
+      - has_many: Checklist
+        via: /v4/inspections/{inspectionId}/checklists
+      - has_many: Condition
+        via: /v4/inspections/{inspectionId}/conditions
+      - has_many: ConditionApproval
+        via: /v4/inspections/{inspectionId}/conditionApprovals
+      - has_many: Document
+        via: /v4/inspections/{inspectionId}/documents
+      - has_many: TimeAccounting
+        via: /v4/inspections/{inspectionId}/timeAccounting
+      - has_many: Inspection
+        via: /v4/inspections/{id}/related
+  - name: Checklist
+    description: An inspection checklist.
+    relationships:
+      - belongs_to: Inspection
+        via: /v4/inspections/{inspectionId}/checklists
+      - has_many: ChecklistItem
+        via: /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems
+  - name: ChecklistItem
+    description: A single item on an inspection checklist; carries its own custom forms, custom tables and documents.
+    relationships:
+      - belongs_to: Checklist
+      - has_many: CustomForm
+      - has_many: CustomTable
+      - has_many: Document
+  - name: Asset
+    description: A physical asset in the agency's inventory (public works, utilities, facilities).
+    primary_operations: [v4.get.assets, v4.get.assets.ids, v4.put.assets.id]
+    relationships:
+      - has_many: Attribute
+        via: /v4/assets/{id}/attributes
+      - has_many: Document
+        via: /v4/assets/{assetId}/documents
+      - has_many: Record
+        via: /v4/assets/{assetId}/records
+      - has_many: Assessment
+        via: /v4/assets/{id}/assessments
+      - has_many: Asset
+        via: /v4/assets/{id}/linkedAssets
+  - name: Assessment
+    description: A condition assessment carried out against an asset.
+    primary_operations: [v4.get.assessments.id, v4.put.assessments.id]
+    relationships:
+      - belongs_to: Asset
+      - has_many: Observation
+        via: /v4/assessments/{id}/observations
+      - has_many: Document
+        via: /v4/assessments/{assessmentId}/documents
+      - has_many: WorkOrder
+        via: /v4/assessments/{id}/workorders
+  - name: Document
+    description: An uploaded file — plans, photographs, correspondence — attachable to records, inspections, assets, assessments and parcels.
+    primary_operations: [v4.get.documents.documentIds, v4.get.documents.documentId.download, v4.get.documents.documentId.thumbnail]
+    relationships:
+      - has_many: ReviewComment
+        via: /v4/documentReview/documents/{documentId}/comments
+  - name: Payment
+    description: A payment against fees. Initialize then commit; voidable.
+    primary_operations: [v4.post.payments.initialize, v4.put.payments.id, v4.put.payments.paymentId.void]
+    relationships:
+      - belongs_to: Record
+      - has_many: TransactionFee
+        via: /v4/payments/transactions/{id}/fees
+  - name: ShoppingCart
+    description: Citizen-facing basket assembling fees before payment.
+    primary_operations: [v4.get.shoppingCart, v4.post.shoppingCart, v4.put.shoppingCart.id, v4.delete.shoppingCart.ids]
+  - name: Agency
+    description: The tenant. Everything above is scoped to one of these.
+    primary_operations: [v4.get.agencies, v4.get.agencies.name, v4.get.agencies.name.environments]
+    relationships:
+      - has_many: Environment
+        via: /v4/agencies/{name}/environments
+  - name: CivicID
+    description: Cross-agency citizen identity linking multiple Citizen Access accounts to one login.
+    primary_operations: [v4.get.civicid.profile, v4.get.civicid.accounts.id, v4.post.civicid.accounts]
+    relationships:
+      - has_many: CitizenAccount
+        via: /v4/civicid/accounts
+  - name: Citizen
+    description: A Citizen Access user of one agency, with delegates and trust accounts.
+    primary_operations: [v4.get.citizenaccess.citizens, v4.post.citizenaccess.register]
+    relationships:
+      - has_many: Delegate
+        via: /v4/citizenaccess/citizens/delegates
+      - has_many: Contact
+        via: /v4/citizens/{id}/contacts
+      - has_many: TrustAccount
+        via: /v4/citizenaccess/citizens/{id}/trustAccounts
+extensibility:
+  custom_forms:
+    description: Agency-defined field groups attached to records, addresses, contacts, parcels, professionals, workflow tasks and checklist items.
+    discovery: '*/customForms/meta operations return the metadata for the agency''s own forms.'
+  custom_tables:
+    description: Agency-defined repeating tables on the same entities.
+    discovery: '*/customTables/meta operations.'
+  standard_choices:
+    description: Agency-configured enumerations for every type, status and priority field.
+    discovery: The /v4/settings/* family, 82 operations.
+  implication: >-
+    This is why an agent must not cache a schema across agencies. Two agencies running the same Accela
+    version will disagree about what a "record" contains.

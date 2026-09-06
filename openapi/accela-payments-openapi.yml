@@ -1,0 +1,1481 @@
+basePath: /
+host: apis.accela.com
+schemes:
+- https
+swagger: '2.0'
+info:
+  description: "The Payments API enables apps to submit payment transactions on Civic Platform records.\r\n\t\tThe Payments\
+    \ API provides two ways of accepting payments:\r\n\n\n ***Using third-party payment vendors*** \r\n\n\nPayment API endpoints\
+    \ that save payment information from an external third-party payment vendor, to which the user is redirected for payment\
+    \ processing:\r\n\n\n **Initialize Payment** - Initializes a Civic Platform payment transaction with a citizen's payment\
+    \ information such as record ID, third-party merchant account ID, and payment method. The Initialize Payment API returns\
+    \ a transaction ID which should be used as the payment ID when calling the Commit Payment API to save the payment details\
+    \ from the third-party merchant into Civic Platform.\r\n\n\n **Commit Payment** - Triggers PaymentReceiveBefore and PaymentReceiveAfter\
+    \ events which can interact with third-party payment processing, and saves payment details in Civic Platform. Use the\
+    \ transaction ID returned by the Initialize Payment API to identify the payment transaction to be committed. Note that\
+    \ an app cannot use the Commit Payment API unless a Construct agency administrator enables the Payment Enabled setting\
+    \ on [Construct Admin Portal](https://admin.accela.com) > Agencies > {Agency} > Apps."
+  title: Payments
+  version: v4
+tags:
+- name: Payments
+  description: Payments represent the acceptance of monetary funds submitted to the agency in relation to a transactional
+    record. The system uses payments to invoice for services rendered and to create credit card transactions for payment.
+- name: Invoices
+  description: An invoice fee can either be generated manually in the Civic Platform's Payment Processing portlet or automatically
+    if configured in Civic Platform Administration. The Invoice API enables apps to get invoices and create record invoices.
+- name: Trust Accounts
+  description: "Agency customers can deposit money into a trust account that the customer can drawn from when they need to\
+    \ pay fees for an application. This is helpful for customers that have a large amount of work they regularly perform in\
+    \ your jurisdiction, such as contractors or developers.\\\r\n\t\tn\\ n\r\n\t\tCivic Platform allows you toset up trust\
+    \ accounts\r\n\t\tfor address,\r\n\t\tparcels,\r\n\t\tlicensed professionals and contacts.The trust account functionality\
+    \ allows you to establish and maintain trust account information,\r\n\t\tperform trust account transactions,\r\n\t\tand\
+    \ print trust account reports.\n\\ n\r\n\t\tWith the trust account feature,\r\n\t\tusers canset one primary trust account\
+    \ and associate the trust account with one record or multiple records.\n\\ n\r\n\t\tCivic Platform can send an email notification\
+    \ to the trust account manager when the trust account balance drops below a certain amount.For example,\r\n\t\tif the\
+    \ trust account has a $100 threshold amount and the trust account falls below $50,\r\n\t\tAccela Automation sends an e\
+    \ - mail notification to the trust account manager.\n\\ n\r\n\t\tAdministrators can assign one or more trust accounts\
+    \ as global to one or more modules,\r\n\t\twhich makes the trust accounts available to all records within the specified\
+    \ module.This feature allows users to access a temporary trust accounts to process refunds.\r\n\t\t"
+- name: Shopping Carts
+  description: "Shopping carts allow public users to add and manage multiple record payment\r\n\t\ttransactions.A shopping\
+    \ cart contains attributes indicating the payment processing type and whether the shopping cart item is to be paid now.\r\
+    \n\t\t"
+paths:
+  /v4/payments/initialize:
+    post:
+      description: "Initializes citizen payment information for processing by a third party payment system that will send\
+        \ and commit final payment information into Automation. Call Initialize Payment to get the transaction ID required\
+        \ to call Commit Payment. Note: This API does not consider fees that have been marked as Pay Later in ACA.\n\n\n\n\
+        **API Endpoint**:  POST /v4/payments/initialize \n\n**Scope**:  payments \n\n**App Type**:  Citizen \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\n"
+      summary: Initialize Payment
+      operationId: v4.post.payments.initialize
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Payment initialization request information.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/paymentInitializeModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_paymentTransactionModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/payments/{id}:
+    put:
+      description: "Processes and commits citizen payment information for the specified payment transaction ID. The Commit\
+        \ Payment API allows a third-party payment vendor to send payment information to Automation. The Commit Payment API\
+        \ processes the payment information, logs merchant account audit information, triggers the EMSE events ConvertToRealCAPBefore\
+        \ and PaymentReceiveBefore, creates a transaction record, triggers the EMSE event ConvertToRealCAPAfter, finishes\
+        \ the Automation payment, triggers the EMSE event PaymentReceiveAfter, and appoves the transaction.\n\nNote: An agency\
+        \ Construct administrator controls which apps can call Commit Payment. By default, Commit Payment is disabled. To\
+        \ allow an app to call Commit Payment, an agency administrator must go to the [Construct Admin Portal](https://admin.accela.com)\
+        \ > Agencies > {Agency} > Apps, and enable the Payment Enabled property for the app.\n\n\n\n**API Endpoint**:  PUT\
+        \ /v4/payments/{id} \n\n**Scope**:  payments \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token\
+        \ \n\n**Civic Platform version**: \t7.3.3.4\n\n"
+      summary: Commit Payment
+      operationId: v4.put.payments.id
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The Transaction ID of an initialized transaction to be committed. Also known as "Batch Transaction Number".
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The payment information to commit.
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/paymentCommitModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_paymentCommitResultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/payments/{paymentId}/void:
+    put:
+      description: "Voids a given payment. When you void a payment, Civic Platform decreases the total payment amount and\
+        \ then increases the balance owed, as if you never made the payment.\n\n\n\n**API Endpoint**:  PUT /v4/payments/{paymentId}/void\
+        \ \n\n**Scope**:  payments \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Void Payment
+      operationId: v4.put.payments.paymentId.void
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The id of the payment to void. See [Get All Payments for Record](./api-records.html#operation/v4.get.records.recordId.payments)
+        in: path
+        name: paymentId
+        required: true
+        type: string
+      - description: Payment information to void.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/paymentVoidModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/payments/transactions/{id}/fees:
+    get:
+      description: "Returns fees information for a given transaction id.\n\n\n\n**API Endpoint**:  GET /v4/payments/transactions/{id}/fees\
+        \ \n\n**Scope**:  payments \n\n**App Type**:  Agency App \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 19.2.0\n\n"
+      summary: Get Transaction Fees
+      operationId: v4.get.transaction.fees
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The id of the transaction to get.
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_transaction_fees'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/invoices/{invoiceIds}:
+    get:
+      description: "Returns invoice information for given invoice id's.\n\n\n\n**API Endpoint**:  GET /v4/invoices/{invoiceIds}\
+        \ \n\n**Scope**:  invoices \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 9.0.0\n\n"
+      summary: Get Invoices
+      operationId: v4.get.invoices.invoiceIds
+      tags:
+      - Invoices
+      parameters:
+      - description: One or more comma-separated IDs of invoices to fetch.
+        in: path
+        name: invoiceIds
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_invoiceModelArray'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/trustAccounts:
+    get:
+      description: "Gets all trust accounts.\n\n\n\n**API Endpoint**:  GET /v4/trustAccounts \n\n**Scope**:  trustaccounts\
+        \ \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Get All Trust Accounts
+      operationId: v4.get.trustAccounts
+      tags:
+      - Trust Accounts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_trustAccountModelArray'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/shoppingCart:
+    get:
+      description: "Gets all shopping carts in the system.\n\n\n\n**API Endpoint**:  GET /v4/shoppingCart \n\n**Scope**: \
+        \ shoppingcart \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3\n\n"
+      summary: Get All Shopping Carts
+      operationId: v4.get.shoppingCart
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_shoppingCartModelArray'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates a shopping cart.\n\n\n\n**API Endpoint**:  POST /v4/shoppingCart \n\n**Scope**:  shoppingcart\
+        \ \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3\n\n"
+      summary: Create Shopping Cart
+      operationId: v4.post.shoppingCart
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Shopping cart item models for create
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/shoppingCartModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/shoppingCart/{ids}:
+    get:
+      description: "Gets information about the specified shopping carts.\n\n\n\n**API Endpoint**:  GET /v4/shoppingCart/{ids}\
+        \ \n\n**Scope**:  shoppingcart \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3\n\n"
+      summary: Get Shopping Carts
+      operationId: v4.get.shoppingCart.ids
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: One or more comma-separated id's of shopping carts to fetch.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_shoppingCartModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: "Deletes one or more shopping carts.\n\n\n\n**API Endpoint**:  DELETE /v4/shoppingCart/{ids} \n\n**Scope**:\
+        \  shoppingcart \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3\n\n"
+      summary: Delete Shopping Carts
+      operationId: v4.delete.shoppingCart.ids
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: One or more comma-separated id's of shopping carts to delete.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/shoppingCart/{id}:
+    put:
+      description: "Updates the specified shopping cart.\n\n\n\n**API Endpoint**:  PUT /v4/shoppingCart/{id} \n\n**Scope**:\
+        \  shoppingcart \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3\n\n"
+      summary: Update Shopping Cart
+      operationId: v4.put.shoppingCart.id
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The system id of the shopping cart to update.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Shopping cart information to update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/shoppingCartModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_shoppingCartModel'
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  response_transaction_fees:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/transactionFeesModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  transactionFeesModel:
+    type: object
+    properties:
+      version:
+        type: object
+        description: The payment schedule version
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      paymentPeriod:
+        type: object
+        description: The time interval for processing invoices.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      subGroup:
+        type: object
+        description: The subgroup the fee is associated with.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      balanceDue:
+        description: The amount due.
+        format: double
+        type: number
+      schedule:
+        type: object
+        description: The payment schedule name.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      code:
+        type: object
+        description: A code identifying an associated item
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      description:
+        type: object
+        description: The fee description.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unit:
+        type: object
+        description: The unit of measure used for the object.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      userDefinedField1:
+        description: User defined field 1
+        type: string
+      userDefinedField2:
+        description: User defined field 2
+        type: string
+      userDefinedField3:
+        description: User defined field 3
+        type: string
+      userDefinedField4:
+        description: User defined field 4
+        type: string
+      status:
+        description: The transaction status
+        type: string
+      notes:
+        description: The transaction notes
+        type: string
+      amount:
+        description: The payment amount.
+        format: double
+        type: number
+      assessDate:
+        description: The access date
+        type: string
+      quantity:
+        description: The number of units for which the same fee applies.
+        format: double
+        type: number
+      id:
+        description: The transaction id
+        format: int64
+        type: integer
+      account1:
+        description: The first account
+        type: string
+      account2:
+        description: The second account
+        type: string
+      account3:
+        description: The third account
+        type: string
+      recordId:
+        $ref: '#/definitions/recordIdModel'
+      allocation:
+        description: Allocation proportion or amount of account.
+        format: double
+        type: number
+      invoiceNumber:
+        description: The invoice number string.
+        type: string
+  billingAddressV4_V4_put_payments_id:
+    type: object
+    properties:
+      addressLine1:
+        type: string
+      addressLine2:
+        type: string
+      addressLine3:
+        type: string
+      city:
+        type: string
+      countryCode:
+        type: string
+      postalCode:
+        type: string
+      state:
+        type: string
+  billingAddressModel:
+    type: object
+    properties:
+      addressLine1:
+        description: The first line of the address.
+        type: string
+      addressLine2:
+        description: The second line of the address.
+        type: string
+      addressLine3:
+        description: The current status of the address record.
+        type: string
+      city:
+        description: The name of the city.
+        type: string
+      countryCode:
+        description: The name of the country. Required if billing address is provided.
+        type: string
+      postalCode:
+        description: The postal or zip code.
+        type: string
+      state:
+        description: The state corresponding to the address on record.
+        type: string
+  capIDModel_v4_get_payments:
+    type: object
+    properties:
+      customId:
+        type: string
+      id:
+        type: string
+      serviceProviderCode:
+        type: string
+      trackingId:
+        format: int64
+        type: integer
+      value:
+        type: string
+  capIDModel_v4_get_payments_paymentId:
+    type: object
+    properties:
+      customId:
+        type: string
+      id:
+        type: string
+      serviceProviderCode:
+        type: string
+      trackingId:
+        format: int64
+        type: integer
+      value:
+        type: string
+  paymentCompleteModel:
+    type: object
+    properties:
+      paymentId:
+        description: The payment id.
+        type: string
+      paymentStatus:
+        description: The payment status (currently, this field always returns "PAID").
+        type: string
+      receiptId:
+        description: The payment receipt id.
+        type: string
+      recordId:
+        description: "The record id the payment is applied to.\t"
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+  checkModel:
+    type: object
+    properties:
+      accountNumber:
+        description: The check account number.
+        type: string
+      bankName:
+        description: The name of the bank issued on the check.
+        type: string
+      billingAddress:
+        $ref: '#/definitions/billingAddressModel'
+      checkNumber:
+        description: The check number.
+        type: string
+      driverLicenseNumber:
+        description: The driver's license of the person or entity issuing the check.
+        type: string
+      email:
+        description: The email address of the person or entity issuing the check.
+        type: string
+      firstName:
+        description: The first name of the person or entity issuing the check.
+        type: string
+      holderName:
+        description: The check holder name.
+        type: string
+      lastName:
+        description: The last name of the person or entity issuing the check.
+        type: string
+      middleName:
+        description: The middle name of the person or entity issuing the check.
+        type: string
+      phone:
+        description: The phone number of the person or entity issuing the check.
+        type: string
+      routingNumber:
+        description: The check routing number.
+        type: string
+      type:
+        description: The check type.
+        type: string
+  paymentCommitModel:
+    type: object
+    required:
+    - amount
+    - convenienceFee
+    - paymentMethod
+    - paymentSystemTransactionId
+    properties:
+      amount:
+        description: The payment amount.
+        format: double
+        type: number
+      comments:
+        description: Comments related to the payment transaction.
+        type: string
+      convenienceFee:
+        description: The payment convenience fee to be applied. Set to 0 if none.
+        format: double
+        type: number
+      creditCard:
+        $ref: '#/definitions/creditCardLastFourDigitsModel'
+      merchantAccountId:
+        description: The account ID of the merchant receiving the payment.
+        type: string
+      payeePhone:
+        description: The area code and phone number of the payee.
+        type: string
+      paymentMethod:
+        description: The method of payment, either Credit Card or Check.
+        type: string
+        enum:
+        - Credit Card
+        - Check
+      paymentSystemTransactionId:
+        description: The third party payment system's payment transaction ID.
+        type: string
+  creditCardLastFourDigitsModel:
+    type: object
+    properties:
+      billingAddress:
+        $ref: '#/definitions/billingAddressV4_V4_put_payments_id'
+      businessName:
+        description: A secondary business name for the applicable individual.
+        type: string
+      cardNumberLastDigits:
+        description: The last 4 digits of the credit card number.
+        type: string
+      cardType:
+        description: The credit card type. For example, Visa, American Express, or Discover.
+        type: string
+      holderName:
+        description: The check holder's name.
+        type: string
+  creditCardModel:
+    type: object
+    properties:
+      billingAddress:
+        $ref: '#/definitions/billingAddressModel'
+      businessName:
+        description: A secondary business name for the applicable individual.
+        type: string
+      cardNumber:
+        description: The credit card number.
+        type: string
+      cardType:
+        description: The credit card type. For example, Visa, American Express, or Discover.
+        type: string
+      email:
+        description: The contact's email address.
+        type: string
+      expirationMonth:
+        description: The 2-digit expiration month.
+        type: string
+      expirationYear:
+        description: The 4-digit expiration year.
+        type: string
+      holderName:
+        description: The check holder's name.
+        type: string
+      phone:
+        description: The credit card holder's phone number.
+        type: string
+      securityCode:
+        description: The 3-digit security code on the back of a credit card.
+        type: string
+  paymentInitializeModel:
+    type: object
+    properties:
+      entityIds:
+        description: An array containing the entity ID's to initialize the payment for.
+        items:
+          type: string
+        type: array
+      entityType:
+        description: The type of entity to initialize the payment for.
+        type: string
+        enum:
+        - record
+      merchantAccountId:
+        description: The account ID of the merchant receiving the payment.
+        type: string
+      paymentMethod:
+        description: The method of payment, either Credit Card or Check.
+        type: string
+        enum:
+        - Check
+        - Credit Card
+  response_paymentCommitResultModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/paymentCommitResultModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  paymentCommitResultModel:
+    type: object
+    properties:
+      completePayments:
+        $ref: '#/definitions/paymentCompleteModel'
+      message:
+        description: Response message for the payment transaction.
+        type: string
+  paymentRequestModel:
+    type: object
+    properties:
+      amount:
+        description: The amount of a payment transaction or account balance.
+        format: double
+        type: number
+      check:
+        $ref: '#/definitions/checkModel'
+      creditCard:
+        $ref: '#/definitions/creditCardModel'
+      currency:
+        description: The standard ISO 4217 currency code. For example, "USD" for US Dollars.
+        type: string
+      entityId:
+        description: The unique ID of the entity or record the payment applies to.
+        type: string
+      entityType:
+        description: The type of entity the payment applies to.
+        type: string
+      paymentMethod:
+        description: The method of payment, for example, credit card, check, trust account.
+        type: string
+        enum:
+        - Credit Card
+        - Check
+        - Trust Account
+      trustAccount:
+        $ref: '#/definitions/trustAccountRequestModel'
+  response_paymentResponseModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/paymentResponseModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  paymentResponseModel:
+    type: object
+    properties:
+      customId:
+        description: The custom id of the entity the payment applies to.
+        type: string
+      entityId:
+        description: The system id of the entity the payment applies to
+        type: string
+      entityType:
+        description: The type of entity the payment applies to
+        type: string
+      message:
+        description: A message returned by the operation.
+        type: string
+      paymentId:
+        description: The unique id generated for a payment.
+        format: int64
+        type: integer
+      transactionId:
+        description: The unique id assigned to the transaction.
+        type: string
+  response_paymentTransactionModel:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/paymentTransactionModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  paymentTransactionModel:
+    type: object
+    properties:
+      transactionId:
+        description: The payment transaction ID to be processed and commited by the Commit Payment API.
+        format: int64
+        type: integer
+  trustAccountRequestModel:
+    type: object
+    properties:
+      account:
+        description: The account ID number for the trust account.
+        type: string
+      acctStatus:
+        description: The status of the trust account.
+        type: string
+        enum:
+        - Active
+        - Closed
+      associations:
+        type: object
+        description: The trust account associations.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      balance:
+        description: The balance of the trust account in dollars.
+        format: double
+        type: number
+      description:
+        description: The description of the trust account.
+        type: string
+      id:
+        description: The trust account system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      isPrimary:
+        description: Indicates whether or not to designate the trust account as the primary source.
+        type: string
+        enum:
+        - Y
+        - N
+      ledgerAccount:
+        description: The ledger account of the trust account.
+        type: string
+      overdraft:
+        type: object
+        description: Indicates whether or not the trust account can use the overdraft option.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      overdraftLimit:
+        description: The overdraft limit amount, in dollars, for the trust account.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      status:
+        type: object
+        description: The status of the trust account.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+        enum:
+        - Active
+        - Closed
+      thresholdAmount:
+        description: The minimum amount required in a trust account.
+        format: double
+        type: number
+  paymentVoidModel:
+    type: object
+    properties:
+      comments:
+        description: Comments or notes about the void payment transaction.
+        type: string
+      reason:
+        type: object
+        description: The void payment reason.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  recordIdModel:
+    type: object
+    properties:
+      customId:
+        description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx).
+          Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+        type: string
+      id:
+        description: The record system id assigned by the Civic Platform server.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      trackingId:
+        description: The application tracking number (IVR tracking number).
+        format: int64
+        type: integer
+      value:
+        description: The alphanumeric record id.
+        type: string
+  response_invoiceModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/invoiceModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  feeItemModel:
+    type: object
+    properties:
+      acaRequiredFlag:
+        description: Indicates whether or not the fee schedule is required in order to make it accessible to citizens.
+        type: string
+      accountCode1:
+        description: The code associated with the first fee
+        type: string
+      accountCode1Allocation:
+        description: Allocation proportion or amount of account code 1.
+        format: double
+        type: number
+      accountCode2:
+        description: The code associated with the second fee
+        type: string
+      accountCode2Allocation:
+        description: Allocation proportion or amount of account code 2.
+        format: double
+        type: number
+      accountCode3:
+        description: The code associated with the third fee
+        type: string
+      accountCode3Allocation:
+        description: Allocation proportion or amount of account code 3.
+        format: double
+        type: number
+      allocatedFee1:
+        description: The allocated fee for account code 1.
+        format: double
+        type: number
+      allocatedFee2:
+        description: The allocated fee for account code 2.
+        format: double
+        type: number
+      allocatedFee3:
+        description: The allocated fee for account code 3.
+        format: double
+        type: number
+      amount:
+        description: The amount of a payment transaction or account balance.
+        format: double
+        type: number
+      applyDate:
+        description: The date the fee is applied.
+        format: date-time
+        type: string
+      autoAssessFlag:
+        description: Indicates whether or not the fee item is automatically assessed.
+        type: string
+      autoInvoiceFlag:
+        description: Indicates whether or not the fee item is automatically invoiced.
+        type: string
+      balanceDue:
+        description: The amount due.
+        format: double
+        type: number
+      calcFlag:
+        description: Indicates whether or not the fee amount is based on fee calculation.
+        type: string
+      calculatedFlag:
+        description: Indicates whether or not the fee amount is based on fee calculation.
+        type: string
+      code:
+        type: object
+        description: A code identifying an associated item
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      description:
+        type: object
+        description: The fee description.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      displayOrder:
+        description: The display order of the fee item.
+        format: int64
+        type: integer
+      effectDate:
+        description: Fee item effective date.
+        format: date-time
+        type: string
+      expireDate:
+        description: The date when the item expires
+        format: date-time
+        type: string
+      feeAllocationType:
+        description: The fee allocation type to each account code.
+        type: string
+      feeNotes:
+        description: Notes about the fee.
+        type: string
+      id:
+        description: The fee system id.
+        format: int64
+        type: integer
+      invoiceId:
+        description: The invoice ID for the fee item.
+        format: int64
+        type: integer
+      maxFee:
+        description: The maximum fee item.
+        format: double
+        type: number
+      minFee:
+        description: The minimum fee item.
+        format: double
+        type: number
+      paymentPeriod:
+        type: object
+        description: The time interval for processing invoices.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      priority:
+        description: The priority level assigned to the fee item.
+        format: int64
+        type: integer
+      quantity:
+        description: The number of units for which the same fee applies.
+        format: double
+        type: number
+      recordId:
+        $ref: '#/definitions/recordIdModel'
+      schedule:
+        type: object
+        description: The payment schedule name.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        description: The fee item status.
+        type: string
+      subGroup:
+        type: object
+        description: The subgroup the fee is associated with.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      udf1:
+        description: User defined field 1
+        type: string
+      udf2:
+        description: User defined field 2
+        type: string
+      udf3:
+        description: User defined field 3
+        type: string
+      unit:
+        type: object
+        description: The unit of measure used for the object.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      variable:
+        description: The variable associated with the fee item.
+        type: string
+      version:
+        type: object
+        description: The payment schedule version
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  invoiceModel:
+    type: object
+    properties:
+      amount:
+        description: The invoice fee amount.
+        format: double
+        type: number
+      auditStatus:
+        description: The audit status of the invoice fee item.
+        type: string
+      balance:
+        description: The amount due.
+        format: double
+        type: number
+      dueDate:
+        description: The invoice due date.
+        format: date-time
+        type: string
+      fees:
+        items:
+          $ref: '#/definitions/feeItemModel'
+        type: array
+      id:
+        description: The unique id of the invoice.
+        format: int64
+        type: integer
+      invBatchDate:
+        description: The invoice batch date.
+        format: date-time
+        type: string
+      invComment:
+        description: A comment related to the invoice.
+        type: string
+      invoiceDate:
+        description: The invoice date.
+        format: date-time
+        type: string
+      invoiceNumber:
+        description: The invoice number string.
+        type: string
+      recordId:
+        $ref: '#/definitions/recordIdModel'
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      udf1:
+        description: Invoice user defined field 1.
+        type: string
+      udf2:
+        description: Invoice user defined field 2.
+        type: string
+      udf3:
+        description: Invoice user defined field 3.
+        type: string
+      udf4:
+        description: Invoice user defined field 4.
+        type: string
+  response_trustAccountModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/trustAccountModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  trustAccountModel:
+    type: object
+    properties:
+      account:
+        description: The account ID number for the trust account.
+        type: string
+      associations:
+        type: object
+        description: The trust account associations.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      balance:
+        description: The balance of the trust account in dollars.
+        format: double
+        type: number
+      description:
+        description: The description of the trust account.
+        type: string
+      id:
+        description: The trust account system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      isPrimary:
+        description: Indicates whether or not to designate the trust account as the primary source.
+        type: string
+        enum:
+        - Y
+        - N
+      ledgerAccount:
+        description: The ledger account of the trust account.
+        type: string
+      overdraft:
+        type: object
+        description: Indicates whether or not the trust account can use the overdraft option.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      overdraftLimit:
+        description: The overdraft limit amount, in dollars, for the trust account.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      status:
+        type: object
+        description: The status of the trust account.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+        enum:
+        - Active
+        - Closed
+      thresholdAmount:
+        description: The minimum amount required in a trust account.
+        format: double
+        type: number
+  response_resultModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/resultModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_resultModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/resultModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultModel:
+    type: object
+    properties:
+      code:
+        description: The error code, if an error is encountered.
+        type: string
+      id:
+        description: The object's system id.
+        type: string
+      isSuccess:
+        description: Indicates whether or not the operation on the object is successful.
+        type: boolean
+      message:
+        description: The error message, if an error is encountered.
+        type: string
+  response_shoppingCartModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/shoppingCartModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_shoppingCartModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/shoppingCartModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  shoppingCartModel:
+    type: object
+    properties:
+      createdDate:
+        description: The date the shopping cart was created.
+        format: date-time
+        type: string
+      id:
+        description: The shopping cart system id assigned by the Civic Platform server.
+        type: string
+      payNow:
+        description: Indicates whether the shopping cart item is to be paid now or saved for later.
+        type: string
+        enum:
+        - Y
+        - N
+      processType:
+        description: The process for which the record is added to the shopping cart.
+        type: string
+        enum:
+        - PayFees
+        - Renewal
+        - PayFeeDue4Renewal
+parameters:
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+  fields:
+    description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-payments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.
+  repairs:
+  - escaped stray backslashes
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

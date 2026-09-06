@@ -64,5 +64,47 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Accela is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/accela_stock/
+Accela is a San Ramon, California govtech company whose cloud Civic Platform runs permitting, planning,
+licensing, code enforcement, inspections, asset management and citizen service requests for state and local
+government agencies. This profile covers its public developer surface.
+
+## What Accela publishes
+
+- **Accela Construct API (V4)** — 417 operations across **fifteen Swagger 2.0 documents** served from
+  `developer.accela.com/api/v4/*.json` and rendered through ReDoc on the developer portal. Base host
+  `https://apis.accela.com`, every path prefixed `/v4`. Harvested verbatim into `openapi/_original/` and
+  serialized to YAML in `openapi/`.
+- **OAuth 2.0 authorization server** at `auth.accela.com` — authorization code, implicit and
+  password-credential grants, with agency- and environment-bound tokens and a 32-scope permission registry
+  that Accela declares inline in each operation's description (`scopes/`).
+- **A dated changelog** — 63 release entries from May 2014 to August 2026, current release 4.6.5.4, which the
+  live API host self-reports at `https://apis.accela.com/`.
+- **A published sandbox** with credentials printed in the docs (`sandbox/`).
+- **An llms.txt** at `https://www.accela.com/llms.txt` (marketing index, no API content).
+- **CivicData.com**, Accela's free CKAN 2.9.9 open-data platform for agencies — live today, **end of life
+  30 June 2026, removal after 31 December 2026**.
+- **Compliance**: annual SSAE18 SOC 2 Type 2, HIPAA HITECH, PCI-DSS SAQ-D and CCPA audits.
+
+## What it does not
+
+- **No idempotency, no dry-run, no restore.** 168 mutating operations, 39 of them DELETEs, against a
+  government system of record, with no replay protection and no undo. Only two reversal paths exist
+  (`Void Payment`, `Void Record Part Transactions`) and neither states a window.
+- **No event surface.** No webhooks, no AsyncAPI, no streaming — polling only.
+- **No MCP server**, despite heavy AI marketing and an acquired AI agent suite.
+- **No A2A agent card**, no `security.txt`, no vulnerability disclosure policy, no OAuth/OIDC discovery
+  metadata on the authorization server, and no public status page.
+- **No published pricing.** Sold to agencies through procurement.
+- **Abandoned SDKs.** The developer portal's "SDKs and Samples" link goes to a GitHub org where all fifteen
+  public repos are archived and none is an API client. The first-party Node client last shipped in 2019; the
+  first-party .NET SDK, still titled "for Windows & Windows Phone", last shipped in **October 2014**.
+
+## Two findings worth flagging to Accela
+
+1. **`status.accela.com` is a stale CNAME.** It resolves to `status.springbrooksoftware.com` and serves the
+   status page of Springbrook Software — a business Accela owned from 2015 and sold to Accel-KKR in 2020.
+   Anyone monitoring the obvious status hostname is watching a divested company's incidents.
+2. **Four of the fifteen published specs do not parse as strict JSON** as served: trailing commas in
+   `api-auth.json`, `v4-documents.json` and `v4-reports.json`, an invalid escape in `v4-payments.json`, and
+   `v4-citizens.json` is not valid UTF-8. Each repair is recorded in that file's
+   `x-api-evangelist-provenance` block; the untouched originals are in `openapi/_original/`.

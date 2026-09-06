@@ -1,0 +1,45 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+docs:
+  - https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+summary: >-
+  Accela enforces per-app rate limits and returns standard-shaped rate-limit headers, but publishes no
+  numbers. The limit is configured per app, per agency, by the agency itself in the Agency Admin Portal — so
+  there is no single figure Accela could publish, and a client cannot learn its ceiling from the
+  documentation. It has to read the headers. Note this became real only in the June 2026 release: before
+  4.6.5.3 the per-app limits configured in the Agency Admin Portal were not enforced at all.
+limit_count: 0
+limit_count_note: >-
+  Zero published numeric limits. This is an honest zero, not a missing measurement: the values are
+  agency-configured and Accela documents the mechanism rather than the number.
+enforcement:
+  since: '2026-06'
+  release: Construct 4.6.5.3
+  configured_by: Agency administrator, in Agency Admin Portal, per app
+  scope: per-app (within an agency)
+  statement: >-
+    "Previously, per-app rate limits configured in the Agency Admin Portal were not enforced. Now, requests
+    that exceed the configured limit return an HTTP 429 (Too Many Requests) response and include the
+    X-RateLimit-Limit, X-RateLimit-Remaining, and X-RateLimit-Reset headers."
+exhaustion:
+  status: 429
+  retry_after: false
+  retry_after_note: No Retry-After header is documented; use X-RateLimit-Reset.
+response_headers:
+  - name: X-RateLimit-Limit
+    description: The configured ceiling for this app in this agency.
+  - name: X-RateLimit-Remaining
+    description: Requests left in the current window.
+  - name: X-RateLimit-Reset
+    description: When the window resets.
+limits: []
+contract_gap: >-
+  None of the 417 published operations declares a 429 response. An agent generating a client from the
+  Swagger documents alone will not handle rate limiting at all.
+other_ceilings:
+  - name: Pagination limit
+    value: 1000
+    scope: per request
+    description: Max value of the `limit` query parameter; default 25.
+    source: https://developer.accela.com/docs/construct-pagination.html

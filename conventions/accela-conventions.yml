@@ -1,0 +1,187 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct-usingConstructApi.html
+docs:
+  - https://developer.accela.com/docs/construct-apiNamingConventions.html
+  - https://developer.accela.com/docs/construct-authenticationTypes.html
+  - https://developer.accela.com/docs/construct-httpHeaders.html
+  - https://developer.accela.com/docs/construct-pagination.html
+  - https://developer.accela.com/docs/construct-partialResponse.html
+  - https://developer.accela.com/docs/construct-errors.html
+derived_from: openapi/ (fifteen Swagger 2.0 documents, 417 operations)
+summary: >-
+  The Construct API is a conventional, highly regular REST surface: predictable resource naming, offset/limit
+  pagination, a fields= partial response, one uniform error envelope, and a per-request tenant binding through
+  x-accela-agency. What it does not have is any of the runtime-safety machinery an autonomous agent needs —
+  no idempotency keys, no dry-run, no conditional requests, and no documented reversal window on anything it
+  can delete.
+base_url: https://apis.accela.com/v4
+auth:
+  style: oauth2-bearer
+  detail: authentication/accela-authentication.yml
+  tenant_binding:
+    headers: [x-accela-agency, x-accela-environment, x-accela-agencies]
+    note: >-
+      Mandatory context, not an option. The same call against two agencies returns two different shapes,
+      because record types, statuses and custom fields are agency-configured. An agent must never assume a
+      response schema learned in one agency transfers to another.
+naming:
+  style: plural-resource
+  patterns:
+    - 'GET /<object>s — list'
+    - 'GET /<object>s/{ids} — read one or many (comma-delimited ids)'
+    - 'GET /<parent>s/{parentId}/<object>s — list children'
+    - 'POST /<object>s — create'
+    - 'PUT /<object>s/{id} — update'
+    - 'DELETE /<object>s/{ids} — delete one or many'
+    - 'POST /search/<object>s — search'
+    - 'GET /settings/<parent>s/<object>s — agency configuration for a type'
+  operation_ids:
+    style: dotted
+    example: v4.get.records.recordId.inspections
+    unique: true
+    note: Every one of the 417 operations carries a unique, stable, human-parsable operationId.
+pagination:
+  style: offset-limit
+  request_params:
+    - name: offset
+      default: 0
+      description: Zero-based start of the page.
+    - name: limit
+      default: 25
+      max: 1000
+      description: Upper bound on items returned; fewer may come back.
+  response_fields:
+    - page.offset
+    - page.limit
+    - page.hasMore
+  example: GET https://apis.accela.com/v4/records/?offset=0&limit=5
+  cursor: false
+field_selection:
+  supported: true
+  param: fields
+  description: >-
+    Comma-separated first-level field names under the response `result` node. `id` is always returned. Field
+    names are case-sensitive. Nested fields are not selectable.
+  example: GET https://apis.accela.com/v4/records/?fields=status,openedDate&limit=2
+batching:
+  supported: true
+  operation: POST /v4/batch
+  operationId: v4.post.batch
+  scope: batch_request
+  note: Composes multiple Construct calls into a single request.
+error_envelope:
+  shape: '{status, code, message, more, traceId}'
+  detail: errors/accela-problem-types.yml
+  rfc9457: false
+request_tracing:
+  supported: true
+  response_header: x-accela-traceId
+  body_field: traceId
+  additional_headers_observed:
+    - x-accela-resp-code
+    - x-accela-resp-message
+  note: >-
+    Observed live on an unauthenticated 400 from https://apis.accela.com/v4/agencies on 2026-09-06. Good
+    tracing hygiene — every response is correlatable without a client-generated id.
+versioning:
+  scheme: uri-path
+  current: v4
+  path_prefix: /v4
+  platform_version_header: apis.accela.com root returns 'Construct API Host Server. Version 4.6.5.4'
+  per_operation_minimum:
+    note: >-
+      Unusual and worth knowing. Each operation's description carries a "**Civic Platform version**" line
+      naming the minimum agency platform version it needs — 7.3.2 for 224 operations, up to 23.1.0 for the
+      newest. Because agencies self-host or run different Accela-hosted versions, an operation that exists in
+      the contract may not exist at a given agency. Read GET /v4/serverProperties (v4.get.serverProperties) to
+      learn the agency's AA version before relying on a newer operation.
+    detail: lifecycle/accela-lifecycle.yml
+idempotency:
+  coverage: none
+  supported: false
+  header: null
+  scope: []
+  note: >-
+    No idempotency key, no request-deduplication mechanism, and no conditional-request support (no ETag /
+    If-Match / If-None-Match) appears anywhere in the fifteen published specs or in the documented HTTP header
+    list. There are 146 mutating operations (POST/PUT/DELETE) across the contract and none of them can be
+    safely retried by a client that did not see a response. Retrying POST /v4/records after a timeout risks a
+    duplicate permit application in a government system of record.
+dry_run_mode:
+  supported: false
+  note: No preview, validate-only or simulate mode is documented on any mutating operation.
+reversibility:
+  grade: documented
+  note: >-
+    Two real reversal paths exist and neither one states a window, so this grades `documented`, not `verified`.
+    Everything else that is destructive is a hard DELETE with no documented undo. NEVER assert a window here
+    that Accela has not published.
+  write_surface:
+    mutating_operations: 168
+    breakdown:
+      POST: 69
+      PUT: 60
+      DELETE: 39
+  reversals:
+    - operation: Void Payment
+      operationId: v4.put.payments.paymentId.void
+      method: PUT
+      path: /v4/payments/{paymentId}/void
+      reverses: v4.put.payments.id (Commit Payment)
+      window: null
+      window_source: null
+      note: >-
+        A first-class void, not a delete. Accela publishes no time limit on it; whether a committed payment can
+        still be voided is governed by agency configuration and by the payment processor, neither of which is
+        described in the contract.
+    - operation: Void Record Part Transactions
+      operationId: v4.delete.records.recordId.partTransaction.ids
+      method: DELETE
+      path: /v4/records/{recordId}/partTransaction/{ids}
+      reverses: part transactions recorded against a record
+      window: null
+      window_source: null
+      note: Summary says "Void", the verb is DELETE. Treat it as irreversible.
+  irreversible:
+    operations:
+    - v4.delete.records.ids
+    - v4.delete.inspections.ids
+    - v4.delete.assets.ids
+    - v4.delete.assessments.ids
+    - v4.delete.contacts.ids
+    - v4.delete.professionals.ids
+    - v4.delete.records.recordId.documents.documentIds
+    note: >-
+      No restore, undelete, trash or recovery-window operation exists anywhere in the 417. An agent deleting a
+      permit record, an inspection or an uploaded plan document in a government system of record has no
+      published way to put it back, and no idempotency key to tell a retry from a second deletion.
+rate_limits:
+  detail: rate-limits/accela-rate-limits.yml
+  signalling: X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset with HTTP 429
+lifecycle:
+  detail: lifecycle/accela-lifecycle.yml
+authentication:
+  detail: authentication/accela-authentication.yml
+side_effects:
+  emse:
+    description: >-
+      Agency-authored EMSE scripts run before and after every POST/PUT/DELETE transaction. A before-event
+      script error cancels the transaction (HTTP 500). An after-event script error returns HTTP 200 carrying
+      an emse_error message — the write succeeded, an agency script attached to it did not.
+    implication: >-
+      A caller cannot treat HTTP 200 as an unqualified success on a mutating call, and the failure mode is
+      agency-specific rather than API-wide. Inspect the response body for EMSE messages on every write.
+    source: https://developer.accela.com/docs/construct-errors.html
+events:
+  asyncapi: false
+  webhooks: false
+  streaming: false
+  note: >-
+    No event surface of any kind. Searched all 417 published operations and the whole developer-portal docs
+    tree for "webhook", "subscription" and "event": the only hits are prose about EMSE (Civic Platform's
+    server-side Event Manager Scripting Engine), which runs agency-authored scripts INSIDE a transaction and
+    emits nothing to a client. Probed 2026-09-06: developer.accela.com/asyncapi.yaml 404,
+    apis.accela.com/asyncapi.json 404, developer.accela.com/docs/construct-webhooks.html 404. An integration
+    that needs to know when a permit changes status has to poll. No AsyncAPI or Webhooks pointer is emitted,
+    because there is nothing to point at — this is an honest N/A, not a missing artifact.

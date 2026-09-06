@@ -1,0 +1,106 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct-apiAuth.html
+docs:
+  - https://developer.accela.com/docs/construct-apiAuth.html
+  - https://developer.accela.com/docs/construct-authenticationTypes.html
+  - https://developer.accela.com/docs/construct-httpHeaders.html
+  - https://developer.accela.com/docs/construct-permissionScopes.html
+  - https://developer.accela.com/docs/api_reference/api-auth.html
+summary: >-
+  Accela Construct authenticates on three levels, and which one applies is declared per operation inside the
+  published Swagger documents rather than in a securityDefinitions block. 371 of the 417 published operations
+  require an OAuth 2.0 access token, 34 require no authorization (anonymous citizen access), and 1 requires app
+  credentials. NOTE FOR FUTURE ROUNDS: none of the fifteen Swagger 2.0 documents declares a securityDefinitions
+  object, so derive-authentication.py finds nothing; this profile was read from the provider's own auth
+  documentation and from the per-operation "**Authorization Type**" line each operation carries in its
+  description.
+authorization_server: https://auth.accela.com
+endpoints:
+  - name: Get Authorization Code
+    method: POST
+    url: https://auth.accela.com/oauth2/authorize
+    operationId: oauth2.authorize
+  - name: Get Access Token
+    method: POST
+    url: https://auth.accela.com/oauth2/token
+    operationId: oauth2.token
+    note: Requires Content-Type application/x-www-form-urlencoded and an x-accela-appid header.
+  - name: Get Token Info
+    method: GET
+    url: https://auth.accela.com/oauth2/tokeninfo
+    operationId: oauth2.tokeninfo
+    note: Validates an access token supplied in the Authorization header.
+discovery:
+  rfc8414_metadata: false
+  openid_configuration: false
+  note: >-
+    auth.accela.com publishes neither /.well-known/oauth-authorization-server nor
+    /.well-known/openid-configuration (both 404, empty body, probed 2026-09-06). A client cannot discover
+    these endpoints programmatically; they are only documented in prose.
+schemes:
+  - id: access_token
+    type: oauth2
+    location: header
+    header: Authorization
+    description: >-
+      An Accela API access token. Applies to every endpoint that reads or writes Civic user data — 371 of 417
+      published operations.
+    flows:
+      - authorization_code
+      - implicit
+      - password
+    scoped: true
+    scopes_ref: scopes/accela-scopes.yml
+  - id: app_credentials
+    type: apiKey
+    location: header
+    header:
+      - x-accela-appid
+      - x-accela-appsecret
+    description: >-
+      Application ID and secret issued when an app is registered on the Accela Developer Portal (My Apps).
+      Applies to endpoints that read app settings.
+  - id: anonymous
+    type: apiKey
+    location: header
+    header:
+      - x-accela-appid
+      - x-accela-agency
+      - x-accela-environment
+    description: >-
+      Anonymous public access for citizen apps. The app id, agency name and environment identify the tenant
+      instead of a user. Only citizen apps support this type; the surfaced data is whatever the agency has
+      granted the Civic Platform anonymous user. 34 published operations use it.
+tenancy:
+  required_headers:
+    - name: x-accela-agency
+      description: The government agency (tenant) the request is executed against.
+    - name: x-accela-environment
+      description: The agency environment (for example a production or test instance) the request targets.
+    - name: x-accela-agencies
+      description: >-
+        "all" or a comma-delimited agency list, for cross-agency GET reads across the accounts linked to a
+        logged-in CivicID. Overrides x-accela-agency when both are sent.
+  note: >-
+    Agency and environment are also embedded inside the access token. When both a token and the headers are
+    sent, the values must match or the request is rejected. This is the defining shape of the API: there is no
+    single Accela tenant, and every call is executed inside one named government agency.
+app_types:
+  types:
+    - id: agency
+      description: An app acting for agency staff. 151 operations are Agency-only.
+    - id: citizen
+      description: An app acting for a member of the public. 20 operations are Citizen-only.
+    - id: all
+      description: Available to both agency and citizen apps. 240 operations.
+  note: The client id/secret pair issued at registration determines whether a token is an agency or a citizen token.
+registration:
+  url: https://developer.accela.com/Register/Register
+  app_registration: https://developer.accela.com/ApplicationList/Index
+  note: >-
+    Since the 4.6.5.4 release (August 2026) developer-portal registration is an approval request: the account
+    is created disabled and a human enables it in the admin portal before credentials work.
+  agency_credentials: >-
+    Agency and environment names are not self-serve. Accela-hosted agencies get them from Accela Customer
+    Support; on-premise agencies from their own Construct administrator.

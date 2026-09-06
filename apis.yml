@@ -1,23 +1,247 @@
 aid: accela
 name: Accela
-description: 'Accela is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Accela is a San Ramon, California govtech company whose cloud Civic Platform runs permitting, planning,
+  licensing, code enforcement, inspections, asset management and citizen service requests for state and local
+  government agencies worldwide. Its public developer surface is the Accela Construct API (V4) — a 417-operation
+  REST API served from apis.accela.com and documented as fifteen Swagger 2.0 documents on the Accela Developer
+  Portal, covering records, inspections, contacts and professionals, addresses/parcels/owners, assets and
+  assessments, documents, payments and shopping carts, reports, search, citizens, CivicID and platform settings.
+  Access is OAuth 2.0 against auth.accela.com with agency- and environment-scoped tokens, and every request is
+  bound to a specific government tenant through the x-accela-agency and x-accela-environment headers.
 url: https://raw.githubusercontent.com/api-evangelist/accela/refs/heads/main/apis.yml
+image: https://www.accela.com/wp-content/uploads/2026/07/AccelaLogo-website.webp
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-06'
 modified: '2026-09-06'
+position: Producing
 tags:
-- Company
-apis: []
+  - GovTech
+  - Government
+  - Permitting
+  - Licensing
+  - Code Enforcement
+  - Inspections
+  - Asset Management
+  - Citizen Engagement
+  - Land Management
+  - Civic Platform
+  - Public Sector
+  - SaaS
+tags_raw:
+  - govtech
+  - government
+  - permitting
+  - licensing
+  - code-enforcement
+  - inspections
+  - asset-management
+  - citizen-engagement
+  - land-management
+  - civic-platform
+  - public-sector
+  - saas
+apis:
+  - name: Accela Construct API (V4)
+    description: >-
+      The public REST API to the Accela Civic Platform. 417 operations across fifteen published Swagger 2.0
+      documents cover transactional records, inspections and checklists, contacts and licensed professionals,
+      addresses/parcels/owners, assets and condition assessments, documents, fees/payments/shopping carts,
+      invoices and trust accounts, reports, global search, Citizen Access user management, CivicID, agencies
+      and platform settings. Requests are scoped to a government tenant with x-accela-agency and
+      x-accela-environment; responses use a uniform {status, code, message, more, traceId} envelope with
+      offset/limit pagination and a fields= partial-response parameter. Base host is https://apis.accela.com; every
+      operation path already carries the /v4 version prefix, matching host + basePath in the published specs.
+    humanURL: https://developer.accela.com/docs/api_reference/api-index.html
+    baseURL: https://apis.accela.com
+    tags:
+      - GovTech
+      - Government
+      - Permitting
+      - Licensing
+      - Inspections
+      - Asset Management
+      - Land Management
+      - Citizen Engagement
+    tags_raw:
+      - govtech
+      - government
+      - permitting
+      - licensing
+      - inspections
+      - asset-management
+      - land-management
+      - citizen-engagement
+    properties:
+      - type: Documentation
+        url: https://developer.accela.com/docs/
+      - type: APIReference
+        url: https://developer.accela.com/docs/api_reference/api-index.html
+      - type: OpenAPI
+        url: openapi/accela-records-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-inspections-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-settings-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-contacts-professionals-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-assets-assessments-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-citizens-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-addresses-parcels-owners-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-search-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-miscellaneous-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-payments-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-documents-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-civicid-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-agencies-openapi.yml
+      - type: OpenAPI
+        url: openapi/accela-reports-openapi.yml
+      - type: Conventions
+        url: conventions/accela-conventions.yml
+      - type: ErrorCatalog
+        url: errors/accela-problem-types.yml
+      - type: DataModel
+        url: data-model/accela-data-model.yml
+      - type: Overlay
+        url: overlays/accela-records-overlay.yaml
+  - name: Accela Authentication API (OAuth 2.0)
+    description: >-
+      The Construct authorization server. Three operations — POST /oauth2/authorize (authorization code),
+      POST /oauth2/token (authorization code, implicit and password-credential grants) and GET /oauth2/tokeninfo
+      — issue and validate agency- and citizen-app access tokens bound to an agency, an environment and a set of
+      Construct permission scopes.
+    humanURL: https://developer.accela.com/docs/api_reference/api-auth.html
+    baseURL: https://auth.accela.com
+    tags:
+      - Authentication
+      - OAuth
+      - Government
+    tags_raw:
+      - authentication
+      - oauth
+      - government
+    properties:
+      - type: OpenAPI
+        url: openapi/accela-authentication-openapi.yml
+      - type: Documentation
+        url: https://developer.accela.com/docs/construct-apiAuth.html
+      - type: Authentication
+        url: authentication/accela-authentication.yml
+      - type: OAuthScopes
+        url: scopes/accela-scopes.yml
+  - name: CivicData Open Data API (CKAN) — END OF LIFE
+    description: >-
+      CivicData.com is Accela's free open-data platform for government agencies, described on its own site as
+      "a free open data platform built by Accela" and "Built on open source using CKAN". It exposes a live
+      CKAN 2.9.9 Action API — package_list, package_search, status_show, datastore and the spatial extensions
+      — publishing agency datasets such as building permits, inspections, food-facility records and air-quality
+      permits. IT IS BEING SWITCHED OFF: the site states CivicData reached end of life on 30 June 2026 and
+      will be removed after 31 December 2026. Recorded here because it is a real, callable, first-party API
+      today and because CKAN is a named standard in the government regulatory regime — but do not build on it.
+    humanURL: https://www.civicdata.com/
+    baseURL: https://www.civicdata.com/api/3
+    tags:
+      - Open Data
+      - CKAN
+      - Government
+      - Public Sector
+    tags_raw:
+      - open-data
+      - ckan
+      - government
+      - public-sector
+    properties:
+      - type: Documentation
+        url: https://www.civicdata.com/
+      - type: Conformance
+        url: conformance/accela-conformance.yml
 maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+  - FN: APIs.json
+    email: info@apis.io
 common:
-- type: Website
-  url: https://forgeglobal.com/accela_stock/
+  - type: DomainSecurity
+    url: security/accela-domain-security.yml
+  - type: Website
+    url: https://www.accela.com/
+  - type: DeveloperPortal
+    url: https://developer.accela.com/
+  - type: Documentation
+    url: https://developer.accela.com/docs/
+  - type: APIReference
+    url: https://developer.accela.com/docs/api_reference/api-index.html
+  - type: GettingStarted
+    url: https://developer.accela.com/docs/construct-gettingStarted.html
+  - type: Support
+    url: https://www.accela.com/services/technical-support/
+  - type: HelpCenter
+    url: https://success.accela.com/s/
+  - type: Blog
+    url: https://www.accela.com/blog/
+  - type: BlogRSS
+    url: https://www.accela.com/blog/feed/
+  - type: GitHubOrganization
+    url: https://github.com/Accela-Inc
+  - type: SignUp
+    url: https://developer.accela.com/Register/Register
+  - type: Login
+    url: https://developer.accela.com/Login
+  - type: TermsOfService
+    url: https://www.accela.com/terms-of-use/
+  - type: PrivacyPolicy
+    url: https://www.accela.com/privacy-policy/
+  - type: ChangeLog
+    url: https://developer.accela.com/docs/construct_api_v4_rel_notes.html
+  - type: ChangeLog
+    url: changelog/accela-changelog.yml
+  - type: Compliance
+    url: https://www.accela.com/civic-platform/security/
+  - type: LLMsTxt
+    url: llms/accela-llms.txt
+  - type: WellKnown
+    url: well-known/accela-well-known.yml
+  - type: Authentication
+    url: authentication/accela-authentication.yml
+  - type: OAuthScopes
+    url: scopes/accela-scopes.yml
+  - type: Conventions
+    url: conventions/accela-conventions.yml
+  - type: ErrorCatalog
+    url: errors/accela-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/accela-lifecycle.yml
+  - type: Conformance
+    url: conformance/accela-conformance.yml
+  - type: DataModel
+    url: data-model/accela-data-model.yml
+  - type: Packages
+    url: packages/accela-packages.yml
+  - type: SDKs
+    url: packages/accela-packages.yml
+  - type: Sandbox
+    url: sandbox/accela-sandbox.yml
+  - type: Plans
+    url: plans/accela-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/accela-rate-limits.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Components
+    url: components/accela-components.yml
+x-enrichment:
+  date: '2026-09-06'
+  status: enriched
+  artifacts_added: 55
+  pass: local-v3

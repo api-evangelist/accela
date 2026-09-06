@@ -1,0 +1,33 @@
+generated: '2026-09-06'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.accela.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 26 02:08:18 2026 GMT
+  hsts: true
+  hsts_max_age: 31622400
+- host: developer.accela.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 15 18:24:37 2027 GMT
+  hsts: false
+- host: apis.accela.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 15 18:24:37 2027 GMT
+  hsts: false
+domains:
+- domain: accela.com
+  dnssec: true
+  caa:
+  - 0 issue "comodoca.com"
+  - 0 issue "digicert.com; cansignhttpexchanges=yes"
+  - 0 issue "globalsign.com"
+  - 0 issue "godaddy.com"
+  - 0 issue "letsencrypt.org"
+  - 0 issue "pki.goog; cansignhttpexchanges=yes"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

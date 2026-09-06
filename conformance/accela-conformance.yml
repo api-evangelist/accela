@@ -1,0 +1,136 @@
+generated: '2026-09-06'
+method: searched
+source: https://www.accela.com/civic-platform/security/
+docs:
+  - https://www.accela.com/civic-platform/security/
+  - https://developer.accela.com/docs/construct-apiAuth.html
+  - https://www.civicdata.com/
+derived_from:
+  - openapi/ (fifteen Swagger 2.0 documents)
+  - live probe of https://www.civicdata.com/api/3/action/status_show
+summary: >-
+  Accela's compliance posture is published as prose on one marketing page and is narrower than a govtech
+  buyer might expect: annual SOC 2 Type 2, HIPAA HITECH, PCI-DSS SAQ-D and CCPA audits, with no FedRAMP,
+  StateRAMP/GovRAMP, TX-RAMP, CJIS or ISO 27001 claim found anywhere. On the technical side the Construct API
+  implements OAuth 2.0 but not OIDC, and publishes no discovery metadata for it. The one genuine domain-
+  standard signal in Accela's estate is CKAN — CivicData.com, Accela's free open-data platform for agencies,
+  runs a live CKAN 2.9.9 Action API, and CKAN is one of the named standards in the government regulatory
+  regime. It is also being switched off.
+conformance:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      openapi/accela-authentication-openapi.yml declares POST /oauth2/authorize, POST /oauth2/token and
+      GET /oauth2/tokeninfo on auth.accela.com; authorization code, implicit and password-credential grants
+      are documented at https://developer.accela.com/docs/construct-apiAuth.html
+  - id: oauth2-discovery
+    conforms: false
+    evidence: >-
+      https://auth.accela.com/.well-known/oauth-authorization-server returned 404 with an empty body on
+      2026-09-06. No RFC 8414 metadata is published for the authorization server.
+  - id: oidc
+    conforms: false
+    evidence: >-
+      No OpenID Connect support is documented for the Construct API and
+      https://auth.accela.com/.well-known/openid-configuration returned 404 on 2026-09-06. (The 200 at
+      https://success.accela.com/.well-known/openid-configuration is Salesforce Experience Cloud behind the
+      Accela Success Community, not the API.)
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      Errors use Accela's own {status, code, message, more, traceId} envelope with media type
+      application/json, not application/problem+json. See errors/accela-problem-types.yml.
+  - id: rfc9116
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt returns 404 on accela.com, www.accela.com, developer.accela.com,
+      apis.accela.com and auth.accela.com (probed 2026-09-06).
+  - id: rfc8594
+    conforms: false
+    evidence: No Sunset or Deprecation headers are documented; no operation carries a deprecated flag.
+  - id: pagination
+    conforms: true
+    evidence: >-
+      Offset/limit pagination with a hasMore response flag, documented at
+      https://developer.accela.com/docs/construct-pagination.html and applied uniformly across the contract.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No idempotency key, no conditional-request support and no replay protection on any of the 168 mutating
+      operations. See conventions/accela-conventions.yml (idempotency.coverage: none).
+  - id: openapi
+    conforms: partial
+    evidence: >-
+      Fifteen Swagger 2.0 (OpenAPI 2.0) documents published at developer.accela.com/api/v4/*.json covering
+      417 operations. Not OpenAPI 3.x, and four of the fifteen do not parse as strict JSON as published
+      (trailing commas, an invalid escape, and one file that is not valid UTF-8) — see the repairs recorded
+      in each file's x-api-evangelist-provenance block.
+  - id: ckan
+    conforms: true
+    domain_standard: true
+    evidence: >-
+      https://www.civicdata.com/api/3/action/status_show returned 200 on 2026-09-06 with
+      {"ckan_version": "2.9.9"} and a full extension list; /api/3/action/package_list returns the live dataset
+      catalogue. CivicData.com describes itself as "a free open data platform built by Accela" and states it
+      is "Built on open source using CKAN". Saved: conformance/accela-civicdata-ckan-status.json
+    caveat: >-
+      CivicData reached end of life on 30 June 2026 and the site states it will be removed after 31 December
+      2026. This conformance is real today and will not be real next year.
+  - id: dcat
+    conforms: false
+    evidence: >-
+      CivicData's CKAN 2.9.9 does not load ckanext-dcat — the extension list in status_show contains no dcat
+      extension, and /catalog.jsonld, /catalog.rdf, /catalog.xml and /data.json all return 404 (probed
+      2026-09-06). A CKAN instance without ckanext-dcat publishes no DCAT catalogue.
+  - id: fedramp
+    conforms: false
+    evidence: >-
+      No FedRAMP authorization is claimed on https://www.accela.com/civic-platform/security/ and none was
+      found. StateRAMP/GovRAMP, TX-RAMP and CJIS are likewise unclaimed.
+  - id: eidas
+    conforms: false
+    evidence: Not applicable and not claimed; Accela's market is US, Canadian and Australian local government.
+  - id: soc2
+    conforms: true
+    evidence: >-
+      "Annual audits conducted for SSAE18 SOC2 TYPE2, HIPAA HITECH, PCI-DSS SAQ-D Service Provider, and
+      California Consumer Privacy Act (CCPA) compliance" — https://www.accela.com/civic-platform/security/
+  - id: hipaa
+    conforms: true
+    evidence: Same statement; HIPAA HITECH named. Relevant to Accela's environmental health and public health solutions.
+  - id: pci-dss
+    conforms: true
+    evidence: >-
+      Same statement; PCI-DSS SAQ-D Service Provider. Relevant to the payments surface
+      (openapi/accela-payments-openapi.yml).
+  - id: ccpa
+    conforms: true
+    evidence: Same statement; CCPA compliance audited annually.
+certifications:
+  - name: SSAE18 SOC 2 Type 2
+    audited: annually
+    source: https://www.accela.com/civic-platform/security/
+  - name: HIPAA HITECH
+    audited: annually
+    source: https://www.accela.com/civic-platform/security/
+  - name: PCI-DSS SAQ-D Service Provider
+    audited: annually
+    source: https://www.accela.com/civic-platform/security/
+  - name: CCPA
+    audited: annually
+    source: https://www.accela.com/civic-platform/security/
+not_found:
+  - FedRAMP
+  - StateRAMP / GovRAMP
+  - TX-RAMP
+  - CJIS
+  - ISO 27001
+  - VPAT / Section 508 / WCAG conformance statement
+  - Published vulnerability disclosure policy or bug bounty
+trust_center:
+  exists: false
+  note: >-
+    trust.accela.com is not a trust center — it is a CNAME onto Atlassian Statuspage serving the login-gated
+    "Accela Status" page. Compliance evidence is a marketing page plus PDFs (an Accela Security
+    Self-Assessment and the Subscription Services Agreement) rather than a portal. No TrustCenter pointer is
+    emitted.

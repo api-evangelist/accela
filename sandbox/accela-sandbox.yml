@@ -1,0 +1,48 @@
+generated: '2026-09-06'
+method: searched
+source: https://developer.accela.com/docs/construct-appSandbox.html
+docs:
+  - https://developer.accela.com/docs/construct-appSandbox.html
+  - https://developer.accela.com/docs/construct-testEnvironment.html
+  - https://developer.accela.com/docs/construct-gettingStarted.html
+summary: >-
+  Accela publishes a shared sandbox agency and prints its credentials in the public documentation. There is
+  one test agency — "nullisland" — reachable at a Civic Platform test instance, plus a Test API Token utility
+  on the developer portal that mints a token against it. There is no test-vs-live key prefix, no test clock,
+  and no fixture/trigger tooling: the sandbox is a real Civic Platform instance with sample data, not a
+  simulator.
+mode:
+  style: separate-tenant
+  selector: >-
+    The x-accela-agency and x-accela-environment headers (and the agency/environment embedded in the access
+    token) select the tenant. There is no test-mode flag and no key prefix that distinguishes a sandbox
+    credential from a production one.
+  test_live_key_prefix: false
+test_environment:
+  agency: nullisland
+  url: https://nullisland-test-av.accela.com
+  username: developer
+  password: accela
+  published_verbatim: true
+  source: https://developer.accela.com/docs/construct-appSandbox.html
+  note: >-
+    These are the values Accela prints on its own public documentation page for anyone to use. They are
+    recorded here verbatim as published test credentials, not discovered ones.
+test_tokens:
+  utility: Test API token utility on the Accela Developer Portal
+  requires: a registered developer-portal account and a registered app
+  note: >-
+    Since release 4.6.5.4 (August 2026), developer-portal accounts are approval-gated: the account is created
+    disabled and a human enables it before credentials work. Getting to a first test token is therefore not
+    self-serve end to end.
+test_cards: []
+test_clocks: false
+fixtures: false
+triggers: false
+production_access:
+  self_serve: false
+  note: >-
+    A production call needs an agency name and environment name, which are issued by Accela Customer Support
+    (for Accela-hosted agencies) or by the agency's own Construct administrator (for on-premise agencies).
+    Registering a developer account is free; getting a callable production tenant requires an agency
+    relationship.

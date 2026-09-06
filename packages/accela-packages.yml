@@ -1,0 +1,147 @@
+generated: '2026-09-06'
+method: searched
+source: registry metadata from registry.npmjs.org, api.nuget.org, pypi.org, rubygems.org, search.maven.org
+docs:
+  - https://github.com/Accela-Inc
+  - https://developer.accela.com/docs/
+summary: >-
+  The Accela Developer Portal's "SDKs and Samples" tile links to github.com/Accela-Inc, where all fifteen
+  public repositories are ARCHIVED and none of them is an API client. Two first-party client libraries do
+  exist in public registries and both are abandoned: the Node.js Construct client last shipped in July 2019,
+  and the .NET SDK — still described as "for Windows & Windows Phone" — last shipped in October 2014, twelve
+  years ago, against a platform Microsoft discontinued. The only first-party package with a current release
+  is @accela/design-system, which is a UI component library for Accela's own products, not an API client.
+  For an API that shipped 63 dated releases between 2014 and 2026, that is the sharpest decay signal in this
+  profile: the contract is maintained, the client libraries around it are not.
+official_sdk_count: 3
+official_api_client_count: 2
+stale_official_api_clients: 2
+packages:
+  - name: '@accela/design-system'
+    registry: npm
+    url: https://www.npmjs.com/package/@accela/design-system
+    version: 15.3.87
+    published: '2026-03-23'
+    first_published: '2024-07-31'
+    official: true
+    kind: ui-components
+    language: JavaScript/TypeScript
+    license: UNLICENSED
+    repository: https://github.com/Accela-Inc/AccelaDesignSystem
+    ownership_basis: >-
+      Published under the @accela npm scope; maintainers ksessions_accela and zscott-accela; repository in
+      the Accela-Inc GitHub organisation.
+    note: >-
+      Actively released (15.x, March 2026) but it is a design system, not an API client — it wraps no
+      Construct operation. The linked repository is not public in the Accela-Inc org listing.
+  - name: accela-construct
+    registry: npm
+    url: https://www.npmjs.com/package/accela-construct
+    version: 0.1.7
+    published: '2019-07-08'
+    first_published: '2014-06-05'
+    official: true
+    kind: api-client
+    language: JavaScript (Node.js)
+    license: null
+    repository: https://github.com/Accela-Inc/accela-rest-nodejs
+    ownership_basis: >-
+      Same npm maintainer set as @accela/design-system (ryan.davidson, ksessions_accela, zscott-accela,
+      rkarthikeyan); repository in the Accela-Inc GitHub organisation.
+    note: >-
+      "A Node.js module for working with the Accela Construct API." Last release 2019-07-08 — seven years
+      and roughly twenty Construct releases ago, still on a 0.1.x version. Its linked repository does not
+      appear in the public Accela-Inc org listing.
+  - name: AccelaSDK
+    registry: nuget
+    url: https://www.nuget.org/packages/AccelaSDK
+    version: 4.0.2.1
+    published: '2014-10-16'
+    official: true
+    kind: api-client
+    language: C#/.NET
+    authors: Accela Inc.
+    owners: accela_apps
+    downloads: 43741
+    ownership_basis: NuGet package authored by "Accela Inc." and owned by the accela_apps NuGet account.
+    note: >-
+      "Accela SDK for Windows & Windows Phone." Last published 2014-10-16. Windows Phone was discontinued in
+      2019. This is the only first-party .NET client Accela has published.
+  - name: AccelaWebSDK.NET
+    registry: nuget
+    url: https://www.nuget.org/packages/AccelaWebSDK.NET
+    version: 0.1.0
+    published: null
+    published_note: >-
+      Single 0.1.0 release; the NuGet search index does not expose a published date for it and no other
+      version exists to date it against.
+    official: false
+    kind: api-client
+    language: C#/.NET
+    authors: Ryan Davidson
+    owners: ryan.davidson
+    downloads: 1464
+    ownership_basis: >-
+      NOT marked official. Published by an individual account (ryan.davidson) rather than accela_apps or
+      "Accela Inc." The name matches one of the four maintainers on Accela's own npm packages, so this is
+      most likely an Accela engineer's personal publication, but Accela does not link it and the package
+      does not claim the company as author. Recorded as community.
+  - name: construct-angular
+    registry: npm
+    url: https://www.npmjs.com/package/construct-angular
+    version: 0.0.17
+    published: '2016-06-06'
+    official: false
+    kind: api-client
+    language: JavaScript (Angular 2)
+    license: MIT
+    ownership_basis: Maintainer christesene; no Accela scope, no Accela-Inc repository. Community.
+  - name: construct-angular2
+    registry: npm
+    url: https://www.npmjs.com/package/construct-angular2
+    version: 2.0.31
+    published: '2017-10-25'
+    official: false
+    kind: api-client
+    language: JavaScript (Angular 2)
+    license: ISC
+    ownership_basis: Maintainers christesene, ericyoung505, hannesthorwork. Community.
+  - name: '@radishkit/accli'
+    registry: npm
+    url: https://www.npmjs.com/package/@radishkit/accli
+    version: 0.3.0
+    published: '2026-08-27'
+    official: false
+    kind: cli
+    language: JavaScript
+    ownership_basis: Third-party scope (@radishkit). Not Accela.
+    note: >-
+      A current, actively-maintained CLI for developing, testing and deploying Accela EMSE scripts — built by
+      a third party. It is the newest tooling in this ecosystem and it is not Accela's. Not wired as a CLI
+      pointer for that reason.
+registries_checked:
+  - registry: npm
+    result: 3 first-party packages, 3 community
+  - registry: nuget
+    result: 1 first-party (AccelaSDK), 1 individual (AccelaWebSDK.NET)
+  - registry: pypi
+    result: none (accela, accela-sdk, pyaccela all 404)
+  - registry: rubygems
+    result: none
+  - registry: maven-central
+    result: none (search for a:accela* returned 0 documents)
+  - registry: cocoapods
+    result: none (trunk.cocoapods.org/api/v1/pods/AccelaSDK returned 404)
+  - registry: pkg.go.dev
+    result: none
+  - registry: crates.io
+    result: none
+github_org:
+  url: https://github.com/Accela-Inc
+  public_repos: 15
+  archived: 15
+  api_clients: 0
+  note: >-
+    Every public repository in the org is archived. The contents are forks and internal infrastructure
+    (ckan, searchkick, ruby-saml, packer templates, Cordova plugins), not SDKs. The developer portal's
+    "SDKs and Samples" tile points here.

@@ -1,0 +1,4362 @@
+basePath: /
+host: apis.accela.com
+schemes:
+- https
+swagger: '2.0'
+info:
+  description: The Contacts and Professionals APIs enable apps to manage reference contacts and licensed professionals.
+  title: Contacts and Professionals
+  version: v4
+tags:
+- name: Contacts
+  description: "A reference contact captures information about people or organizations involved in a business process. Contacts\
+    \ include licensed professionals, such as contractors, architects, engineers, and developers for which your agency maintains\
+    \ saved data. Contacts also include individuals related to a specific application or parcel, such as the applicant, billing\
+    \ contacts, or legal representatives.\n\n You can add new contacts to your system, or update information about existing\
+    \ contacts. As you manage applications and parcels on your system, you can keep track of certain individuals related to\
+    \ an application or a parcel. For example, you can keep track of the legal counsel for a property owner, or the accountant\
+    \ responsible for any fees assessed on a certain application."
+- name: Contacts/Addresses
+- name: Contacts/Conditions
+- name: Contacts/Custom Forms
+- name: Contacts/Custom Tables
+- name: Contacts/Records
+- name: Professionals
+  description: A professional is a contractor, architect, engineer, developer, or associated organization. The system requires
+    that all professionals be licensed. Similar to reference contacts, licensed professionals can be attached to transactional
+    records as they are assigned to process applications.
+- name: Professionals/Conditions
+- name: Professionals/Records
+paths:
+  /v4/contacts:
+    get:
+      description: "Gets all contacts available in the system.\n\n\n\n**API Endpoint**:  GET /v4/contacts \n\n**Scope**: \
+        \ contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.2\n\
+        \n"
+      summary: Get All Contacts
+      operationId: v4.get.contacts
+      tags:
+      - Contacts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Filter by contact's address state.
+        in: query
+        name: state
+        required: false
+        type: string
+      - description: Filter by contact's address country.
+        in: query
+        name: country
+        required: false
+        type: string
+      - description: Filter by contact's first name.
+        in: query
+        name: firstName
+        required: false
+        type: string
+      - description: Filter by contact's middle name.
+        in: query
+        name: middleName
+        required: false
+        type: string
+      - description: Filter by contact's last name.
+        in: query
+        name: lastName
+        required: false
+        type: string
+      - description: Filter by contact's email address.
+        in: query
+        name: email
+        required: false
+        type: string
+      - description: Filter by contact's first line of address.
+        in: query
+        name: addressLine1
+        required: false
+        type: string
+      - description: Filter by contact's second line of address.
+        in: query
+        name: addressLine2
+        required: false
+        type: string
+      - description: Filter by contact's third line of address.
+        in: query
+        name: addressLine3
+        required: false
+        type: string
+      - description: Filter by contact's business name.
+        in: query
+        name: businessName
+        required: false
+        type: string
+      - description: Filter by contact's address city.
+        in: query
+        name: city
+        required: false
+        type: string
+      - description: Filter by contact's title.
+        in: query
+        name: title
+        required: false
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_contactModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates new reference contacts.\n\n\n\n**API Endpoint**:  POST /v4/contacts \n\n**Scope**:  contacts \n\
+        \n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.2\n\n"
+      summary: Create Contacts
+      operationId: v4.post.contacts
+      tags:
+      - Contacts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Reference contact information to add.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/contactModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{ids}:
+    get:
+      description: "Gets information for requested reference contacts.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{ids} \n\
+        \n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Get Contacts
+      operationId: v4.get.contacts.ids
+      tags:
+      - Contacts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of reference contacts to fetch.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_contactModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: "Deletes contacts.\n\n\n\n**API Endpoint**:  DELETE /v4/contacts/{ids}  \n\n**Scope**:  contacts \n\n**App\
+        \ Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.2\n\n"
+      summary: Delete Contacts
+      operationId: v4.delete.contacts.ids
+      tags:
+      - Contacts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of contacts to delete.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}:
+    put:
+      description: "Updates contact information.\n\n\n\n**API Endpoint**:  PUT /v4/contacts/{id} \n\n**Scope**:  contacts\
+        \ \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.2\n\n"
+      summary: Update Contact
+      operationId: v4.put.contacts.id
+      tags:
+      - Contacts
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - description: The contact information to be updated
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request_contactModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_contactModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}/addresses:
+    get:
+      description: "Gets detailed address information for the specified contact..\n\n\n\n**API Endpoint**:  GET /v4/contacts/{id}/addresses\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Get All Contact Addresses
+      operationId: v4.get.contacts.id.addresses
+      tags:
+      - Contacts/Addresses
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_contactAddressModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates detailed address information for the specified contact.\n\n\n\n**API Endpoint**:  POST /v4/contacts/{id}/addresses\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Create Contact Addresses
+      operationId: v4.post.contacts.id.addresses
+      tags:
+      - Contacts/Addresses
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - description: Contact Address information. Refer to ContactAddressModel json schema
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/contactAddressModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{contactId}/addresses/{id}:
+    put:
+      description: "Updates the address information for the specified contact.\n\n\n\n**API Endpoint**:  PUT /v4/contacts/{contactId}/addresses/{id}\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Update Contact Address
+      operationId: v4.put.contacts.contactId.addresses.id
+      tags:
+      - Contacts/Addresses
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactId'
+      - description: Contact information to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/contactAddressModel'
+      - description: The ID of the address to fetch.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/contactAddressModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{contactId}/conditions:
+    get:
+      description: "Gets condition information for the specified contact.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{contactId}/conditions\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Get All Contact Conditions
+      operationId: v4.get.contacts.contactId.conditions
+      tags:
+      - Contacts/Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactIdString'
+      - description: Filter by contact types. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+        in: query
+        name: type
+        required: false
+        type: string
+      - description: Filter by condition name. See [Get All Approval Conditions](./api-misc.html#operation/v4.get.conditionApprovals.standard),
+          [Get All Standard Conditions](./api-misc.html#operation/v4.get.conditions.standard).
+        in: query
+        name: name
+        required: false
+        type: string
+      - description: Filter by status.
+        in: query
+        name: status
+        required: false
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_commonConditionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Adds condition information to the specified contact.\n\n\n\n**API Endpoint**:  POST /v4/contacts/{contactId}/conditions\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Create Contact Conditions
+      operationId: v4.post.contacts.contactId.conditions
+      tags:
+      - Contacts/Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactIdString'
+      - description: Add contact condition request information.
+        in: body
+        name: body
+        schema:
+          items:
+            $ref: '#/definitions/request_commonConditionModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{contactId}/conditions/{id}:
+    delete:
+      description: "Deletes the condition for the specified contact.\n\n\n\n**API Endpoint**:  DELETE /v4/contacts/{contactId}/conditions/{id}\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Delete Contact Condition
+      operationId: v4.delete.contacts.contactId.conditions.id
+      tags:
+      - Contacts/Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactIdString'
+      - description: The ID of the condition to delete.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_commonConditionModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Updates the condition information for the specified contact.\n\n\n\n**API Endpoint**:  PUT /v4/contacts/{contactId}/conditions/{id}\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Update Contact Condition
+      operationId: v4.put.contacts.contactId.conditions.id
+      tags:
+      - Contacts/Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactIdString'
+      - description: The ID of the condition to be updated.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update contact condition request information.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request_commonConditionModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_commonConditionModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{contactId}/customTables:
+    get:
+      description: "Gets the custom tables associated with the specified contact.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{contactId}/customTables\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Get All Custom Tables for Contact
+      operationId: v4.get.contacts.contactId.customTables
+      tags:
+      - Contacts/Custom Tables
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactId'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_tableModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Updates a custom table for the specified contact.\n\n\n\n**API Endpoint**:  PUT /v4/contacts/{contactId}/customTables\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Update Custom Tables for Contact
+      operationId: v4.put.contacts.contactId.customTables
+      tags:
+      - Contacts/Custom Tables
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactId'
+      - description: Custom tables to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/tableModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{contactId}/customTables/meta:
+    get:
+      description: "Gets the metadata associated with all custom tables for the contact.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{contactId}/customTables/meta\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Get All Custom Tables Metadata for Contact
+      operationId: v4.get.contacts.contactId.customTables.meta
+      tags:
+      - Contacts/Custom Tables
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactId'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{contactId}/customTables/{tableId}/meta:
+    get:
+      description: "Gets the metadata associated with the specified custom table for the contact.\n\n\n\n**API Endpoint**:\
+        \  GET /v4/contacts/{contactId}/customTables/{tableId}/meta \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Get Custom Table Metadata for Contact
+      operationId: v4.get.contacts.contactId.customTables.tableId.meta
+      tags:
+      - Contacts/Custom Tables
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/contactId'
+      - description: The ID of the custom table to fetch.
+        in: path
+        name: tableId
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}/customForms:
+    get:
+      description: "Gets all custom forms associated with the specified contact.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{id}/customForms\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Get All Custom Forms for Contact
+      operationId: v4.get.contacts.id.customForms
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Updates the custom forms for the specified record contact. The request body is an array of custom forms,\
+        \ with each item containing the custom form's id and custom field name/value pairs. \n\n\n\n**API Endpoint**:  PUT\
+        \ /v4/contacts/{id}/customForms \n\n**Scope**:  contacts \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access\
+        \ token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Update Contact Custom Forms
+      operationId: v4.put.contacts.id.customForms
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - description: 'Custom forms information to be updated. Ex. [{"apiField1": "val1", "id": "group-subGroup"}]'
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/customFormModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}/customForms/meta:
+    get:
+      description: "Gets the metadata associated with all custom forms for the contact.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{id}/customForms/meta\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.4\n\n"
+      summary: Get All Custom Forms Metadata for Contact
+      operationId: v4.get.contacts.id.customForms.meta
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}/customForms/{formId}/meta:
+    get:
+      description: "Gets the metadata associated with the specified custom form for the contact.\n\n\n\n**API Endpoint**:\
+        \  GET /v4/contacts/{id}/customForms/{formId}/meta \n\n**Scope**:  contacts \n\n**App Type**:  Agency \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Get Custom Form Metadata for Contact
+      operationId: v4.get.contacts.id.customForms.formId.meta
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - description: The ID of the custom form to fetch.
+        in: path
+        name: formId
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}/records:
+    get:
+      description: "Gets the records for the specified contact {id}.\n\n\n\n**API Endpoint**:  GET /v4/contacts/{id}/records\
+        \ \n\n**Scope**:  contacts \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 8.0\n\n"
+      summary: Get All Records for Contact
+      operationId: v4.get.contacts.id.records
+      tags:
+      - Contacts/Records
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/idContactString'
+      - description: 'Filter by comma-delimited object types such as a list of record types or inspection types. For example:
+          "group/type/subType/category,group/type/subType/category".
+
+
+          See [Get All Inspction Types](./api-settings.html#operation/v4.get.settings.inspections.types), [Get All Record
+          Types](./api-settings.html#operation/v4.get.settings.records.types).'
+        in: query
+        name: types
+        required: false
+        type: string
+      - description: Filter by comma-delimited record statuses.
+        in: query
+        name: statuses
+        required: false
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_simpleRecordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/professionals/:
+    get:
+      description: "Gets all professionals in the agency database.\n\n\n\n**API Endpoint**:  GET /v4/professionals/ \n\n**Scope**:\
+        \  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Get All Professionals
+      operationId: v4.get.professionals
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Filter by License ID
+        in: query
+        name: id
+        required: false
+        type: string
+      - description: Filter by License Type
+        in: query
+        name: licenseType
+        required: false
+        type: string
+      - description: Filter by License Number
+        in: query
+        name: licenseNumber
+        required: false
+        type: string
+      - description: Filter by License State
+        in: query
+        name: licenseState
+        required: false
+        type: string
+      - description: Filter by Address State
+        in: query
+        name: state
+        required: false
+        type: string
+      - description: Filter by Country
+        in: query
+        name: country
+        required: false
+        type: string
+      - description: Filter by License Contact First Name
+        in: query
+        name: firstName
+        required: false
+        type: string
+      - description: Filter by License Contact Middle Name
+        in: query
+        name: middleName
+        required: false
+        type: string
+      - description: Filter by License Contact Last Name
+        in: query
+        name: lastName
+        required: false
+        type: string
+      - description: Filter by Email
+        in: query
+        name: email
+        required: false
+        type: string
+      - description: Filter by first line of address.
+        in: query
+        name: addressLine1
+        required: false
+        type: string
+      - description: Filter by second line of address.
+        in: query
+        name: addressLine2
+        required: false
+        type: string
+      - description: Filter by third line of address.
+        in: query
+        name: addressLine3
+        required: false
+        type: string
+      - description: Filter by Business License
+        in: query
+        name: businessLicense
+        required: false
+        type: string
+      - description: Filter by Business Name
+        in: query
+        name: businessName
+        required: false
+        type: string
+      - description: Filter by City
+        in: query
+        name: city
+        required: false
+        type: string
+      - description: Filter by License Expiration Date
+        in: query
+        name: licenseExpirationDate
+        required: false
+        type: string
+      - description: Filter by License Issue Date
+        in: query
+        name: licenseIssueDate
+        required: false
+        type: string
+      - description: Filter by License Last Renewal Date
+        in: query
+        name: lastRenewalDate
+        required: false
+        type: string
+      - description: Filter by Title
+        in: query
+        name: title
+        required: false
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_licenseModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/professionals/{ids}:
+    get:
+      description: "Gets information for one or more specified professionals.\n\n\n\n**API Endpoint**:  GET /v4/professionals/{ids}\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Get Professionals
+      operationId: v4.get.professionals.ids
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of professionals to fetch.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_licenseModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: "Delete Reference Professionals.\n\n\n\n**API Endpoint**:  DELETE /v4/professionals/{ids}  \n\n**Scope**:\
+        \  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 22.2.2\n\n"
+      summary: Delete Reference Professionals
+      operationId: v4.delete.professionals.ids
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The IDs of the licensed professional to delete.(IDs separated by a comma e.g. 181368,181369)
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '206':
+          description: Partial success request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+  /v4/professionals/{id}/conditions:
+    get:
+      description: "Gets the conditions for the specified professional {id}.\n\n\n\n**API Endpoint**:  /v4/professionals/{id}/conditions\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 8.0.0\n\n"
+      summary: Get All Professional Conditions
+      operationId: v4.get.professionals.id.conditions
+      tags:
+      - Professionals/Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to fetch.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Condition type filter
+        in: query
+        name: type
+        type: string
+      - description: Condition name filter
+        in: query
+        name: name
+        type: string
+      - description: Condition status filter
+        in: query
+        name: status
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_peopleConditionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/professionals/{id}/records:
+    get:
+      description: "Gets the records with which the specified professional is associated.\n\n\n\n**API Endpoint**:  GET /v4/professionals/{id}/records\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Get All Professional Records
+      operationId: v4.get.professionals.id.records
+      tags:
+      - Professionals/Records
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to fetch.
+        in: path
+        name: id
+        required: true
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_licenseRecordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/professionals:
+    post:
+      description: "Create Reference Professional\n\n\n\n**API Endpoint**:  POST /v4/professionals \n\n**Scope**:  professionals\
+        \ \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 22.2.2\n\n"
+      summary: Create Reference Professional
+      operationId: v4.post.professionals
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: A list of license models to be created
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/licenseModel'
+          type: array
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                type: array
+        '206':
+          description: Partial success request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/professionals/{id}:
+    put:
+      description: "Update Reference Professional\n\n\n\n**API Endpoint**:  PUT /v4/professionals/{id} \n\n**Scope**:  professionals\
+        \ \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 22.2.2\n\n"
+      summary: Update Reference Professional
+      operationId: v4.put.professionals.id
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: A list of license models to be updated
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/licenseModel'
+          type: array
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  v4/professionals/{id}/customForms:
+    put:
+      description: "Updates the custom forms for the given license professional \n\n\n\n**API Endpoint**:  PUT /v4/professionals/{id}/CustomForms\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 23.1.0\n\n"
+      summary: Update Professional Custom Forms
+      operationId: v4.put.professionals.id.custom.forms
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: A list of license models to be updated. The id and at least one of any other parameters are required.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/request_professionals_customForms'
+          type: array
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+  v4/professionals/{id}/templateForms:
+    put:
+      description: "Updates the template forms for the given license professional \n\n\n\n**API Endpoint**:  PUT /v4/professionals/{id}/templateForms\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 23.1.0\n\n"
+      summary: Update Professional Template Forms
+      operationId: v4.put.professionals.id.template.forms
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: A list of license models to be updated. The id and at least one of any other parameters are required.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/request_professionals_templateForms'
+          type: array
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    isSuccess:
+                      type: boolean
+                type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+  v4/professionals/{id}/customForms/meta:
+    get:
+      description: "Returns the professional customforms meta data \n\n\n\n**API Endpoint**:  GET /v4/professionals/{id}/CustomForms/meta\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 23.1.0\n\n"
+      summary: Get All Custom Forms Metadata for Professional
+      operationId: v4.get.professionals.id.custom.forms.meta.data
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to fetch.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_customFormsMeta'
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+  v4/professionals/{id}/customTables:
+    put:
+      description: "Updates the custom tables for the given license professional \n\n\n\n**API Endpoint**:  PUT /v4/professionals/{id}/customTables\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 23.1.0\n\n"
+      summary: Update Professional Custom Tables
+      operationId: v4.put.professionals.id.custom.tables
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: A list of license models to be updated
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/tableModel'
+          type: array
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+  v4/professionals/{id}/templateTables:
+    put:
+      description: "Updates the template tables for the given license professional \n\n\n\n**API Endpoint**:  PUT /v4/professionals/{id}/templateTables\
+        \ \n\n**Scope**:  professionals \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 23.1.0\n\n"
+      summary: Update Professional Template Tables
+      operationId: v4.put.professionals.id.template.tables
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: A list of license models to be updated
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/tableModel'
+          type: array
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '206':
+          description: Partial success request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              message:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+              code:
+                type: string
+              traceId:
+                type: integer
+              result:
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    code:
+                      type: string
+                    message:
+                      type: string
+                    isSuccess:
+                      type: boolean
+                type: array
+definitions:
+  response_customFormMetadataModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/customFormMetadataModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  customFormMetadataModel:
+    description: Contains the metadata for a custom table.
+    type: object
+    properties:
+      displayOrder:
+        description: The custom table's display order.
+        format: int64
+        type: integer
+      fields:
+        items:
+          $ref: '#/definitions/customFormField'
+        type: array
+      id:
+        description: The custom table id.
+        type: string
+      text:
+        description: The custom table name.
+        type: string
+  customFormField:
+    type: object
+    properties:
+      displayOrder:
+        description: ''
+        format: int64
+        type: integer
+      drillDown:
+        $ref: '#/definitions/aSITableDrill'
+      fieldType:
+        description: The custom field data type.
+        type: string
+      id:
+        description: The custom field system id assigned by the Civic Platform server.
+        type: string
+      isReadonly:
+        description: Indicates whether or not the custom field is read-only.
+        enum:
+        - Y
+        - N
+        type: string
+      isRequired:
+        description: Indicates whether or not the custom field is required.
+        enum:
+        - Y
+        - N
+        type: string
+      maxLength:
+        description: The custom field length
+        format: int64
+        type: integer
+      options:
+        items:
+          type: object
+          description: Contains dropdown option values.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type: array
+      text:
+        description: The custom field localized text.
+        type: string
+      value:
+        description: The custom field stored value.
+        type: string
+  aSITableDrill:
+    description: Contains drilldown field information.
+    type: object
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/childDrill'
+        type: array
+      isRoot:
+        type: boolean
+  childDrill:
+    type: object
+    properties:
+      drillId:
+        description: The ID of the drilldown child record.
+        format: int64
+        type: integer
+      id:
+        description: The ID of the current record.
+        type: string
+  response_commonConditionModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/commonConditionModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_commonConditionModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/commonConditionModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  commonConditionModel:
+    type: object
+    properties:
+      actionbyDepartment:
+        type: object
+        description: The department responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      actionbyUser:
+        type: object
+        description: The individual responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      activeStatus:
+        type: object
+        description: Indicates whether or not the condition is active.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      additionalInformation:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      additionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      appliedDate:
+        description: The date the standard condition was applied.
+        format: date-time
+        type: string
+      appliedbyDepartment:
+        type: object
+        description: "The department responsible for applying a condition.\t"
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      appliedbyUser:
+        type: object
+        description: "The staff member responsible for applying a condition.\t"
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      contactID:
+        description: The ID of the contact.
+        type: string
+      displayNoticeInAgency:
+        description: Indicates whether or not to display the condition notice in Accela Automation when a condition to a record
+          or parcel is applied.
+        type: boolean
+      displayNoticeInCitizens:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access when a condition to
+          a record or parcel is applied.
+        type: boolean
+      displayNoticeInCitizensFee:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access Fee Estimate page when
+          a condition to a record or parcel is applied.
+        type: boolean
+      effectiveDate:
+        description: The date when you want the condition to become effective.
+        format: date-time
+        type: string
+      expirationDate:
+        description: The date when the condition expires.
+        format: date-time
+        type: string
+      group:
+        type: object
+        description: The condition group is an attribute of a condition that organizes condition types. Your agency defines
+          these groups.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The condition system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      inheritable:
+        type: object
+        description: This defines whether or not Accela Automation checks for inheritable conditions when a user associates
+          a child record with a parent record.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      isIncludeNameInNotice:
+        description: Indicates whether or not to display the condition name in the notice.
+        type: boolean
+      isIncludeShortCommentsInNotice:
+        description: Indicates whether or not to display the condition comments in the notice.
+        type: boolean
+      longComments:
+        description: Narrative comments to help identify the purpose or uses of the standard condition.
+        type: string
+      name:
+        description: The name of the standard condition.
+        type: string
+      priority:
+        type: object
+        description: The priority level assigned to the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicDisplayMessage:
+        description: Text entered into this field displays in the condition notice or condition status bar for the Condition
+          Name for the public user in Accela IVR (AIVR) and Accela Citizen Access (ACA).
+        type: string
+      resolutionAction:
+        description: he action performed in response to a condition.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      severity:
+        type: object
+        description: The severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortComments:
+        description: A brief description of the condition name. For example, the text may describe the situation that requires
+          the system to apply the condition. You can set these short comments to display when a user accesses an application
+          with this condition applied to it
+        type: string
+      status:
+        type: object
+        description: The condition status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      statusType:
+        description: The status type for a standard condition or an approval condition, applied or not applied for example.
+        type: string
+      type:
+        type: object
+        description: The condition type.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  request_commonConditionModel:
+    type: object
+    properties:
+      actionbyDepartment:
+        type: object
+        description: The department responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      actionbyUser:
+        type: object
+        description: The individual responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      activeStatus:
+        type: object
+        description: Indicates whether or not the condition is active.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      additionalInformation:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      additionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      appliedDate:
+        description: The date the standard condition was applied.
+        format: date-time
+        type: string
+      appliedbyDepartment:
+        type: object
+        description: "The department responsible for applying a condition.\t"
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      appliedbyUser:
+        type: object
+        description: "The staff member responsible for applying a condition.\t"
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      contactID:
+        description: The contact ID associated with the condition. See [Get All Contacts](./api-contacts-professionals.html#operation/v4.get.contacts).
+        type: string
+      dispAdditionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      displayNoticeInAgency:
+        description: Indicates whether or not to display the condition notice in Accela Automation when a condition to a record
+          or parcel is applied.
+        type: boolean
+      displayNoticeInCitizens:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access when a condition to
+          a record or parcel is applied.
+        type: boolean
+      displayNoticeInCitizensFee:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access Fee Estimate page when
+          a condition to a record or parcel is applied.
+        type: boolean
+      effectiveDate:
+        description: The date when you want the condition to become effective.
+        format: date-time
+        type: string
+      expirationDate:
+        description: The date when the condition expires.
+        format: date-time
+        type: string
+      group:
+        type: object
+        description: The condition group is an attribute of a condition that organizes condition types. Your agency defines
+          these groups.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The condition system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      inheritable:
+        type: object
+        description: This defines whether or not Accela Automation checks for inheritable conditions when a user associates
+          a child record with a parent record.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      isIncludeNameInNotice:
+        description: Indicates whether or not to display the condition name in the notice.
+        type: boolean
+      isIncludeShortCommentsInNotice:
+        description: Indicates whether or not to display the condition comments in the notice.
+        type: boolean
+      longComments:
+        description: Narrative comments to help identify the purpose or uses of the standard condition.
+        type: string
+      name:
+        description: The name of the standard condition.
+        type: string
+      priority:
+        type: object
+        description: The priority level assigned to the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicDisplayMessage:
+        description: Text entered into this field displays in the condition notice or condition status bar for the Condition
+          Name for the public user in Accela IVR (AIVR) and Accela Citizen Access (ACA).
+        type: string
+      resAdditionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      resolutionAction:
+        description: he action performed in response to a condition.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      severity:
+        type: object
+        description: The severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortComments:
+        description: A brief description of the condition name. For example, the text may describe the situation that requires
+          the system to apply the condition. You can set these short comments to display when a user accesses an application
+          with this condition applied to it
+        type: string
+      status:
+        type: object
+        description: The condition status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      statusType:
+        description: The status type for a standard condition or an approval condition, applied or not applied for example.
+        type: string
+      type:
+        type: object
+        description: The condition type.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_peopleConditionModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/peopleConditionModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  peopleConditionModel:
+    type: object
+    properties:
+      actionbyDepartment:
+        type: object
+        description: The department responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      actionbyUser:
+        type: object
+        description: The individual responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      activeStatus:
+        type: object
+        description: Indicates whether or not the condition is active.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      additionalInformation:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      appliedDate:
+        description: The date the standard condition was applied.
+        format: date-time
+        type: string
+      appliedbyDepartment:
+        type: object
+        description: "The department responsible for applying a condition.\t"
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      appliedbyUser:
+        type: object
+        description: "The staff member responsible for applying a condition.\t"
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      contactID:
+        description: The ID of the contact.
+        type: string
+      contactSeqNumber:
+        description: The contact id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      displayNoticeInAgency:
+        description: Indicates whether or not to display the condition notice in Accela Automation when a condition to a record
+          or parcel is applied.
+        type: boolean
+      displayNoticeInCitizens:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access when a condition to
+          a record or parcel is applied.
+        type: boolean
+      displayNoticeInCitizensFee:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access Fee Estimate page when
+          a condition to a record or parcel is applied.
+        type: boolean
+      effectiveDate:
+        description: The date when you want the condition to become effective.
+        format: date-time
+        type: string
+      expirationDate:
+        description: The date when the condition expires.
+        format: date-time
+        type: string
+      group:
+        type: object
+        description: The condition group is an attribute of a condition that organizes condition types. Your agency defines
+          these groups.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The condition system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      inheritable:
+        type: object
+        description: This defines whether or not Accela Automation checks for inheritable conditions when a user associates
+          a child record with a parent record.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      isIncludeNameInNotice:
+        description: Indicates whether or not to display the condition name in the notice.
+        type: boolean
+      isIncludeShortCommentsInNotice:
+        description: Indicates whether or not to display the condition comments in the notice.
+        type: boolean
+      licenseSeqNo:
+        description: The license id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      longComments:
+        description: Narrative comments to help identify the purpose or uses of the standard condition.
+        type: string
+      name:
+        description: The name of the standard condition.
+        type: string
+      priority:
+        type: object
+        description: The priority level assigned to the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicDisplayMessage:
+        description: Text entered into this field displays in the condition notice or condition status bar for the Condition
+          Name for the public user in Accela IVR (AIVR) and Accela Citizen Access (ACA).
+        type: string
+      resolutionAction:
+        description: he action performed in response to a condition.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      severity:
+        type: object
+        description: The severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortComments:
+        description: A brief description of the condition name. For example, the text may describe the situation that requires
+          the system to apply the condition. You can set these short comments to display when a user accesses an application
+          with this condition applied to it
+        type: string
+      status:
+        type: object
+        description: The condition status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      statusType:
+        description: The status type for a standard condition or an approval condition, applied or not applied for example.
+        type: string
+      type:
+        type: object
+        description: The condition type.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_contactAddressModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/contactAddressModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  contactAddressModel:
+    type: object
+    properties:
+      addressLine1:
+        description: The first line of the address.
+        type: string
+      addressLine2:
+        description: The second line of the address.
+        type: string
+      addressLine3:
+        description: The third line of the address.
+        type: string
+      city:
+        description: The name of the city
+        type: string
+      country:
+        type: object
+        description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      direction:
+        type: object
+        description: The street direction of the primary address associated with the application.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: The date when the address takes effect.
+        format: date-time
+        type: string
+      expirationDate:
+        description: The date when the address expires.
+        format: date-time
+        type: string
+      fax:
+        description: The fax number for the contact.
+        type: string
+      faxCountryCode:
+        description: Fax Number Country Code
+        type: string
+      houseAlphaEnd:
+        description: The ending street number that makes up the address.
+        type: string
+      houseAlphaStart:
+        description: The beginning street number that makes up the address.
+        type: string
+      id:
+        description: The id of the address assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      isPrimary:
+        description: Indicates whether or not to designate the address as the primary address. Only one address can be primary
+          at any given time.
+        enum:
+        - Y
+        - N
+        type: string
+      levelEnd:
+        description: The ending level number (floor number) that makes up the address within a complex.
+        type: string
+      levelPrefix:
+        description: The prefix for the level numbers (floor numbers) that make up the address.
+        type: string
+      levelStart:
+        description: The beginning level number (floor number) that makes up the address within a complex.
+        type: string
+      phone:
+        description: The phone number of the user.
+        type: string
+      phoneCountryCode:
+        description: The country code for the assoicated phone number.
+        type: string
+      postalCode:
+        description: The postal ZIP code for the address.
+        type: string
+      recipient:
+        description: The contact person for the contact address.
+        type: string
+      state:
+        type: object
+        description: The state corresponding to the address on record. See [Get All Address States](./api-settings.html#operation/v4.get.settings.addresses.states).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        type: object
+        description: The address status indicating whether the address is active or inactive.
+        enum:
+        - A
+        - I
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetAddress:
+        description: The street address.
+        type: string
+      streetEnd:
+        description: The end of a range of street numbers.
+        format: int64
+        type: integer
+      streetName:
+        description: The street name for the address.
+        type: string
+      streetPrefix:
+        description: Any part of an address that appears before a street name or number. For example, if the address is 123
+          West Main, "West" is the street prefix.
+        type: string
+      streetStart:
+        description: The start of a range of street numbers.
+        format: int64
+        type: integer
+      streetSuffix:
+        type: object
+        description: The type of street such as "Lane" or "Boulevard". See [Get All Address Street Suffixes](./api-settings.html#operation/v4.get.settings.addresses.streetSuffixes).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW"
+          is the street suffix direction. See [Get All Address Street Directions](./api-settings.html#operation/v4.get.settings.addresses.streetDirections).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        type: object
+        description: 'The address type. '
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitEnd:
+        description: The end parameter of a range of unit numbers.
+        type: string
+      unitStart:
+        description: The starting parameter of a range of unit numbers.
+        type: string
+      unitType:
+        type: object
+        description: The unit type designation of the address. See [Get All Address Unit Types](./api-settings.html#operation/v4.get.settings.addresses.unitTypes).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_customAttributeModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/customAttributeModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  customAttributeModel:
+    type: object
+    properties:
+      aCustomFieldName:
+        description: ''
+        type: string
+      aCustomFieldValue:
+        description: ''
+        type: string
+  customFormModel:
+    type: object
+    properties:
+      id:
+        description: The custom form id.
+        type: string
+      <aCustomFieldName>:
+        description: A custom field name.
+        type: string
+      <aCustomFieldValue>:
+        description: A custom field value.
+        type: string
+  response_contactModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/contactModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_contactModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/request_contactModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  contactModel:
+    type: object
+    properties:
+      address:
+        $ref: '#/definitions/compactAddressModel'
+      birthCity:
+        type: object
+        description: The city of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: The birth date.
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: The country of birth or region of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: The state of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: A secondary business name for the applicable individual.
+        type: string
+      comment:
+        description: A comment about the inspection contact.
+        type: string
+      deceasedDate:
+        description: The deceased date.
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: The driver's license number of the contact. This field is active only when the Contact Type selected
+          is Individual.
+        type: string
+      driverLicenseState:
+        type: object
+        description: The state that issued the driver's license.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: The contact's email address.
+        type: string
+      endDate:
+        description: The date when the contact address ceases to be active.
+        format: date-time
+        type: string
+      fax:
+        description: The fax number for the contact.
+        type: string
+      faxCountryCode:
+        description: Fax Number Country Code
+        type: string
+      federalEmployerId:
+        description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+        type: string
+      firstName:
+        description: The contact's first name.
+        type: string
+      fullName:
+        description: 'The contact''s full name. '
+        type: string
+      gender:
+        type: object
+        description: The gender (male or female) of the individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The contact system id assigned by the Civic Platform server.
+        type: string
+      individualOrOrganization:
+        description: The organization to which the contact belongs. This field is only active when the Contact Type selected
+          is Organization.
+        type: string
+      lastName:
+        description: The last name (surname).
+        type: string
+      middleName:
+        description: "The middle name.\t"
+        type: string
+      organizationName:
+        description: The organization to which the contact belongs. This field is only active when the Contact Type selected
+          is Organization.
+        type: string
+      passportNumber:
+        description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+        type: string
+      phone1:
+        description: The primary telephone number of the contact.
+        type: string
+      phone1CountryCode:
+        description: Phone Number 1 Country Code
+        type: string
+      phone2:
+        description: The secondary telephone number of the contact.
+        type: string
+      phone2CountryCode:
+        description: Phone Number 2 Country Code
+        type: string
+      phone3:
+        description: The tertiary telephone number for the contact.
+        type: string
+      phone3CountryCode:
+        description: Phone Number 3 Country Code
+        type: string
+      postOfficeBox:
+        description: The post office box number.
+        type: string
+      preferredChannel:
+        type: object
+        description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred
+          Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: The contact's relationship to the application or service request.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only
+          when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      socialSecurityNumber:
+        description: The individual's social security number. This field is only active when the Contact Type selected is
+          Individual.
+        type: string
+      stateIdNumber:
+        description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+        type: string
+      status:
+        type: object
+        description: The contact status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: The contact name suffix.
+        type: string
+      title:
+        description: The individual's business title.
+        type: string
+      tradeName:
+        description: The contact's preferred business or trade name. This field is active only when the Contact Type selected
+          is Organization.
+        type: string
+      type:
+        type: object
+        description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  request_contactModel:
+    type: object
+    properties:
+      address:
+        $ref: '#/definitions/compactAddressModel'
+      birthCity:
+        type: object
+        description: The city of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: The birth date.
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: The country of birth or region of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: The state of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: A secondary business name for the applicable individual.
+        type: string
+      comment:
+        description: A comment about the inspection contact.
+        type: string
+      deceasedDate:
+        description: The deceased date.
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: The driver's license number of the contact. This field is active only when the Contact Type selected
+          is Individual.
+        type: string
+      driverLicenseState:
+        type: object
+        description: The state that issued the driver's license.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: The contact's email address.
+        type: string
+      fax:
+        description: The fax number for the contact.
+        type: string
+      faxCountryCode:
+        description: Fax Number Country Code
+        type: string
+      federalEmployerId:
+        description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+        type: string
+      firstName:
+        description: The contact's first name.
+        type: string
+      fullName:
+        description: 'The contact''s full name. '
+        type: string
+      gender:
+        type: object
+        description: The gender (male or female) of the individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The contact system id assigned by the Civic Platform server.
+        type: string
+      individualOrOrganization:
+        description: The organization to which the contact belongs. This field is only active when the Contact Type selected
+          is Organization.
+        type: string
+      lastName:
+        description: The last name (surname).
+        type: string
+      middleName:
+        description: "The middle name.\t"
+        type: string
+      organizationName:
+        description: The organization to which the contact belongs. This field is only active when the Contact Type selected
+          is Organization.
+        type: string
+      passportNumber:
+        description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+        type: string
+      phone1:
+        description: The primary telephone number of the contact.
+        type: string
+      phone1CountryCode:
+        description: Phone Number 1 Country Code
+        type: string
+      phone2:
+        description: The secondary telephone number of the contact.
+        type: string
+      phone2CountryCode:
+        description: Phone Number 2 Country Code
+        type: string
+      phone3:
+        description: The tertiary telephone number for the contact.
+        type: string
+      phone3CountryCode:
+        description: Phone Number 3 Country Code
+        type: string
+      postOfficeBox:
+        description: The post office box number.
+        type: string
+      preferredChannel:
+        type: object
+        description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred
+          Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: The contact's relationship to the application or service request.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only
+          when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      socialSecurityNumber:
+        description: The individual's social security number. This field is only active when the Contact Type selected is
+          Individual.
+        type: string
+      stateIdNumber:
+        description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+        type: string
+      status:
+        type: object
+        description: The contact status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: The contact name suffix.
+        type: string
+      title:
+        description: The individual's business title.
+        type: string
+      tradeName:
+        description: The contact's preferred business or trade name. This field is active only when the Contact Type selected
+          is Organization.
+        type: string
+      type:
+        type: object
+        description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  compactAddressModel:
+    type: object
+    properties:
+      addressLine1:
+        description: The first line of the address.
+        type: string
+      addressLine2:
+        description: The second line of the address.
+        type: string
+      addressLine3:
+        description: The third line of the address.
+        type: string
+      city:
+        description: The name of the city.
+        type: string
+      country:
+        type: object
+        description: The name of the country.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      postalCode:
+        description: The postal ZIP code for the address.
+        type: string
+      state:
+        type: object
+        description: The address state.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_resultModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/resultModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_resultModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/resultModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultModel:
+    type: object
+    properties:
+      code:
+        description: The error code, if an error is encountered.
+        type: string
+      id:
+        description: The system id of the object in this operation.
+        format: int64
+        type: integer
+      isSuccess:
+        description: Indicates whether or not the operation on the object is successful.
+        type: boolean
+      message:
+        description: The error message, if an error is encountered
+        type: string
+  response_simpleRecordModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/simpleRecordModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  simpleRecordModel:
+    type: object
+    properties:
+      actualProductionUnit:
+        description: Estimated cost per production unit.
+        format: double
+        type: number
+      appearanceDate:
+        description: The date for a hearing appearance.
+        format: date-time
+        type: string
+      appearanceDayOfWeek:
+        description: The day for a hearing appearance.
+        type: string
+      assignedDate:
+        description: The date the application was assigned.
+        format: date-time
+        type: string
+      assignedToDepartment:
+        description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      assignedUser:
+        description: The staff member responsible for the action.
+        type: string
+      balance:
+        description: The amount due.
+        format: double
+        type: number
+      booking:
+        description: Indicates whether or not there was a booking in addition to a citation.
+        type: boolean
+      closedByDepartment:
+        description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      closedByUser:
+        description: The staff member responsible for closure.
+        type: string
+      closedDate:
+        description: The date the application was closed.
+        format: date-time
+        type: string
+      completedByDepartment:
+        description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      completedByUser:
+        description: The staff member responsible for completion.
+        type: string
+      completedDate:
+        description: The date the application was completed.
+        format: date-time
+        type: string
+      constructionType:
+        type: object
+        description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      costPerUnit:
+        description: The cost for one unit associated to the record.
+        format: double
+        type: number
+      createdBy:
+        description: The unique user id of the individual that created the entry.
+        type: string
+      createdByCloning:
+        description: Indictes whether or not the record was cloned.
+        enum:
+        - Y
+        - N
+        type: string
+      customId:
+        description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx).
+          Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+        type: string
+      defendantSignature:
+        description: Indicates whether or not a defendant's signature has been obtained.
+        type: boolean
+      description:
+        description: The description of the record or item.
+        type: string
+      enforceDepartment:
+        description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      enforceUser:
+        description: Name of the enforcement officer.
+        type: string
+      enforceUserId:
+        description: ID number of the enforcement officer.
+        type: string
+      estimatedCostPerUnit:
+        description: The estimated cost per unit.
+        format: double
+        type: number
+      estimatedDueDate:
+        description: The estimated date of completion.
+        format: date-time
+        type: string
+      estimatedProductionUnit:
+        description: The estimated number of production units.
+        format: double
+        type: number
+      estimatedTotalJobCost:
+        description: The estimated cost of the job.
+        format: double
+        type: number
+      firstIssuedDate:
+        description: The first issued date for license
+        format: date-time
+        type: string
+      housingUnits:
+        description: The number of housing units.
+        format: int64
+        type: integer
+      id:
+        description: The record system id assigned by the Civic Platform server.
+        type: string
+      inPossessionTime:
+        description: The application level in possession time of the time tracking feature.
+        format: double
+        type: number
+      infraction:
+        description: Indicates whether or not an infraction occurred.
+        type: boolean
+      initiatedProduct:
+        description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA"
+          : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela
+          Asset Management, Accela Land Management.'
+        type: string
+      inspectorDepartment:
+        description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      inspectorId:
+        description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      inspectorName:
+        description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      jobValue:
+        description: The value of the job.
+        format: double
+        type: number
+      misdemeanor:
+        description: Indicates whether or not a misdemeanor occurred.
+        type: boolean
+      module:
+        description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+        type: string
+      name:
+        description: The name associated to the record.
+        type: string
+      numberOfBuildings:
+        description: The number of buildings.
+        format: int64
+        type: integer
+      offenseWitnessed:
+        description: Indicates whether or not  there was a witness to the alleged offense.
+        type: boolean
+      openedDate:
+        description: The date the application was opened.
+        format: date-time
+        type: string
+      overallApplicationTime:
+        description: The amount of elapsed time from the time tracking start date to the completion of the application.
+        format: double
+        type: number
+      priority:
+        type: object
+        description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicOwned:
+        description: Indicates whether or not the record is for the public.
+        type: boolean
+      recordClass:
+        description: General information about the record.
+        type: string
+      renewalInfo:
+        $ref: '#/definitions/recordExpirationModel'
+      reportedChannel:
+        type: object
+        description: The incoming channel through which the applicant submitted the application.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      reportedDate:
+        description: The date the complaint was reported.
+        format: date-time
+        type: string
+      reportedType:
+        type: object
+        description: The type of complaint or incident being reported.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      scheduledDate:
+        description: The date when the inspection gets scheduled.
+        format: date-time
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier,
+        type: string
+      severity:
+        type: object
+        description: Indicates the severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortNotes:
+        description: A brief note about the record subject.
+        type: string
+      status:
+        type: object
+        description: The record status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: "The date when the current status changed.\t"
+        format: date-time
+        type: string
+      statusReason:
+        type: object
+        description: "\tThe reason for the status setting on the record."
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusType:
+        description: The record status type.
+        enum:
+        - APPROVED
+        - CLOSED
+        - COMPLETE
+        - DENIED
+        - INCOMPLETE
+        - OPEN
+        - PENDING
+        - UNASSIGNED
+        - VOID
+        type: string
+      totalFee:
+        description: The total amount of the fees invoiced to the record.
+        format: double
+        type: number
+      totalJobCost:
+        description: The combination of work order assignments (labor) and costs.
+        format: double
+        type: number
+      totalPay:
+        description: The total amount of pay.
+        format: double
+        type: number
+      trackingId:
+        description: The application tracking number (IVR tracking number).
+        format: int64
+        type: integer
+      type:
+        $ref: '#/definitions/recordTypeModel'
+      undistributedCost:
+        description: The undistributed costs for this work order.
+        format: double
+        type: number
+      updateDate:
+        description: The date the record was last updated.
+        format: date-time
+        type: string
+      value:
+        description: The record value.
+        type: string
+  response_licenseRecordModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/licenseRecordModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  licenseRecordModel:
+    type: object
+    properties:
+      actualProductionUnit:
+        description: Estimated cost per production unit.
+        format: double
+        type: number
+      appearanceDate:
+        description: The date for a hearing appearance.
+        format: date-time
+        type: string
+      appearanceDayOfWeek:
+        description: The day for a hearing appearance.
+        type: string
+      assignedDate:
+        description: The date the application was assigned.
+        format: date-time
+        type: string
+      assignedToDepartment:
+        description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      assignedToStaff:
+        description: The staff member responsible for the action.
+        type: string
+      balance:
+        description: The amount due.
+        format: double
+        type: number
+      booking:
+        description: Indicates whether or not there was a booking in addition to a citation.
+        type: boolean
+      closedByDepartment:
+        description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      closedByStaff:
+        description: The staff member responsible for closure.
+        type: string
+      closedDate:
+        description: The date the application was closed.
+        format: date-time
+        type: string
+      completedByDepartment:
+        description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      completedByStaff:
+        description: The staff member responsible for completion.
+        type: string
+      completedDate:
+        description: The date the application was completed.
+        format: date-time
+        type: string
+      constructionType:
+        type: object
+        description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      costPerUnit:
+        description: The cost for one unit associated to the record.
+        format: double
+        type: number
+      createdBy:
+        description: The unique user id of the individual that created the entry.
+        type: string
+      createdByCloning:
+        description: Indictes whether or not the record was cloned.
+        enum:
+        - Y
+        - N
+        type: string
+      customId:
+        description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx).
+          Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+        type: string
+      defendantSignature:
+        description: Indicates whether or not a defendant's signature has been obtained.
+        type: boolean
+      description:
+        description: The description of the record or item.
+        type: string
+      enforceDepartment:
+        description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      enforceOfficerId:
+        description: Name of the enforcement officer.
+        type: string
+      enforceOfficerName:
+        description: The name of the enforcement officer.
+        type: string
+      estimatedCostPerUnit:
+        description: The estimated cost per unit.
+        format: double
+        type: number
+      estimatedDueDate:
+        description: The estimated date of completion.
+        format: date-time
+        type: string
+      estimatedProductionUnit:
+        description: The estimated number of production units.
+        format: double
+        type: number
+      estimatedTotalJobCost:
+        description: The estimated cost of the job.
+        format: double
+        type: number
+      firstIssuedDate:
+        description: The first issued date for license
+        format: date-time
+        type: string
+      housingUnits:
+        description: The number of housing units.
+        format: int64
+        type: integer
+      id:
+        description: The record system id assigned by the Civic Platform server.
+        type: string
+      inPossessionTime:
+        description: The application level in possession time of the time tracking feature.
+        format: double
+        type: number
+      infraction:
+        description: Indicates whether or not an infraction occurred.
+        type: boolean
+      initiatedProduct:
+        description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA"
+          : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela
+          Asset Management, Accela Land Management.'
+        type: string
+      inspectorDepartment:
+        description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+        type: string
+      inspectorId:
+        description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      inspectorName:
+        description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      jobValue:
+        description: The value of the job.
+        format: double
+        type: number
+      misdemeanor:
+        description: Indicates whether or not a misdemeanor occurred.
+        type: boolean
+      module:
+        description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+        type: string
+      name:
+        description: The name associated to the record.
+        type: string
+      numberOfBuildings:
+        description: The number of buildings.
+        format: int64
+        type: integer
+      offenseWitnessed:
+        description: Indicates whether or not  there was a witness to the alleged offense.
+        type: boolean
+      openedDate:
+        description: The date the application was opened.
+        format: date-time
+        type: string
+      overallApplicationTime:
+        description: The amount of elapsed time from the time tracking start date to the completion of the application.
+        format: double
+        type: number
+      priority:
+        type: object
+        description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicOwned:
+        description: Indicates whether or not the record is for the public.
+        type: boolean
+      recordClass:
+        description: General information about the record.
+        type: string
+      reportedChannel:
+        type: object
+        description: The incoming channel through which the applicant submitted the application.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      reportedDate:
+        description: The date the complaint was reported.
+        format: date-time
+        type: string
+      reportedType:
+        type: object
+        description: The type of complaint or incident being reported.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      scheduledDate:
+        description: The date when the inspection gets scheduled.
+        format: date-time
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier,
+        type: string
+      severity:
+        type: object
+        description: Indicates the severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortNotes:
+        description: A brief note about the record subject.
+        type: string
+      status:
+        type: object
+        description: The record status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: "The date when the current status changed.\t"
+        format: date-time
+        type: string
+      statusReason:
+        type: object
+        description: "\tThe reason for the status setting on the record."
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusType:
+        description: The record status type.
+        enum:
+        - APPROVED
+        - CLOSED
+        - COMPLETE
+        - DENIED
+        - INCOMPLETE
+        - OPEN
+        - PENDING
+        - UNASSIGNED
+        - VOID
+        type: string
+      totalFee:
+        description: The total amount of the fees invoiced to the record.
+        format: double
+        type: number
+      totalJobCost:
+        description: The combination of work order assignments (labor) and costs.
+        format: double
+        type: number
+      totalPay:
+        description: The total amount of pay.
+        format: double
+        type: number
+      trackingId:
+        description: The application tracking number (IVR tracking number).
+        format: int64
+        type: integer
+      type:
+        $ref: '#/definitions/recordTypeModel'
+      undistributedCost:
+        description: The undistributed costs for this work order.
+        format: double
+        type: number
+      updateDate:
+        description: The date the record was last updated.
+        format: date-time
+        type: string
+      value:
+        description: The record value.
+        type: string
+  recordExpirationModel:
+    type: object
+    properties:
+      expirationDate:
+        description: The date when the condition expires.
+        format: date-time
+        type: string
+      expirationStatus:
+        type: object
+        description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  recordTypeModel:
+    type: object
+    properties:
+      alias:
+        description: The record type alias.
+        type: string
+      category:
+        description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      filterName:
+        description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+        type: string
+      group:
+        description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      id:
+        description: The record type id.
+        type: string
+      module:
+        description: The module the record type belongs to.
+        type: string
+      subType:
+        description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      text:
+        description: The localized display text.
+        type: string
+      type:
+        description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+        type: string
+      value:
+        description: The stored value.
+        type: string
+  response_tableModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/tableModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  tableModel:
+    type: object
+    properties:
+      id:
+        description: The custom table id.
+        type: string
+      rows:
+        items:
+          $ref: '#/definitions/rowModel'
+        description: A table row containing custom fields.
+        type: array
+  rowModel:
+    type: object
+    properties:
+      action:
+        description: The requested operation on the row.
+        enum:
+        - add
+        - update
+        - delete
+        type: string
+      fields:
+        $ref: '#/definitions/customAttributeModel'
+      id:
+        description: The row id.
+        type: string
+  response_licenseModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/licenseModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  licenseModel:
+    type: object
+    properties:
+      addressLine1:
+        description: The first line of the address.
+        type: string
+      addressLine2:
+        description: The second line of the address.
+        type: string
+      addressLine3:
+        description: The third line of the address.
+        type: string
+      birthDate:
+        description: The birth date.
+        format: date-time
+        type: string
+      businessLicense:
+        description: The official business license number issued by an agency. A licensed professional can have the same license
+          number assigned to multiple license types.
+        type: string
+      businessName:
+        description: A business name for the applicable individual.
+        type: string
+      businessName2:
+        description: A secondary business name for the applicable individual.
+        type: string
+      citizenPermission:
+        description: Access permissions for the selected Citizen Access user groups.
+        type: string
+      city:
+        description: The name of the city.
+        type: string
+      comment:
+        description: A comment about the inspection contact.
+        type: string
+      contractorBusinessName:
+        description: The contractor's business name (65 char limit).
+        type: string
+      contractorLicenseNumber:
+        description: The contractor's license number.(30 char limit).
+        format: int64
+        type: integer
+      country:
+        type: object
+        description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: The contact's email address.
+        type: string
+      fax:
+        description: The fax number for the contact.
+        type: string
+      federalEmployerId:
+        description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+        type: string
+      firstName:
+        description: The contact's first name.
+        type: string
+      gender:
+        type: object
+        description: The gender (male or female) of the individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The licensed professional system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      insuranceAmount:
+        description: The insurance cost.
+        format: double
+        type: number
+      insuranceCompany:
+        description: The name of the company insuring the professional.
+        type: string
+      insuranceExpirationDate:
+        description: The date when the insurance policy is due to expire.
+        format: date-time
+        type: string
+      insurancePolicyNumber:
+        description: The insurance policy number.
+        type: string
+      lastName:
+        description: The last name (surname).
+        type: string
+      lastRenewalDate:
+        description: The last date for a professionals renewal license.
+        format: date-time
+        type: string
+      licenseExpirationDate:
+        description: The date when the license expires and is no longer valid.
+        format: date-time
+        type: string
+      licenseIssueDate:
+        description: The license date of issuance.
+        format: date-time
+        type: string
+      licenseNumber:
+        description: REQUIRED. The licensed professional's license number. The license is from the Contractors State License
+          Board.
+        type: string
+      licenseState:
+        description: REQUIRED. The state that issued the license.
+        type: string
+      licenseType:
+        type: object
+        description: REQUIRED. The type of license held by the professional. See [Get All Professional License Types](./api-settings.html#operation/v4.get.settings.professionals.types).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      licensingBoard:
+        type: object
+        description: The name of the licensing board that issued the license. See [Get All Professional License Boards](./api-settings.html#operation/v4.get.settings.professionals.licenseBoards).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      middleName:
+        description: The middle name.
+        type: string
+      phone1:
+        description: The primary telephone number of the contact.
+        type: string
+      phone1CountryCode:
+        description: Phone Number 1 Country Code
+        type: string
+      phone2:
+        description: The secondary telephone number of the contact.
+        type: string
+      phone2CountryCode:
+        description: Phone Number 2 Country Code
+        type: string
+      phone3:
+        description: The tertiary telephone number for the contact.
+        type: string
+      phone3CountryCode:
+        description: Phone Number 3 Country Code
+        type: string
+      postOfficeBox:
+        description: The post office box number.
+        type: string
+      postalCode:
+        description: The postal ZIP code for the address.
+        type: string
+      salutation:
+        type: object
+        description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only
+          when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: REQUIRED. The unique agency identifier
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        type: object
+        description: The licensed professional status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: The contact name suffix.
+        type: string
+      title:
+        description: The individual's business title.
+        type: string
+      workerCompensationExemption:
+        description: The code associated with the Worker's Compensation Insurance Company.
+        type: string
+      workerCompensationExpirationDate:
+        description: This is the expiration date of the Worker's Compensation Insurance Policy.
+        format: date-time
+        type: string
+      workerCompensationPolicyNumber:
+        description: This is the policy number for the Worker's Compensation Insurance. Limit of 30 characters.
+        type: string
+      workerInsuranceCompanyCode:
+        description: The code associated with the Worker's Compensation Insurance Company.
+        type: string
+  request_professionals_customForms:
+    items:
+      $ref: '#/definitions/professionalsCustomFormsArrary'
+    type: array
+  professionalsCustomFormsArrary:
+    type: object
+    properties:
+      id:
+        description: REQUIRED. The custom table id.
+        type: string
+      <aCustomFieldName>:
+        description: The name of the custom field.
+        type: string
+      <aCustomFieldValue>:
+        description: The value of the custom field.
+        type: string
+  request_professionals_templateForms:
+    items:
+      $ref: '#/definitions/professionalsTemplateFormsArrary'
+    type: array
+  professionalsTemplateFormsArrary:
+    type: object
+    properties:
+      id:
+        description: REQUIRED. The custom table id.
+        type: string
+      TEMPLATE_FIELD_1:
+        description: The name of the template field 1.
+        type: string
+      TEMPLATE_FIELD_2:
+        description: The value of the template field 2.
+        type: string
+      date:
+        type: string
+        format: date
+        description: A date of the template.
+      SELECT:
+        type: string
+      DROPDOWN:
+        type: string
+      NUMBER:
+        type: string
+  response_customFormsMeta:
+    type: object
+    properties:
+      status:
+        type: integer
+        description: The HTTP return status.
+      result:
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            text:
+              type: string
+            displayOrder:
+              type: integer
+            fields:
+              items:
+                $ref: '#/definitions/customFormsMetaFieldsArrary'
+              type: array
+        type: array
+  customFormsMetaFieldsArrary:
+    type: object
+    properties:
+      id:
+        type: integer
+      text:
+        type: string
+      isReadonly:
+        type: integer
+      fieldType:
+        type: string
+      maxLength:
+        type: integer
+      isRequired:
+        type: string
+      displayOrder:
+        type: integer
+      options:
+        items:
+          type: object
+          properties:
+            value:
+              type: string
+            text:
+              type: string
+        type: array
+parameters:
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+    enum:
+    - range[1,1000]
+  fields:
+    description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+  idContactString:
+    description: The ID of the contact to fetch.
+    in: path
+    name: id
+    required: true
+    type: string
+  contactId:
+    description: The ID of the contact to fetch.
+    format: int64
+    in: path
+    name: contactId
+    required: true
+    type: integer
+  contactIdString:
+    description: The ID of the contact to fetch.
+    in: path
+    name: contactId
+    required: true
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-contacts-professionals.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.

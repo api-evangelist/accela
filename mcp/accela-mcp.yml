@@ -1,0 +1,126 @@
+generated: '2026-09-06'
+method: derived
+source: openapi/ (fifteen Swagger 2.0 documents, 417 operations)
+status: candidate
+summary: >-
+  Accela ships no MCP server. There is no hosted endpoint, no first-party stdio package on any registry, and
+  no mention of MCP anywhere on accela.com or developer.accela.com — even though Accela markets AI heavily
+  (three white papers on AI in government, an acquired "Civira AI" agent suite, and a "From Generative to
+  Agentic" playbook, all listed in its own llms.txt). The tools below are a CANDIDATE set derived from the
+  published contract; nothing here is served by Accela today.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+  note: >-
+    Probed 2026-09-06: https://mcp.accela.com/ does not resolve; https://apis.accela.com/mcp returns the
+    Construct API's own 404 envelope. No @accela-scoped MCP package exists on npm and no accela MCP package
+    exists on PyPI.
+third_party:
+  - name: Accela MCP
+    author: Donatoni (community, not Accela)
+    repository: https://github.com/Donatoni/accela-mcp
+    listing: https://glama.ai/mcp/servers/Donatoni/accela-mcp
+    probed: '2026-09-06'
+    http_status: 200
+    official: false
+    note: >-
+      A community MCP server that wraps the Construct API as a read-only, capability-grouped tool set. It is
+      NOT Accela's, is not linked from Accela's documentation, and is recorded here only so a future round
+      does not mistake it for a first-party surface. No MCPServer pointer is emitted on its account.
+tenancy_warning: >-
+  Any MCP server over this API has a design problem worth stating before the tool list. Every Construct call
+  is bound to one government agency via x-accela-agency and x-accela-environment, and record types, statuses
+  and custom fields differ per agency. An MCP tool schema derived from the published contract describes the
+  shape of the API, not the shape of any particular agency's data. Tools must take the agency as an explicit
+  input, and an agent must read the /v4/settings/* family to learn the agency's own vocabulary before writing
+  anything.
+safety_note: >-
+  The contract has 168 mutating operations, no idempotency key, no dry-run, and no restore path for any of
+  its 39 DELETEs, against a government system of record. A candidate tool set is therefore READ-ONLY. Write
+  tools should not be exposed over MCP until conventions/accela-conventions.yml can record something other
+  than idempotency.coverage: none.
+candidate_tools:
+  - name: search_records
+    rest: [v4.get.records]
+    scope: records
+    description: List permits, licenses, service requests and applications, filtered by type, module, status, date range, assignee or custom id.
+  - name: get_records
+    rest: [v4.get.records.ids]
+    scope: records
+    description: Read one or more records by id (comma-delimited).
+  - name: get_my_records
+    rest: [v4.get.records.mine]
+    scope: records
+    description: Records belonging to the authenticated citizen or agency user.
+  - name: describe_record_create
+    rest: [v4.get.records.describe.create]
+    scope: records
+    description: The required attributes for creating a record in this agency. The correct first call before any write.
+  - name: get_record_inspections
+    rest: [v4.get.records.recordId.inspections]
+    scope: records
+    description: Inspections scheduled against a record.
+  - name: get_record_documents
+    rest: [v4.get.records.recordId.documents]
+    scope: records
+    description: Documents attached to a record.
+  - name: get_record_fees
+    rest: [v4.get.records.recordId.fees]
+    scope: records
+    description: Fees assessed against a record.
+  - name: search_inspections
+    rest: [v4.get.inspections]
+    scope: inspections
+    description: List inspections.
+  - name: get_inspections
+    rest: [v4.get.inspections.ids]
+    scope: inspections
+    description: Read inspections by id.
+  - name: check_inspection_availability
+    rest: [v4.get.inspections.checkAvailability, v4.get.inspections.availableDates]
+    scope: inspections
+    description: Whether an inspection type can be scheduled, and on which dates.
+  - name: search_addresses
+    rest: [v4.get.addresses, v4.get.addresses.id]
+    scope: addresses
+    description: Reference addresses and their detail.
+  - name: get_address_records
+    rest: [v4.get.addresses.id.records, v4.get.addresses.id.parcels]
+    scope: addresses
+    description: The permits and parcels attached to an address — the single most useful civic lookup in this API.
+  - name: search_parcels
+    rest: [v4.get.parcels, v4.get.parcels.id, v4.get.parcels.parcelId.owners]
+    scope: parcels
+    description: Parcels, their owners and their records.
+  - name: search_contacts
+    rest: [v4.get.contacts, v4.get.contacts.ids]
+    scope: contacts
+    description: Reference contacts.
+  - name: search_professionals
+    rest: [v4.get.professionals, v4.get.professionals.ids, v4.get.professionals.id.records]
+    scope: professionals
+    description: Licensed professionals and the records they appear on.
+  - name: global_search
+    rest: [v4.get.search.global]
+    scope: global_search
+    description: Cross-object search across Civic Platform.
+  - name: list_agencies
+    rest: [v4.get.agencies, v4.get.agencies.name, v4.get.agencies.name.environments]
+    scope: agencies
+    description: Agency directory and environments. The bootstrap call for tenant selection.
+  - name: get_agency_environment_status
+    rest: [v4.get.agencies.name.environments.env.status]
+    scope: agencies
+    description: Whether a given agency environment is up. The only availability signal Accela exposes publicly.
+  - name: get_settings
+    rest: [v4.get.settings.records.types, v4.get.settings.inspections.types, v4.get.documents.types]
+    scope: settings
+    description: The agency's own configured vocabulary — record types, inspection types, document types. Required context for every other tool.
+  - name: get_server_properties
+    rest: [v4.get.serverProperties]
+    scope: app_data
+    description: The agency's Civic Platform (AA) version. Pre-flight for any operation with a minimum-version requirement.

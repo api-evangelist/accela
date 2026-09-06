@@ -1,0 +1,36 @@
+generated: '2026-09-06'
+method: generated
+source: openapi/ (fifteen Swagger 2.0 documents) + conventions/accela-conventions.yml + errors/accela-problem-types.yml
+summary: Four packaged Agent Skills for the Accela Construct API, one per marquee civic flow. Every operationId
+  referenced in every skill was grepped out of the specs in openapi/ and verified to exist. Accela publishes no
+  skills, no AGENTS.md and no agent-facing guidance of its own; these are generated. Each write skill states plainly
+  what this API cannot do — no idempotency key, no dry-run, no restore path — because that is the thing an agent
+  most needs to know before it acts inside a government system of record.
+api: Accela Construct API (V4)
+base_url: https://apis.accela.com/v4
+skill_count: 4
+skills:
+- name: accela-lookup-permits-at-an-address
+  file: accela-lookup-permits-at-an-address.md
+  description: Find every permit, licence, inspection and open case attached to a street address in an Accela-run
+    government agency, read-only and safe to run without approval.
+  operations: 9
+  safety: read-only
+- name: accela-pay-permit-fees
+  file: accela-pay-permit-fees.md
+  description: Read the fees assessed against an Accela permit record, assemble them into a citizen shopping cart,
+    take payment, and void it if the payment must be reversed.
+  operations: 9
+  safety: write — money movement, non-idempotent
+- name: accela-schedule-an-inspection
+  file: accela-schedule-an-inspection.md
+  description: Check whether an inspection type can be booked against a permit in an Accela agency, find an available
+    date, and schedule it.
+  operations: 8
+  safety: write — non-idempotent
+- name: accela-submit-a-permit-application
+  file: accela-submit-a-permit-application.md
+  description: Create a permit or licence record in an Accela agency, attach the applicant, address and plan documents,
+    and confirm it landed — with the retry and rollback caveats this API's lack of idempotency forces on you.
+  operations: 10
+  safety: write — irreversible, non-idempotent

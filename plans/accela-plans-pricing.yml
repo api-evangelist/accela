@@ -1,0 +1,29 @@
+generated: '2026-09-06'
+method: searched
+source: https://www.accela.com/
+docs:
+  - https://www.accela.com/civic-platform/
+  - https://www.accela.com/about/contact-us/
+plan_count: 0
+summary: >-
+  Accela publishes no pricing and no plans. There is no /pricing page (probed 2026-09-06, HTTP 404), no
+  tier table, and no self-serve purchase path anywhere on accela.com. This is normal for the market rather
+  than an omission: Accela sells the Civic Platform to state and local government agencies through sales and
+  public procurement, typically on multi-year subscription contracts awarded by RFP or through cooperative
+  purchasing vehicles, and the price of an agency's deployment is a matter of that agency's contract.
+api_access:
+  cost: not-published
+  note: >-
+    The Construct API is not sold separately. It is the integration surface of the Civic Platform, and access
+    to it is a function of an agency already being an Accela customer: a developer can register on the
+    developer portal for free, but the agency name and environment a token has to be bound to are issued by
+    Accela Customer Support or the agency's own Construct administrator. Registering costs nothing and gets
+    you nothing callable without an agency.
+plans: []
+evidence:
+  - url: https://www.accela.com/pricing/
+    status: 404
+  - url: https://www.accela.com/about/contact-us/
+    status: 200
+  - url: https://developer.accela.com/Register/Register
+    status: 200
