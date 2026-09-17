@@ -898,45 +898,6 @@ apis:
     url: authentication/accela-authentication.yml
   - type: OAuthScopes
     url: scopes/accela-scopes.yml
-- aid: accela:accela-documentreview-api
-  name: Accela Document Review API
-  description: "The Document Review API supports integration of the Civic Platform's Electronic Document\
-    \ Review (\"EDR\") feature with third-party document review tools. The EDR feature in Automation enables\
-    \ agencies to manage and store documents from applicants as well as assign and manage document reviews.\n\
-    \t\t\n\nAgencies can configure a connection to a third party document review tool so that when a user\
-    \ clicks Review on a record detail page, the user can use the third party tool to review and annotate\
-    \ the document. \n\nDocuments that have been reviewed in a third party tool can then be uploaded to\
-    \ the Civic Platform, where agencies can take advantage of the Civic Platform's document management,\
-    \ security, workflow and task assignment functionality to manage the documents.\n\nThe Document Review\
-    \ API requires Automation version 7.3.3.5 and higher. For configuration information about integration\
-    \ and data mapping between Civic Platform and a third-party document review application, see \"Integration\
-    \ with Third Party Document Review Applications\" and \"Configuring Third Party Document Review Tool\
-    \ Integration\" in [Civic Platform 7.3.3 Service Pack Release Notes](https://developer.dev.accela.com/docs/automationDocs/Accela%20Automation%207.3.3%20Service%20Pack%20Release%20Notes.pdf).\n\
-    \n\n\nAccela recommends that an agency create an Automation user account dedicated to third-party\
-    \ access."
-  humanURL: https://developer.accela.com/docs/api_reference/api-index.html
-  baseURL: https://apis.accela.com
-  tags:
-  - DocumentReview
-  properties:
-  - type: OpenAPI
-    url: openapi/accela-documentreview-api-openapi.yml
-  - type: Documentation
-    url: https://developer.accela.com/docs/
-  - type: APIReference
-    url: https://developer.accela.com/docs/api_reference/api-index.html
-  - type: Conventions
-    url: conventions/accela-conventions.yml
-  - type: ErrorCatalog
-    url: errors/accela-problem-types.yml
-  - type: DataModel
-    url: data-model/accela-data-model.yml
-  - type: Documentation
-    url: https://developer.accela.com/docs/construct-apiAuth.html
-  - type: Authentication
-    url: authentication/accela-authentication.yml
-  - type: OAuthScopes
-    url: scopes/accela-scopes.yml
 - aid: accela:accela-documents-api
   name: Accela Documents API
   description: >-
@@ -1355,32 +1316,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/accela-mileage-api-openapi.yml
-  - type: Documentation
-    url: https://developer.accela.com/docs/
-  - type: APIReference
-    url: https://developer.accela.com/docs/api_reference/api-index.html
-  - type: Conventions
-    url: conventions/accela-conventions.yml
-  - type: ErrorCatalog
-    url: errors/accela-problem-types.yml
-  - type: DataModel
-    url: data-model/accela-data-model.yml
-  - type: Documentation
-    url: https://developer.accela.com/docs/construct-apiAuth.html
-  - type: Authentication
-    url: authentication/accela-authentication.yml
-  - type: OAuthScopes
-    url: scopes/accela-scopes.yml
-- aid: accela:accela-oauth2-api
-  name: Accela Oauth2 API
-  description: The Oauth2 API from Accela — 3 operation(s) for oauth2.
-  humanURL: https://developer.accela.com/docs/api_reference/api-index.html
-  baseURL: https://apis.accela.com
-  tags:
-  - Oauth2
-  properties:
-  - type: OpenAPI
-    url: openapi/accela-oauth2-api-openapi.yml
   - type: Documentation
     url: https://developer.accela.com/docs/
   - type: APIReference
@@ -3092,6 +3027,60 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/accela-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://developer.accela.com/docs/
+  - type: APIReference
+    url: https://developer.accela.com/docs/api_reference/api-index.html
+  - type: Conventions
+    url: conventions/accela-conventions.yml
+  - type: ErrorCatalog
+    url: errors/accela-problem-types.yml
+  - type: DataModel
+    url: data-model/accela-data-model.yml
+  - type: Documentation
+    url: https://developer.accela.com/docs/construct-apiAuth.html
+  - type: Authentication
+    url: authentication/accela-authentication.yml
+  - type: OAuthScopes
+    url: scopes/accela-scopes.yml
+- aid: accela:accela-oauth2-api
+  name: Accela Oauth2 API
+  description: The Oauth2 API from Accela — 3 operation(s) for oauth2.
+  humanURL: https://www.civicdata.com/
+  baseURL: https://www.civicdata.com/api/3
+  tags:
+  - Oauth2
+  properties:
+  - type: OpenAPI
+    url: openapi/accela-oauth2-api-openapi.yml
+  - type: Documentation
+    url: https://developer.accela.com/docs/
+  - type: APIReference
+    url: https://developer.accela.com/docs/api_reference/api-index.html
+  - type: Conventions
+    url: conventions/accela-conventions.yml
+  - type: ErrorCatalog
+    url: errors/accela-problem-types.yml
+  - type: DataModel
+    url: data-model/accela-data-model.yml
+  - type: Documentation
+    url: https://developer.accela.com/docs/construct-apiAuth.html
+  - type: Authentication
+    url: authentication/accela-authentication.yml
+  - type: OAuthScopes
+    url: scopes/accela-scopes.yml
+- aid: accela:accela-document-review-api
+  name: Accela Document Review API
+  description: >-
+    The Document Review API supports integration of the Civic Platform's Electronic Document Review ("EDR")
+    feature with third-party document review tools.
+  humanURL: https://www.civicdata.com/
+  baseURL: https://www.civicdata.com/api/3
+  tags:
+  - Document Review
+  properties:
+  - type: OpenAPI
+    url: openapi/accela-document-review-api-openapi.yml
   - type: Documentation
     url: https://developer.accela.com/docs/
   - type: APIReference
