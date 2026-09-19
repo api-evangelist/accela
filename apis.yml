@@ -23,7 +23,7 @@ tags:
   - Permitting
   - Licensing
   - Code Enforcement
-  - Inspections
+  - Inspection
   - Asset Management
   - Citizen Engagement
   - Land Management
@@ -226,6 +226,8 @@ apis:
   humanURL: https://developer.accela.com/docs/api_reference/api-index.html
   baseURL: https://apis.accela.com
   tags:
+  - Assessment
+  tags_raw:
   - Assessments
   properties:
   - type: OpenAPI
@@ -989,6 +991,8 @@ apis:
   humanURL: https://developer.accela.com/docs/api_reference/api-index.html
   baseURL: https://apis.accela.com
   tags:
+  - GIS
+  tags_raw:
   - Gis
   properties:
   - type: OpenAPI
@@ -1015,6 +1019,8 @@ apis:
   humanURL: https://developer.accela.com/docs/api_reference/api-index.html
   baseURL: https://apis.accela.com
   tags:
+  - Inspection
+  tags_raw:
   - Inspections
   properties:
   - type: OpenAPI
@@ -1372,6 +1378,8 @@ apis:
   humanURL: https://developer.accela.com/docs/api_reference/api-index.html
   baseURL: https://apis.accela.com
   tags:
+  - Parcel
+  tags_raw:
   - Parcels
   properties:
   - type: OpenAPI
@@ -2972,6 +2980,8 @@ apis:
   humanURL: https://developer.accela.com/docs/api_reference/api-index.html
   baseURL: https://apis.accela.com
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -3049,6 +3059,8 @@ apis:
   humanURL: https://www.civicdata.com/
   baseURL: https://www.civicdata.com/api/3
   tags:
+  - Authentication
+  tags_raw:
   - Oauth2
   properties:
   - type: OpenAPI
