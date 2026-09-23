@@ -1,0 +1,304 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Conditions API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Conditions
+paths:
+  /v4/settings/conditionApprovals/statuses:
+    get:
+      description: 'Gets the statuses for use with a conditon of approval.
+
+
+        **API Endpoint**: GET /v4/settings/conditionApprovals/statuses
+
+
+        **Scope**: conditions
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Approval Condition Statuses
+      operationId: v4.get.settings.conditionApprovals.statuses
+      tags:
+      - Settings/Conditions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/conditions/priorities:
+    get:
+      description: 'Gets the priorities for use with a standard condition.
+
+
+        **API Endpoint**: GET /v4/settings/conditions/priorities
+
+
+        **Scope**: conditions
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Standard Conditon Priorities
+      operationId: v4.get.settings.conditions.priorities
+      tags:
+      - Settings/Conditions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/conditions/statuses:
+    get:
+      description: 'Gets the statuses for use with a standard condition.
+
+
+        **API Endpoint**: GET /v4/settings/conditions/statuses
+
+
+        **Scope**: conditions
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Standard Condition Statuses
+      operationId: v4.get.settings.conditions.statuses
+      tags:
+      - Settings/Conditions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_conditionStatusModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/conditions/types:
+    get:
+      description: 'Gets the standard condition types.
+
+
+        **API Endpoint**: GET /v4/settings/conditions/types
+
+
+        **Scope**: conditions
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Standard Condition Types
+      operationId: v4.get.settings.conditions.types
+      tags:
+      - Settings/Conditions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_conditionTypeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_conditionTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
+    response_conditionStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    conditionTypeModel:
+      type: object
+      properties:
+        groups:
+          items:
+            type: object
+            description: The condition type group
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        id:
+          description: The condition type id.
+          type: string
+        text:
+          description: The condition type name.
+          type: string
+        value:
+          description: The condition type value.
+          type: string
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    conditionStatusModel:
+      type: object
+      properties:
+        id:
+          description: The id of the condition status.
+          type: string
+        severity:
+          items:
+            type: object
+            description: The condition status severity.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The condition status name.
+          type: string
+        value:
+          description: The condition status value.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

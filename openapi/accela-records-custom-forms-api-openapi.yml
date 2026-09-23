@@ -1,0 +1,373 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Custom Forms API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Custom Forms
+paths:
+  /v4/records/{recordId}/customForms:
+    get:
+      description: 'Returns an array of custom forms associated with the specified record. Each custom form consists of custom field name-and-value pairs.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/customForms
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Forms for Record
+      operationId: v4.get.records.recordId.customForms
+      tags:
+      - Records/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates the custom form for the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/customForms
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Record Custom Forms
+      operationId: v4.put.records.recordId.customForms
+      tags:
+      - Records/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/customAttributeModel'
+              type: array
+        description: 'Custom form informatio to be updated. Example: [{ "field1": "field1Val", "field2": "field2Val", "_Id_": "Group&SubGroup" }]'
+        required: true
+  /v4/records/{recordId}/customForms/meta:
+    get:
+      description: 'Gets the detailed data associated with the custom forms for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/customForms/meta
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Forms Metadata for Record
+      operationId: v4.get.records.recordId.customForms.meta
+      tags:
+      - Records/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormSubgroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/customForms/{formId}/meta:
+    get:
+      description: 'Gets the detailed data associated with the specified custom form for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/customForms/{formId}/meta
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Custom Form Metadata for Record
+      operationId: v4.get.records.recordId.customForms.formId.meta
+      tags:
+      - Records/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of the custom form to fetch.).
+        in: path
+        name: formId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormSubgroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          format: int64
+          type: integer
+        id:
+          type: string
+    customFormSubgroupModel:
+      type: object
+      properties:
+        displayOrder:
+          description: The custom form subgroup display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom form subgroup system id assigned by the Civic Platform server.
+          type: string
+        text:
+          description: The custom form subgroup name.
+          type: string
+    customFormField:
+      type: object
+      properties:
+        displayOrder:
+          description: ''
+          format: int64
+          type: integer
+        drillDown:
+          $ref: '#/components/schemas/aSITableDrill'
+        fieldType:
+          description: The custom field data type.
+          type: string
+        id:
+          description: The custom field system id assigned by the Civic Platform server.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the custom field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the custom field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The custom field length
+          format: int64
+          type: integer
+        options:
+          items:
+            type: object
+            description: A dropdown option value.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The custom field localized text.
+          type: string
+        value:
+          description: The custom field stored value.
+          type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_customFormSubgroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormSubgroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    aSITableDrill:
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

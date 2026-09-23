@@ -1,0 +1,271 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Filters API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Filters
+  description: Filters are user queries that are stored in Civic Platform and enable users to find information easily. Filters are configured in Civic Platform's Data Filter Portlet to display only the data that is relevant to the user in the context of their current business objective or use-case scenario.
+paths:
+  /v4/filters:
+    get:
+      description: 'Returns Civic Platform search filters (previously known as "quick queries" in the Civic Platform application). This API returns global filters and custom filters that the currently logged in user has permissions in the requested type and module. Include the {type} URI parameter to get either a record, inspection, or workflow task filters.
+
+
+        **API Endpoint**: GET /v4/filters
+
+
+        **Scope**: filters
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All Filters
+      operationId: v4.get.filters
+      tags:
+      - Filters
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: 'Filter by Civic Platform filter type. '
+        in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - Record
+          - Inspection
+          - WorkflowTask
+      - description: "Filter by Civic Platform module. If module is not specified, the default module is the currently logged-in user's default Civic Platform module. \n\n**Added in Civic Platform version**: 9.2.0"
+        in: query
+        name: module
+        schema:
+          type: string
+      - description: "The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list. \n\n**Added in Civic Platform version**: 9.2.0"
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - description: "Search result size limit. \n\n**Added in Civic Platform version**: 9.2.0"
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_filterModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/filters/{id}/results:
+    post:
+      description: 'Returns the search results of a given search filter (also known as "Quick Queries" or "Saved Searches").
+
+
+        Starting with Civic Platform 9.2.0, Get Filter Results supports the following fixed format parameters for all filter types (Filter parameters are configured in Civic Platform Administration Tool > Data Filter.):
+
+
+        $$TODAY$$
+
+
+        $$TODAY+N$$
+
+
+        $$MODULE$$
+
+
+        $$USERID$$
+
+
+        **Note**: The $$MODULE$$ fixed format parameter is not available for inspection filters in the Civic Platform Admin Tool. To specify a module for an inspection filter, use the "module" field in the request payload.
+
+
+        **API Endpoint**: POST /v4/filters/{id}/results
+
+
+        **Scope**: filters
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get Filter Results
+      operationId: v4.post.filters.id.results
+      tags:
+      - Filters
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the filter to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "A successful request returns the search results. The schema depends on the requested filter type, that is, either a record, inspection, or work order task. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/response_filterResults'
+                type: array
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                module:
+                  description: 'For an inspection filter type, specify "module" in the request payload. If module is not specified, the default module is the logged-in user''s module.
+
+
+                    **Added in Civic Platform version**: 9.2.0'
+                  type: string
+        description: Contains optional filter parameters.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_filterModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/filterModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_filterResults:
+      type: object
+      properties:
+        result:
+          items:
+            type: object
+            description: "The result schema depends on the type of requested search filter type. \n\nFor records, see the record schema in [Get Records](./api-records.html#operation/v4.get.records.ids). \n\nFor inspections, see the inspection schema in [Get Inspections](./api-inspections.html#operation/v4.get.inspections.ids). \n\nFor work order tasks, see the work order task schema in [Get Workflow Tasks](./api-misc.html#operation/v4.get.workflowTasks.mine)."
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    filterModel:
+      type: object
+      properties:
+        datafilterType:
+          description: Indicates whether a search filter is pre-defined ("QuickQuery") or user-defined ("UserQuickQuery").
+          type: string
+        description:
+          description: Describes the search filter.
+          type: string
+        id:
+          description: The search filter system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        name:
+          description: The display name of the search filter.
+          type: string
+        primary:
+          description: Indicates whether or not the search filter is the primary search filter.
+          type: string
+        type:
+          description: The type of search filter.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

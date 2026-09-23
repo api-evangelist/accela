@@ -1,0 +1,435 @@
+openapi: 3.2.0
+info:
+  description: The Assets and Assessments APIs enable apps to manage assets and their related condition assessments.
+  title: Assets and Assessments Assessments/Documents API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Assessments/Documents
+  description: Inspectors can attach documents and photos as needed to the asset condition assessment record, and record the assignments and costs that occur on the assessment.
+paths:
+  /v4/assessments/{assessmentId}/documents:
+    get:
+      description: 'Returns the documents for a given condition assessment.
+
+
+        **API Endpoint**: GET /v4/assessments/{assessmentId}/documents
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All Assessment Documents
+      operationId: v4.get.assessments.assessmentId.documents
+      tags:
+      - Assessments/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/assessmentIdPathParam'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates one or more document attachments for the given condition assessment. To specify the documents to be attached, use the HTTP header "Content-Type:multipart/form-data" and form-data for "uploadedFile" and "fileInfo". Note that the "fileInfo" is a string containing an array of file attributes. Use "fileInfo" to specify one or more documents to be attached. For example:
+
+
+        Content - Disposition: form - data;name = "uploadedFile"; filename="summaryReport.pdf"
+
+
+        Content - Disposition: form - data;name = "fileInfo"
+
+
+        [
+
+        {
+
+        "serviceProviderCode": "BPTDEV",
+
+        "fileName": "CXA12-pipe.png",
+
+        "type": "image/png",
+
+        "description": "Condition assessment on pipe"
+
+        }
+
+        ]
+
+
+        **API Endpoint**: POST /v4/assessments/{assessmentId}/documents
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Create Assessment Documents
+      operationId: v4.post.assessments.assessmentId.documents
+      tags:
+      - Assessments/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/assessmentIdPathParam'
+      - description: The document group.
+        in: query
+        name: group
+        schema:
+          type: string
+      - description: The document category.
+        in: query
+        name: category
+        schema:
+          type: string
+      - description: The standard EDMS Adapter userid. It's required for user level authentication
+        in: query
+        name: userId
+        schema:
+          type: string
+      - description: The standard EMDS Adapter password. It's required for user level authentication
+        in: query
+        name: password
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                uploadedFile:
+                  type: string
+                  description: Specify the filename parameter with the file to be uploaded. See example for details.
+                  format: binary
+                fileInfo:
+                  type: string
+                  description: A string array containing the file metadata for each specified filename. See example for details.
+              required:
+              - uploadedFile
+              - fileInfo
+  /v4/assessments/{assessmentId}/documents/{documentIds}:
+    delete:
+      description: 'Deletes one or more documents for the given condition assessment.
+
+
+        **API Endpoint**: DELETE /v4/assessments/{assessmentId}/documents/{documentIds}
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Delete Assessment Documents
+      operationId: v4.delete.assessments.assessmentId.documents.documentIds
+      tags:
+      - Assessments/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/assessmentIdPathParam'
+      - description: Comma-delimited IDs of the documents to be deleted.
+        in: path
+        name: documentIds
+        required: true
+        schema:
+          type: string
+      - description: The standard EDMS adapter userid. It's required for user level authentication
+        in: query
+        name: userId
+        schema:
+          type: string
+      - description: The standard EDMS adapter password. It's required for user level authentication
+        in: query
+        name: password
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    assessmentIdPathParam:
+      description: The ID of the assessment to fetch.
+      in: path
+      name: assessmentId
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    documentModel:
+      type: object
+      properties:
+        category:
+          type: object
+          description: The document category. The list of category options varies depending on the document group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        deletable:
+          description: Contains permission assignments for deleting documents.
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        department:
+          description: The name of the department the document belongs to.
+          type: string
+        description:
+          description: The document description.
+          type: string
+        downloadable:
+          description: Contains permission assignments for downloading documents.
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        entityId:
+          description: The unique ID of the entity or record.
+          type: string
+        entityType:
+          description: The type of entity.
+          type: string
+        fileName:
+          description: The name of the file as it displays in the source location.
+          type: string
+        group:
+          type: object
+          description: The document group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The document id.
+          format: int64
+          type: integer
+        modifiedBy:
+          description: The user account that last modified the document.
+          type: string
+        modifiedDate:
+          description: The date the document was last modified.
+          format: date-time
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        size:
+          description: The file size of the document.
+          format: double
+          type: number
+        source:
+          description: The name for your agency's electronic document management system.
+          type: string
+        status:
+          type: object
+          description: The documet status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        titleViewable:
+          description: Contains permission assignments for viewing document names.
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        type:
+          description: The document type.
+          type: string
+        uploadedBy:
+          description: The user who uploaded the document to the record.
+          type: string
+        uploadedDate:
+          description: The date when the document was uploaded.
+          format: date-time
+          type: string
+        virtualFolders:
+          description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
+          type: string
+    userRolePrivilegeModel:
+      type: object
+      properties:
+        contactAllowed:
+          description: Indicates whether or not the permission is given to a contact.
+          type: boolean
+        deleteAllowed:
+          description: "Indicates whether or not the permission to delete a document is allowed.\t"
+          type: boolean
+        downloadAllowed:
+          description: Indicates whether or not the permission to download a document is allowed.
+          type: boolean
+        licenseTypeRules:
+          items:
+            type: string
+            description: "A string array containing the types of licensed professionals who are given the permission.\t"
+          type: array
+        licensendProfessionalAllowed:
+          description: Indicates whether or not the permission is given to a licensed professional.
+          type: boolean
+        ownerAllowed:
+          description: Indicates whether or not the permission is given to an owner.
+          type: boolean
+        recordCreatorAllowed:
+          description: Indicates whether or not the permission is given to a record creator.
+          type: boolean
+        registeredUserAllowed:
+          description: Indicates whether or not the permission is given to a registered public user.
+          type: boolean
+        titleViewAllowed:
+          description: Indicates whether or not the permission to view a document name is allowed.
+          type: boolean
+        uploadAllowed:
+          description: Indicates whether or not the permission to upload a document is allowed.
+          type: boolean
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-assets-assessments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

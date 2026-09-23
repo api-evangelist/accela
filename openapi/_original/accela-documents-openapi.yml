@@ -1,0 +1,925 @@
+# x-archived-from: accela-documents-openapi.yml
+# x-archived-on: 2026-09-16
+basePath: /
+host: apis.accela.com
+schemes:
+- https
+swagger: '2.0'
+info:
+  description: Document and DocumentReview APIs
+  title: Documents
+  version: v4
+tags:
+- name: Documents
+  description: The Documents API enables apps to upload and download documents, and attach a document to a record or inspection.
+- name: DocumentReview
+  description: "The Document Review API supports integration of the Civic Platform's Electronic Document Review (\"EDR\")\
+    \ feature with third-party document review tools. The EDR feature in Automation enables agencies to manage and store documents\
+    \ from applicants as well as assign and manage document reviews.\r\n\t\t\n\nAgencies can configure a connection to a third\
+    \ party document review tool so that when a user clicks Review on a record detail page, the user can use the third party\
+    \ tool to review and annotate the document. \n\nDocuments that have been reviewed in a third party tool can then be uploaded\
+    \ to the Civic Platform, where agencies can take advantage of the Civic Platform's document management, security, workflow\
+    \ and task assignment functionality to manage the documents.\n\nThe Document Review API requires Automation version 7.3.3.5\
+    \ and higher. For configuration information about integration and data mapping between Civic Platform and a third-party\
+    \ document review application, see \"Integration with Third Party Document Review Applications\" and \"Configuring Third\
+    \ Party Document Review Tool Integration\" in [Civic Platform 7.3.3 Service Pack Release Notes](https://developer.dev.accela.com/docs/automationDocs/Accela%20Automation%207.3.3%20Service%20Pack%20Release%20Notes.pdf).\r\
+    \n\n\n\r\nAccela recommends that an agency create an Automation user account dedicated to third-party access."
+paths:
+  /v4/documents/{documentIds}:
+    get:
+      description: "Gets a list of requested documents.\n\n\n\n**API Endpoint**:  GET /v4/documents/{documentIds} \n\n**Scope**:\
+        \  documents \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.2\n\
+        \n"
+      summary: Get Documents
+      operationId: v4.get.documents.documentIds
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited document ID's.
+        in: path
+        name: documentIds
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_documentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documents/{documentId}/download:
+    get:
+      produces:
+      - application/octet-stream
+      description: "Downloads the requested document.\n\n\n\n**API Endpoint**:  GET /v4/documents/{documentId}/download \n\
+        \n**Scope**:  documents \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.2\n\n"
+      summary: Download Document
+      operationId: v4.get.documents.documentId.download
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdPathParam'
+      - description: The EDMS userid for user level authentication.
+        in: query
+        name: userId
+        required: false
+        type: string
+      - description: The EDMS password for user level authentication.
+        in: query
+        name: password
+        required: false
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "A successful request returns a binary stream containing the requested document. \n\nNote: A successful\
+            \ request may return no data matching the filter criteria. A successful request may also return messages related\
+            \ to Event Manager Scripting Engine back-end processing."
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: The HTTP return status.
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documents/{documentId}:
+    put:
+      description: "Updates the specified document.\n\n\n\n**API Endpoint**:  PUT /v4/documents/{documentId} \n\n**Scope**:\
+        \  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: \t\
+        7.3.3\n\n"
+      summary: Update Document
+      operationId: v4.put.documents.documentId
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Document request information.
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/documentModel'
+      - $ref: '#/parameters/documentIdPathParam'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_documentModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documents/{documentId}/thumbnail:
+    get:
+      produces:
+      - application/octet-stream
+      description: "Gets the thumbnail for the requested {documentId} of an image file.\n\n\n\n**API Endpoint**:  GET /v4/documents/{documentId}/thumbnail\
+        \ \n\n**Scope**:  documents \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Get Image Document Thumbnail
+      operationId: v4.get.documents.documentId.thumbnail
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdPathParam'
+      - format: int32
+        in: query
+        name: pixelHeight
+        required: false
+        type: integer
+        description: The height of the thumbnail.
+      - format: int32
+        in: query
+        name: pixelWidth
+        required: false
+        type: integer
+        description: The width of the thumbnail.
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            type: file
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documentReview/records/{recordId}/documents:
+    post:
+      description: "Attaches a document report to the specified record. A third party document review application can use\
+        \ the Attach Document Report to send a document report such as a correction notice to Civic Platform. When a correction\
+        \ notice report is generated on a third party document review tool, call Attach Document Report to send the document\
+        \ to Civic Platform as an attachment to a record. \n\nTo specify the document to be attached, use the HTTP headers\
+        \ 'Content-Type:multipart/form-data' and 'Content-Disposition:form-data'. For the form-data, use the name=\"uploadedFile\"\
+        \ parameter to specify the \"filename=\", and name=\"fileInfo\" to specify the file attributes. 'fileInfo' is an array\
+        \ of 'serviceProviderCode', 'fileName', 'type', and 'description' properties. For example:\r\n\n\n\tContent-Disposition:\
+        \ form-data; name=\"uploadedFile\"; filename=\"summaryReport.pdf\"\r\n\n\n\tContent-Disposition: form-data; name=\"\
+        fileInfo\"\r\n\n\n\t[\r\n\n\t\t{\r\n\n\t\t\t\"serviceProviderCode\": \"BPTDEV\",\r\n\n\t\t\t\"fileName\": \"summaryReport.pdf\"\
+        ,\r\n\n\t\t\t\"type\": \"text/plain\",\r\n\n\t\t\t\"description\": \"Upload a report with file info unit testing\"\
+        \r\n\n\t\t}\r\n\n\t]\r\n\n\n\n\n\n\n**API Endpoint**:  POST /v4/documentReview/records/{recordId}/documents \n\n**Scope**:\
+        \  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\
+        \n"
+      summary: Attach Document Report
+      operationId: v4.post.documentReview.records.recordId.documents
+      tags:
+      - DocumentReview
+      consumes:
+      - multipart/form-data
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of record to fetch.
+        in: path
+        name: recordId
+        required: true
+        type: string
+      - description: Specify the filename parameter with the file to be uploaded. See example for details.
+        in: formData
+        name: uploadedFile
+        required: true
+        type: file
+      - description: An array containing the file metadata for each specified filename. See example for details.
+        in: formData
+        name: fileInfo
+        type: string
+        required: true
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documentReview/records/{recordId}/documents/{documentId}/checkin:
+    post:
+      description: "Checks in a file containing document review comments for the specified record. A third party document\
+        \ review application can use the Checkin Document Review API to check-in a reviewed document file to Civic Platform.\
+        \ When all reviews on a given document have been completed in the third party document review tool, call Checkin Document\
+        \ Review to send the document with all the open comments to Automation as a check-in file. It becomes an updated version\
+        \ of the original version which was submitted for review.\n\nTo specify the document to be checked in, use the HTTP\
+        \ headers 'Content-Type:multipart/form-data' and 'Content-Disposition:form-data'. For the form-data, use the name=\"\
+        uploadedFile\" parameter to specify the \"filename=\", and name=\"fileInfo\" to specify the file attributes. 'fileInfo'\
+        \ is an array of 'serviceProviderCode', 'fileName', 'type', 'resubmit', and 'description' properties.  Set the \"\
+        resubmit\" property to \"true\" if the third-party application requires a document resubmittal. For example:\r\n\n\
+        \n\tContent-Disposition: form-data; name=\"uploadedFile\"; filename=\"test.pdf\"\r\n\n\n\tContent-Disposition: form-data;\
+        \ name=\"fileInfo\"\r\n\n\n\t[\r\n\n\t\t{\r\n\n\t\t\t\"serviceProviderCode\": \"BPTDEV\",\r\n\n\t\t\t\"fileName\"\
+        : \"test.pdf\",\r\n\n\t\t\t\"resubmit\": \"true\",\r\n\n\t\t\t\"type\": \"text/plain\",\r\n\n\t\t\t\"description\"\
+        : \"Upload file with file info unit testing\"\r\n\n\t\t}\r\n\n\t]\r\n\n\n\n\n\n\n**API Endpoint**:  POST /v4/documentReview/records/{recordId}/documents/{documentId}/checkin\
+        \ \n\n**Scope**:  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.5\n\n"
+      summary: Checkin Document Review
+      operationId: v4.post.documentReview.records.recordId.documents.documentId.checkin
+      tags:
+      - DocumentReview
+      consumes:
+      - multipart/form-data
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdPathParam'
+      - description: The id of the record to fetch.
+        in: path
+        name: recordId
+        required: true
+        type: string
+      - description: Specify the filename parameter with the file to be uploaded. See example for details.
+        in: formData
+        name: uploadedFile
+        required: true
+        type: file
+      - description: An array containing the file metadata for each specified filename. See example for details.
+        in: formData
+        name: fileInfo
+        type: string
+        required: true
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documentReview/documents/{documentId}/comments:
+    post:
+      description: "Adds a comment to the specified document.\n\n\n\n**API Endpoint**:  POST /v4/documentReview/documents/{documentId}/comments\
+        \ \n\n**Scope**:  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.5\n\n"
+      summary: Create Document Review Comments
+      operationId: v4.post.documentReview.documents.documentId.comments
+      tags:
+      - DocumentReview
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdReviewPathParam'
+      - description: Document model for update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/documentCommentModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documentReview/documents/{documentId}/comments/{commentIds}:
+    get:
+      description: "Gets document comments specified by {commentIds}.\n\n\n\n**API Endpoint**:  GET /v4/documentReview/documents/{documentId}/comments/{commentIds}\n\
+        \n**Scope**:  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.5\n\n"
+      summary: Get Document Review Comments
+      operationId: v4.get.documentReview.documents.documentId.comments.commentIds.
+      tags:
+      - DocumentReview
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdPathParam'
+      - description: Comma-delimited comment ID's.
+        in: path
+        name: commentIds
+        required: true
+        type: string
+      - description: Filter whether the comment is active or inactive.
+        in: query
+        name: isActive
+        required: true
+        type: string
+        enum:
+        - Y
+        - N
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_documentCommentModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: "Deletes the specified comments for the specified document.\n\n\n\n**API Endpoint**:  DELETE /v4/documentReview/documents/{documentId}/comments/{commentIds}\
+        \ \n\n**Scope**:  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.5\n\n"
+      summary: Delete Document Review Comments
+      operationId: v4.delete.documentReview.documents.documentId.comments.commentIds
+      tags:
+      - DocumentReview
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdReviewPathParam'
+      - description: Comma-delimited comment ID's.
+        in: path
+        name: commentIds
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documentReview/documents/{documentId}/comments/{commentId}:
+    put:
+      description: "Updates the specified comment for the specified document.\n\n\n\n**API Endpoint**:  PUT /v4/documentReview/documents/{documentId}/comments/{commentId}\
+        \ \n\n**Scope**:  documents \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.5\n\n"
+      summary: Update Document Review Comment
+      operationId: v4.put.documentReview.documents.documentId.comments.commentId
+      tags:
+      - DocumentReview
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdReviewPathParam'
+      - description: The system id of the comment to fetch.
+        format: int64
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      - description: Document comment to update.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/documentCommentUpdateModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_documentCommentUpdateModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documentReview/documents/{documentId}/tasks/{id}:
+    put:
+      description: "Updates the status of the specified task for the specified document. A third party document review application\
+        \ can use the Update Document Review Task to sync the document task status between the third party tool and Civic\
+        \ Platform.\n\n\n\n**API Endpoint**:  PUT /v4/documentReview/documents/{documentId}/tasks/{id} \n\n**Scope**:  documents\
+        \ \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\n"
+      summary: Update Document Review Task Status
+      operationId: v4.put.documentReview.documents.documentId.tasks.id.
+      tags:
+      - DocumentReview
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/documentIdReviewPathParam'
+      - description: The unique task identifier. Currently, a third-party document review tool supplies the task id that is
+          stored in their system.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Document attributes and status to update.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/documentAssociationModel'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_documentAssociationModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  customFormModel:
+    type: object
+    properties:
+      fields:
+        items:
+          $ref: '#/definitions/fieldModel'
+        type: array
+      id:
+        type: string
+      text:
+        type: string
+      displayOrder:
+        type: integer
+  fieldModel:
+    type: object
+    properties:
+      id:
+        type: string
+      fieldType:
+        type: string
+      text:
+        type: string
+      maxLength:
+        type: integer
+      options:
+        type: array
+        items:
+          $ref: '#/definitions/optionsModel'
+      displayOrder:
+        type: integer
+      isRequired:
+        type: string
+      isReadonly:
+        type: string
+  customTableModel:
+    type: object
+    properties:
+      fields:
+        items:
+          $ref: '#/definitions/fieldModel'
+        type: array
+      id:
+        type: string
+      text:
+        type: string
+      displayOrder:
+        type: integer
+  optionsModel:
+    type: object
+    properties:
+      value:
+        type: string
+      text:
+        type: string
+  pageModel:
+    type: object
+    properties:
+      offset:
+        type: integer
+        description: The requested offset start.
+      limit:
+        type: integer
+        description: The requested result limit.
+      total:
+        type: integer
+        description: The total number of records found.
+      hasmore:
+        type: boolean
+        description: true if there are more results to fetch; false if all results have been fetched.
+  response_documentModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/documentModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  documentModel:
+    type: object
+    properties:
+      category:
+        type: object
+        description: The document category. The list of category options varies depending on the document group.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      deletable:
+        description: Contains permission assignments for deleting documents.
+        $ref: '#/definitions/userRolePrivilegeModel'
+      department:
+        description: The name of the department the document belongs to.
+        type: string
+      description:
+        description: The document description.
+        type: string
+      downloadable:
+        description: Contains permission assignments for downloading documents.
+        $ref: '#/definitions/userRolePrivilegeModel'
+      entityId:
+        description: The unique ID of the entity or record.
+        type: string
+      entityType:
+        description: The type of entity.
+        type: string
+      fileName:
+        description: The name of the file as it displays in the source location.
+        type: string
+      group:
+        type: object
+        description: The document group.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The document id.
+        format: int64
+        type: integer
+      modifiedBy:
+        description: The user account that last modified the document.
+        type: string
+      modifiedDate:
+        description: The date the document was last modified.
+        format: date-time
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      size:
+        description: The file size of the document.
+        format: double
+        type: number
+      source:
+        description: The name for your agency's electronic document management system.
+        type: string
+      status:
+        type: object
+        description: The documet status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      titleViewable:
+        description: Contains permission assignments for viewing document names.
+        $ref: '#/definitions/userRolePrivilegeModel'
+      type:
+        description: The document type.
+        type: string
+      uploadedBy:
+        description: The user who uploaded the document to the record.
+        type: string
+      uploadedDate:
+        description: The date when the document was uploaded.
+        format: date-time
+        type: string
+      virtualFolders:
+        description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded
+          attachments in groups
+        type: string
+  response_documentModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/documentModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  userRolePrivilegeModel:
+    type: object
+    properties:
+      citizenRoles:
+        description: Contains the citizen roles who are given the permission.
+        items:
+          type: string
+          enum:
+          - registeredUser
+          - licensedProfessional
+          - owner
+          - contact
+          - citizenUser
+          - recordCreator
+        type: array
+      licenseTypeRules:
+        description: A string array containing the types of licensed professionals who are given the permission. See [Get
+          All Professional License Types](./api-settings.html#operation/v4.get.settings.professionals.types).
+        items:
+          type: string
+        type: array
+  response_documentCommentModel:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/documentCommentModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  documentCommentModel:
+    type: object
+    properties:
+      comment:
+        description: Comments or notes about the document.
+        type: string
+      createdBy:
+        description: The user id of the individual who created the comment.
+        type: string
+      createdDate:
+        description: The date the comment is created.
+        format: date-time
+        type: string
+      discipline:
+        type: object
+        description: The inspection discipline related to the document review.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      pageNumber:
+        description: The document page number the comment applies to.
+        format: int64
+        type: integer
+      status:
+        type: object
+        description: The document comment status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_documentCommentUpdateModel:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/documentCommentUpdateModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  documentCommentUpdateModel:
+    type: object
+    properties:
+      comment:
+        description: Comments or notes about the document.
+        type: string
+      createdBy:
+        description: The user id of the individual who created the comment.
+        type: string
+      createdDate:
+        description: The date the comment is created.
+        format: date-time
+        type: string
+      discipline:
+        type: object
+        description: The inspection discipline related to the document review.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      pageNumber:
+        description: The document page number the comment applies to.
+        format: int64
+        type: integer
+      status:
+        type: object
+        description: The document comment status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_documentAssociationModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/documentAssociationModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  documentAssociationModel:
+    type: object
+    properties:
+      department:
+        description: The department responsible for the document review task.
+        type: string
+      discipline:
+        description: The inspection discipline related to the document review.
+        type: string
+      staff:
+        description: The staff responsible for the document review task.
+        type: string
+      status:
+        type: object
+        description: The document review task status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_resultModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/resultModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_resultModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/resultModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultModel:
+    type: object
+    properties:
+      code:
+        description: The error code, if an error is encountered.
+        type: string
+      id:
+        description: The object's system id.
+        type: string
+      isSuccess:
+        description: Indicates whether or not the operation on the object is successful.
+        type: boolean
+      message:
+        description: The error message, if an error is encountered.
+        type: string
+parameters:
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+  fields:
+    description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+  documentIdPathParam:
+    description: The ID of document to fetch.
+    in: path
+    name: documentId
+    required: true
+    type: string
+  documentIdReviewPathParam:
+    description: The ID of document to review.
+    format: int64
+    in: path
+    name: documentId
+    required: true
+    type: integer
+  expand:
+    description: What attributes to be returned.
+    in: query
+    name: expand
+    required: false
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-documents.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.
+  repairs:
+  - removed trailing commas
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

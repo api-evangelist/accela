@@ -1,0 +1,242 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Departments API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Departments
+paths:
+  /v4/settings/departments:
+    get:
+      description: 'Gets a list of agency departments.
+
+
+        **API Endpoint**: GET /v4/settings/departments
+
+
+        **Scope**: settings
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Department Staff
+      operationId: v4.get.settings.departments
+      tags:
+      - Settings/Departments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_departmentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/departments/{id}/staffs:
+    get:
+      description: 'Gets the staff members for a specified department. NOTE: To return the users within a department, this API requires an Automation administrator to activate FID 0045 (Admin Organization Hierarchy) and FID 0004 (Admin Users) with read-only access.
+
+
+        **API Endpoint**: GET /v4/settings/departments/{id}/staffs
+
+
+        **Scope**: settings
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Department Staff
+      operationId: v4.get.settings.departments.id.staffs
+      tags:
+      - Settings/Departments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the department to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_userModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_userModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/userModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    departmentModel:
+      type: object
+      properties:
+        agency:
+          description: The department agency
+          type: string
+        bureau:
+          description: The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: The department group.
+          type: string
+        id:
+          description: The department system id assigned by the Civic Platform server.
+          type: string
+        office:
+          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
+          type: string
+        section:
+          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier
+          type: string
+        text:
+          description: The department display text.
+          type: string
+        value:
+          description: The department value.
+          type: string
+    response_departmentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/departmentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    userModel:
+      type: object
+      properties:
+        cashierId:
+          description: The unique ID associated with the cashier.
+          type: string
+        department:
+          $ref: '#/components/schemas/departmentModel'
+        email:
+          description: The individual's email address.
+          type: string
+        employeeId:
+          description: The unique ID associated with the employee.
+          type: string
+        firstName:
+          description: The individual's first name.
+          type: string
+        fullName:
+          description: The individual's full name.
+          type: string
+        id:
+          description: The ID of the individual.
+          type: string
+        initial:
+          description: The individual initials.
+          type: string
+        lastName:
+          description: The individual's last name.
+          type: string
+        middleName:
+          description: The individual's middle name.
+          type: string
+        namesuffix:
+          description: The suffix portion of the name of a department staff member, for example; junior, esquire.
+          type: string
+        password:
+          description: The individual's password
+          type: string
+        phone:
+          description: The individual's phone number.
+          type: string
+        serviceProviderCode:
+          description: The agency's unique identifier.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        userGroups:
+          items:
+            $ref: '#/components/schemas/userGroupModel'
+          type: array
+        value:
+          description: The ID of the individual.
+          type: string
+    userGroupModel:
+      type: object
+      properties:
+        id:
+          description: The ID of the user group.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

@@ -1,0 +1,181 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Owners API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Owners
+paths:
+  /v4/settings/owners/customForms:
+    get:
+      summary: Get Metadata for Owner Custom Forms
+      description: 'Returns the field metadata for all owner custom forms (owner templates) in the system.
+
+
+        **API Endpoint**: GET /v4/settings/owners/customForms
+
+
+        **Scope**: owners
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.3.0'
+      tags:
+      - Settings/Owners
+      operationId: v4.get.settings.owners.customForms
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_apo_customForms_metadata'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    apo_customForms_metadata:
+      description: 'Contains metadata description of a custom form, including the custom fields metadata. '
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the custom form
+        description:
+          type: string
+          description: Describes the usage or puporse of the custom form.
+        fields:
+          items:
+            $ref: '#/components/schemas/apo_customForms_metadata_fields'
+          type: array
+          description: Contains the field metadata.
+        id:
+          type: string
+          description: The unique string identifier of the custom form.
+        customFormType:
+          type: string
+          description: Indicates whether the custom form is for an address, parcel, or owner.
+    response_apo_customForms_metadata:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/apo_customForms_metadata'
+          type: array
+        status:
+          type: integer
+          description: The return status code.
+    apo_customForms_metadata_fields:
+      description: "Describes the metadata of a custom field. \n\nAdded in Civic Platform version: 9.2.0"
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The unique custom field id.
+        name:
+          type: string
+          description: The field name.
+        description:
+          type: string
+          description: Describes the usage or purpose of the custom field.
+        label:
+          type: object
+          description: The field label.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        dataType:
+          type: string
+          enum:
+          - Number
+          - Text
+          - Date
+          - Radio
+          - DropdownList
+          description: The field data type. If the custom field is a DropdownList, the options[] array contains the list of possible values, or the sharedDropdownListName specifies the name of a shared dropdown list containing the possible values.
+        defaultValue:
+          type: string
+          description: Any default value for the custom field.
+        displayOrder:
+          format: int64
+          type: integer
+          description: The display order of the field on the custom form.
+        unit:
+          type: string
+          description: The unit of measure of a numeric custom field.
+        isRequired:
+          type: string
+          enum:
+          - Y
+          - N
+          description: Indicates whether or not the field is required.
+        isPublicVisible:
+          type: string
+          enum:
+          - Y
+          - N
+          description: Indicates whether or not a citizen user can see this field.
+        isRecordSearchable:
+          type: string
+          enum:
+          - Y
+          - N
+          description: Indicates whether or not the field is searchable.
+        maxLength:
+          format: int64
+          type: integer
+          description: The field maximum length.
+        options:
+          items:
+            type: object
+            description: A dropdown field value.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+          description: Contains possible field values, if the field is a dropdown field type.
+        sharedDropdownListName:
+          type: string
+          description: The name of the shared dropdown list, if the field is a dropdown field type.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

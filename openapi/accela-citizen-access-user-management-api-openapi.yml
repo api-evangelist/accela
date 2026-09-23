@@ -1,0 +1,1330 @@
+openapi: 3.2.0
+info:
+  description: The Citizens API include endpoints for citizen users to manage their own accounts, authorized users to manage other accounts, and manage citizen delegates, announcements, and invitations.
+  title: Citizens Citizen Access User Management API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Citizen Access User Management
+  description: description here
+paths:
+  /v4/citizenaccess/citizens:
+    get:
+      description: 'Returns the users whose profiles can be viewed or edited by the logged-in user. If the logged-in user is an Authorized Agent, the returned users are Authorized Agent Clerks. A Citizen user is not authorized to see other users'' profiles, so if the logged-in user is a Citizen user, no users are returned. If the logged-in user is an Automation user, Citizen Access users are returned.
+
+
+        **API Endpoint**: GET /v4/citizenaccess/citizens
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get Citizen Users
+      operationId: v4.get.citizenaccess.citizens
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: Filter by the citizen's login name.
+        in: query
+        name: loginName
+        schema:
+          type: string
+      - description: Related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - contacts
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_publicUserModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Adds a citizen user to be associated with the currently logged-in user. The userName to be added is required.
+
+
+        **API Endpoint**: POST /v4/citizenaccess/citizens
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Create Citizen User
+      operationId: v4.post.citizenaccess.citizens
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/publicUserRegisterModel'
+        description: The user information to add.
+        required: true
+  /v4/citizenaccess/citizens/{id}:
+    put:
+      description: 'Updates the profile of the specified citizen user.
+
+
+        **API Endpoint**: PUT /v4/citizenaccess/citizens/{id}
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Update Citizen Profile
+      operationId: v4.put.citizens.id
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The clerk citizen ID to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_citizenProfileModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_citizenProfileModel'
+        description: User profile information to be updated
+        required: true
+  /v4/citizenaccess/citizens/{id}/accounts:
+    get:
+      description: 'Gets the status of the citizen accounts associated to the specified user.
+
+
+        **API Endpoint**: GET /v4/citizenaccess/citizens/{id}/accounts
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get Citizen Accounts
+      operationId: v4.get.citizenaccess.citizens.id.accounts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The ID of citizen user to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_userPINModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates the status of citizen accounts associated to the specified citizen user.
+
+
+        **API Endpoint**: PUT /v4/citizenaccess/citizens/{id}/accounts
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Update Citizen Account Status
+      operationId: v4.put.citizenaccess.citizens.id.accounts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The ID of citizen user to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/userPINModel'
+              type: array
+        description: The user information to be updated.
+        required: true
+  /v4/citizenaccess/citizens/{id}/contacts:
+    post:
+      description: 'Adds contacts to the specified citizen user. Include the contact IDs to be added in the request array.
+
+
+        **API Endpoint**: POST /v4/citizenaccess/citizens/{id}/contacts
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Add Citizen Contacts
+      operationId: v4.post.citizens.id.contacts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The clerk ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                description: A reference contact id.
+                type: string
+              type: array
+        description: An array of reference contact Ids to add.
+        required: true
+  /v4/citizenaccess/citizens/{id}/contacts/{contactIds}:
+    delete:
+      description: 'Deletes the specified contacts for the specified citizen user.
+
+
+        **API Endpoint**: DELETE /v4/citizenaccess/citizens/{id}/contacts/{contactIds}
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Delete Citizen Contacts
+      operationId: v4.delete.citizens.id.contacts.contactIds
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The clerk ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Comma-delimited IDs of contacts to delete.
+        in: path
+        name: contactIds
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}/password:
+    put:
+      description: 'Updates the password of the specified citizen user {id}.
+
+
+        **API Endpoint**: PUT /v4/citizenaccess/citizens/{id}/password
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Update Citizen Password
+      operationId: v4.put.citizens.id.password
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The clerk citizen ID.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        description: The citizen id.
+                        format: int64
+                        type: integer
+                  status:
+                    description: The HTTP return status.
+                    type: integer
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/publicUserPasswordModel'
+        description: The password to update.
+  /v4/citizenaccess/citizens/{id}/trustAccounts:
+    get:
+      description: 'Gets the trust accounts for the specified user. If a clerk needs the associated agent''s trust account, call the Get Citizen Accounts for the logged in clerk, and use its agentId response field as the {id} parameter for Get Citizen Trust Accounts.
+
+
+        **API Endpoint**: GET /v4/citizenaccess/citizens/{id}/trustAccounts
+
+
+        **Scope**: users
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get Citizen Trust Accounts
+      operationId: v4.get.citizenaccess.citizens.id.trustAccounts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The ID of citizen user
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_trustAccountModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_citizenProfileModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/request_citizenProfileModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    request_citizenProfileModel:
+      type: object
+      properties:
+        email:
+          description: The citizen user's email address.
+          type: string
+        id:
+          description: The user id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        loginName:
+          description: The citizen user's login name.
+          type: string
+        mobilePhone:
+          description: The citizen user's 10-digit cell phone number.
+          type: string
+        mobilePhoneCountryCode:
+          description: The citizen user's cell phone number country code
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/publicUserQuestionModel'
+          type: array
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          type: string
+        registerDate:
+          description: The citizen user's registration date.
+          format: date-time
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+    resultCountModel:
+      type: object
+      properties:
+        failedCount:
+          description: The number of failed results.
+          format: int64
+          type: integer
+        failedIDs:
+          description: The IDs of the entities on which the operation failed.
+          type: string
+        successCount:
+          description: The number of successful results.
+          format: int64
+          type: integer
+        successIDs:
+          description: The IDs of the entities on which the operation succeeded.
+          type: string
+    publicUserPasswordModel:
+      type: object
+      properties:
+        password:
+          description: The citizen user's password.
+          type: string
+    publicUserQuestionModel:
+      type: object
+      properties:
+        answer:
+          description: The answer to the security question for password reset.
+          type: string
+        order:
+          description: The order of the security question.
+          type: string
+        question:
+          description: The security question for password reset.
+          type: string
+    publicUserRegisterModel:
+      type: object
+      required:
+      - userName
+      properties:
+        associatedLicenseIds:
+          description: Contains license ID's associated with the citizen user.
+          items:
+            format: int64
+            type: integer
+          type: array
+        cellPhone:
+          description: The citizen user's cell phone number.
+          type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
+          type: string
+        password:
+          description: The citizen user's password.
+          type: string
+        questions:
+          description: Contains the security questions for password reset.
+          items:
+            $ref: '#/components/schemas/publicUserQuestionModel'
+          type: array
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          enum:
+          - Y
+          - N
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+        servProvCode:
+          description: The unique agency identifier.
+          type: string
+        userName:
+          description: The user's unique username.
+          type: string
+    response_userPINModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/userPINModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    publicUserModel:
+      type: object
+      properties:
+        active:
+          description: Indicates whether or not the user is active.
+          enum:
+          - 'Yes'
+          - 'No'
+          type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
+          type: string
+        id:
+          description: The citizen id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        loginName:
+          description: The citizen user's login name.
+          type: string
+        mobilePhone:
+          description: The citizen user's 10-digit cell phone number.
+          type: string
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          enum:
+          - Y
+          - N
+          type: string
+        registerDate:
+          description: The citizen user's registration date.
+          format: date-time
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+    response_publicUserModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    trustAccountModel:
+      type: object
+      properties:
+        account:
+          description: The account ID number for the trust account.
+          type: string
+        associations:
+          type: object
+          description: The trust account associations.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        balance:
+          description: The balance of the trust account in dollars.
+          format: double
+          type: number
+        description:
+          description: The description of the trust account.
+          type: string
+        id:
+          description: The trust account system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the trust account as the primary source.
+          type: string
+          enum:
+          - Y
+          - N
+        ledgerAccount:
+          description: The ledger account of the trust account.
+          type: string
+        overdraft:
+          type: object
+          description: Indicates whether or not the trust account can use the overdraft option.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        overdraftLimit:
+          description: The overdraft limit amount, in dollars, for the trust account.
+          format: double
+          type: number
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The status of the trust account.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+          enum:
+          - Active
+          - Closed
+        thresholdAmount:
+          description: The minimum amount required in a trust account.
+          format: double
+          type: number
+    contactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The first line of the address.
+        city:
+          type: string
+          description: The name of the city.
+        country:
+          type: object
+          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        direction:
+          description: The street direction of the primary address associated with the application.
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        effectiveDate:
+          description: ''
+          format: date-time
+          type: string
+        expirationDate:
+          description: ''
+          format: date-time
+          type: string
+        fax:
+          description: ''
+          type: string
+        faxCountryCode:
+          description: ''
+          type: string
+        houseAlphaStart:
+          type: string
+          description: The beginning alphabetic unit in street address.
+        houseAlphaEnd:
+          type: string
+          description: The ending alphabetic unit in street address.
+        id:
+          format: int64
+          type: integer
+          description: The unique address id assigned by the Civic Platform server.
+        isPrimary:
+          type: string
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+        levelStart:
+          type: string
+          description: The starting level number (floor number) that makes up the address within a complex.
+        levelEnd:
+          type: string
+          description: The ending level number (floor number) that makes up the address within a complex.
+        levelPrefix:
+          type: string
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+        phone:
+          description: ''
+          type: string
+        phoneCountryCode:
+          description: ''
+          type: string
+        postalCode:
+          type: string
+          description: The postal ZIP code for the address.
+        recipient:
+          description: ''
+          type: string
+        state:
+          type: object
+          description: The name of the state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          type: string
+          description: The street address.
+        streetEnd:
+          type: number
+          format: long
+          description: The ending number of a street address range.
+        streetName:
+          type: string
+          description: The name of the street.
+        streetPrefix:
+          type: string
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+        streetStart:
+          type: number
+          format: long
+          description: The starting number of a street address range.
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard".
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitStart:
+          type: string
+          description: The starting value of a range of unit numbers.
+        unitEnd:
+          type: string
+          description: The ending value of a range of unit numbers.
+        unitType:
+          type: object
+          description: The unit type designation of the address.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_trustAccountModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/trustAccountModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    peopleModel:
+      type: object
+      properties:
+        additionalAddresses:
+          items:
+            $ref: '#/components/schemas/contactAddressModel'
+          type: array
+        address:
+          $ref: '#/components/schemas/ownerAddressModel'
+        birthCity:
+          type: object
+          description: The city of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthDateFrom:
+          description: The start of a birth date range to search.
+          format: date-time
+          type: string
+        birthDateTo:
+          description: The end of a birth date range to search.
+          format: date-time
+          type: string
+        birthRegion:
+          type: object
+          description: The country of birth or region of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthState:
+          type: object
+          description: The state of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        deceasedDate:
+          description: The deceased date, if applicable.
+          format: date-time
+          type: string
+        driverLicenseNumber:
+          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
+          type: string
+        driverLicenseState:
+          type: object
+          description: The state that issued the driver's license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        fullName:
+          description: 'The contact''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The contact system id assigned by the Civic Platform server.
+          type: string
+        individualOrOrganization:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        middleName:
+          description: The middle name.
+          type: string
+        openCloseMatch:
+          description: Indicates whether or not to use close matches as hits in a search for contacts.
+          type: string
+        openSoundexSearch:
+          description: 'Indicates whether or not Soundex search is enabled for any of the following requested parameters: firstName, middleName, lastName, organizationName, tradeName, businessName, streetName'
+          type: string
+          enum:
+          - Y
+          - N
+        orderBy:
+          description: 'The fields by which the search results are ordered. For each field, specify the sort order: asc for ascending or desc for descending order. Use commas to separate multiple sort fields. The values are not case-sensitive. For example: "orderBy":"lastName desc,email asc"'
+          enum:
+          - LastName
+          - LastName ASC
+          - LastName DESC
+          - FirstName
+          - FirstName ASC
+          - FirstName DESC
+          - birthDate
+          - birthDate ASC
+          - birthDate DESC
+          - AddressCity
+          - AddressCity ASC
+          - AddressCity DESC
+          - AddressState
+          - AddressState ASC
+          - AddressState DESC
+          - AddressZIP
+          - AddressZIP ASC
+          - AddressZIP DESC
+          - AddressCountry
+          - AddressCountry ASC
+          - AddressCountry DESC
+          - email
+          - email ASC
+          - email DESC
+          - PHONE1
+          - PHONE1 ASC
+          - PHONE1 DESC
+          - PHONE2
+          - PHONE2 ASC
+          - PHONE2 DESC
+          type: string
+        organizationName:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        passportNumber:
+          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        preferredChannel:
+          type: object
+          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        race:
+          type: object
+          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        relation:
+          type: object
+          description: The contact's relationship to the application or service request.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        serviceProviderCode:
+          description: The unique agency identifier
+          type: string
+        socialSecurityNumber:
+          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        stateIdNumber:
+          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        status:
+          type: object
+          description: The contact status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        tradeName:
+          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
+          type: string
+        type:
+          type: object
+          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_resultCountModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultCountModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    userPINModel:
+      type: object
+      properties:
+        active:
+          description: Indicates whether or not the account is active. If the account is not activated, the user cannot login Accela Citizen Access.
+          type: string
+        agentId:
+          description: The ID of the associated agent of the logged-in user.
+          type: string
+        serviceProviderCode:
+          description: The agency id.
+          type: string
+        status:
+          description: The citizen userid status.
+          type: string
+        userId:
+          description: The citizen userid.
+          format: int64
+          type: integer
+  parameters:
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-citizens.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - re-decoded from cp1252 (source not valid UTF-8)
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

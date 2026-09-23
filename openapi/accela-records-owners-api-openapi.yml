@@ -1,0 +1,397 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Owners API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Owners
+paths:
+  /v4/records/{recordId}/owners:
+    get:
+      description: 'Gets owners associated with the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/owners
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Owners for Record
+      operationId: v4.get.records.recordId.owners
+      tags:
+      - Records/Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_refOwnerModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates a new owner association for the specified record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/owners
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Record Owners
+      operationId: v4.post.records.recordId.owners
+      tags:
+      - Records/Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/refOwnerModel'
+              type: array
+        description: Create Inspection Owners request information.
+        required: true
+  /v4/records/{recordId}/owners/{id}:
+    put:
+      description: 'Updates information about the specified owner for the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/owners/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Record Owner
+      operationId: v4.put.records.recordId.owners.id
+      tags:
+      - Records/Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of Owner to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_refOwnerModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/refOwnerModel'
+        description: Update Inspection Owner request information.
+        required: true
+  /v4/records/{recordId}/owners/{ids}:
+    delete:
+      description: 'Removes the specified owner(s) from the specified record.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/owners/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Record Owners
+      operationId: v4.delete.records.recordId.owners.ids
+      tags:
+      - Records/Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delmited IDs of the owners to be removed from the record.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    refOwnerModel:
+      type: object
+      properties:
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        firstName:
+          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        fullName:
+          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        id:
+          description: The owner system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the owner as the primary owner.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        mailAddress:
+          $ref: '#/components/schemas/ownerAddressModel'
+        middleName:
+          description: The contact's middle name.
+          type: string
+        parcelId:
+          description: The unique Id generated for a parcel.
+          type: string
+        phone:
+          description: The telephone number of the owner.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        refOwnerId:
+          description: The reference owner id.
+          format: double
+          type: number
+        status:
+          type: object
+          description: The owner status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        taxId:
+          description: The owner's tax ID number.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        type:
+          description: The owner type.
+          type: string
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        postalCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_refOwnerModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_refOwnerModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/refOwnerModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

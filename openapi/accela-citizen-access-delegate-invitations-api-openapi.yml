@@ -1,0 +1,254 @@
+openapi: 3.2.0
+info:
+  description: The Citizens API include endpoints for citizen users to manage their own accounts, authorized users to manage other accounts, and manage citizen delegates, announcements, and invitations.
+  title: Citizens Citizen Access Delegate Invitations API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Citizen Access Delegate Invitations
+  description: A citizen user designates a delegate by first sending them an invitation. The invited citizen users can accept or reject invitations. When the invited citizen users accept the invitation, they officially become the delegate of the users who invited them. A delegate can work on another citizen user’s data based on the granted permissions.
+paths:
+  /v4/citizenaccess/citizens/invitations:
+    get:
+      description: 'Gets invitations or delegate requests received by the logged-in user. To get the logged-in user''s pending invitations, set the {delegateStatus} parameter to PENDING.
+
+
+        **API Endpoint**: GET /v4/citizenaccess/citizens/invitations
+
+
+        **Scope**: users
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Get All Invitations
+      operationId: v4.get.citizenaccess.citizens.invitations
+      tags:
+      - Citizen Access Delegate Invitations
+      parameters:
+      - description: Filter by the delegate's login name.
+        in: query
+        name: userName
+        required: false
+        schema:
+          type: string
+      - description: Filter by the delegate's name.
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Filter by the delegate status.
+        in: query
+        name: delegateStatus
+        required: false
+        schema:
+          type: string
+          enum:
+          - PENDING
+          - ACCEPT
+          - REJECT
+          - EXPIRED
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_publicUserDelegateModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/invitation/{id}:
+    put:
+      description: 'Updates the status of the delegate invitation sent by a specified user. The Update Invitation API allows the logged-in user to accept or reject the delegate invitation sent by the user {id}.
+
+
+        **API Endpoint**: PUT /v4/citizenaccess/citizens/invitation/{id}
+
+
+        **Scope**: users
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Update Invitation
+      operationId: v4.put.citizenaccess.citizens.invitation.id
+      tags:
+      - Citizen Access Delegate Invitations
+      parameters:
+      - description: The id of the citizen user who sent the delegate request.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_publicUserDelegateStatusModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/publicUserDelegateStatusModel'
+        description: Delegate information including the delegate status to be updated.
+        required: true
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+  schemas:
+    response_publicUserDelegateModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserDelegateModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    publicUserDelegateStatusModel:
+      type: object
+      properties:
+        delegateStatus:
+          description: The status of the delegate request.
+          enum:
+          - ACCEPT
+          - REJECT
+          type: string
+    response_publicUserDelegateStatusModel:
+      type: object
+      properties:
+        delegateStatus:
+          description: The status of the delegate request.
+          type: string
+        id:
+          description: The id of the user who sent the delegate request.
+          format: int64
+          type: integer
+    publicUserDelegatePermissionModel:
+      type: object
+      properties:
+        amendAllowed:
+          description: If true, the delegate is allowed to amend records.
+          type: boolean
+        createRecordAllowed:
+          description: If true, the delegate is allowed to create records.
+          type: boolean
+        documentAllowed:
+          description: If true, the delegate is allowed to manage documents.
+          type: boolean
+        inspectionAllowed:
+          description: If true, the delegate is allowed to manage inspections.
+          type: boolean
+        level:
+          description: The permission level.
+          type: string
+        levelValue:
+          description: The value for the permission level, as configured in Civic Platform Administration.
+          type: string
+        paymentAllowed:
+          description: If true, the delegate is allowed to make payments.
+          type: boolean
+        renewalAllowed:
+          description: If true, the delegate is allowed to renew records.
+          type: boolean
+        viewRecordAllowed:
+          description: If true, the delegate is allowed to view records.
+          type: boolean
+    publicUserDelegateModel:
+      type: object
+      properties:
+        delegateStatus:
+          description: The status of the delegate request.
+          enum:
+          - PENDING
+          - ACCEPT
+          - REJECT
+          - EXPIRED
+          type: string
+        id:
+          description: The delegate id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        invitationMessage:
+          description: The invitation message sent to the delegate.
+          type: string
+        name:
+          description: The delegate's name.
+          type: string
+        permissions:
+          items:
+            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
+          type: array
+        userName:
+          description: The delegate's login name.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-citizens.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - re-decoded from cp1252 (source not valid UTF-8)
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

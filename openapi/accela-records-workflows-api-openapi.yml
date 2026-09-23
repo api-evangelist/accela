@@ -1,0 +1,1138 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Workflows API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Workflows
+paths:
+  /v4/records/{recordId}/workflowTasks:
+    get:
+      description: 'Gets all the workflow tasks associated with the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Workflow Tasks for Record
+      operationId: v4.get.records.recordId.workflowTasks
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_taskItemModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/workflowTasks/{id}:
+    get:
+      description: 'Gets the requested workflow task for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Record Workflow Task
+      operationId: v4.get.records.recordId.workflowTasks.id
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of task to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_taskItemModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates the requested workflow task for the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/workflowTasks/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Record Workflow Task
+      operationId: v4.put.records.recordId.workflowTasks.id
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of task to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_taskItemModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_taskItemModel'
+        description: The task information to be updated
+        required: true
+  /v4/records/{recordId}/workflowTasks/{id}/statuses:
+    get:
+      description: 'Gets the status of the specified workflow task for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks/{id}/statuses
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Statuses for Workflow Task
+      operationId: v4.get.records.recordId.workflowTasks.id.statuses
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of task to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_identifierModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/workflowTasks/comments/histories:
+    get:
+      description: 'Gets the workflow task comment history for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks/comments/histories
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Workflow Task Comment Histories
+      operationId: v4.get.records.recordId.workflowTasks.comments.histories
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_workflowTaskCommentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/workflowTasks/histories:
+    get:
+      description: 'Gets all the workflow task history associated with the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks/histories
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Workflow Task History for Record
+      operationId: v4.get.records.recordId.workflowTasks.histories
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_taskItemActionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/workflowTasks/{taskId}/customForms:
+    get:
+      description: 'Returns the custom forms containing task-specific information for a given workflow task for a specific record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks/{taskId}/customForms
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 8.0.3'
+      summary: Get All Custom Forms for Record Workflow Task
+      operationId: v4.get.records.recordId.workflowTasks.taskId.customForms
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of the workflow task to fetch.
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates custom forms containing task-specific information for a given workflow task for a specific record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/workflowTasks/{taskId}/customForms
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 8.0.3'
+      summary: Update Custom Form for Record Workflow Task
+      operationId: v4.put.records.recordId.workflowTasks.taskId.customForms
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of the workflow task to fetch.
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/customAttributeModel'
+              type: array
+        description: 'The custom form information to be updated. Ex. [{"apiField1": "val1", "id": "group-subGroup"   }]'
+        required: true
+  /v4/records/{recordId}/workflowTasks/{taskId}/customForms/meta:
+    get:
+      description: 'Returns the metadata associated with all custom forms for a given workflow task for a specific record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/workflowTasks/{taskId}/customForms/meta
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Forms Metadata for Record Workflow Task
+      operationId: v4.get.records.recordId.workflowTasks.taskId.customForms.meta
+      tags:
+      - Records/Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of the workflow task to fetch.
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormSubgroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_taskItemModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/taskItemModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_workflowTaskCommentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/workflowTaskCommentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    taskItemModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        approval:
+          description: Used to indicate supervisory approval of an adhoc task.
+          type: string
+        assignEmailDisplay:
+          description: 'Indicates whether or not to display the agency employeeâ€™s email address in ACA. Public users can then click the e-mail hyperlink and send an e-mail to the agency employee. â€œYâ€ : display the email address. â€œNâ€ : hide the email address.'
+          type: string
+        assignedDate:
+          description: The date of the assigned action.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        assignedUser:
+          type: object
+          description: The staff member responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        billable:
+          description: Indicates whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        comment:
+          description: Comments or notes about the current context.
+          type: string
+        commentDisplay:
+          description: "Indicates whether or not Accela Citizen Access users can view the inspection results comments.\t"
+          type: string
+        commentPublicVisible:
+          description: Specifies the type of user who can view the inspection result comments. <br/>"All ACA Users" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. <br/>"Record Creator Only" - the user who created the record can see the comments for the inspection results. <br/>"Record Creator and Licensed Professional" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.
+          items:
+            type: string
+          type: array
+        currentTaskId:
+          description: The ID of the current workflow task.
+          type: string
+        daysDue:
+          description: The amount of time to complete a task (measured in days).
+          format: int64
+          type: integer
+        description:
+          description: The description of the record or item.
+          type: string
+        dispositionNote:
+          description: A note describing the disposition of the current task.
+          type: string
+        dueDate:
+          description: The desired completion date of the task.
+          format: date-time
+          type: string
+        endTime:
+          description: The time the workflow task was completed.
+          format: date-time
+          type: string
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedHours:
+          description: The estimated hours necessary to complete this task.
+          format: double
+          type: number
+        hoursSpent:
+          description: Number of hours used for a workflow or workflow task.
+          format: double
+          type: number
+        id:
+          description: The workflow task system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        isActive:
+          description: Indicates whether or not the workflow task is active.
+          enum:
+          - Y
+          - N
+          type: string
+        isCompleted:
+          description: Indicates whether or not the workflow task is completed.
+          enum:
+          - Y
+          - N
+          type: string
+        lastModifiedDate:
+          description: The date when the task item was last changed.
+          format: date-time
+          type: string
+        lastModifiedDateString:
+          description: A string represents the date when the task item was last changed.
+          type: string
+        nextTaskId:
+          description: The id of the next task in a workflow.
+          type: string
+        overTime:
+          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+          type: string
+        processCode:
+          description: The process code for the next task in a workflow.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startTime:
+          description: The time the workflow task started.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The workflow task status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        trackStartDate:
+          description: The date that time tracking is set to begin.
+          format: date-time
+          type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    workflowTaskCommentModel:
+      type: object
+      properties:
+        action:
+          description: Audit trail action type like 'payment allocation'
+          type: string
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        createdDate:
+          description: The date the entry was created.
+          format: date-time
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        text:
+          description: The comment text.
+          type: string
+        workflowTaskId:
+          description: The id of the workflow task.
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    response_taskItemActionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/taskItemActionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    aSITableDrill:
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    customFormSubgroupModel:
+      type: object
+      properties:
+        displayOrder:
+          description: The custom form subgroup display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom form subgroup system id assigned by the Civic Platform server.
+          type: string
+        text:
+          description: The custom form subgroup name.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_customFormSubgroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormSubgroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_taskItemModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/taskItemModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    request_taskItemModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        approval:
+          description: Used to indicate supervisory approval of an adhoc task.
+          type: string
+        assignEmailDisplay:
+          description: 'Indicates whether or not to display the agency employeeâ€™s email address in ACA. Public users can then click the e-mail hyperlink and send an e-mail to the agency employee. â€œYâ€ : display the email address. â€œNâ€ : hide the email address.'
+          type: string
+        billable:
+          description: Indicates whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        comment:
+          description: Comments or notes about the current context.
+          type: string
+        commentDisplay:
+          description: "Indicates whether or not Accela Citizen Access users can view the inspection results comments.\t"
+          type: string
+        commentPublicVisible:
+          description: Specifies the type of user who can view the inspection result comments. <br/>"All ACA Users" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. <br/>"Record Creator Only" - the user who created the record can see the comments for the inspection results. <br/>"Record Creator and Licensed Professional" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.
+          items:
+            type: string
+          type: array
+        dueDate:
+          description: The desired completion date of the task.
+          format: date-time
+          type: string
+        endTime:
+          description: The time the workflow task was completed.
+          format: date-time
+          type: string
+        hoursSpent:
+          description: Number of hours used for a workflow or workflow task.
+          format: double
+          type: number
+        overTime:
+          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+          type: string
+        startTime:
+          description: The time the workflow task started.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The workflow task status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          format: int64
+          type: integer
+        id:
+          type: string
+    customFormField:
+      type: object
+      properties:
+        displayOrder:
+          description: ''
+          format: int64
+          type: integer
+        drillDown:
+          $ref: '#/components/schemas/aSITableDrill'
+        fieldType:
+          description: The custom field data type.
+          type: string
+        id:
+          description: The custom field system id assigned by the Civic Platform server.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the custom field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the custom field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The custom field length
+          format: int64
+          type: integer
+        options:
+          items:
+            type: object
+            description: A dropdown option value.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The custom field localized text.
+          type: string
+        value:
+          description: The custom field stored value.
+          type: string
+    taskItemActionModel:
+      type: object
+      properties:
+        action:
+          description: Audit trail action type like "payment allocation"
+          type: string
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        approval:
+          description: Used to indicate supervisory approval of an adhoc task.
+          type: string
+        assignEmailDisplay:
+          description: 'Indicates whether or not to display the agency employeeâ€™s email address in ACA. Public users can then click the e-mail hyperlink and send an e-mail to the agency employee. â€œYâ€ : display the email address. â€œNâ€ : hide the email address.'
+          type: string
+        assignedDate:
+          description: The date of the assigned action.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        assignedUser:
+          type: object
+          description: The staff member responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        billable:
+          description: Indicates whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        comment:
+          description: Comments or notes about the current context.
+          type: string
+        commentDisplay:
+          description: "Indicates whether or not Accela Citizen Access users can view the inspection results comments.\t"
+          type: string
+        commentPublicVisible:
+          description: Specifies the type of user who can view the inspection result comments. <br/>"All ACA Users" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. <br/>"Record Creator Only" - the user who created the record can see the comments for the inspection results. <br/>"Record Creator and Licensed Professional" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.
+          items:
+            type: string
+          type: array
+        currentTaskId:
+          description: The ID of the current workflow task.
+          type: string
+        daysDue:
+          description: The amount of time to complete a task (measured in days).
+          format: int64
+          type: integer
+        description:
+          description: The description of the record or item.
+          type: string
+        dispositionNote:
+          description: A note describing the disposition of the current task.
+          type: string
+        dueDate:
+          description: The desired completion date of the task.
+          format: date-time
+          type: string
+        endTime:
+          description: The time the workflow task was completed.
+          format: date-time
+          type: string
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedHours:
+          description: The estimated hours necessary to complete this task.
+          format: double
+          type: number
+        hoursSpent:
+          description: Number of hours used for a workflow or workflow task.
+          format: double
+          type: number
+        id:
+          description: The workflow task system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        isActive:
+          description: Indicates whether or not the workflow task is active.
+          enum:
+          - Y
+          - N
+          type: string
+        isCompleted:
+          description: Indicates whether or not the workflow task is completed.
+          enum:
+          - Y
+          - N
+          type: string
+        lastModifiedDate:
+          description: The date when the task item was last changed.
+          format: date-time
+          type: string
+        lastModifiedDateString:
+          description: A string represents the date when the task item was last changed.
+          type: string
+        nextTaskId:
+          description: The id of the next task in a workflow.
+          type: string
+        overTime:
+          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+          type: string
+        processCode:
+          description: The process code for the next task in a workflow.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startTime:
+          description: The time the workflow task started.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The workflow task status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        trackStartDate:
+          description: The date that time tracking is set to begin.
+          format: date-time
+          type: string
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+    response_identifierModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/identifierModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

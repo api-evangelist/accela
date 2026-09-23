@@ -1,0 +1,396 @@
+openapi: 3.2.0
+info:
+  description: The Assets and Assessments APIs enable apps to manage assets and their related condition assessments.
+  title: Assets Assessments API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Assessments
+  description: In Civic Platform, an assessment is synonymous to an asset condition assessment.
+paths:
+  /v4/assessments/mine:
+    get:
+      description: 'Returns the condition assessments assigned to the currently logged-in agency user.
+
+
+        **API Endpoint**: GET /v4/assessments/mine
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get My Condition Assessments
+      operationId: v4.get.assessments.mine
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_assetConditionAssessmentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assessments/{id}:
+    get:
+      description: 'Gets condition assessment information for one or more given assessments, identified in comma-separated {ids}.
+
+
+        **API Endpoint**: GET /v4/assessments/{id}
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get Assessments
+      operationId: v4.get.assessments.id
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idAssessmentPathParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_assetConditionAssessmentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates a given condition assessment.
+
+
+        **API Endpoint**: PUT /v4/assessments/{id}
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Update Assessment
+      operationId: v4.put.assessments.id
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idAssessmentPathParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_assessmentModel'
+        description: The assessment information to be updated.
+        required: true
+  /v4/assessments/{ids}:
+    delete:
+      description: 'Deletes one or more condition assessments.
+
+
+        **API Endpoint**: DELETE /v4/assessments/{ids}
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Delete Assessments
+      operationId: v4.delete.assessments.ids
+      tags:
+      - Assessments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of the condition assessments to be deleted
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_assetConditionAssessmentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetConditionAssessmentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    assetDescriptionModel:
+      type: object
+      properties:
+        description:
+          description: The asset description.
+          type: string
+        group:
+          description: The group the asset belongs to.
+          type: string
+        id:
+          description: The asset system id assigned by the Civic Platform server.
+          type: string
+        status:
+          type: object
+          description: The asset status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type:
+          description: The asset type.
+          type: string
+    request_assessmentModel:
+      type: object
+      required:
+      - status
+      properties:
+        attributes:
+          $ref: '#/components/schemas/customAttributeModel'
+        comment:
+          description: Comments or notes about the assessment.
+          type: string
+        conditionAssessment:
+          description: The condition assessment type. See [Get All Condition Assessment Types](./api-settings.html#operation/v4.get.settings.assessments.types).
+          type: string
+        inspectionDate:
+          description: The inspection date for the assessment, in yyyy-mm-dd format.
+          type: string
+        inspectionTime:
+          description: The inspection time for the assessment, in hh:mm AM/PM format.
+          type: string
+        inspectorId:
+          description: The ID of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        scheduleDate:
+          description: The scheduled assessment date, in yyyy-mm-dd format.
+          type: string
+        scheduleTime:
+          description: The scheduled assessment time, in hh:mm AM/PM format.
+          type: string
+        status:
+          description: The status of the condition assessment
+          enum:
+          - Completed
+          - Scheduled
+          type: string
+        timeSpent:
+          description: The number of hours spent on the assessment.
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
+    assetConditionAssessmentModel:
+      type: object
+      properties:
+        asset:
+          $ref: '#/components/schemas/assetDescriptionModel'
+        assetCAID:
+          description: The asset condition assessment ID.
+          format: int64
+          type: integer
+        assignedToDepartment:
+          description: The department responsible for the assessment.
+          type: string
+        attributes:
+          $ref: '#/components/schemas/customAttributeModel'
+        comments:
+          description: The name of the inspector performing the assessment.
+          type: string
+        inspectorFullName:
+          description: The unique identifier of the inspector.
+          type: string
+        inspectorId:
+          description: The inspector id.
+          type: string
+        scheduledDate:
+          description: The scheduled assessment date, in yyyy-mm-dd format.
+          format: date-time
+          type: string
+        scheduledTime:
+          description: The scheduled assessment time, in hh:mm AM/PM format.
+          type: string
+        status:
+          description: The assessment status.
+          type: string
+        timeSpent:
+          description: The number of hours spent on the assessment.
+          format: double
+          type: number
+        type:
+          description: The type of assessment.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    idAssessmentPathParam:
+      description: The ID of the condition assessment to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-assets-assessments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

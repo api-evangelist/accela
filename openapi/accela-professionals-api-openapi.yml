@@ -1,0 +1,1553 @@
+openapi: 3.2.0
+info:
+  description: The Contacts and Professionals APIs enable apps to manage reference contacts and licensed professionals.
+  title: Contacts Professionals API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Professionals
+  description: A professional is a contractor, architect, engineer, developer, or associated organization. The system requires that all professionals be licensed. Similar to reference contacts, licensed professionals can be attached to transactional records as they are assigned to process applications.
+paths:
+  /v4/professionals/:
+    get:
+      description: 'Gets all professionals in the agency database.
+
+
+        **API Endpoint**: GET /v4/professionals/
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Professionals
+      operationId: v4.get.professionals
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by License ID
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Type
+        in: query
+        name: licenseType
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Number
+        in: query
+        name: licenseNumber
+        required: false
+        schema:
+          type: string
+      - description: Filter by License State
+        in: query
+        name: licenseState
+        required: false
+        schema:
+          type: string
+      - description: Filter by Address State
+        in: query
+        name: state
+        required: false
+        schema:
+          type: string
+      - description: Filter by Country
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Contact First Name
+        in: query
+        name: firstName
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Contact Middle Name
+        in: query
+        name: middleName
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Contact Last Name
+        in: query
+        name: lastName
+        required: false
+        schema:
+          type: string
+      - description: Filter by Email
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: Filter by first line of address.
+        in: query
+        name: addressLine1
+        required: false
+        schema:
+          type: string
+      - description: Filter by second line of address.
+        in: query
+        name: addressLine2
+        required: false
+        schema:
+          type: string
+      - description: Filter by third line of address.
+        in: query
+        name: addressLine3
+        required: false
+        schema:
+          type: string
+      - description: Filter by Business License
+        in: query
+        name: businessLicense
+        required: false
+        schema:
+          type: string
+      - description: Filter by Business Name
+        in: query
+        name: businessName
+        required: false
+        schema:
+          type: string
+      - description: Filter by City
+        in: query
+        name: city
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Expiration Date
+        in: query
+        name: licenseExpirationDate
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Issue Date
+        in: query
+        name: licenseIssueDate
+        required: false
+        schema:
+          type: string
+      - description: Filter by License Last Renewal Date
+        in: query
+        name: lastRenewalDate
+        required: false
+        schema:
+          type: string
+      - description: Filter by Title
+        in: query
+        name: title
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_licenseModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/professionals/{ids}:
+    get:
+      description: 'Gets information for one or more specified professionals.
+
+
+        **API Endpoint**: GET /v4/professionals/{ids}
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Professionals
+      operationId: v4.get.professionals.ids
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of professionals to fetch.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_licenseModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: 'Delete Reference Professionals.
+
+
+        **API Endpoint**: DELETE /v4/professionals/{ids}
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 22.2.2'
+      summary: Delete Reference Professionals
+      operationId: v4.delete.professionals.ids
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The IDs of the licensed professional to delete.(IDs separated by a comma e.g. 181368,181369)
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '206':
+          description: Partial success request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+  /v4/professionals:
+    post:
+      description: 'Create Reference Professional
+
+
+        **API Endpoint**: POST /v4/professionals
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 22.2.2'
+      summary: Create Reference Professional
+      operationId: v4.post.professionals
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                    type: array
+        '206':
+          description: Partial success request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/licenseModel'
+              type: array
+        description: A list of license models to be created
+        required: true
+  /v4/professionals/{id}:
+    put:
+      description: 'Update Reference Professional
+
+
+        **API Endpoint**: PUT /v4/professionals/{id}
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 22.2.2'
+      summary: Update Reference Professional
+      operationId: v4.put.professionals.id
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                    type: array
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/licenseModel'
+              type: array
+        description: A list of license models to be updated
+        required: true
+  v4/professionals/{id}/customForms:
+    put:
+      description: 'Updates the custom forms for the given license professional
+
+
+        **API Endpoint**: PUT /v4/professionals/{id}/CustomForms
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 23.1.0'
+      summary: Update Professional Custom Forms
+      operationId: v4.put.professionals.id.custom.forms
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/request_professionals_customForms'
+              type: array
+        description: A list of license models to be updated. The id and at least one of any other parameters are required.
+        required: true
+  v4/professionals/{id}/templateForms:
+    put:
+      description: 'Updates the template forms for the given license professional
+
+
+        **API Endpoint**: PUT /v4/professionals/{id}/templateForms
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 23.1.0'
+      summary: Update Professional Template Forms
+      operationId: v4.put.professionals.id.template.forms
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/request_professionals_templateForms'
+              type: array
+        description: A list of license models to be updated. The id and at least one of any other parameters are required.
+        required: true
+  v4/professionals/{id}/customForms/meta:
+    get:
+      description: 'Returns the professional customforms meta data
+
+
+        **API Endpoint**: GET /v4/professionals/{id}/CustomForms/meta
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 23.1.0'
+      summary: Get All Custom Forms Metadata for Professional
+      operationId: v4.get.professionals.id.custom.forms.meta.data
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormsMeta'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+  v4/professionals/{id}/customTables:
+    put:
+      description: 'Updates the custom tables for the given license professional
+
+
+        **API Endpoint**: PUT /v4/professionals/{id}/customTables
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 23.1.0'
+      summary: Update Professional Custom Tables
+      operationId: v4.put.professionals.id.custom.tables
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/tableModel'
+              type: array
+        description: A list of license models to be updated
+        required: true
+  v4/professionals/{id}/templateTables:
+    put:
+      description: 'Updates the template tables for the given license professional
+
+
+        **API Endpoint**: PUT /v4/professionals/{id}/templateTables
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 23.1.0'
+      summary: Update Professional Template Tables
+      operationId: v4.put.professionals.id.template.tables
+      tags:
+      - Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '206':
+          description: Partial success request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+                  code:
+                    type: string
+                  traceId:
+                    type: integer
+                  result:
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        isSuccess:
+                          type: boolean
+                    type: array
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/tableModel'
+              type: array
+        description: A list of license models to be updated
+        required: true
+components:
+  schemas:
+    request_professionals_templateForms:
+      items:
+        $ref: '#/components/schemas/professionalsTemplateFormsArrary'
+      type: array
+    professionalsTemplateFormsArrary:
+      type: object
+      properties:
+        id:
+          description: REQUIRED. The custom table id.
+          type: string
+        TEMPLATE_FIELD_1:
+          description: The name of the template field 1.
+          type: string
+        TEMPLATE_FIELD_2:
+          description: The value of the template field 2.
+          type: string
+        date:
+          type: string
+          format: date
+          description: A date of the template.
+        SELECT:
+          type: string
+        DROPDOWN:
+          type: string
+        NUMBER:
+          type: string
+    professionalsCustomFormsArrary:
+      type: object
+      properties:
+        id:
+          description: REQUIRED. The custom table id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of the custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of the custom field.
+          type: string
+    licenseModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        birthDate:
+          description: The birth date.
+          format: date-time
+          type: string
+        businessLicense:
+          description: The official business license number issued by an agency. A licensed professional can have the same license number assigned to multiple license types.
+          type: string
+        businessName:
+          description: A business name for the applicable individual.
+          type: string
+        businessName2:
+          description: A secondary business name for the applicable individual.
+          type: string
+        citizenPermission:
+          description: Access permissions for the selected Citizen Access user groups.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        comment:
+          description: A comment about the inspection contact.
+          type: string
+        contractorBusinessName:
+          description: The contractor's business name (65 char limit).
+          type: string
+        contractorLicenseNumber:
+          description: The contractor's license number.(30 char limit).
+          format: int64
+          type: integer
+        country:
+          type: object
+          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The licensed professional system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        insuranceAmount:
+          description: The insurance cost.
+          format: double
+          type: number
+        insuranceCompany:
+          description: The name of the company insuring the professional.
+          type: string
+        insuranceExpirationDate:
+          description: The date when the insurance policy is due to expire.
+          format: date-time
+          type: string
+        insurancePolicyNumber:
+          description: The insurance policy number.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        lastRenewalDate:
+          description: The last date for a professionals renewal license.
+          format: date-time
+          type: string
+        licenseExpirationDate:
+          description: The date when the license expires and is no longer valid.
+          format: date-time
+          type: string
+        licenseIssueDate:
+          description: The license date of issuance.
+          format: date-time
+          type: string
+        licenseNumber:
+          description: REQUIRED. The licensed professional's license number. The license is from the Contractors State License Board.
+          type: string
+        licenseState:
+          description: REQUIRED. The state that issued the license.
+          type: string
+        licenseType:
+          type: object
+          description: REQUIRED. The type of license held by the professional. See [Get All Professional License Types](./api-settings.html#operation/v4.get.settings.professionals.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        licensingBoard:
+          type: object
+          description: The name of the licensing board that issued the license. See [Get All Professional License Boards](./api-settings.html#operation/v4.get.settings.professionals.licenseBoards).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        middleName:
+          description: The middle name.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        serviceProviderCode:
+          description: REQUIRED. The unique agency identifier
+          type: string
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The licensed professional status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        workerCompensationExemption:
+          description: The code associated with the Worker's Compensation Insurance Company.
+          type: string
+        workerCompensationExpirationDate:
+          description: This is the expiration date of the Worker's Compensation Insurance Policy.
+          format: date-time
+          type: string
+        workerCompensationPolicyNumber:
+          description: This is the policy number for the Worker's Compensation Insurance. Limit of 30 characters.
+          type: string
+        workerInsuranceCompanyCode:
+          description: The code associated with the Worker's Compensation Insurance Company.
+          type: string
+    response_licenseModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/licenseModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    tableModel:
+      type: object
+      properties:
+        id:
+          description: The custom table id.
+          type: string
+        rows:
+          items:
+            $ref: '#/components/schemas/rowModel'
+          description: A table row containing custom fields.
+          type: array
+    customFormsMetaFieldsArrary:
+      type: object
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        isReadonly:
+          type: integer
+        fieldType:
+          type: string
+        maxLength:
+          type: integer
+        isRequired:
+          type: string
+        displayOrder:
+          type: integer
+        options:
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              text:
+                type: string
+          type: array
+    request_professionals_customForms:
+      items:
+        $ref: '#/components/schemas/professionalsCustomFormsArrary'
+      type: array
+    response_customFormsMeta:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP return status.
+        result:
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              text:
+                type: string
+              displayOrder:
+                type: integer
+              fields:
+                items:
+                  $ref: '#/components/schemas/customFormsMetaFieldsArrary'
+                type: array
+          type: array
+    rowModel:
+      type: object
+      properties:
+        action:
+          description: The requested operation on the row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The row id.
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
+          type: string
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-contacts-professionals.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

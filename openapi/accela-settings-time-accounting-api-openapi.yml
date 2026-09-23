@@ -1,0 +1,168 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Time Accounting API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Time Accounting
+paths:
+  /v4/settings/timeAccounting/groups:
+    get:
+      description: 'Gets all time accounting groups, optionally for specified userids.
+
+
+        **API Endpoint**: GET /v4/settings/timeAccounting/groups
+
+
+        **Scope**: settings
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Time Accounting Groups
+      operationId: v4.get.settings.timeAccounting.groups
+      tags:
+      - Settings/Time Accounting
+      parameters:
+      - description: Filter by comma-delimited user ids.
+        in: query
+        name: userIds
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/timeAccounting/types:
+    get:
+      description: 'Gets all time accounting types for specified time accounting groups, optionally for specified userids and record type.
+
+
+        **API Endpoint**: GET /v4/settings/timeAccounting/types
+
+
+        **Scope**: settings
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Time Accounting Types
+      operationId: v4.get.settings.timeAccounting.types
+      tags:
+      - Settings/Time Accounting
+      parameters:
+      - description: Filter by time accounting group.
+        in: query
+        name: groupId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: Filter by comma-delimited the user ids.
+        in: query
+        name: userIds
+        required: false
+        schema:
+          type: string
+      - description: Filter by the record type.
+        in: query
+        name: recordType
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

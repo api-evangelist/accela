@@ -1,0 +1,96 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Gis API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: GIS
+paths:
+  /v4/gis/dynamicThemes:
+    get:
+      description: 'Get GIS dynamic themes by for the given service.
+
+
+        **API Endpoint**: GET /v4/gis/dynamicThemes
+
+
+        **Scope**: gis
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 21.2.1'
+      summary: Get GIS dynamic themes by for the given service
+      operationId: v4.get.gis.dynamic.themes
+      tags:
+      - GIS
+      parameters:
+      - in: query
+        required: true
+        name: serviceId
+        schema:
+          type: string
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_GISDynamicThemes'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    dynamicThemesArray:
+      type: object
+      properties:
+        themeGroup:
+          type: string
+        themeName:
+          type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_GISDynamicThemes:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/dynamicThemesArray'
+        status:
+          type: integer
+          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

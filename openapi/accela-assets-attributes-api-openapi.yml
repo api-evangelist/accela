@@ -1,0 +1,314 @@
+openapi: 3.2.0
+info:
+  description: The Assets and Assessments APIs enable apps to manage assets and their related condition assessments.
+  title: Assets and Assessments Assets/Attributes API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Assets/Attributes
+  description: In addition to these asset properties, assets can also have custom attributes which are customized characteristics of assets, structures, and establishments. Asset custom attributes can be grouped into a template, which can be used to create an asset. In addition to custom attributes, asset attribute data can be collected into an attribute table.
+paths:
+  /v4/assets/{id}/attributes:
+    get:
+      description: 'Returns the custom attribute values for a given asset. The custom attributes are configured in an attribute template which is assigned to the asset type in Civic Platform Administration.
+
+
+        **API Endpoint**: GET /v4/assets/{id}/attributes
+
+
+        **Scope**: assets
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get Asset Custom Attributes
+      operationId: getV4AssetsByIdAttributes
+      tags:
+      - Assets/Attributes
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idAssetPathParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      x-operation-id-source: derived
+    put:
+      description: 'Updates the custom attributes for a given asset. The response returns an array containing any custom attribute validation error and the status of the asset update.
+
+
+        **API Endpoint**: PUT /v4/assets/{id}/attributes
+
+
+        **Scope**: assets
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Update Asset Custom Attributes
+      operationId: v4.put.assets.id.attributes
+      tags:
+      - Assets/Attributes
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the asset to be updated.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customAttributeModel'
+        description: 'The custom attributes to be updated. Ex. [{ "field1": "field1Val", "field2": "field2Val"}]'
+        required: true
+  /v4/assets/{id}/attributes/meta:
+    get:
+      description: 'Returns an array containing the metadata of the asset custom attributes. The metadata is configured in an attributes template which is assigned to the asset type in Civic Platform Administration.
+
+
+        **API Endpoint**: GET /v4/assets/{id}/attributes/meta
+
+
+        **Scope**: assets
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get Metadata of Asset Custom Attributes
+      operationId: v4.get.assets.id.attributes.meta
+      tags:
+      - Assets/Attributes
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the asset to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_attributeMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    idAssetPathParam:
+      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_attributeMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/attributeMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    attributeMetadataModel:
+      type: object
+      properties:
+        attributeGroup:
+          description: The group the attribute belongs to.
+          type: string
+        attributeLabel:
+          description: The attribute's display label.
+          type: string
+        attributeLength:
+          description: The number of characters the attribute field allows.
+          type: string
+        attributeName:
+          description: The unique name of the attribute. This name is for administrative use only; it is not used for display purposes.
+          type: string
+        defaultValue:
+          description: The attribute's default value.
+          type: string
+        description:
+          description: The attribute's description.
+          type: string
+        displayOrder:
+          description: The attribute's display position.
+          format: int64
+          type: integer
+        displayStatus:
+          description: The attribute's display status.
+          type: string
+        isDropdownList:
+          description: Indicates whether or not the attribute is a dropdown list.
+          enum:
+          - Y
+          - N
+          type: string
+        options:
+          description: Contains the dropdown list values.
+          items:
+            type: string
+          type: array
+        rangeSearchFlag:
+          description: Indicates whether or not the attribute allows a search range.
+          type: string
+        recordStatus:
+          description: Indicates whether or not the attribute is active.
+          type: string
+        searchableFlag:
+          description: Indicates whether or not the attribute is searchable.
+          type: string
+        unitType:
+          description: The unit of measure used with the attribute.
+          type: string
+        updatedBy:
+          description: The user who last updated the attribute.
+          type: string
+        updatedDate:
+          description: The date and time the attribute was last updated.
+          format: date-time
+          type: string
+        valueDataType:
+          description: The data type of the attribute value.
+          type: string
+        valueRequired:
+          description: Indicates whether or not the attribute value is required.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-assets-assessments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

@@ -1,0 +1,366 @@
+openapi: 3.2.0
+info:
+  description: The Payments API enables apps to submit payment transactions on Civic Platform records.
+  title: Payments Invoices API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Invoices
+  description: An invoice fee can either be generated manually in the Civic Platform's Payment Processing portlet or automatically if configured in Civic Platform Administration. The Invoice API enables apps to get invoices and create record invoices.
+paths:
+  /v4/invoices/{invoiceIds}:
+    get:
+      description: 'Returns invoice information for given invoice id''s.
+
+
+        **API Endpoint**: GET /v4/invoices/{invoiceIds}
+
+
+        **Scope**: invoices
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get Invoices
+      operationId: v4.get.invoices.invoiceIds
+      tags:
+      - Invoices
+      parameters:
+      - description: One or more comma-separated IDs of invoices to fetch.
+        in: path
+        name: invoiceIds
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_invoiceModelArray'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+  schemas:
+    response_invoiceModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/invoiceModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    feeItemModel:
+      type: object
+      properties:
+        acaRequiredFlag:
+          description: Indicates whether or not the fee schedule is required in order to make it accessible to citizens.
+          type: string
+        accountCode1:
+          description: The code associated with the first fee
+          type: string
+        accountCode1Allocation:
+          description: Allocation proportion or amount of account code 1.
+          format: double
+          type: number
+        accountCode2:
+          description: The code associated with the second fee
+          type: string
+        accountCode2Allocation:
+          description: Allocation proportion or amount of account code 2.
+          format: double
+          type: number
+        accountCode3:
+          description: The code associated with the third fee
+          type: string
+        accountCode3Allocation:
+          description: Allocation proportion or amount of account code 3.
+          format: double
+          type: number
+        allocatedFee1:
+          description: The allocated fee for account code 1.
+          format: double
+          type: number
+        allocatedFee2:
+          description: The allocated fee for account code 2.
+          format: double
+          type: number
+        allocatedFee3:
+          description: The allocated fee for account code 3.
+          format: double
+          type: number
+        amount:
+          description: The amount of a payment transaction or account balance.
+          format: double
+          type: number
+        applyDate:
+          description: The date the fee is applied.
+          format: date-time
+          type: string
+        autoAssessFlag:
+          description: Indicates whether or not the fee item is automatically assessed.
+          type: string
+        autoInvoiceFlag:
+          description: Indicates whether or not the fee item is automatically invoiced.
+          type: string
+        balanceDue:
+          description: The amount due.
+          format: double
+          type: number
+        calcFlag:
+          description: Indicates whether or not the fee amount is based on fee calculation.
+          type: string
+        calculatedFlag:
+          description: Indicates whether or not the fee amount is based on fee calculation.
+          type: string
+        code:
+          type: object
+          description: A code identifying an associated item
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        description:
+          type: object
+          description: The fee description.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        displayOrder:
+          description: The display order of the fee item.
+          format: int64
+          type: integer
+        effectDate:
+          description: Fee item effective date.
+          format: date-time
+          type: string
+        expireDate:
+          description: The date when the item expires
+          format: date-time
+          type: string
+        feeAllocationType:
+          description: The fee allocation type to each account code.
+          type: string
+        feeNotes:
+          description: Notes about the fee.
+          type: string
+        id:
+          description: The fee system id.
+          format: int64
+          type: integer
+        invoiceId:
+          description: The invoice ID for the fee item.
+          format: int64
+          type: integer
+        maxFee:
+          description: The maximum fee item.
+          format: double
+          type: number
+        minFee:
+          description: The minimum fee item.
+          format: double
+          type: number
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        priority:
+          description: The priority level assigned to the fee item.
+          format: int64
+          type: integer
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        schedule:
+          type: object
+          description: The payment schedule name.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          description: The fee item status.
+          type: string
+        subGroup:
+          type: object
+          description: The subgroup the fee is associated with.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        udf1:
+          description: User defined field 1
+          type: string
+        udf2:
+          description: User defined field 2
+          type: string
+        udf3:
+          description: User defined field 3
+          type: string
+        unit:
+          type: object
+          description: The unit of measure used for the object.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        variable:
+          description: The variable associated with the fee item.
+          type: string
+        version:
+          type: object
+          description: The payment schedule version
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    invoiceModel:
+      type: object
+      properties:
+        amount:
+          description: The invoice fee amount.
+          format: double
+          type: number
+        auditStatus:
+          description: The audit status of the invoice fee item.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        dueDate:
+          description: The invoice due date.
+          format: date-time
+          type: string
+        fees:
+          items:
+            $ref: '#/components/schemas/feeItemModel'
+          type: array
+        id:
+          description: The unique id of the invoice.
+          format: int64
+          type: integer
+        invBatchDate:
+          description: The invoice batch date.
+          format: date-time
+          type: string
+        invComment:
+          description: A comment related to the invoice.
+          type: string
+        invoiceDate:
+          description: The invoice date.
+          format: date-time
+          type: string
+        invoiceNumber:
+          description: The invoice number string.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        udf1:
+          description: Invoice user defined field 1.
+          type: string
+        udf2:
+          description: Invoice user defined field 2.
+          type: string
+        udf3:
+          description: Invoice user defined field 3.
+          type: string
+        udf4:
+          description: Invoice user defined field 4.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-payments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - escaped stray backslashes
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

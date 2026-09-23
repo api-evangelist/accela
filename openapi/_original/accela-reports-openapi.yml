@@ -1,0 +1,330 @@
+# x-archived-from: accela-reports-openapi.yml
+# x-archived-on: 2026-09-16
+basePath: /
+swagger: '2.0'
+host: apis.accela.com
+schemes:
+- https
+info:
+  description: 'The Reports API allows an app to get Civic Platform report definitions and create reports. '
+  title: Reports
+  version: v4
+tags:
+- name: Reports
+  description: 'Civic Platform provides a set of standard reports, developed with reporting tools such as Crystal Reports,
+    Microsoft Reporting Services. The Reports API sends requests to the report server to create reports. The report server
+    connects to the system database, composes the report, and delivers the report in a predefined format. A report configuration
+    contains report definition details and permission attributes used to run reports. <br/><br/> Each reporting service provides
+    options to present reports in different formats including Adobe Acrobat (.PDF), Microsoft Word (.doc), and Microsoft Excel
+    (.xls). For example, Crystal Reports provides Adobe Acrobat (PDF), MS Word (.doc), MS Excel (.xls), Rich Text Format (.rtf)
+    and Comma-Delimited (CSV) output formatting options.  '
+paths:
+  /v4/reports/{reportId}:
+    post:
+      description: "Creates a report based on the report id and report parameters.\n\n\n\n**API Endpoint**:  POST /v4/reports/{reportId}\
+        \ \n\n**Scope**:  reports \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      operationId: v4.post.reports.reportId
+      summary: Create Report
+      tags:
+      - Reports
+      produces:
+      - application/octet-stream
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Filter by module name. The system checks permission for specific resources based on the module.<br/>
+          See [Get All Modules](#operation/v4.get.settings.modules).
+        in: query
+        name: module
+        required: true
+        type: string
+      - description: The unique ID of the report to fetch.
+        in: path
+        name: reportId
+        required: true
+        type: string
+      - description: Report request parameters.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/reportRequestModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "The report is returned as a data stream. \n\nNote: A successful request may return no data matching\
+            \ the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine\
+            \ back-end processing."
+          examples:
+            application/pdf: "%PDF-1.7 % 1 0 obj << /Type /Catalog / Pages 2 0 R / PageMode / UseNone / ViewerPreferences\
+              \ << /FitWindow true / PageLayout / SinglePage / NonFullScreenPageMode / UseNone >> >> endobj\r\n\t\t\t\t\t\t\
+              \t5 0 obj << /Length 37 / Filter[/FlateDecode ] >> stream xxxx endobj 2 0 obj << /Type /Pages / Kids[8 0 R]\
+              \ / Count 1 / MediaBox 3 0 R / CropBox 4 0 R >> endobj 3 0 obj[0 0 0 0] endobj 4 0 obj[0 0 0 0] endobj 6 0 obj\
+              \ << /ProcSet 7 0 R >> endobj 7 0 obj[/PDF /Text] endobj 8 0 obj << /Type /Page / Parent 2 0 R / Resources 6\
+              \ 0 R / Contents[5 0 R] >> endobj 9 0 obj(Powered By Crystal) endobj 10 0 obj(Crystal Reports) endobj 11 0 obj\
+              \ << /Producer (Powered By Crystal) / Creator(Crystal Reports) >> endobj xref 0 12 0000000000 65535 f 0000000017\
+              \ 00000 n 0000000312 00000 n 0000000411 00000 n 0000000441 00000 n 0000000194 00000 n 0000000471 00000 n 0000000512\
+              \ 00000 n 0000000546 00000 n 0000000638 00000 n 0000000677 00000 n 0000000714 00000 n trailer << /Size 12 /\
+              \ Root 1 0 R / Info 11 0 R >> startxref 802 % % EOF "
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/reports/categories:
+    get:
+      description: "Gets a list of report categories.\n\n\n\n**API Endpoint**:  GET /v4/settings/reports/categories \n\n**Scope**:\
+        \  reports \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.2\n\
+        \n"
+      summary: Get All Report Categories
+      operationId: v4.get.settings.reports.categories
+      tags:
+      - Settings/Reports
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            items:
+              $ref: '#/definitions/response_categoryModelArray'
+            type: array
+        '400':
+          description: Invalid request.
+          schema:
+            type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/reports/definitions:
+    get:
+      description: "Gets a list of report definitions in the system.\n\n\n\n**API Endpoint**:  GET /v4/settings/reports/definitions\
+        \ \n\n**Scope**:  reports \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Get All Report Definitions
+      operationId: v4.get.settings.reports.definitions
+      tags:
+      - Settings/Reports
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Filter by report category. See [Get All Report Categories](#operation/v4.get.settings.reports.categories).
+        in: query
+        name: category
+        required: false
+        type: string
+      - description: Filter by module.
+        in: query
+        name: module
+        required: false
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_reportDefinitionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/reports/definitions/{reportId}:
+    get:
+      description: "Gets the definition for a specific report.\n\n\n\n**API Endpoint**:  GET /v4/settings/reports/definitions/{reportId}\
+        \ \n\n**Scope**:  reports \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.2\n\n"
+      summary: Get Report Definition
+      operationId: v4.get.settings.reports.definitions.reportId
+      tags:
+      - Settings/Reports
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of report that needs to fetch.
+        in: path
+        name: reportId
+        required: true
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_reportDefinitionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  customAttributeModel:
+    description: Contains one or more custom report parameters.
+    type: object
+    properties:
+      <aCustomFieldName>:
+        type: string
+        description: A custom report parameter, as defined in Civic Platform Report Manager.
+      <aCustomFieldValue>:
+        type: string
+        description: The report parameter value.
+  reportRequestModel:
+    type: object
+    properties:
+      entityId:
+        type: string
+        description: The ID of the object associated with the report.
+      entityType:
+        type: string
+        description: The type of object associated with the report.
+        enum:
+        - record
+        - inspection
+        - parcel
+        - workflow
+      parameters:
+        $ref: '#/definitions/customAttributeModel'
+  response_categoryModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/categoryModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  categoryModel:
+    type: object
+    properties:
+      display:
+        description: The display name of the report category.
+        type: string
+      id:
+        description: The report category system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        description: The name of the report category.
+        type: string
+  response_reportDefinitionModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/reportDefinitionModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  reportDefinitionModel:
+    type: object
+    properties:
+      description:
+        description: Describes the report definition.
+        type: string
+      format:
+        description: The report format (PDF, XLS and so on)
+        type: string
+      id:
+        description: The report definition system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        description: The name of the report definition.
+        type: string
+      parameters:
+        description: Contains report parameters.
+        items:
+          $ref: '#/definitions/reportParameterModel'
+        type: array
+      servProvCode:
+        description: The unique agency identifier.
+        type: string
+  reportParameterModel:
+    type: object
+    properties:
+      name:
+        description: The report parameter name.
+        type: string
+      nickname:
+        description: The report parameter alias or nickname.
+        type: string
+      required:
+        description: Indicates whether or not the report parameter is required
+        type: string
+      type:
+        description: The report parameter type.
+        type: string
+parameters:
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+  fields:
+    description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-reports.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.
+  repairs:
+  - removed trailing commas
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

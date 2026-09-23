@@ -1,0 +1,656 @@
+openapi: 3.2.0
+info:
+  description: Use the Address-Parcel-Owner ("APO") API to get, create, and update reference information about addresses, parcels, and owners used in land or property management solutions. Because reference APO can be associated to multiple transactional records, a reference APO object cannot be deleted.
+  title: Addresses, Parcels, Owners API
+  version: v4
+servers:
+- url: http://apis.accela.com/
+tags:
+- name: Owners
+  description: An owner defines an individual or entity related to a parcel so that the owner becomes the responsible party and point of contact for the parcel. The parcel owner must initiate or approve all work done on a parcel.
+paths:
+  /v4/owners:
+    get:
+      description: 'Gets a list of reference owners in the agency database. Specify at least one filter criteria.
+
+
+        **API Endpoint**: GET /v4/owners
+
+
+        **Scope**: owners
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Owners
+      operationId: v4.get.owners
+      tags:
+      - Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by owner's full name.
+        in: query
+        name: fullName
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's first name.
+        in: query
+        name: firstName
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's last name.
+        in: query
+        name: lastName
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's parcel id.
+        in: query
+        name: parcelId
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's email.
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's city.
+        in: query
+        name: city
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's state.
+        in: query
+        name: state
+        required: false
+        schema:
+          type: string
+      - description: Filter by owner's country.
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+      - description: "Related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response. \n\nAdded in Civic Platform version: 9.3.0"
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - customForms
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_ownerModelWithCustomFormsArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/owners/{id}:
+    get:
+      description: 'Gets information about a reference owner.
+
+
+        **API Endpoint**: GET /v4/owners/{id}
+
+
+        **Scope**: owners
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Owner
+      operationId: v4.get.owners.id
+      tags:
+      - Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idOwnerPathParam'
+      - description: "Related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response. \n\nAdded in Civic Platform version: 9.3.0 (API-4591)"
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - customForms
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_ownerModelWithCustomForms'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/owners/{ownerId}/conditions:
+    get:
+      description: 'Gets the conditions on a reference owner.
+
+
+        **API Endpoint**: GET /v4/owners/{ownerId}/conditions
+
+
+        **Scope**: owners
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 8.0.0'
+      summary: Get All Owner Conditions
+      operationId: v4.get.owners.ownerId.conditions
+      tags:
+      - Owners
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/ownerIdPathParam'
+      - $ref: '#/components/parameters/conditionTypeQueryParam'
+      - $ref: '#/components/parameters/conditionNameQueryParam'
+      - $ref: '#/components/parameters/conditionStatusQueryParam'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_conditionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    idOwnerPathParam:
+      description: The system id of the owner to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    conditionNameQueryParam:
+      description: Filter by condition name.
+      in: query
+      name: name
+      schema:
+        type: string
+    conditionStatusQueryParam:
+      description: Filter by condition status. See [Get All Standard Condition Statuses](./api-settings.html#operation/v4.get.settings.conditions.statuses), [Get All Approval Condition Statuses](./api-settings.html#operation/v4.get.settings.conditionApprovals.statuses)
+      in: query
+      name: status
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    conditionTypeQueryParam:
+      description: Filter by condition type. See [Get All Condition Types](./api-settings.html#operation/v4.get.settings.conditions.types)
+      in: query
+      name: type
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    ownerIdPathParam:
+      description: The system id of the owner to fetch.
+      in: path
+      name: ownerId
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_conditionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_ownerModelWithCustomFormsArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/ownerModelWithCustomForms'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    response_ownerModelWithCustomForms:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ownerModelWithCustomForms'
+        status:
+          type: integer
+          description: The HTTP return status.
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    conditionModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        activeStatus:
+          type: object
+          description: Indicates whether or not the condition is active.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        additionalInformation:
+          description: An unlimited text field to use if other fields are filled.
+          type: string
+        appliedDate:
+          description: 'The date when condition is applied. The Applied Date defaults to the current date in any of the following scenarios: 1) you are adding a standard condition, 2) you are creating a new condition, or 3) The condition is auto-assigned to a record.'
+          format: date-time
+          type: string
+        appliedbyDepartment:
+          type: object
+          description: The department responsible for applying the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        appliedbyUser:
+          type: object
+          description: The staff member responsible for applying the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        displayNoticeInAgency:
+          description: Indicates whether or not to display the condition notice in Civic Platform when a condition is applied.
+          type: boolean
+        displayNoticeInCitizens:
+          description: Indicates whether or not to display the condition notice in Citizen Access when a condition to a record or parcel is applied.
+          type: boolean
+        displayNoticeInCitizensFee:
+          description: Indicates whether or not to display the condition notice in Citizen Access Fee Estimate page when a condition to a record or parcel is applied.
+          type: boolean
+        effectiveDate:
+          description: The date when the condition becomes effective.
+          format: date-time
+          type: string
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        group:
+          type: object
+          description: The condition group, which is a set of condition types.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The condition system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inheritable:
+          type: object
+          description: Indicates whether or not Civic Platform checks for inheritable conditions when a user associates a child record with a parent record.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        isIncludeNameInNotice:
+          description: Indicates whether or not to display the condition name in the notice.
+          type: boolean
+        isIncludeShortCommentsInNotice:
+          description: Indicates whether or not to display the condition comments in the notice.
+          type: boolean
+        longComments:
+          description: Narrative comments to help identify the purpose or uses of the standard condition.
+          type: string
+        name:
+          description: The full name for the application contact.
+          type: string
+        ownerNumber:
+          description: (For owner conditions only) The owner number the condition applies to.
+          type: string
+        parcelNumber:
+          description: (For parcel conditions only) The parcel number the condition applies to.
+          type: string
+        priority:
+          type: object
+          description: The priority level assigned to the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicDisplayMessage:
+          description: Text entered into this field displays in the condition notice or condition status bar for the Condition Name for the public user in Accela IVR (AIVR) and Citizen Access (ACA).
+          type: string
+        resolutionAction:
+          description: The action performed in response to a condition.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortComments:
+          description: A brief description of the condition name. For example, the text may describe the situation that requires the system to apply the condition. You can set these short comments to display when a user accesses an application with this condition applied to it
+          type: string
+        status:
+          type: object
+          description: The condition status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        statusType:
+          description: The status type for a standard condition or an approval condition, applied or not applied for example.
+          type: string
+        type:
+          type: object
+          description: The condition type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    ownerModelWithCustomForms:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/ownerAddressModel'
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        firstName:
+          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        fullName:
+          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        id:
+          description: The owner system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the owner as the primary owner.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        mailAddress:
+          $ref: '#/components/schemas/ownerAddressModel'
+        middleName:
+          description: The contact's middle name.
+          type: string
+        parcelId:
+          description: The unique Id generated for a parcel.
+          type: string
+        phone:
+          description: The telephone number of the owner.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        status:
+          type: object
+          description: The owner status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        structureName:
+          description: The name of the full or partial structure or establishment.
+          type: string
+        structureType:
+          description: The type of structure or establishment
+          type: string
+        taxId:
+          description: The owner's tax ID number.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom form data uses the configured address-parcel-owner template metadata. The custom fields use the configured address-parcel-owner template metadata. Note the following custom field data types: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-addresses-parcels-owners.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

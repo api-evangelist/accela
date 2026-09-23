@@ -1,0 +1,532 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Fees API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Fees
+paths:
+  /v4/records/{recordId}/fees:
+    get:
+      description: 'Gets the fee schedules associated with the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/fees
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Fees for Record
+      operationId: v4.get.records.recordId.fees
+      tags:
+      - Records/Fees
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - description: Filter by the status of the fee items.
+        in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - paid
+          - unpaid
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_feeItemModel_1Array'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates fees for the specified record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/fees
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Record Fees
+      operationId: v4.post.records.recordId.fees
+      tags:
+      - Records/Fees
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/feeItemBaseModel'
+              type: array
+        description: 'Fee item information to be added. eg: [{ "code" : {"value":"TESTFEE2"}, "feeNotes":"test note1", "paymentPeriod" : {"value":"FINAL"}, "quantity" : 9, "schedule" : {"value":"J_FEE"}, "version" : {"value":"1.0"}}, { "code" : {"value":"JFEE"},"feeNotes":"test note1","paymentPeriod" :{"value": "FINAL"}, "quantity" : 9, "schedule" : {"value":"AD_LETTER"}, "version" : {"value":"1"}} ]'
+        required: true
+  /v4/records/{recordId}/fees/estimate:
+    put:
+      description: 'Provides fee estimations for the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/fees/estimate
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Estimate Record Fees
+      operationId: v4.put.records.recordId.fees.estimate
+      tags:
+      - Records/Fees
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_estimateFeeModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/feeItemBaseModel_1'
+              type: array
+        description: The record fee items information to be updated.
+        required: true
+components:
+  schemas:
+    response_feeItemModel_1Array:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/feeItemModel_1'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    estimateFeeModel:
+      type: object
+      properties:
+        currencyCode:
+          description: The standard ISO 4217 currency code. For example, "USD" for US Dollars
+          type: string
+        feeTotal:
+          description: The total fee.
+          format: double
+          type: number
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    feeItemModel_1:
+      type: object
+      properties:
+        accountCode1:
+          description: The code associated with the first fee
+          type: string
+        accountCode1Allocation:
+          description: Allocation proportion or amount of account code 1.
+          format: double
+          type: number
+        accountCode2:
+          description: The code associated with the second fee
+          type: string
+        accountCode2Allocation:
+          description: Allocation proportion or amount of account code 2.
+          format: double
+          type: number
+        accountCode3:
+          description: The code associated with the third fee
+          type: string
+        accountCode3Allocation:
+          description: Allocation proportion or amount of account code 3.
+          format: double
+          type: number
+        amount:
+          description: The amount of a payment transaction or account balance.
+          format: double
+          type: number
+        auditDate:
+          description: The date when the fee item was added or updated.
+          format: date-time
+          type: string
+        applyDate:
+          description: The date the fee is applied.
+          format: date-time
+          type: string
+        balanceDue:
+          description: The amount due.
+          format: double
+          type: number
+        code:
+          type: object
+          description: A code identifying an associated item
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        displayOrder:
+          description: The display order of the fee item.
+          format: int64
+          type: integer
+        id:
+          description: The fee system id.
+          format: int64
+          type: integer
+        invoiceId:
+          description: The invoice ID for the fee item.
+          format: int64
+          type: integer
+        maxFee:
+          description: The maximum fee item.
+          format: double
+          type: number
+        minFee:
+          description: The minimum fee item.
+          format: double
+          type: number
+        notes:
+          description: Notes about the fee item.
+          type: string
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        priority:
+          description: The priority level assigned to the fee item.
+          format: int64
+          type: integer
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        schedule:
+          type: object
+          description: The payment schedule name.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          description: The fee item status.
+          type: string
+        subGroup:
+          type: object
+          description: The subgroup the fee is associated with.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        udf1:
+          description: User defined field 1
+          type: string
+        udf2:
+          description: User defined field 2
+          type: string
+        udf3:
+          description: User defined field 3
+          type: string
+        unit:
+          type: object
+          description: The unit of measure used for the object.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        variable:
+          description: The variable associated with the fee item.
+          type: string
+        version:
+          type: object
+          description: The payment schedule version
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    feeItemBaseModel_1:
+      type: object
+      properties:
+        code:
+          type: object
+          description: The fee item code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The fee item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        notes:
+          description: "A note entered against a fee item.\t"
+          type: string
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        quantity:
+          description: The number of units for which the fee applies.
+          format: double
+          type: number
+        schedule:
+          type: object
+          description: Contains parameters that define the fee schedule. See [Get All Fee Schedules for Record Type](./api-settings.html#operation/v4.get.settings.records.types.id.fees.schedules).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        version:
+          type: object
+          description: The fee item version.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    feeItemBaseModel:
+      type: object
+      properties:
+        code:
+          type: object
+          description: The fee item code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        feeNotes:
+          description: Notes about the fee.
+          type: string
+        id:
+          description: The fee item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        schedule:
+          type: object
+          description: Contains parameters that define the fee schedule.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        version:
+          type: object
+          description: The fee schedule version.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_estimateFeeModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/estimateFeeModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

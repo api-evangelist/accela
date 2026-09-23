@@ -1,0 +1,295 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Workflows API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Workflows
+  description: '**Workflow Tasks**
+
+
+    A workflow is a sequence of tasks that agency users follow to process a record.'
+paths:
+  /v4/workflowTasks/mine:
+    get:
+      description: 'Gets a list of workflow tasks for the current user.
+
+
+        **API Endpoint**: GET /v4/workflowTasks/mine
+
+
+        **Scope**: workflows
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get My Workflow Tasks
+      operationId: v4.get.workflowTasks.mine
+      tags:
+      - Workflows
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_workflowTaskModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_workflowTaskModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/workflowTaskModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    workflowTaskModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        approval:
+          description: Used to indicate supervisory approval of an adhoc task.
+          type: string
+        assignEmailDisplay:
+          description: 'Indicates whether or not to display the agency employee''s email address in ACA. Public users can then click the e-mail hyperlink and send an e-mail to the agency employee. ''Y'' : display the email address. ''N'' : hide the email address.'
+          type: string
+        assignedDate:
+          description: The date of the assigned action.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        assignedUser:
+          type: object
+          description: The staff member responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        billable:
+          description: Indicates whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        comment:
+          description: Comments or notes about the current context.
+          type: string
+        commentDisplay:
+          description: Indicates whether or not Accela Citizen Access users can view the inspection results comments.
+          type: string
+        commentPublicVisible:
+          description: Specifies the type of user who can view the inspection result comments. <br/>"All ACA Users" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. <br/>"Record Creator Only" - the user who created the record can see the comments for the inspection results. <br/>"Record Creator and Licensed Professional" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.
+          items:
+            type: string
+          type: array
+        currentTaskId:
+          description: The ID of the current workflow task.
+          type: string
+        daysDue:
+          description: The amount of time to complete a task (measured in days).
+          format: int64
+          type: integer
+        description:
+          description: The description of the record or item.
+          type: string
+        dispositionNote:
+          description: A note describing the disposition of the current task.
+          type: string
+        dueDate:
+          description: The desired completion date of the task.
+          format: date-time
+          type: string
+        endTime:
+          description: The time the workflow task was completed.
+          format: date-time
+          type: string
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedHours:
+          description: The estimated hours necessary to complete this task.
+          format: double
+          type: number
+        hoursSpent:
+          description: Number of hours used for a workflow or workflow task.
+          format: double
+          type: number
+        id:
+          description: The workflow task system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        isActive:
+          description: Indicates whether or not the workflow task is active.
+          enum:
+          - Y
+          - N
+          type: string
+        isCompleted:
+          description: Indicates whether or not the workflow task is completed.
+          enum:
+          - Y
+          - N
+          type: string
+        lastModifiedDate:
+          description: The date when the task item was last changed.
+          format: date-time
+          type: string
+        nextTaskId:
+          description: The id of the next task in a workflow.
+          type: string
+        overTime:
+          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+          type: string
+        processCode:
+          description: The process code for the next task in a workflow.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startTime:
+          description: The time the workflow task started.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The workflow task status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        trackStartDate:
+          description: The date that time tracking is set to begin.
+          format: date-time
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

@@ -1,0 +1,122 @@
+openapi: 3.2.0
+info:
+  description: The Reports API allows an app to get Civic Platform report definitions and create reports.
+  title: Reports API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Reports
+  description: Civic Platform provides a set of standard reports, developed with reporting tools such as Crystal Reports, Microsoft Reporting Services.
+paths:
+  /v4/reports/{reportId}:
+    post:
+      description: 'Creates a report based on the report id and report parameters.
+
+
+        **API Endpoint**: POST /v4/reports/{reportId}
+
+
+        **Scope**: reports
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.post.reports.reportId
+      summary: Create Report
+      tags:
+      - Reports
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by module name. The system checks permission for specific resources based on the module.<br/> See [Get All Modules](#operation/v4.get.settings.modules).
+        in: query
+        name: module
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of the report to fetch.
+        in: path
+        name: reportId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "The report is returned as a data stream. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/pdf:
+              example: "%PDF-1.7 % 1 0 obj << /Type /Catalog / Pages 2 0 R / PageMode / UseNone / ViewerPreferences << /FitWindow true / PageLayout / SinglePage / NonFullScreenPageMode / UseNone >> >> endobj\n\t\t\t\t\t\t\t5 0 obj << /Length 37 / Filter[/FlateDecode ] >> stream xxxx endobj 2 0 obj << /Type /Pages / Kids[8 0 R] / Count 1 / MediaBox 3 0 R / CropBox 4 0 R >> endobj 3 0 obj[0 0 0 0] endobj 4 0 obj[0 0 0 0] endobj 6 0 obj << /ProcSet 7 0 R >> endobj 7 0 obj[/PDF /Text] endobj 8 0 obj << /Type /Page / Parent 2 0 R / Resources 6 0 R / Contents[5 0 R] >> endobj 9 0 obj(Powered By Crystal) endobj 10 0 obj(Crystal Reports) endobj 11 0 obj << /Producer (Powered By Crystal) / Creator(Crystal Reports) >> endobj xref 0 12 0000000000 65535 f 0000000017 00000 n 0000000312 00000 n 0000000411 00000 n 0000000441 00000 n 0000000194 00000 n 0000000471 00000 n 0000000512 00000 n 0000000546 00000 n 0000000638 00000 n 0000000677 00000 n 0000000714 00000 n trailer << /Size 12 / Root 1 0 R / Info 11 0 R >> startxref 802 % % EOF "
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reportRequestModel'
+        description: Report request parameters.
+        required: true
+components:
+  schemas:
+    reportRequestModel:
+      type: object
+      properties:
+        entityId:
+          type: string
+          description: The ID of the object associated with the report.
+        entityType:
+          type: string
+          description: The type of object associated with the report.
+          enum:
+          - record
+          - inspection
+          - parcel
+          - workflow
+        parameters:
+          $ref: '#/components/schemas/customAttributeModel'
+    customAttributeModel:
+      description: Contains one or more custom report parameters.
+      type: object
+      properties:
+        <aCustomFieldName>:
+          type: string
+          description: A custom report parameter, as defined in Civic Platform Report Manager.
+        <aCustomFieldValue>:
+          type: string
+          description: The report parameter value.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-reports.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - removed trailing commas
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

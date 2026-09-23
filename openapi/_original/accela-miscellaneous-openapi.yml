@@ -1,0 +1,2082 @@
+# x-archived-from: accela-miscellaneous-openapi.yml
+# x-archived-on: 2026-09-16
+basePath: /
+host: apis.accela.com
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous
+  version: v4
+schemes:
+- https
+swagger: '2.0'
+tags:
+- name: AA Version
+  description: This is to return the version number of the AA server that is running, which allows the mobile app to make
+    decisions as to what API's they have available.
+- name: App Settings
+  description: App settings are defined when a developer registers the app on [Accela Developer Portal](https://developer.accela.com).
+    These settings include app name, ID, and so forth.
+- name: Batch
+  description: API for batch API requests.
+- name: Conditions
+  description: "**Conditions**\n\n\r\n\t\tThe system provides standard conditions\r\n\t\tfor different record types(permits,\
+    \ licenses, inspections, and so forth). Depending on the condition,\r\n\t\tcondition violations result in one of the following\
+    \ automatic settings to be applied to the inspections: <br/>- **Lock** : Prevents almost any operation,\r\n\t\texcept\
+    \ operations that result in removal of the lock,\r\n\t\tfrom occurring.\r\n\t\t<br/>- **Hold** : Restricts the addition\
+    \ of an activity and editing of components.\r\n\t\t<br/>- **Notice** : Indicates special instructions to the person that\
+    \ completes the application. The system displays a message when you open the application or any component associated with\
+    \ the application. This condition does not impede record processing.\r\n\t\t<br/>- **Required** : Indicates that you must\
+    \ complete a specified activity or field before proceeding to the next step in a workflow.\r\n\t\t\n\n **Example Use Case**\
+    \ \n\n\r\n\t\tA drainage study must occur prior to approval of a building permit\r\n\t\tfor new development. In this example,\r\
+    \n\t\tthe drainage study requirement comprises the standard condition.You create the standard condition,\r\n\t\tname it\
+    \ D01 Drainage Study,\r\n\t\tand associate it with the Building/Building Permit/Drainage/Grading record type. When a user\
+    \ creates a new permit application of the Building/Building Permit/Drainage/Grading record type,\r\n\t\tthe D01 Drainage\
+    \ Study condition applies to the new application record.\n\n\r\n\t\tThe system uses conditions at the record level and\
+    \ record component level.Any condition you place on a component,\r\n\t\tsuch as a record address,\r\n\t\tparcel,\r\n\t\
+    \towner,\r\n\t\tlicensed professional,\r\n\t\tcontact,\r\n\t\tstructure,\r\n\t\testablishment,\r\n\t\tor asset,\r\n\t\t\
+    affects any record that references the component.\n\n **Conditions of Approval** \n\nConditions of approval consist of\
+    \ a list of predefined requirements that must be met in order to receive approval\r\n\t\tfor an inspection.\r\n\t\t"
+- name: Filters
+  description: Filters are user queries that are stored in Civic Platform and enable users to find information easily. Filters
+    are configured in Civic Platform's Data Filter Portlet to display only the data that is relevant to the user in the context
+    of their current business objective or use-case scenario.
+- name: Geocoding
+  description: The Geocoding API provides geo-coded address information based on map services configured on [Construct Admin
+    Portal](https://admin.accela.com) > Agencies > {Agency} > Agency Settings > GIS Settings.
+- name: Mileage
+  description: API for tracking vehicle mileage associated with inspections.
+- name: Time Accounting
+  description: "For general time accounting, Civic Platform provides the ability for employees to record the amount of time\
+    \ spent in performing their daily tasks, the descriptions and costs of materials used while performing those tasks, and\
+    \ the usage of vehicles related to the tasks performed.\n\n\r\n\t\tCivic Platform captures time accounting information\
+    \ in two contexts: \r\n\t\t<br/>- Time and materials\r\n\t\t<br/>- Time related to a particular process or group of processes\r\
+    \n\t\t\n\n\r\n\t\tAs employees log their activity in the Time Accounting Tracker,\r\n\t\tthe agency calculates fees and\
+    \ charges,\r\n\t\tand applies them to a record.Agencies can also record costs,\r\n\t\tfor reporting purposes,\r\n\t\t\
+    not related to processing any specific information. The agency can define any number of time accounting types and assign\
+    \ an hourly rate or percentage adjustment to use to\r\n\t\tfor each type.\r\n\t\t"
+- name: Users
+  description: "**Agency Users**\r\n\t\t\n\n\r\n\t\tAlthough \"users\" is a broad and general term, the Accela API's User\
+    \ object (user API resource) represents the agency user. An agency user is a staff member of the agency who logs in the\
+    \ Civic Platform back-office application.\r\n\t\t\n\n **Citizen Users** \r\n\t\t\n\n\r\n\t\tThe other type of users is\
+    \ the citizen user.A citizen is any public user who logs in citizen-facing apps such as Citizen Access or other civic-engagement\
+    \ apps using Accela API.The citizen user is represented by one of the following objects: \r\n\t\t<br/>- **Citizen Access\
+    \ user**: user who logs in Citizen Access(citizenaccess/citizen API resource). \r\n\t\t<br/>- **CivicId**: a registered\
+    \ user on the [Construct User Portal](https://user.accela.com),\r\n\t\tand can be linked to multiple user accounts(civicid\
+    \ API resource)\r\n\t\t"
+- name: Workflows
+  description: "**Workflow Tasks**\n\n\r\n\t\tA workflow is a sequence of tasks that agency users follow to process a record.\
+    \ When a user submits a new application,\r\n\t\tthe system creates a record of a certain record type and launches an instance\
+    \ of the associated workflow. Users change the status of a workflow task to promote a record to the next task in the workflow.\n\
+    \n\r\n\t\tExample Use Case: \n\n\r\n\t\tYou create a workflow that includes all the tasks to process a commercial building\
+    \ permit.This workflow includes tasks such as application acceptance,\r\n\t\tbuilding review,\r\n\t\tpermit issuance,\r\
+    \n\t\tinspections,\r\n\t\tcertificate of occupancy,\r\n\t\tand closure.\n\n\r\n\t\tRecord status determines the operations\
+    \ you can perform on a record and your permission to perform those operations.For example,\r\n\t\twhen a record changes\
+    \ its status,\r\n\t\tthe workflow can lock the record from further activity until the status changes to a status that\
+    \ releases the lock.\n\n\r\n\t\tThe workflow can provide email notifications anytime the status changes.For each task\
+    \ and task status,\r\n\t\tyou can notify a different individual.For example,\r\n\t\tyou can notify a contractor after\
+    \ completion of a building inspection.The system can also notify public applicants.\n\n\r\n\t\tExample Use Case: \n\n\r\
+    \n\t\tThe workflow limits access to a building permit record when the status changes to plan review.The workflow limits\
+    \ access by restricting the ability of users to schedule inspections or result inspections,\r\n\t\tthe workflow only allows\
+    \ users to view the record.When the record status changes to issued,\r\n\t\tusers can schedule the necessary inspections\
+    \ and result an inspection.\n\n\r\n\t\tThe workflow definition comprises task names,\r\n\t\ttask owners,\r\n\t\ttask order,\r\
+    \n\t\ttask time line,\r\n\t\tand sub-tasks.The process to follow depends on the workflow and the situation in which a\
+    \ user changes a task status.<br/>- You can add sub-tasks,\r\n\t\talso known as activities,\r\n\t\tto each task. Sub-tasks\
+    \ create a more detailed workflow process or outline the steps involved in each main level task.\r\n\t\t<br/>- You can\
+    \ attach a document with a sub-task.For example,\r\n\t\tyou can attach a report of the results of the plan review or upload\
+    \ the actual plans.\r\n\t\t<br/>- You can track the time you agency takes to process records,\r\n\t\texcluding the time\
+    \ spent by external parties.This time tracking can help determine where an agency can improve efficiency.\r\n\t\t<br/>-\
+    \ You can save a history of workflows to audit your business processes.\r\n\t\t"
+paths:
+  /v4/serverProperties:
+    get:
+      description: "Get the version number of the AA server that is running, which allows the mobile app to make decisions\
+        \ as to what API's they have available.\n\n\n\n**API Endpoint**:  GET /v4/serverProperties \n\n**Scope**:  app_data\
+        \ \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 19\n\n"
+      summary: Get AA version
+      operationId: v4.get.serverProperties
+      tags:
+      - AA Version
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_getAAVersionModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/appsettings:
+    get:
+      description: "Gets the settings for the application.\n\n\n\n**API Endpoint**:  GET /v4/appsettings \n\n**Scope**:  app_data\
+        \ \n\n**App Type**:  All \n\n**Authorization Type**:  App Credentials \n\n**Civic Platform version**: 7.3.2\n\n"
+      summary: Get All App Settings
+      operationId: v4.get.appsettings
+      tags:
+      - App Settings
+      parameters:
+      - in: query
+        description: Comma-delimited app setting keys filter
+        name: keys
+        required: false
+        type: string
+      - in: query
+        name: agency
+        description: The agency the app belongs to.
+        required: false
+        type: string
+      - in: query
+        name: appId
+        description: The ID of the registered app on http://developer.accela.com.
+        required: false
+        type: string
+      - in: query
+        name: appSecret
+        description: The secret key of the registered app on http://developer.accela.com.
+        required: false
+        type: string
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_appSettingsArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/batch:
+    post:
+      description: "Invokes multiple operations on data related to multiple agencies in a single HTTP request. The Batch Request\
+        \ API accepts an array of up to 25 HTTP requests, each with its required headers, body, method, and URL. The individual\
+        \ operations are invoked via HTTPS. The response is an array containing the results from all requested operations\
+        \ in the same order used in the request array.\n\n\n\n**API Endpoint**:  POST /v4/batch \n\n**Scope**:  batch_request\
+        \ \n\n**App Type**:  All \n\n**Authorization Type**:  No authorization required \n\n**Civic Platform version**: All\n\
+        \n"
+      summary: Batch Request
+      operationId: v4.post.batch
+      tags:
+      - Batch
+      parameters:
+      - in: body
+        name: batchRequest
+        description: The batch request information.
+        required: true
+        schema:
+          $ref: '#/definitions/batchRequestModel'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_batchResponseArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/conditions/standard:
+    get:
+      description: "Gets the standard conditions available in the system.\n\n\n\n**API Endpoint**:  GET /v4/conditions/standard\
+        \ \n\n**Scope**:  conditions \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Get All Standard Conditions
+      operationId: v4.get.conditions.standard
+      tags:
+      - Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Filter by the standard condition type. See [Get All Standard Condition Types](./api-settings.html#operation/v4.get.settings.conditions.types).
+        in: query
+        name: type
+        required: false
+        type: string
+      - description: Filter by standard condition group.
+        in: query
+        name: group
+        required: false
+        type: string
+      - description: Filter by standard condition name.
+        in: query
+        name: name
+        required: false
+        type: string
+      - description: Filter by standard condition severity.
+        in: query
+        name: severity
+        required: false
+        type: string
+      - description: Filter by standard condition public display message.
+        in: query
+        name: publicDisplayMessage
+        required: false
+        type: string
+      - description: Filter whether or not the standard condition is inheritable.
+        in: query
+        name: inheritable
+        enum:
+        - Y
+        - N
+        required: false
+        type: string
+      - description: Filter by standard condition priority. See [Get All Standard Condition Priorities](./api-settings.html#operation/v4.get.settings.conditions.priorities).
+        format: int64
+        in: query
+        name: priority
+        required: false
+        type: integer
+      - description: Filter by standard condition short comments.
+        in: query
+        name: shortComments
+        required: false
+        type: string
+      - description: Filter by standard condition long comments.
+        in: query
+        name: longComments
+        required: false
+        type: string
+      - description: Filter by standard condition  resolution action
+        in: query
+        name: resolutionAction
+        required: false
+        type: string
+      - description: Filter whether or not the standard condition includes name in notice.
+        in: query
+        name: includeNameInNotice
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition includes short comments in notice.
+        in: query
+        name: includeShortCommentsInNotice
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition displays the notice to the agency.
+        in: query
+        name: displayNoticeInAgency
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition displays the notice to the citizens.
+        in: query
+        name: displayNoticeInCitizens
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition displays the notice in the citizen fee.
+        in: query
+        name: displayNoticeInCitizensFee
+        required: false
+        type: boolean
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - description: Sort search result by one field name.
+        in: query
+        name: sort
+        required: false
+        type: string
+      - description: The sort direction. Default is ASC.
+        enum:
+        - ASC
+        - ' DESC'
+        in: query
+        name: direction
+        required: false
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_conditionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/conditionApprovals/standard:
+    get:
+      description: "Gets the conditions of approval available in the system.\n\n\n\n**API Endpoint**:  GET /v4/conditionApprovals/standard\n\
+        \n**Scope**:  conditions \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Get All Approval Conditions
+      operationId: v4.get.conditionApprovals.standard
+      tags:
+      - Conditions
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Filter by the standard condition type. See [Get All Standard Condition Types](./api-settings.html#operation/v4.get.settings.conditions.types).
+        in: query
+        name: type
+        required: false
+        type: string
+      - description: Filter by standard condition group.
+        in: query
+        name: group
+        required: false
+        type: string
+      - description: Filter by standard condition name.
+        in: query
+        name: name
+        required: false
+        type: string
+      - description: Filter by standard condition severity.
+        in: query
+        name: severity
+        required: false
+        type: string
+      - description: Filter by standard condition public display message.
+        in: query
+        name: publicDisplayMessage
+        required: false
+        type: string
+      - description: Filter whether or not the standard condition is inheritable.
+        in: query
+        name: inheritable
+        enum:
+        - Y
+        - N
+        required: false
+        type: string
+      - description: Filter by standard condition priority. See [Get All Standard Condition Priorities](./api-settings.html#operation/v4.get.settings.conditions.priorities).
+        format: int64
+        in: query
+        name: priority
+        required: false
+        type: integer
+      - description: Filter by standard condition short comments.
+        in: query
+        name: shortComments
+        required: false
+        type: string
+      - description: Filter by standard condition long comments.
+        in: query
+        name: longComments
+        required: false
+        type: string
+      - description: Filter by standard condition  resolution action
+        in: query
+        name: resolutionAction
+        required: false
+        type: string
+      - description: Filter whether or not the standard condition includes name in notice.
+        in: query
+        name: includeNameInNotice
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition includes short comments in notice.
+        in: query
+        name: includeShortCommentsInNotice
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition displays the notice to the agency.
+        in: query
+        name: displayNoticeInAgency
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition displays the notice to the citizens.
+        in: query
+        name: displayNoticeInCitizens
+        required: false
+        type: boolean
+      - description: Filter whether or not the standard condition displays the notice in the citizen fee.
+        in: query
+        name: displayNoticeInCitizensFee
+        required: false
+        type: boolean
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - description: Sort search result by one field name.
+        in: query
+        name: sort
+        required: false
+        type: string
+      - description: The sort direction. Default is ASC.
+        enum:
+        - ASC
+        - ' DESC'
+        in: query
+        name: direction
+        required: false
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_conditionApprovalModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/filters:
+    get:
+      description: "Returns Civic Platform search filters (previously known as \"quick queries\" in the Civic Platform application).\
+        \ This API returns global filters and custom filters that the currently logged in user has permissions in the requested\
+        \ type and module. Include the {type} URI parameter to get either a record, inspection, or workflow task filters.\n\
+        \n\n\n**API Endpoint**:  GET /v4/filters\n\n**Scope**:  filters \n\n**App Type**:  Agency \n\n**Authorization Type**:\
+        \  Access token \n\n**Civic Platform version**: 9.0.0\n\n"
+      summary: Get All Filters
+      operationId: v4.get.filters
+      tags:
+      - Filters
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: 'Filter by Civic Platform filter type. '
+        enum:
+        - Record
+        - Inspection
+        - WorkflowTask
+        in: query
+        name: type
+        type: string
+      - description: "Filter by Civic Platform module. If module is not specified, the default module is the currently logged-in\
+          \ user's default Civic Platform module. \n\n**Added in Civic Platform version**: 9.2.0"
+        in: query
+        name: module
+        type: string
+      - description: "The offset position of the first record in the results response array. For example, if offset is 100,\
+          \ the first item in the results array in the response is the 100th record in the search result list. \n\n**Added\
+          \ in Civic Platform version**: 9.2.0"
+        format: int64
+        in: query
+        name: offset
+        required: false
+        type: integer
+      - description: "Search result size limit. \n\n**Added in Civic Platform version**: 9.2.0"
+        format: int64
+        in: query
+        name: limit
+        required: false
+        type: integer
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_filterModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/filters/{id}/results:
+    post:
+      description: "Returns the search results of a given search filter (also known as \"Quick Queries\" or \"Saved Searches\"\
+        ). \r\n\n\nStarting with Civic Platform 9.2.0, Get Filter Results supports the following fixed format parameters for\
+        \ all filter types (Filter parameters are configured in Civic Platform Administration Tool > Data Filter.):\r\n<br/>$$TODAY$$\r\
+        \n<br/>$$TODAY+N$$\r\n<br/>$$MODULE$$\r\n<br/>$$USERID$$\r\n<br/>**Note**: The $$MODULE$$ fixed format parameter is\
+        \ not available for inspection filters in the Civic Platform Admin Tool. To specify a module for an inspection filter,\
+        \ use the \"module\" field in the request payload.\r\n\t\t\t\t\n\n\n\n**API Endpoint**:  POST /v4/filters/{id}/results\
+        \ \n\n**Scope**:  filters \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 9.0.0\n\n"
+      summary: Get Filter Results
+      operationId: v4.post.filters.id.results
+      tags:
+      - Filters
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the filter to fetch.
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Contains optional filter parameters.
+        in: body
+        name: body
+        required: false
+        schema:
+          type: object
+          properties:
+            module:
+              description: 'For an inspection filter type, specify "module" in the request payload. If module is not specified,
+                the default module is the logged-in user''s module.
+
+
+                **Added in Civic Platform version**: 9.2.0'
+              type: string
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "A successful request returns the search results. The schema depends on the requested filter type,\
+            \ that is, either a record, inspection, or work order task. \n\nNote: A successful request may return no data\
+            \ matching the filter criteria. A successful request may also return messages related to Event Manager Scripting\
+            \ Engine back-end processing."
+          schema:
+            items:
+              $ref: '#/definitions/response_filterResults'
+            type: array
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/geo/geocode/reverse:
+    get:
+      description: "Returns address information for the given longitude and latitude coordinates. This API returns address\
+        \ information from map services configured on **[Construct Admin Portal](https://admin.accela.com) > {Agency} > Agency\
+        \ Settings > GIS Settings**.\n\n\n\n**API Endpoint**:  GET /v4/geo/geocode/reverse \n\n**Scope**:  gis \n\n**App Type**:\
+        \  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: All\n\n"
+      summary: Reverse Geocode Address
+      operationId: v4.get.geo.geocode.reverse
+      tags:
+      - Geocoding
+      parameters:
+      - description: The north-south, x-coordinate of an address. The value must be between -180 and +180.
+        in: query
+        required: true
+        name: longitude
+        type: string
+      - description: The east-west, y-coordinate of an address. The value must be between -90 and +90.
+        in: query
+        name: latitude
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_geocodeAddressModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/gis/dynamicThemes:
+    get:
+      description: "Get GIS dynamic themes by for the given service.\n\n\n\n**API Endpoint**:  GET /v4/gis/dynamicThemes \n\
+        \n**Scope**:  gis \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 21.2.1\n\n"
+      summary: Get GIS dynamic themes by for the given service
+      operationId: v4.get.gis.dynamic.themes
+      tags:
+      - Gis
+      parameters:
+      - in: query
+        required: true
+        name: serviceId
+        type: string
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_GISDynamicThemes'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/mileage:
+    post:
+      description: "Creates a vehicle mileage entry for a specified inspector on a particular date.\n\n\n\n**API Endpoint**:\
+        \  POST /v4/mileage \n\n**Scope**:  mileage \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\
+        \n**Civic Platform version**: 7.3.3\n\n"
+      summary: Create Mileage
+      operationId: v4.post.mileage
+      tags:
+      - Mileage
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Mileage request information
+        in: body
+        name: body
+        required: false
+        schema:
+          items:
+            $ref: '#/definitions/mileageModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/timeAccounting:
+    get:
+      description: "Gets time accounting information.\n\n\n\n**API Endpoint**:  GET /v4/timeAccounting \n\n**Scope**:  timeaccounting\
+        \ \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3\n\n"
+      summary: Get Time Accounting
+      operationId: v4.get.timeAccounting
+      tags:
+      - Time Accounting
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_timeLogModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates a time accounting record.\n\n\n\n**API Endpoint**:  POST /v4/timeAccounting \n\n**Scope**:  timeaccounting\
+        \ \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3\n\n"
+      summary: Create Time Accounting
+      operationId: v4.post.timeAccounting
+      tags:
+      - Time Accounting
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Time accounting request information
+        in: body
+        name: body
+        required: false
+        schema:
+          items:
+            $ref: '#/definitions/timeLogModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/timeAccounting/{ids}:
+    delete:
+      description: "Deletes one or more time accounting records.\n\n\n\n**API Endpoint**:  DELETE /v4/timeAccounting/{ids}\
+        \ \n\n**Scope**:  timeaccounting \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3\n\n"
+      summary: Delete Time Accounting
+      operationId: v4.delete.timeAccounting.ids
+      tags:
+      - Time Accounting
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The comma-delimited IDs of the time accounting entries to be deleted.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/timeAccounting/{id}:
+    put:
+      description: "Updates the specified time accounting record.\n\n\n\n**API Endpoint**:  PUT /v4/timeAccounting/{id} \n\
+        \n**Scope**:  timeaccounting \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3\n\n"
+      summary: Update Time Accounting
+      operationId: v4.put.timeAccounting.id
+      tags:
+      - Time Accounting
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The ID of the time accounting entry to be updated.
+        in: path
+        name: id
+        required: true
+        format: int64
+        type: integer
+      - description: Time accounting request information.
+        in: body
+        name: body
+        required: false
+        schema:
+          $ref: '#/definitions/timeLogModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_timeLogModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/users:
+    get:
+      description: "Returns the account information for a given agency user.\n\n\n\n**API Endpoint**:  GET /v4/users \n\n\
+        **Scope**:  users \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 9.0.0\n\n"
+      summary: Get User Account
+      operationId: v4.get.users
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/groupId'
+      - $ref: '#/parameters/groupName'
+      - $ref: '#/parameters/module'
+      - $ref: '#/parameters/exclude'
+      - $ref: '#/parameters/userStatus'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_userModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/users/me:
+    get:
+      description: "Returns the account information for the currently logged in agency user.\n\n\n\n**API Endpoint**:  GET\
+        \ /v4/users/me \n\n**Scope**:  users \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic\
+        \ Platform version**: 9.0.0\n\n"
+      summary: Get My User Account
+      operationId: v4.get.users.me
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_myuserModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/users/{user_id}/groups:
+    get:
+      description: "Gets the user groups for a given user.\n\n\n\n**API Endpoint**:  GET /v4/users/{user_id}/groups \n\n**Scope**:\
+        \  users \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 9.0.0\n\
+        \n"
+      summary: Get All User Groups
+      operationId: v4.get.users.user_id.groups
+      tags:
+      - Users
+      parameters:
+      - description: The ID of the user to be fetched.
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_userGroupModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/workflowTasks/mine:
+    get:
+      description: "Gets a list of workflow tasks for the current user.\n\n\n\n**API Endpoint**:  GET /v4/workflowTasks/mine\
+        \ \n\n**Scope**:  workflows \n\n**App Type**:  Agency \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.2\n\n"
+      summary: Get My Workflow Tasks
+      operationId: v4.get.workflowTasks.mine
+      tags:
+      - Workflows
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria.\
+            \ A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          schema:
+            $ref: '#/definitions/response_workflowTaskModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  appSettings:
+    type: object
+    properties:
+      key:
+        description: An app setting name.
+        type: string
+      value:
+        description: An app setting value.
+        type: string
+  response_getAAVersionModel:
+    type: object
+    properties:
+      result:
+        type: object
+        properties:
+          version:
+            description: The version number of the AA server that is running.
+            type: string
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_appSettingsArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/appSettings'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  batchRequestModel:
+    type: object
+    required:
+    - method
+    - relativeUrl
+    properties:
+      headers:
+        $ref: '#/definitions/headerBatchRequest'
+      method:
+        description: The HTTP method of the operation to be invoked.
+        enum:
+        - GET
+        - PUT
+        - POST
+        - DELETE
+        type: string
+      body:
+        description: (For PUT and POST methods) A JSON string containing the request parameters for the operation to be invoked.
+        type: string
+      relativeUrl:
+        description: The relative URL of the operation to be invoked, for example '/v4/records'. Do not invoke the Batch Request
+          API; i.e. do not specify '/v4/batch' as the relativeUrl.
+        type: string
+    example: "\r\n[\r\n\n  {\r\n\n    \"headers\": {\r\n\n      \"x-accela-agency\": \"DemoAgency\"\r\n\n    },\r\n\n    \"\
+      method\": \"GET\",\r\n\n    \"relativeUrl\": \"/v4/records?offset=0&limit=2\"\r\n\n  },\r\n\n  {\r\n\n    \"headers\"\
+      : {\r\n\n      \"x-accela-agency\": \"BPTDEV\"\r\n\n    },\r\n\n    \"method\": \"GET\",\r\n\n    \"relativeUrl\": \"\
+      /v4/records/BPTDEV-15EST-00000-00014\"\r\n\n  },\r\n\n  {\r\n\n    \"headers\": {\r\n\n      \"x-accela-agency\": \"\
+      BPTDEV\"\r\n\n    },\r\n\n    \"method\": \"POST\",\r\n\n    \"relativeUrl\": \"/v4/records\",\r\n\n    \"body\": {\r\
+      \n\n      \"type\": {\r\n\n        \"id\": \"Building-Residential-Alteration-NA\"\r\n\n      },\r\n\n      \"description\"\
+      : \"Residence alteration\",\r\n\n      \"parcels\": [\r\n\n        {\r\n\n          \"parcelNumber\": \"005020018\"\r\
+      \n\n        }\r\n\n      ]\r\n\n    }\r\n\n  }\r\n\n]\t\t\t\r\n\t\t"
+  response_batchResponseArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/batchResponse'
+        type: array
+      status:
+        type: integer
+        description: The return status for the batch request.
+  batchResponse:
+    type: object
+    properties:
+      result:
+        description: The HTTP response from the invoked operation. The order of the results in the response array corresponds
+          to the same order used in the request array.
+        items:
+          type: object
+        type: array
+      code:
+        type: string
+        description: The error code, if an error is encountered.
+      message:
+        type: string
+        description: The error message, if an error is encountered.
+      traceid:
+        type: string
+        description: The id of the error log entry, if an error is encountered.
+      status:
+        description: The HTTP return status for the individual request.
+        type: integer
+  headerBatchRequest:
+    type: object
+    properties:
+      <aHeaderKey>:
+        description: "HTTP header key/value pairs. For example:\n\n \"headers\" : { \"header-key1\":\"header-value1\", \"\
+          header-key2\":\"header-value2\" }. \n\nProvide the HTTP headers required by the operation's authorization type.\
+          \ If the required HTTP headers related to authorization are not provided, the operation will fail."
+        type: string
+  response_conditionModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/conditionModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  conditionModel:
+    type: object
+    properties:
+      actionbyDepartment:
+        type: object
+        description: The department responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      actionbyUser:
+        type: object
+        description: The individual responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      activeStatus:
+        type: object
+        description: Indicates whether or not the condition is active.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      additionalInformation:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      additionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      appliedDate:
+        description: The date the standard condition was applied.
+        format: date-time
+        type: string
+      appliedbyDepartment:
+        type: object
+        description: The department responsible for applying a condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      appliedbyUser:
+        type: object
+        description: The staff member responsible for applying a condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      dispAdditionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      displayNoticeInAgency:
+        description: Indicates whether or not to display the condition notice in Accela Automation when a condition to a record
+          or parcel is applied.
+        type: boolean
+      displayNoticeInCitizens:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access when a condition to
+          a record or parcel is applied.
+        type: boolean
+      displayNoticeInCitizensFee:
+        description: Indicates whether or not to display the condition notice in Accela Citizen Access Fee Estimate page when
+          a condition to a record or parcel is applied.
+        type: boolean
+      effectiveDate:
+        description: The date when you want the condition to become effective.
+        format: date-time
+        type: string
+      expirationDate:
+        description: The date when the condition expires.
+        format: date-time
+        type: string
+      group:
+        type: object
+        description: The condition group is an attribute of a condition that organizes condition types. Your agency defines
+          these groups.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The condition system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      inheritable:
+        type: object
+        description: This defines whether or not Accela Automation checks for inheritable conditions when a user associates
+          a child record with a parent record.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      isIncludeNameInNotice:
+        description: Indicates whether or not to display the condition name in the notice.
+        type: boolean
+      isIncludeShortCommentsInNotice:
+        description: Indicates whether or not to display the condition comments in the notice.
+        type: boolean
+      longComments:
+        description: Narrative comments to help identify the purpose or uses of the standard condition.
+        type: string
+      name:
+        description: The name of the standard condition.
+        type: string
+      priority:
+        type: object
+        description: The priority level assigned to the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      publicDisplayMessage:
+        description: Text entered into this field displays in the condition notice or condition status bar for the Condition
+          Name for the public user in Accela IVR (AIVR) and Accela Citizen Access (ACA).
+        type: string
+      resAdditionalInformationPlainText:
+        description: An unlimited text field to use if other fields are filled.
+        type: string
+      resolutionAction:
+        description: he action performed in response to a condition.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      severity:
+        type: object
+        description: The severity of the condition.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      shortComments:
+        description: A brief description of the condition name. For example, the text may describe the situation that requires
+          the system to apply the condition. You can set these short comments to display when a user accesses an application
+          with this condition applied to it
+        type: string
+      status:
+        type: object
+        description: The condition status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      statusType:
+        description: The status type for a standard condition or an approval condition, applied or not applied for example.
+        type: string
+      type:
+        type: object
+        description: The condition type.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_filterResults:
+    type: object
+    properties:
+      result:
+        items:
+          type: object
+          description: "The result schema depends on the type of requested search filter type. \n\nFor records, see the record\
+            \ schema in [Get Records](./api-records.html#operation/v4.get.records.ids). \n\nFor inspections, see the inspection\
+            \ schema in [Get Inspections](./api-inspections.html#operation/v4.get.inspections.ids). \n\nFor work order tasks,\
+            \ see the work order task schema in [Get Workflow Tasks](./api-misc.html#operation/v4.get.workflowTasks.mine)."
+        type: array
+      page:
+        $ref: '#/definitions/pageModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_conditionApprovalModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/conditionModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_filterModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/filterModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  filterModel:
+    type: object
+    properties:
+      datafilterType:
+        description: Indicates whether a search filter is pre-defined ("QuickQuery") or user-defined ("UserQuickQuery").
+        type: string
+      description:
+        description: Describes the search filter.
+        type: string
+      id:
+        description: The search filter system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      name:
+        description: The display name of the search filter.
+        type: string
+      primary:
+        description: Indicates whether or not the search filter is the primary search filter.
+        type: string
+      type:
+        description: The type of search filter.
+        type: string
+  mileageModel:
+    type: object
+    properties:
+      date:
+        description: The date on which the mileage is travelled.
+        format: date-time
+        type: string
+      end:
+        description: The ending mileage on the inspector's odometer reading.
+        format: double
+        type: number
+      inspectorId:
+        description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+        type: string
+      start:
+        description: The starting mileage on the inspector's odometer reading.
+        format: double
+        type: number
+      vehicleId:
+        type: object
+        description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  response_resultModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/resultModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultModel:
+    type: object
+    properties:
+      code:
+        description: The error code, if an error is encountered.
+        type: string
+      id:
+        description: The system id of the object in this operation.
+        format: int64
+        type: integer
+      isSuccess:
+        description: Indicates whether or not the operation on the object is successful.
+        type: boolean
+      message:
+        description: The error message, if an error is encountered
+        type: string
+  recordIdModel:
+    type: object
+    properties:
+      customId:
+        description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx).
+          Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+        type: string
+      id:
+        description: The record system id assigned by the Civic Platform server.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      trackingId:
+        description: The application tracking number (IVR tracking number).
+        format: int64
+        type: integer
+      value:
+        description: The alphanumeric record id.
+        type: string
+  costingQuantityModel:
+    type: object
+    properties:
+      factor:
+        description: The cost factor.
+        format: double
+        type: number
+      minutes:
+        description: The duration in minutes.
+        format: double
+        type: number
+  response_timeLogModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/timeLogModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_timeLogModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/timeLogModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  timeLogModel:
+    type: object
+    properties:
+      access:
+        type: object
+        description: "\"N\" if the user has no permissions, or a string concatenation of allowed permissions: \n\"D\" for\
+          \ delete permissions and/or \"E\" for edit permissions. "
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      billable:
+        description: Indicates whether or not the item is billable.
+        enum:
+        - Y
+        - N
+        type: string
+      cost:
+        description: The calculated cost of the entry.
+        format: double
+        type: number
+      createBy:
+        description: The unique user id of the individual that created this entry.
+        type: string
+      createDate:
+        description: The date the entry was created.
+        format: date-time
+        type: string
+      detailDuration:
+        description: Contains details about the time accounting duration.
+        items:
+          $ref: '#/definitions/costingQuantityModel'
+        type: array
+      duration:
+        description: The duration of the entry, using the format hh:mm.
+        type: string
+      endMileage:
+        description: The ending mileage for the time accounting item.
+        format: double
+        type: number
+      endTime:
+        description: The end time for the time accounting entry.
+        type: string
+      entity:
+        description: The entity associated with the time accounting item.
+        type: string
+      entityId:
+        description: The unique ID of the entity or record.
+        type: string
+      entityType:
+        description: The type of entity, such as "Record".
+        type: string
+      group:
+        type: object
+        description: The time accounting group. See [Get All Time Accounting Groups](./api-settings.html#operation/v4.get.settings.timeAccounting.groups).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The time accounting entry's system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      lastChangedBy:
+        description: The person who last changed the time accounting entry.
+        type: string
+      lastChangedDate:
+        description: The date when the time accounting entry was last changed.
+        format: date-time
+        type: string
+      loggedDate:
+        description: The date when the time accounting was logged.
+        format: date-time
+        type: string
+      materials:
+        description: The materials tracked by the time accounting entry.
+        type: string
+      materialsCost:
+        description: The cost of materials tracked by the time accounting entry.
+        format: double
+        type: number
+      notation:
+        description: The notation associated with the time accounting entry.
+        type: string
+      percent:
+        description: The percentage point for calculating the cost. 50 stands for 50%, 80 stands for 80%, and 150 stands for
+          150%.
+        format: double
+        type: number
+      rate:
+        description: The cost rate.
+        format: double
+        type: number
+      recordId:
+        $ref: '#/definitions/recordIdModel'
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      startMileage:
+        description: The starting mileage for the time accounting entry.
+        format: double
+        type: number
+      startTime:
+        description: The start time of the time accounting entry.
+        type: string
+      status:
+        type: object
+        description: The time log status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      totalMileage:
+        description: The total mileage for the time accounting entry.
+        format: double
+        type: number
+      totalMinutes:
+        description: The total number of billable minutes.
+        format: int64
+        type: integer
+      type:
+        type: object
+        description: The time accounting type. See [Get All Time Accounting Types](./api-settings.html#operation/v4.get.settings.timeAccounting.types).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      userId:
+        description: The userid assigned to the time accounting entry.
+        type: string
+      vehicleId:
+        type: object
+        description: A number, such as the license plate number or VIN, that identifies the vehicle used with the entry.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  departmentModel:
+    type: object
+    properties:
+      agency:
+        description: The department agency.
+        type: string
+      bureau:
+        description: The name of the bureau, which is an organization level within an agency.
+        type: string
+      division:
+        description: The name of the division, which is an organization level within a bureau.
+        type: string
+      group:
+        description: The department group.
+        type: string
+      id:
+        description: The department system id assigned by the Civic Platform server.
+        type: string
+      office:
+        description: The department office.
+        type: string
+      section:
+        description: The department section.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      text:
+        description: The department display name.
+        type: string
+      value:
+        description: The department value.
+        type: string
+  response_userGroupModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/userGroupModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  userGroupModel:
+    type: object
+    properties:
+      firstName:
+        description: The user's first name.
+        type: string
+      groups:
+        items:
+          $ref: '#/definitions/groupModel'
+        type: array
+      lastName:
+        description: The user's last name.
+        type: string
+      serviceProviderCode:
+        description: The agency the user belongs to.
+        type: string
+  response_userModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/userModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+      page:
+        $ref: '#/definitions/pageModel'
+  userModel:
+    type: object
+    properties:
+      id:
+        description: The user system id assigned by the Civic Platform server.
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      userGroups:
+        items:
+          $ref: '#/definitions/usergroupsModel'
+        type: array
+      email:
+        description: The email address.
+        type: string
+      status:
+        description: Enabled or Disabled
+        type: string
+      firstName:
+        description: The user's first name.
+        type: string
+      department:
+        $ref: '#/definitions/departmentModel'
+  usergroupsModel:
+    type: object
+    properties:
+      module:
+        description: The module the user group belongs to.
+        type: string
+      status:
+        description: Enabled or Disabled
+        type: string
+      name:
+        description: The name of the user group.
+        type: string
+      id:
+        description: The user group system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+  response_myuserModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/myuserModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  myuserModel:
+    type: object
+    properties:
+      department:
+        $ref: '#/definitions/departmentModel'
+      firstName:
+        description: The user's first name.
+        type: string
+      fullName:
+        description: The user's full name.
+        type: string
+      id:
+        description: The user system id assigned by the Civic Platform server.
+        type: string
+      initial:
+        description: The user initials.
+        type: string
+      lastName:
+        description: The user's last name
+        type: string
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      value:
+        description: The user id value
+        type: string
+  groupModel:
+    type: object
+    properties:
+      id:
+        description: The user group system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      moduleName:
+        description: The module the user group belongs to.
+        type: string
+      name:
+        description: The name of the user group.
+        type: string
+  response_geocodeAddressModel:
+    type: object
+    properties:
+      address:
+        $ref: '#/definitions/geocodeAddressModel'
+  geocodeAddressModel:
+    type: object
+    description: Contains the address information for the given coordinates.
+    properties:
+      addressFormat:
+        description: The full address.
+        type: string
+      houseNumber:
+        description: The street address number.
+        type: string
+      houseNumberFraction:
+        description: A fraction used in combination with the street number.
+        type: string
+      street:
+        description: The street address, including number and name.
+        type: string
+      streetDirection:
+        description: The street direction, such as "N", "SW", "East", etc.
+        type: string
+      streetName:
+        description: The name of the street.
+        type: string
+      streetPrefix:
+        description: A prefix used with the street address, such as a directional street number prefix.
+        type: string
+      streetSuffix:
+        description: A suffix used with the street address, such as a building suite suffix.
+        type: string
+      streetSuffixDirection:
+        description: The street direction used in a street suffix.
+        type: string
+      city:
+        description: The name of the city.
+        type: string
+      state:
+        description: The name of the state.
+        type: string
+      stateAbbreviation:
+        description: The state code or abbreviation.
+        type: string
+      postalCode:
+        description: The postal zip code.
+        type: string
+      country:
+        description: The name of the country.
+        type: string
+      countryCode:
+        description: The country code or abbreviation.
+        type: string
+  response_GISServices:
+    type: object
+    properties:
+      status:
+        type: integer
+        description: The HTTP return status.
+      mapServices:
+        items:
+          $ref: '#/definitions/GISServicesModel'
+        type: array
+  GISServicesModel:
+    type: object
+    properties:
+      keys:
+        type: array
+        properties:
+          key:
+            description: Identify key of the map service
+            type: string
+      IdentifierDisplay:
+        description: Identifier key of the map service
+        type: string
+      type:
+        description: Type of the map service
+        type: string
+  response_GISDynamicThemes:
+    type: object
+    properties:
+      result:
+        type: array
+        items:
+          $ref: '#/definitions/dynamicThemesArray'
+      status:
+        type: integer
+        description: The HTTP return status.
+      page:
+        $ref: '#/definitions/pageModel'
+  dynamicThemesArray:
+    type: object
+    properties:
+      themeGroup:
+        type: string
+      themeName:
+        type: string
+  response_workflowTaskModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/workflowTaskModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  workflowTaskModel:
+    type: object
+    properties:
+      actionbyDepartment:
+        type: object
+        description: The department responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      actionbyUser:
+        type: object
+        description: The individual responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      approval:
+        description: Used to indicate supervisory approval of an adhoc task.
+        type: string
+      assignEmailDisplay:
+        description: 'Indicates whether or not to display the agency employee''s email address in ACA. Public users can then
+          click the e-mail hyperlink and send an e-mail to the agency employee. ''Y'' : display the email address. ''N'' :
+          hide the email address.'
+        type: string
+      assignedDate:
+        description: The date of the assigned action.
+        format: date-time
+        type: string
+      assignedToDepartment:
+        type: object
+        description: The department responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      assignedUser:
+        type: object
+        description: The staff member responsible for the action.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      billable:
+        description: Indicates whether or not the item is billable.
+        enum:
+        - Y
+        - N
+        type: string
+      comment:
+        description: Comments or notes about the current context.
+        type: string
+      commentDisplay:
+        description: Indicates whether or not Accela Citizen Access users can view the inspection results comments.
+        type: string
+      commentPublicVisible:
+        description: Specifies the type of user who can view the inspection result comments. <br/>"All ACA Users" - Both registered
+          and anonymous Accela Citizen Access users can view the comments for inspection results. <br/>"Record Creator Only"
+          - the user who created the record can see the comments for the inspection results. <br/>"Record Creator and Licensed
+          Professional" - The user who created the record and the licensed professional associated with the record can see
+          the comments for the inspection results.
+        items:
+          type: string
+        type: array
+      currentTaskId:
+        description: The ID of the current workflow task.
+        type: string
+      daysDue:
+        description: The amount of time to complete a task (measured in days).
+        format: int64
+        type: integer
+      description:
+        description: The description of the record or item.
+        type: string
+      dispositionNote:
+        description: A note describing the disposition of the current task.
+        type: string
+      dueDate:
+        description: The desired completion date of the task.
+        format: date-time
+        type: string
+      endTime:
+        description: The time the workflow task was completed.
+        format: date-time
+        type: string
+      estimatedDueDate:
+        description: The estimated date of completion.
+        format: date-time
+        type: string
+      estimatedHours:
+        description: The estimated hours necessary to complete this task.
+        format: double
+        type: number
+      hoursSpent:
+        description: Number of hours used for a workflow or workflow task.
+        format: double
+        type: number
+      id:
+        description: The workflow task system id assigned by the Civic Platform server.
+        type: string
+      inPossessionTime:
+        description: The application level in possession time of the time tracking feature.
+        format: double
+        type: number
+      isActive:
+        description: Indicates whether or not the workflow task is active.
+        enum:
+        - Y
+        - N
+        type: string
+      isCompleted:
+        description: Indicates whether or not the workflow task is completed.
+        enum:
+        - Y
+        - N
+        type: string
+      lastModifiedDate:
+        description: The date when the task item was last changed.
+        format: date-time
+        type: string
+      nextTaskId:
+        description: The id of the next task in a workflow.
+        type: string
+      overTime:
+        description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+        type: string
+      processCode:
+        description: The process code for the next task in a workflow.
+        type: string
+      recordId:
+        $ref: '#/definitions/recordIdModel'
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      startTime:
+        description: The time the workflow task started.
+        format: date-time
+        type: string
+      status:
+        type: object
+        description: The workflow task status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      statusDate:
+        description: The date when the current status changed.
+        format: date-time
+        type: string
+      trackStartDate:
+        description: The date that time tracking is set to begin.
+        format: date-time
+        type: string
+  pageModel:
+    type: object
+    properties:
+      offset:
+        type: integer
+        description: The requested offset start.
+      limit:
+        type: integer
+        description: The requested result limit.
+      total:
+        type: integer
+        description: The total number of records found.
+      hasmore:
+        type: boolean
+        description: true if there are more results to fetch; false if all results have been fetched.
+parameters:
+  agencyHeaderParam:
+    description: The agency name the app belongs to.
+    in: header
+    name: x-accela-agency
+    required: true
+    type: string
+  environmentHeaderParam:
+    description: The environment configured for an agency.
+    in: header
+    name: x-accela-environment
+    required: true
+    type: string
+  appIdHeaderParam:
+    description: The ID of the registered app on http://developer.accela.com.
+    in: header
+    name: x-accela-appid
+    required: true
+    type: string
+  appSecretHeaderParam:
+    description: The secret key of the registered app on http://developer.accela.com.
+    in: header
+    name: x-accela-appsecret
+    required: true
+    type: string
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+  fields:
+    description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.'
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+  groupId:
+    description: The id of the group that user belongs to
+    in: query
+    name: groupId
+    required: false
+    type: string
+  groupName:
+    description: The name of the group that user belongs to
+    in: query
+    name: groupName
+    required: false
+    type: string
+  module:
+    description: The module that user belongs to
+    in: query
+    name: module
+    required: false
+    type: string
+  exclude:
+    description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
+    in: query
+    name: exclude
+    required: false
+    type: string
+  userStatus:
+    description: The status of the user, enable or disable
+    in: query
+    name: userStatus
+    required: false
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.

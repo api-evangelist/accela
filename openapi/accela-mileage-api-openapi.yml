@@ -1,0 +1,137 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Mileage API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Mileage
+  description: API for tracking vehicle mileage associated with inspections.
+paths:
+  /v4/mileage:
+    post:
+      description: 'Creates a vehicle mileage entry for a specified inspector on a particular date.
+
+
+        **API Endpoint**: POST /v4/mileage
+
+
+        **Scope**: mileage
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Create Mileage
+      operationId: v4.post.mileage
+      tags:
+      - Mileage
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/mileageModel'
+              type: array
+        description: Mileage request information
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    mileageModel:
+      type: object
+      properties:
+        date:
+          description: The date on which the mileage is travelled.
+          format: date-time
+          type: string
+        end:
+          description: The ending mileage on the inspector's odometer reading.
+          format: double
+          type: number
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        start:
+          description: The starting mileage on the inspector's odometer reading.
+          format: double
+          type: number
+        vehicleId:
+          type: object
+          description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

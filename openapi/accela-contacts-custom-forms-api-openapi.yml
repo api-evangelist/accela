@@ -1,0 +1,387 @@
+openapi: 3.2.0
+info:
+  description: The Contacts and Professionals APIs enable apps to manage reference contacts and licensed professionals.
+  title: Contacts and Professionals Contacts/Custom Forms API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Contacts/Custom Forms
+paths:
+  /v4/contacts/{id}/customForms:
+    get:
+      description: 'Gets all custom forms associated with the specified contact.
+
+
+        **API Endpoint**: GET /v4/contacts/{id}/customForms
+
+
+        **Scope**: contacts
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get All Custom Forms for Contact
+      operationId: v4.get.contacts.id.customForms
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idContactString'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates the custom forms for the specified record contact. The request body is an array of custom forms, with each item containing the custom form''s id and custom field name/value pairs.
+
+
+        **API Endpoint**: PUT /v4/contacts/{id}/customForms
+
+
+        **Scope**: contacts
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Update Contact Custom Forms
+      operationId: v4.put.contacts.id.customForms
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idContactString'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/customFormModel'
+              type: array
+        description: 'Custom forms information to be updated. Ex. [{"apiField1": "val1", "id": "group-subGroup"}]'
+        required: true
+  /v4/contacts/{id}/customForms/meta:
+    get:
+      description: 'Gets the metadata associated with all custom forms for the contact.
+
+
+        **API Endpoint**: GET /v4/contacts/{id}/customForms/meta
+
+
+        **Scope**: contacts
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get All Custom Forms Metadata for Contact
+      operationId: v4.get.contacts.id.customForms.meta
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idContactString'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/contacts/{id}/customForms/{formId}/meta:
+    get:
+      description: 'Gets the metadata associated with the specified custom form for the contact.
+
+
+        **API Endpoint**: GET /v4/contacts/{id}/customForms/{formId}/meta
+
+
+        **Scope**: contacts
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get Custom Form Metadata for Contact
+      operationId: v4.get.contacts.id.customForms.formId.meta
+      tags:
+      - Contacts/Custom Forms
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idContactString'
+      - description: The ID of the custom form to fetch.
+        in: path
+        name: formId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          description: The ID of the drilldown child record.
+          format: int64
+          type: integer
+        id:
+          description: The ID of the current record.
+          type: string
+    customFormField:
+      type: object
+      properties:
+        displayOrder:
+          description: ''
+          format: int64
+          type: integer
+        drillDown:
+          $ref: '#/components/schemas/aSITableDrill'
+        fieldType:
+          description: The custom field data type.
+          type: string
+        id:
+          description: The custom field system id assigned by the Civic Platform server.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the custom field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the custom field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The custom field length
+          format: int64
+          type: integer
+        options:
+          items:
+            type: object
+            description: Contains dropdown option values.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The custom field localized text.
+          type: string
+        value:
+          description: The custom field stored value.
+          type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customFormMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
+          type: string
+    customFormModel:
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: A custom field name.
+          type: string
+        <aCustomFieldValue>:
+          description: A custom field value.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
+          type: string
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    aSITableDrill:
+      description: Contains drilldown field information.
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-contacts-professionals.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

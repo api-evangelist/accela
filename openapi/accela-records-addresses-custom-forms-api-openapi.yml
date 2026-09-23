@@ -1,0 +1,297 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Addresses/Custom Forms API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Addresses/Custom Forms
+paths:
+  /v4/records/{recordId}/addresses/{addressId}/customForms:
+    get:
+      summary: Get Record Address Custom Forms
+      description: 'Returns an array of custom form data associated with a given record address.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/addresses/{addressId}/customForms
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.2.0'
+      operationId: v4.get.records.recordId.addresses.addressId.customForms
+      tags:
+      - Records/Addresses/Custom Forms
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: The ID of the record to be fetched
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the address to be fetched
+        in: path
+        name: addressId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: Comma-delimited names of fields to be returned in the response. Note that field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+        in: query
+        name: fields
+        schema:
+          type: string
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customAttributeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/addresses/{addressId}/customForms/meta:
+    get:
+      summary: Get Record Address Custom Forms Metadata
+      description: 'Returns the field metadata for all custom forms associated with a given record address.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/addresses/{addressId}/customForms/meta
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.2.0'
+      tags:
+      - Records/Addresses/Custom Forms
+      operationId: v4.get.records.recordId.addresses.addressId.customForms.meta
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: ID of record to be fetched
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+      - description: ID of record address to be fetched
+        in: path
+        name: addressId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: Comma-delimited names of fields to be returned in the response. Note that field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_apo_customForms_metadata'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+    apo_customForms_metadata:
+      description: "Contains metadata description of a custom form, including the custom fields metadata. \n\nAdded in Civic Platform version: 9.2.0"
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the custom form
+        description:
+          type: string
+          description: Describes the usage or puporse of the custom form.
+        fields:
+          items:
+            $ref: '#/components/schemas/apo_customForms_metadata_fields'
+          type: array
+          description: Contains the field metadata.
+        id:
+          type: string
+          description: The unique string identifier of the custom form.
+        customFormType:
+          type: string
+          enum:
+          - address
+          - parcel
+          - owner
+          description: Indicates whether the custom form is for an address, parcel, or owner.
+    response_apo_customForms_metadata:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/apo_customForms_metadata'
+          type: array
+        status:
+          type: integer
+          description: The return status code.
+    apo_customForms_metadata_fields:
+      description: "Describes the metadata of a custom field. \n\nAdded in Civic Platform version: 9.2.0"
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The unique custom field id.
+        name:
+          type: string
+          description: The field name.
+        description:
+          type: string
+          description: Describes the usage or purpose of the custom field.
+        label:
+          type: object
+          description: The field label.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        dataType:
+          type: string
+          enum:
+          - Number
+          - Text
+          - Date
+          - Radio
+          - DropdownList
+          description: The field data type. If the custom field is a DropdownList, the options[] array contains the list of possible values, or the sharedDropdownListName specifies the name of a shared dropdown list containing the possible values.
+        defaultValue:
+          type: string
+          description: Any default value for the custom field.
+        displayOrder:
+          format: int64
+          type: integer
+          description: The display order of the field on the custom form.
+        unit:
+          type: string
+          description: The unit of measure of a numeric custom field.
+        isRequired:
+          type: string
+          enum:
+          - Y
+          - N
+          description: Indicates whether or not the field is required.
+        isPublicVisible:
+          type: string
+          enum:
+          - Y
+          - N
+          description: Indicates whether or not a citizen user can see this field.
+        isRecordSearchable:
+          type: string
+          enum:
+          - Y
+          - N
+          description: Indicates whether or not the field is searchable.
+        maxLength:
+          format: int64
+          type: integer
+          description: The field maximum length.
+        options:
+          items:
+            type: object
+            description: A dropdown field value.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+          description: Contains possible field values, if the field is a dropdown field type.
+        sharedDropdownListName:
+          type: string
+          description: The name of the shared dropdown list, if the field is a dropdown field type.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

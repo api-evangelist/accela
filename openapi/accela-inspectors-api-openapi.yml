@@ -1,0 +1,179 @@
+openapi: 3.2.0
+info:
+  description: Use the Inspections API to manage inspection records during their complete lifecycle from application submittal to permit issuance or license issuance. Your agency may need to complete inspections on new property developments, homes, or complaints.
+  title: Inspections Inspectors API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Inspectors
+paths:
+  /v4/inspectors:
+    get:
+      description: 'Gets all the inspectors in the agency.
+
+
+        **API Endpoint**: GET /v4/inspectors
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspectors
+      operationId: v4.get.inspectors
+      tags:
+      - Inspectors
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by department code. For example, 'HEALTH/DCA/SUPER/NA/NA/NA/INTAKE'
+        in: query
+        name: department
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectorModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspectors/{id}:
+    get:
+      description: 'Gets information about an inspector.
+
+
+        **API Endpoint**: GET /v4/inspectors/{id}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Inspector
+      operationId: v4.get.inspectors.id
+      tags:
+      - Inspectors
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the inspector to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectorModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_inspectorModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/inspectorModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_inspectorModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectorModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    inspectorModel:
+      type: object
+      properties:
+        department:
+          type: object
+          description: The name of the department where the inspector works.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The inspector's email address.
+          type: string
+        firstName:
+          description: The inspector's first name.
+          type: string
+        id:
+          description: The inspector id.
+          type: string
+        lastName:
+          description: The inspector's last name.
+          type: string
+        middleName:
+          description: The inspector's middle name.
+          type: string
+        mobilePhone:
+          description: The inspector's mobile phone number.
+          type: string
+        preferredChannel:
+          description: The method by which the inspector prefers to be notified, by phone for example.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-inspections.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

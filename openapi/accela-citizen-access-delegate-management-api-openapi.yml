@@ -1,0 +1,442 @@
+openapi: 3.2.0
+info:
+  description: The Citizens API include endpoints for citizen users to manage their own accounts, authorized users to manage other accounts, and manage citizen delegates, announcements, and invitations.
+  title: Citizens Citizen Access Delegate Management API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Citizen Access Delegate Management
+  description: description here
+paths:
+  /v4/citizenaccess/citizens/delegatePrivileges:
+    get:
+      description: 'Gets the privileges of the citizen delegates associated to the logged-in user.
+
+
+        **API Endpoint**: GET /v4/citizenaccess/citizens/delegatePrivileges
+
+
+        **Scope**: users
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Get Citizen Delegate Privileges
+      operationId: v4.get.citizenaccess.citizens.delegatePrivileges
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_delegatePrivilegeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/delegates:
+    get:
+      description: 'Gets the citizen users delegated by the logged-in user.
+
+
+        **API Endpoint**: GET /v4/citizenaccess/citizens/delegates
+
+
+        **Scope**: users
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Get All Delegates
+      operationId: v4.get.citizenaccess.citizens.delegates
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - description: Filter by the delegate's login name.
+        in: query
+        name: userName
+        required: false
+        schema:
+          type: string
+      - description: Filter by the delegate's name.
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Filter by the delegate status.
+        in: query
+        name: delegateStatus
+        required: false
+        schema:
+          type: string
+          enum:
+          - PENDING
+          - ACCEPT
+          - REJECT
+          - EXPIRED
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_publicUserDelegateModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates the specified delegate users. The Create Delegates API allows the logged-in user to send delegate requests to one or more users, as specified in the request array. The specified userNames must be valid citizen users. The logged-in user cannot send more than one delegate request to the same userName. For each new delegate, the delegateStatus is set to PENDING. The citizen user receiving the delegate request will need to accept the delegate request (via Update Invitation API) to enable the assigned permissions. If the citizen user rejects the invitation (via Update Invitation API) , the permissions will not take effect; the delegate record remains until it is deleted by the Delete Delegates API.
+
+
+        **API Endpoint**: POST /v4/citizenaccess/citizens/delegates
+
+
+        **Scope**: users
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Create Delegates
+      operationId: v4.post.citizenaccess.citizens.delegates
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/request_publicUserDelegateModel'
+              type: array
+        description: Delegate information to add.
+        required: true
+  /v4/citizenaccess/citizens/delegates/{ids}:
+    delete:
+      description: 'Deletes the specified delegates whom the logged-in user has delegated.
+
+
+        **API Endpoint**: DELETE /v4/citizenaccess/citizens/delegates/{ids}
+
+
+        **Scope**: users
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Delete Delegates
+      operationId: v4.delete.citizenaccess.citizens.delegates.ids
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - description: Comma-delimited IDs of delegates to delete.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    request_publicUserDelegateModel:
+      type: object
+      properties:
+        invitationMessage:
+          description: The invitation message sent to the delegate.
+          type: string
+        name:
+          description: The delegate's name.
+          type: string
+        permissions:
+          items:
+            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
+          type: array
+        userName:
+          description: The delegate's login name.
+          type: string
+    response_publicUserDelegateModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserDelegateModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    permissionModel:
+      type: object
+      properties:
+        level:
+          $ref: '#/components/schemas/permissionLevelModel'
+        allowedActions:
+          description: An action the user is allowed to perform
+          enum:
+          - ViewRecords
+          - CreateRecords
+          - RenewRecords
+          - ManageInsps
+          - ManageDocs
+          - MakePayments
+          - AmendRecords
+          items:
+            type: string
+          type: array
+    permissionLevelModel:
+      type: object
+      properties:
+        MODULE:
+          description: The Civic Platform module the delegate has access to.
+          type: string
+        AGENCY:
+          description: The agency the delegate has access to, for a multi-agency environment.
+          type: string
+    resultCountModel:
+      type: object
+      properties:
+        failedCount:
+          description: The number of failed results.
+          format: int64
+          type: integer
+        failedIDs:
+          description: The IDs of the entities on which the operation failed.
+          type: string
+        successCount:
+          description: The number of successful results.
+          format: int64
+          type: integer
+        successIDs:
+          description: The IDs of the entities on which the operation succeeded.
+          type: string
+    publicUserDelegatePermissionModel:
+      type: object
+      properties:
+        amendAllowed:
+          description: If true, the delegate is allowed to amend records.
+          type: boolean
+        createRecordAllowed:
+          description: If true, the delegate is allowed to create records.
+          type: boolean
+        documentAllowed:
+          description: If true, the delegate is allowed to manage documents.
+          type: boolean
+        inspectionAllowed:
+          description: If true, the delegate is allowed to manage inspections.
+          type: boolean
+        level:
+          description: The permission level.
+          type: string
+        levelValue:
+          description: The value for the permission level, as configured in Civic Platform Administration.
+          type: string
+        paymentAllowed:
+          description: If true, the delegate is allowed to make payments.
+          type: boolean
+        renewalAllowed:
+          description: If true, the delegate is allowed to renew records.
+          type: boolean
+        viewRecordAllowed:
+          description: If true, the delegate is allowed to view records.
+          type: boolean
+    delegatePrivilegeModel:
+      type: object
+      properties:
+        firstName:
+          description: The citizen user's first name.
+          type: string
+        id:
+          description: Ther citizen delegate's userid.
+          type: string
+        lastName:
+          description: The citizen user's last name.
+          type: string
+        permissions:
+          description: An array containing the allowed actions assigned to the user, per module.
+          items:
+            $ref: '#/components/schemas/permissionModel'
+          type: array
+        userName:
+          description: The user who assigned the permission.
+          type: string
+    response_delegatePrivilegeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/delegatePrivilegeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultCountModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultCountModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    publicUserDelegateModel:
+      type: object
+      properties:
+        delegateStatus:
+          description: The status of the delegate request.
+          enum:
+          - PENDING
+          - ACCEPT
+          - REJECT
+          - EXPIRED
+          type: string
+        id:
+          description: The delegate id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        invitationMessage:
+          description: The invitation message sent to the delegate.
+          type: string
+        name:
+          description: The delegate's name.
+          type: string
+        permissions:
+          items:
+            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
+          type: array
+        userName:
+          description: The delegate's login name.
+          type: string
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-citizens.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - re-decoded from cp1252 (source not valid UTF-8)
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

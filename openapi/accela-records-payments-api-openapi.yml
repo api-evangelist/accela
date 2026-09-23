@@ -1,0 +1,219 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Payments API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Payments
+paths:
+  /v4/records/{recordId}/payments:
+    get:
+      description: 'Gets information about the payments for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/payments
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All Payments for Record
+      operationId: v4.get.records.recordId.payments
+      tags:
+      - Records/Payments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Filter by whether or not a payment has been made in full.
+        in: query
+        name: paymentStatus
+        schema:
+          type: string
+          enum:
+          - Y
+          - N
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_paymentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/payments/{paymentId}:
+    get:
+      description: 'Gets information about the specified payment for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/payments/{paymentId}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Record Payment
+      operationId: v4.get.records.recordId.payments.paymentId
+      tags:
+      - Records/Payments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of the payment to fetch.
+        in: path
+        name: paymentId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_paymentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_paymentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/paymentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    paymentModel:
+      type: object
+      properties:
+        amount:
+          description: The amount of a payment transaction or account balance.
+          format: double
+          type: number
+        amountNotAllocated:
+          description: The payment amount which has not been allocated.
+          format: double
+          type: number
+        cashierId:
+          description: The unique ID associated with the cashier.
+          type: string
+        id:
+          description: The payment system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        paymentDate:
+          description: The date a payment was entered into the system.
+          format: date-time
+          type: string
+        paymentMethod:
+          description: Describes the method of payment, for example; credit card, cash, debit card, and so forth.
+          type: string
+        paymentStatus:
+          description: Indicates whether or not a payment has been made in full.
+          type: string
+        receiptId:
+          description: The unique ID generated for the recipient.
+          format: int64
+          type: integer
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        transactionCode:
+          description: An industry standard code that identifies the type of transaction.
+          type: string
+        transactionId:
+          description: A unique number, assigned by the system, that indentifies the transaction.
+          format: int64
+          type: integer
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

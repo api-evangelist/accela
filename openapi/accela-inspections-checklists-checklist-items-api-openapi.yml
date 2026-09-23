@@ -1,0 +1,937 @@
+openapi: 3.2.0
+info:
+  description: Use the Inspections API to manage inspection records during their complete lifecycle from application submittal to permit issuance or license issuance. Your agency may need to complete inspections on new property developments, homes, or complaints.
+  title: Inspections/Checklists/Checklist Items API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Inspections/Checklists/Checklist Items
+paths:
+  /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems:
+    get:
+      description: 'Gets the checklist items for the specified inspection checklist.
+
+
+        **API Endpoint**: GET /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Checklist Items
+      operationId: v4.get.inspections.inspectionId.checklists.checklistId.checklistItems
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionId'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectionChecklistItemModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspections/checklists/{id}/checklistItems:
+    put:
+      description: 'Updates the checklist items for the specified checklist.
+
+
+        **API Endpoint**: PUT /v4/inspections/checklists/{id}/checklistItems
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Checklist Items
+      operationId: v4.put.inspections.checklists.id.checklistItems
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the checklist to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/inspectionChecklistItemModel'
+              type: array
+        description: The checklist items to be updated.
+        required: true
+  /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checklistItemId}/histories:
+    get:
+      description: 'Gets historical (audit) data related to a checklist item for the specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checklistItemId}/histories
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Inspection Checklist Item History
+      operationId: v4.get.inspections.inspectionId.checklists.checklistId.checklistItems.checklistItemId.histories
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionIdString'
+      - $ref: '#/components/parameters/checklistIdString'
+      - $ref: '#/components/parameters/checklistItemIdString'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_chekclistItemHistoryModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checklistItemId}/statuses:
+    get:
+      description: 'Gets historical (audit) data related to a checklist item for the specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checklistItemId}/statuses
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Checklist Item Statuses
+      operationId: v4.get.inspections.inspectionId.checklists.checklistId.checklistItems.checklistItemId.statuses
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionIdString'
+      - $ref: '#/components/parameters/checklistIdString'
+      - $ref: '#/components/parameters/checklistItemIdString'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistItemStatusModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/search:
+    get:
+      description: 'Get all inspection checklist items along with reference guide sheet status group available statuses.
+
+
+        **API Endpoint**: GET /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/search
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 20.2.x'
+      summary: Get All Inspection Checklist Items Search
+      operationId: v4.get.inspections.inspectionId.checklists.checklistId.checklistItems.search
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/inspectionId'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/authHeaderParam'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistItemStatusSearchModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checkListItemId}/documents:
+    get:
+      description: 'Gets the documents associated with the specified checklist item.
+
+
+        **API Endpoint**: GET /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checkListItemId}/documents
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Checklist Item Documents
+      operationId: v4.get.inspections.inspectionId.checklists.checklistId.checklistItems.checklistItemId.documents
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionId'
+      - $ref: '#/components/parameters/checklistId'
+      - description: The ID of the checklist item to fetch.
+        in: path
+        name: checkListItemId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Attaches documents to a checklist item.
+
+
+        **API Endpoint**: POST /v4/inspections/{inspectionId}/checklists/{checklistId}/checklistItems/{checkListItemId}/documents
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Checklist Item Documents
+      operationId: v4.post.inspections.inspectionId.checklists.checklistId.checklistItems.checklistItemId.documents
+      tags:
+      - Inspections/Checklists/Checklist Items
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionId'
+      - $ref: '#/components/parameters/checklistId'
+      - description: The ID of the checklist item to fetch.
+        in: path
+        name: checkListItemId
+        required: true
+        schema:
+          type: string
+      - description: The document group.
+        in: query
+        name: group
+        required: false
+        schema:
+          type: string
+      - description: The document category. The list of category options varies depending on the document group. See [Get All Document Categories](./api-settings.html#operation/v4.get.settings.documents.categories).
+        in: query
+        name: category
+        required: false
+        schema:
+          type: string
+      - description: The standard EDMS adapter userid. It's required for user level authentication
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+      - description: The standard EMDS adapter password. It's required for user level authentication
+        in: query
+        name: password
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                uploadedFile:
+                  type: string
+                  description: Specify the filename parameter with the file to be uploaded. See example for details.
+                  format: binary
+                fileInfo:
+                  type: string
+                  description: A string array containing the file metadata for each specified filename. See example for details.
+              required:
+              - uploadedFile
+              - fileInfo
+components:
+  parameters:
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    checklistIdString:
+      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
+      in: path
+      name: checklistId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    checklistId:
+      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
+      in: path
+      name: checklistId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    expand:
+      description: 'Parameter to bring comment group. '
+      in: query
+      name: expand
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    inspectionIdString:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    checklistItemIdString:
+      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
+      in: path
+      name: checklistItemId
+      required: true
+      schema:
+        type: string
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: integer
+        format: int64
+  schemas:
+    userRolePrivilegeModel:
+      type: object
+      properties:
+        contactAllowed:
+          description: Indicates whether or not the permission is given to a contact.
+          type: boolean
+        deleteAllowed:
+          description: "Indicates whether or not the permission to delete a document is allowed.\t"
+          type: boolean
+        downloadAllowed:
+          description: Indicates whether or not the permission to download a document is allowed.
+          type: boolean
+        licenseTypeRules:
+          items:
+            type: string
+            description: "A string array containing the types of licensed professionals who are given the permission.\t"
+          type: array
+        licensendProfessionalAllowed:
+          description: Indicates whether or not the permission is given to a licensed professional.
+          type: boolean
+        ownerAllowed:
+          description: Indicates whether or not the permission is given to an owner.
+          type: boolean
+        recordCreatorAllowed:
+          description: Indicates whether or not the permission is given to a record creator.
+          type: boolean
+        registeredUserAllowed:
+          description: Indicates whether or not the permission is given to a registered public user.
+          type: boolean
+        titleViewAllowed:
+          description: Indicates whether or not the permission to view a document name is allowed.
+          type: boolean
+        uploadAllowed:
+          description: Indicates whether or not the permission to upload a document is allowed.
+          type: boolean
+    response_checklistItemStatusSearchModelArray:
+      type: object
+      properties:
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        statusGroup:
+          description: The statusGroup of the checklist.
+          type: string
+        displayOrder:
+          description: The item's display order.
+          format: int64
+          type: integer
+        checklist:
+          description: The name of a checklist.
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        id:
+          description: The checklist item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        score:
+          description: The inspection score for a checklist or checklist item.
+          format: int64
+          type: integer
+        checklistId:
+          description: The unique ID associated with the checklist.
+          format: int64
+          type: integer
+        isCritical:
+          description: Indicates whether or not the checklist item is critical.
+          enum:
+          - Y
+          - N
+          type: string
+        checklistItem:
+          type: object
+          description: An item in the checklist.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The checklist item status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        availableStatuses:
+          type: object
+          description: Indicates the available status.
+          properties:
+            value:
+              description: The localized display value.
+              type: string
+            resultType:
+              description: The localized display value.
+              type: string
+            displayOrder:
+              description: The localized display value.
+              type: integer
+            criticalScore:
+              description: The localized display value.
+              type: integer
+            majorViolation:
+              description: The localized display value.
+              type: string
+            text:
+              description: The localized display value.
+              type: string
+            nonCriticalScore:
+              description: The localized display value.
+              type: integer
+        commentGroups:
+          type: object
+          description: Comments or notes about the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    checklistModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    documentModel:
+      type: object
+      properties:
+        category:
+          type: object
+          description: The document category. The list of category options varies depending on the document group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        deletable:
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        department:
+          description: The name of the department where the inspector works.
+          type: string
+        description:
+          description: The description of the document.
+          type: string
+        downloadable:
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        entityId:
+          description: The unique ID of the entity or record.
+          type: string
+        entityType:
+          description: The type of entity.
+          type: string
+        fileName:
+          description: The name of the file as it displays in the source location.
+          type: string
+        group:
+          type: object
+          description: The document group which allows agencies to organize the different types of documents that users might need to add to certain applications.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The document system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        modifiedBy:
+          description: The user account that last modified the document.
+          type: string
+        modifiedDate:
+          description: The date the document was last modified.
+          format: date-time
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        size:
+          description: The file size of the document.
+          format: double
+          type: number
+        source:
+          description: The name for your agency's electronic document management system.
+          type: string
+        status:
+          type: object
+          description: The documet status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        titleViewable:
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        type:
+          description: The document type.
+          type: string
+        uploadedBy:
+          description: The user who uploaded the document to the record.
+          type: string
+        uploadedDate:
+          description: The date when the document was uploaded to the record.
+          format: date-time
+          type: string
+        virtualFolders:
+          description: The virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
+          type: string
+    response_checklistItemStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistItemStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    checklistItemStatusModel:
+      description: A checklist item status
+      type: object
+      properties:
+        text:
+          description: The status display label.
+          type: string
+        value:
+          description: The status value.
+          type: string
+    inspectionChecklistItemModel:
+      type: object
+      properties:
+        checklist:
+          description: The name of a checklist.
+          type: string
+        checklistId:
+          description: The unique ID associated with the checklist.
+          format: int64
+          type: integer
+        checklistItem:
+          type: object
+          description: An item in the checklist.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        comment:
+          type: object
+          description: Comments or notes about the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        customId:
+          description: The checklist item's custom ID.
+          type: string
+        displayOrder:
+          description: The item's display order.
+          format: int64
+          type: integer
+        id:
+          description: The checklist item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        refGuideType:
+          description: The name of the checklist group the given item is originally from.
+          type: string
+        isCritical:
+          description: Indicates whether or not the checklist item is critical.
+          enum:
+          - Y
+          - N
+          type: string
+        isMajorViolation:
+          description: Indicates whether or not the checklist item is a major violation.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        score:
+          description: The inspection score for a checklist or checklist item.
+          format: int64
+          type: integer
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The checklist item status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_chekclistItemHistoryModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/chekclistItemHistoryModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    chekclistItemHistoryModel:
+      type: object
+      properties:
+        checklistItemId:
+          description: The checklist item id.
+          format: int64
+          type: integer
+        comments:
+          description: Comments or note about the checklist item.
+          type: string
+        inspectionType:
+          description: The inspection type.
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        majorViolation:
+          type: object
+          description: The major violation related to the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        score:
+          description: The inspection score related to the checklist item.
+          format: int64
+          type: integer
+        status:
+          description: The checklist item status.
+          type: string
+        updatedBy:
+          description: The user who last updated the checklist item.
+          type: string
+        updatedDate:
+          description: The date and time the checklist item was last updated.
+          format: date-time
+          type: string
+    response_inspectionChecklistItemModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionChecklistItemModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_checklistModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-inspections.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

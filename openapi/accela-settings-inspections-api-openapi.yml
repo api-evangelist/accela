@@ -1,0 +1,1274 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Inspections API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Inspections
+paths:
+  /v4/settings/inspections/checklists:
+    get:
+      description: 'Gets all checklists you can use for an inspection.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklists
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Checklists
+      operationId: v4.get.settings.inspections.checklists
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by checklist group. See [Get All Checklist Groups](./api-settings.html#operation/v4.get.settings.inspections.checklistsGroups).
+        in: query
+        name: group
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/checklists/{ids}:
+    get:
+      description: 'Gets specific checklists.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklists/{ids}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Checklists
+      operationId: v4.get.settings.inspections.checklists.ids
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of the checklists to fetch.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/checklists/{checklistId}/checklistItems/{checklistItemid}/customForms:
+    get:
+      description: 'Gets the metadata for all custom forms for the specified checklist item.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklists/{checklistId}/checklistItems/{checklistItemid}/customForms
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Forms Metadata for Checklist Item
+      operationId: v4.get.settings.inspections.checklists.checklistId.checklistItems.checklistItemId.customForms
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the checklist to fetch.
+        in: path
+        name: checklistId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the checklist item to fetch.
+        in: path
+        name: checklistItemid
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/checklists/{checklistId}/checklistItems/{checklistItemid}/customTables:
+    get:
+      description: 'Gets the metadata of all custom tables for the specified checklist item.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklists/{checklistId}/checklistItems/{checklistItemid}/customTables
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Tables Metadata for Checklist Item
+      operationId: v4.get.settings.inspections.checklists.checklistId.checklistItems.checklistItemId.customTables
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The id of the checklist to fetch.
+        in: path
+        name: checklistId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: The id of the checklist item to fetch.
+        in: path
+        name: checklistItemid
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customTableMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/checklistsGroups:
+    get:
+      description: 'Gets the checklist groups for use with an inspection.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklistsGroups
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Checklist Groups
+      operationId: v4.get.settings.inspections.checklistsGroups
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistGroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/checklists/statuses:
+    get:
+      description: 'Gets the status values for checklists
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklists/statuses
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get Inspection Checklist Statuses
+      operationId: v4.get.settings.inspections.checklists.statuses
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by status group
+        in: query
+        name: group
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistItemStatusModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/types:
+    get:
+      description: 'Gets all available inspection types.
+
+
+        **API Endpoint**: GET v4/settings/inspections/types
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Types
+      operationId: v4.get.settings.inspections.types
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by inspection type group code.
+        in: query
+        name: group
+        schema:
+          type: string
+      - description: The related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - associations
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectionTypeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/types/{ids}:
+    get:
+      description: 'Gets specific inspection types.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/types/{ids}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Inspection Types
+      operationId: v4.get.settings.inspections.types.ids
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of inspection types to fetch.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - description: The related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - associations
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectionTypeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/types/{id}/comments/groups:
+    get:
+      description: 'Gets the standard comment groups for a given inspection type.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/types/{id}/comments/groups
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.3.0'
+      summary: Get All Standard Comment Groups for Inspection Type
+      operationId: v4.get.settings.inspections.type.comments.groups
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - in: path
+        name: id
+        description: The system id of the inspection type to fetch. See [Get All Inspection Types](./api-settings.html#operation/v4.get.settings.inspections.types).
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_standardCommentGroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/checklistItems/{checklistItemId}/comments/groups:
+    get:
+      description: 'Gets the standard comment groups for a given checklist item.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/checklistItems/{checklistItemId}/comments/groups
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.3.0'
+      summary: Get All Standard Comment Groups for Inspection Checklist
+      operationId: v4.get.settings.inspections.checklistItems.checklistItemId.comments.groups
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - in: path
+        name: checklistItemId
+        description: The system id of the checklist item to fetch. For valid values, use the id field in items[] returned by [Get All Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists).
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_standardCommentGroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/grades:
+    get:
+      description: 'Gets all available grades for use in an inspection.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/grades
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Grades
+      operationId: v4.get.settings.inspections.grades
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by the inspection grade group
+        in: query
+        name: group
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectionGradeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/inspections/statuses:
+    get:
+      description: 'Gets all available status values for use in an inspection.
+
+
+        **API Endpoint**: GET /v4/settings/inspections/statuses
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Statuses
+      operationId: v4.get.settings.inspections.statuses
+      tags:
+      - Settings/Inspections
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by the inspection status group.
+        in: query
+        name: group
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inspectionResultStatusModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    inspectionTypeAssociationsModel:
+      type: object
+      properties:
+        standardCommentGroup:
+          type: object
+          description: The name of the standard comment group associated with the inspection type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_standardCommentGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/standardCommentGroupModel'
+          type: array
+    inspectionResultStatusModel:
+      type: object
+      properties:
+        group:
+          description: The inspection status group.
+          type: string
+        results:
+          description: Contains the inspection grades.
+          items:
+            $ref: '#/components/schemas/gradeModel'
+          type: array
+    gradeModel:
+      type: object
+      properties:
+        grade:
+          type: object
+          description: The name of the inspection grade.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        gradeImage:
+          description: The link to an image file associated to the inspection grade.
+          type: string
+        group:
+          description: The inspection grade group for the inspection grade value.
+          type: string
+        maximumMajorViolation:
+          description: "\tUsed with the maxMajorViolation field to define a range of the acceptable number of major violations for an inspection."
+          format: int64
+          type: integer
+        maximumScore:
+          description: "\tUsed with the minScore field to define a range of acceptable values for an inspection."
+          format: int64
+          type: integer
+        minimumMajorViolation:
+          description: "\tUsed with the maxMajorViolation field to define a range of the acceptable number of major violations for an inspection."
+          format: int64
+          type: integer
+        minimumScore:
+          description: "\tUsed with the maxScore field to define a range of acceptable values for an inspection."
+          format: int64
+          type: integer
+    customTableMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
+          type: string
+    checklistGroupModel:
+      type: object
+      properties:
+        id:
+          description: The checklist group id.
+          type: string
+        text:
+          description: The checklist group name.
+          type: string
+        value:
+          description: The checklist group value.
+          type: string
+    inspectionGradeModel:
+      type: object
+      properties:
+        grades:
+          description: Contains the inspection grades.
+          items:
+            $ref: '#/components/schemas/gradeModel'
+          type: array
+        group:
+          description: The inspection grade group.
+          type: string
+    rGuideSheetGroupModel:
+      type: object
+      properties:
+        id:
+          description: The inspection checklist sytem id assigned by the Civic Platform server.
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    response_checklistGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistGroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    checklistModel:
+      type: object
+      properties:
+        group:
+          items:
+            description: A checklist group.
+            type: string
+          type: array
+        id:
+          description: The checklist id.
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/checklistItemModel'
+          type: array
+        serviceProviderCode:
+          description: The agency unique identifier.
+          type: string
+        text:
+          description: The checklist name.
+          type: string
+    aSITableDrill:
+      description: Contains drilldown field information.
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    response_checklistItemStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistItemStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    checklistItemStatusModel:
+      type: object
+      properties:
+        criticalScore:
+          description: "\tThe critical score for the status of a guidesheet item that is a Major Violation/Critical Item."
+          format: int64
+          type: integer
+        displayOrder:
+          description: "\tThe order of the item in comparison to the other items."
+          format: int64
+          type: integer
+        lhsType:
+          description: "\tIndicates whether or not the checklist is for LHS (Life/Health/Safety). For LHS-type items, the maximum point value becomes the default score."
+          type: string
+        majorViolation:
+          description: "\tThe number of major violations."
+          type: string
+        nonCriticalScore:
+          description: "\tThe non-critical score for the status of a guidesheet item that is not a Major Violation/Critical Item."
+          format: int64
+          type: integer
+        resultType:
+          description: "\tThe type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app."
+          type: string
+        text:
+          description: The checklist status name.
+          type: string
+        value:
+          description: The checklist status value.
+          type: string
+    response_inspectionGradeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionGradeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    checklistItemModel:
+      description: Contains the checklist items.
+      type: object
+      properties:
+        comment:
+          description: Comments about the checklist item.
+          type: string
+        defaultScore:
+          description: "\tThe default score associated with the checklist item."
+          format: int64
+          type: integer
+        displayOrder:
+          description: "\tThe order of the item in comparison to the other items."
+          format: int64
+          type: integer
+        id:
+          description: The ID of the checklist item assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isCarryOver:
+          description: "\tIndicates whether or not the checklist is a carry-over."
+          type: string
+        isCommentVisible:
+          description: "\tIndicates whether or not the comment is visible in a checklist."
+          type: string
+        isCritical:
+          description: "\tIndicates whether or not the checklist item is critical."
+          type: string
+        isMaxPointsVisible:
+          description: "\tIndicates whether or not to display the maximum points for the inspection checklist."
+          type: string
+        isScoreVisible:
+          description: "\tIndicates whether or not to display the inspection checklist score."
+          type: string
+        maxPoints:
+          description: "\tThe number of points allowed for an inspection, after which the inspection fails."
+          format: double
+          type: number
+        statusGroup:
+          description: Defines a set of status values for use with inspection types that conform to similar code requirements. For example, status groups for building related inspections, such as mechanical, electrical, uniform plumbing, and zoning.
+          type: string
+        statuses:
+          description: Uses several parameters to characterize the status of one or more inspection checklists
+          items:
+            $ref: '#/components/schemas/checklistItemStatusModel'
+          type: array
+        text:
+          description: The checklist item name.
+          type: string
+    departmentModel:
+      type: object
+      properties:
+        agency:
+          description: The department agency
+          type: string
+        bureau:
+          description: The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: The department group.
+          type: string
+        id:
+          description: The department system id assigned by the Civic Platform server.
+          type: string
+        office:
+          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
+          type: string
+        section:
+          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier
+          type: string
+        text:
+          description: The department display text.
+          type: string
+        value:
+          description: The department value.
+          type: string
+    customFormMetadataModel:
+      description: Contains the metadata for a custom form.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom form's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom form id.
+          type: string
+        text:
+          description: The custom form name.
+          type: string
+    inspectionTypeModel:
+      type: object
+      properties:
+        allowFailChecklistItems:
+          description: Indicates whether or not to allow inspection to pass with failed checklist items for the current inspection type or from previous inspections.
+          enum:
+          - Y
+          - N
+          type: string
+        allowMultiInspections:
+          description: Indicates whether or not to allow the scheduling of multiple inspections for this inspection type.
+          enum:
+          - Y
+          - N
+          type: string
+        associations:
+          $ref: '#/components/schemas/inspectionTypeAssociationsModel'
+        cancelRestriction:
+          $ref: '#/components/schemas/inspectionRestrictionModel'
+        carryoverFlag:
+          description: "Indicates how failed guidesheet items for an inspection type are carried over to the next inspection guidesheet. \n\nNULL or empty string : Guidesheet items are not carried over. \n\n\"A\" : Automatic carry-over of failed guidesheet items to the next inspection guidesheet item."
+          enum:
+          - null
+          - A
+          type: string
+        defaultDepartment:
+          $ref: '#/components/schemas/departmentModel'
+        disciplines:
+          description: The inspection disciplines assigned to the inspection type.
+          items:
+            type: string
+          type: array
+        flowEnabledFlag:
+          description: Indicates whether or not to include the inspection in the inspection flow process.
+          enum:
+          - Y
+          - N
+          type: string
+        grade:
+          description: The name of the inspection grade.
+          type: string
+        group:
+          description: "The name of a group of inspection types.\t"
+          type: string
+        groupName:
+          type: object
+          description: The descriptive name associated to an inspection group code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        guideGroup:
+          $ref: '#/components/schemas/rGuideSheetGroupModel'
+        hasCancelPermission:
+          description: Indicates whether or not the user can reschedule the inspection.
+          enum:
+          - Y
+          - N
+          type: string
+        hasFlowFlag:
+          description: Indicates whether or not to include the inspection in the inspection flow process.
+          enum:
+          - Y
+          - N
+          type: string
+        hasNextInspectionAdvance:
+          description: Indicates whether or not the next inspection can be scheduled in advance.
+          enum:
+          - Y
+          - N
+          type: string
+        hasReschdulePermission:
+          description: Indicates whether or not the user can reschedule the inspection.
+          enum:
+          - Y
+          - N
+          type: string
+        hasSchdulePermission:
+          description: Indicates whether or not the user can schedule the inspection. Note that hasSchdulePermission returns "Y" if result.inspectionTypes.schdulePermission is either "REQUEST_ONLY_PENDING", "REQUEST_SAME_DAY_NEXT_DAY", or "SCHEDULE_USING_CALENDAR". If result.inspectionTypes.schdulePermission is "NONE" or null, hasSchdulePermission returns "N".
+          enum:
+          - Y
+          - N
+          type: string
+        id:
+          description: The inspection type system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inspectionEditable:
+          description: Indicates whether or not inspection result, grade or checklist can be edited.
+          enum:
+          - Y
+          - N
+          type: string
+        isAutoAssign:
+          description: Indicates whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the information is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxPoints:
+          description: The number of points allowed for an inspection, after which the inspection fails.
+          format: double
+          type: number
+        priority:
+          description: The priority level assigned to the inspection type.
+          type: string
+        publicVisible:
+          description: Indicates whether or not Accela Citizen Access users can view comment about the inspection results.
+          enum:
+          - Y
+          - N
+          type: string
+        refereceNumber:
+          description: The reference number associated with an inspection.
+          type: string
+        rescheduleRestriction:
+          $ref: '#/components/schemas/inspectionRestrictionModel'
+        resultGroup:
+          description: The name of a grouping of Inspection results, usually indicative of a range of inspection scores.
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        totalScore:
+          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
+          format: int64
+          type: integer
+        totalScoreOption:
+          description: "Indicates the method for calculating total scores of checklist items. There are four options:  \n\nTOTAL - Gets the total score of all checklists as the inspection score. \n\nMAX - Gets the max score of all checklists as the inspection score. \n\nMIN - Gets the min score of all checklists as the inspection score. \n\nAVG - Gets the average score of all checklists as the inspection score. \n\nSUBTRACT - Subtracts the total score of all the checklist items from the Total Score defined for the inspection type."
+          enum:
+          - TOTAL
+          - MAX
+          - MIN
+          - AVG
+          - SUBTRACT
+          type: string
+        unitNumber:
+          description: The number of time units (see timeUnitDuration) comprising an inspection.
+          type: string
+        units:
+          description: The amount of time comprising the smallest time unit for conducting an inspection.
+          format: double
+          type: number
+        value:
+          description: The value for the specified parameter.
+          type: string
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          description: The ID of the drilldown child record.
+          format: int64
+          type: integer
+        id:
+          description: The ID of the current record.
+          type: string
+    inspectionRestrictionModel:
+      type: object
+      properties:
+        beforeScheduledTime:
+          $ref: '#/components/schemas/inspectionBeforeScheduledTime'
+    response_checklistModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customFormField:
+      type: object
+      properties:
+        displayOrder:
+          description: ''
+          format: int64
+          type: integer
+        drillDown:
+          $ref: '#/components/schemas/aSITableDrill'
+        fieldType:
+          description: The custom field data type.
+          type: string
+        id:
+          description: The custom field system id assigned by the Civic Platform server.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the custom field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the custom field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The custom field length
+          format: int64
+          type: integer
+        options:
+          items:
+            type: object
+            description: Contains dropdown option values.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The custom field localized text.
+          type: string
+        value:
+          description: The custom field stored value.
+          type: string
+    response_inspectionResultStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionResultStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_inspectionTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customTableMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    inspectionBeforeScheduledTime:
+      description: Specifies the number of days or hours before the scheduled time on the inspection date.
+      type: object
+      properties:
+        days:
+          description: Inspections can only be cancelled within this number of days before the scheduled time on the inspection date.
+          format: int64
+          type: integer
+        hours:
+          description: Inspections can only be cancelled within this number of hours before the scheduled time on the inspection date.
+          format: int64
+          type: integer
+        time:
+          description: Inspections can only be cancelled within the number of specified days or hours before this time ("hh:mm AM|PM") on the inspection date.
+          type: string
+    standardCommentGroupModel:
+      type: object
+      properties:
+        text:
+          description: The standard comment group name.
+          type: string
+        value:
+          description: The standard comment group value.
+          type: string
+  parameters:
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

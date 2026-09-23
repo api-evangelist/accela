@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Batch API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Batch
+  description: API for batch API requests.
+paths:
+  /v4/batch:
+    post:
+      description: 'Invokes multiple operations on data related to multiple agencies in a single HTTP request. The Batch Request API accepts an array of up to 25 HTTP requests, each with its required headers, body, method, and URL. The individual operations are invoked via HTTPS. The response is an array containing the results from all requested operations in the same order used in the request array.
+
+
+        **API Endpoint**: POST /v4/batch
+
+
+        **Scope**: batch_request
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: All'
+      summary: Batch Request
+      operationId: v4.post.batch
+      tags:
+      - Batch
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_batchResponseArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/batchRequestModel'
+        description: The batch request information.
+        required: true
+components:
+  schemas:
+    batchResponse:
+      type: object
+      properties:
+        result:
+          description: The HTTP response from the invoked operation. The order of the results in the response array corresponds to the same order used in the request array.
+          items:
+            type: object
+          type: array
+        code:
+          type: string
+          description: The error code, if an error is encountered.
+        message:
+          type: string
+          description: The error message, if an error is encountered.
+        traceid:
+          type: string
+          description: The id of the error log entry, if an error is encountered.
+        status:
+          description: The HTTP return status for the individual request.
+          type: integer
+    headerBatchRequest:
+      type: object
+      properties:
+        <aHeaderKey>:
+          description: "HTTP header key/value pairs. For example:\n\n \"headers\" : { \"header-key1\":\"header-value1\", \"header-key2\":\"header-value2\" }. \n\nProvide the HTTP headers required by the operation's authorization type. If the required HTTP headers related to authorization are not provided, the operation will fail."
+          type: string
+    batchRequestModel:
+      type: object
+      required:
+      - method
+      - relativeUrl
+      properties:
+        headers:
+          $ref: '#/components/schemas/headerBatchRequest'
+        method:
+          description: The HTTP method of the operation to be invoked.
+          enum:
+          - GET
+          - PUT
+          - POST
+          - DELETE
+          type: string
+        body:
+          description: (For PUT and POST methods) A JSON string containing the request parameters for the operation to be invoked.
+          type: string
+        relativeUrl:
+          description: The relative URL of the operation to be invoked, for example '/v4/records'. Do not invoke the Batch Request API; i.e. do not specify '/v4/batch' as the relativeUrl.
+          type: string
+      example: "\n[\n\n  {\n\n    \"headers\": {\n\n      \"x-accela-agency\": \"DemoAgency\"\n\n    },\n\n    \"method\": \"GET\",\n\n    \"relativeUrl\": \"/v4/records?offset=0&limit=2\"\n\n  },\n\n  {\n\n    \"headers\": {\n\n      \"x-accela-agency\": \"BPTDEV\"\n\n    },\n\n    \"method\": \"GET\",\n\n    \"relativeUrl\": \"/v4/records/BPTDEV-15EST-00000-00014\"\n\n  },\n\n  {\n\n    \"headers\": {\n\n      \"x-accela-agency\": \"BPTDEV\"\n\n    },\n\n    \"method\": \"POST\",\n\n    \"relativeUrl\": \"/v4/records\",\n\n    \"body\": {\n\n      \"type\": {\n\n        \"id\": \"Building-Residential-Alteration-NA\"\n\n      },\n\n      \"description\": \"Residence alteration\",\n\n      \"parcels\": [\n\n        {\n\n          \"parcelNumber\": \"005020018\"\n\n        }\n\n      ]\n\n    }\n\n  }\n\n]\t\t\t\n\t\t"
+    response_batchResponseArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/batchResponse'
+          type: array
+        status:
+          type: integer
+          description: The return status for the batch request.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

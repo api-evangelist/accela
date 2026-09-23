@@ -1,0 +1,471 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Professionals API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Professionals
+paths:
+  /v4/records/{recordId}/professionals:
+    get:
+      description: 'Gets the professionals for the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/professionals
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Professionals for Record
+      operationId: v4.get.records.recordId.professionals
+      tags:
+      - Records/Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_licenseProfessionalModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates a new professional and associates the professional with the specified record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/professionals
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Record Professionals
+      operationId: v4.post.records.recordId.professionals
+      tags:
+      - Records/Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/licenseProfessionalModel'
+              type: array
+        description: The licensed professional information to be added.
+        required: true
+  /v4/records/{recordId}/professionals/{id}:
+    put:
+      description: 'Updates information for the specified professional associated with the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/professionals/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Record Professional
+      operationId: v4.put.records.recordId.professionals.id
+      tags:
+      - Records/Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of professional to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_licenseProfessionalModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/licenseProfessionalModel'
+        description: The licensed professional information to be updated.
+        required: true
+  /v4/records/{recordId}/professionals/{ids}:
+    delete:
+      description: 'Removes the association between the specified professional(s) and the specified record.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/professionals/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Record Professionals
+      operationId: v4.delete.records.recordId.professionals.ids
+      tags:
+      - Records/Professionals
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delimited IDs of the licensed professionals to be removed.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    licenseProfessionalModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        birthDate:
+          description: The birth date of an individual.
+          format: date-time
+          type: string
+        businessLicense:
+          description: The official business license number issued by an agency. A licensed professional can have the same license number assigned to multiple license types.
+          type: string
+        businessName:
+          description: A business name for the applicable individual.
+          type: string
+        businessName2:
+          description: A secondary business name for the applicable individual.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        comment:
+          description: Comments or notes about the current context.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        expirationDate:
+          description: The license expiration date.
+          format: date-time
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: 'The licensed professional''s first name. '
+          type: string
+        fullName:
+          description: 'The licensed professional''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The licensed professional system id assigned by the Civic Platform server.
+          type: string
+        isPrimary:
+          description: Indicates whether or not to designate the professional as the primary professional.
+          type: string
+        lastName:
+          description: 'The licensed professional''s last name. '
+          type: string
+        lastRenewalDate:
+          description: The last date for a professionals renewal license.
+          format: date-time
+          type: string
+        licenseNumber:
+          description: The licensed professional's license number.
+          type: string
+        licenseType:
+          type: object
+          description: The type of license held by the professional.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        licensingBoard:
+          type: object
+          description: The name of the licensing board that issued the license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        middleName:
+          description: 'The licensed professional''s middle name. '
+          type: string
+        originalIssueDate:
+          description: The original issuance date of license.
+          format: date-time
+          type: string
+        phone1:
+          description: The primary phone number of the contact.
+          type: string
+        phone2:
+          description: The secondary phone number of the contact.
+          type: string
+        phone3:
+          description: "The tertiary phone number for the contact.\t"
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        referenceLicenseId:
+          description: The unique Id generated for a professional stored in the system.
+          type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. or Ms. This field is active only when Contact Type = Individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        state:
+          type: object
+          description: The state corresponding to the address on record.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The licensed professional's name suffix.
+          type: string
+        title:
+          description: The individual's professional title.
+          type: string
+    response_licenseProfessionalModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/licenseProfessionalModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_licenseProfessionalModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/licenseProfessionalModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

@@ -1,0 +1,188 @@
+openapi: 3.2.0
+info:
+  description: The Payments API enables apps to submit payment transactions on Civic Platform records.
+  title: Payments Trust Accounts API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Trust Accounts
+  description: Agency customers can deposit money into a trust account that the customer can drawn from when they need to pay fees for an application.
+paths:
+  /v4/trustAccounts:
+    get:
+      description: 'Gets all trust accounts.
+
+
+        **API Endpoint**: GET /v4/trustAccounts
+
+
+        **Scope**: trustaccounts
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Get All Trust Accounts
+      operationId: v4.get.trustAccounts
+      tags:
+      - Trust Accounts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_trustAccountModelArray'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_trustAccountModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/trustAccountModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    trustAccountModel:
+      type: object
+      properties:
+        account:
+          description: The account ID number for the trust account.
+          type: string
+        associations:
+          type: object
+          description: The trust account associations.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        balance:
+          description: The balance of the trust account in dollars.
+          format: double
+          type: number
+        description:
+          description: The description of the trust account.
+          type: string
+        id:
+          description: The trust account system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the trust account as the primary source.
+          type: string
+          enum:
+          - Y
+          - N
+        ledgerAccount:
+          description: The ledger account of the trust account.
+          type: string
+        overdraft:
+          type: object
+          description: Indicates whether or not the trust account can use the overdraft option.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        overdraftLimit:
+          description: The overdraft limit amount, in dollars, for the trust account.
+          format: double
+          type: number
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The status of the trust account.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+          enum:
+          - Active
+          - Closed
+        thresholdAmount:
+          description: The minimum amount required in a trust account.
+          format: double
+          type: number
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-payments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - escaped stray backslashes
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

@@ -1,0 +1,869 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Contacts API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Contacts
+  description: One or more reference contacts can be associated to an application or service request.
+paths:
+  /v4/records/{recordId}/contacts:
+    get:
+      description: 'Gets contacts associated to a record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/contacts
+
+
+        **Scope**: addresses
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Contacts for Record
+      operationId: v4.get.records.recordId.contacts
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordContactSimpleModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates new contact(s) for the specified record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/contacts
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Record Contacts
+      operationId: v4.post.records.recordId.contacts
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/recordContactSimpleModel'
+              type: array
+        description: The contact information to be added.
+        required: true
+  /v4/records/{recordId}/contacts/{id}:
+    put:
+      description: 'Updates information for a specified contact associated with a specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/contacts/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Record Contact
+      operationId: v4.put.records.recordId.contacts.id
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: The ID of the contact to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordContactSimpleModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recordContactSimpleModel'
+        description: The contact information to be updated.
+        required: true
+  /v4/records/{recordId}/contacts/{ids}:
+    delete:
+      description: 'Removes the association of specified contacts from a specified record.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/contacts/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Record Contacts
+      operationId: v4.delete.records.recordId.contacts.ids
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delimited IDs of the contacts to remove.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/contacts/{contactId}/addresses:
+    get:
+      description: 'Gets the addresses for the specified contacts and specified records.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/contacts/{contactId}/addresses
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Addresses for Contact
+      operationId: v4.get.records.recordId.contacts.contactId.addresses
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/contactId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_contactAddressArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates addresses for the specified contact for the specified record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/contacts/{contactId}/addresses
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Record Contact Addresses
+      operationId: v4.post.records.recordId.contacts.contactId.addresses
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/contactId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/contactAddress'
+              type: array
+        description: The address information to be added.
+  /v4/records/{recordId}/contacts/{contactId}/addresses/{id}:
+    put:
+      description: 'Updates the specified address for the specified contact and specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/contacts/{contactId}/addresses/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Record Contact Address
+      operationId: v4.put.records.recordId.contacts.contactId.addresses.id
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/contactId'
+      - description: The ID of the address to be updated.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contactAddress'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactAddress'
+        description: The address information to be updated.
+  /v4/records/{recordId}/contacts/{contactId}/addresses/{ids}:
+    delete:
+      description: 'Deletes the specified addresses from the specified contacts and specified records.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/contacts/{contactId}/addresses/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Record Contact Addresses
+      operationId: v4.delete.records.recordId.contacts.contactId.addresses.ids
+      tags:
+      - Records/Contacts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/contactId'
+      - description: Comma-delimited IDs of the addresses to be deleted.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    contactAddress:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        direction:
+          $ref: '#/components/schemas/identifierModel'
+        effectiveDate:
+          format: date-time
+          type: string
+        expirationDate:
+          format: date-time
+          type: string
+        fax:
+          type: string
+        faxCountryCode:
+          type: string
+        houseAlphaEnd:
+          type: string
+        houseAlphaStart:
+          type: string
+        id:
+          format: int64
+          type: integer
+        isPrimary:
+          type: string
+        levelEnd:
+          type: string
+        levelPrefix:
+          type: string
+        levelStart:
+          type: string
+        phone:
+          type: string
+        phoneCountryCode:
+          type: string
+        postalCode:
+          type: string
+        recipient:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+        status:
+          $ref: '#/components/schemas/identifierModel'
+        streetAddress:
+          type: string
+        streetEnd:
+          format: int64
+          type: integer
+        streetName:
+          type: string
+        streetPrefix:
+          type: string
+        streetStart:
+          format: int64
+          type: integer
+        streetSuffix:
+          $ref: '#/components/schemas/identifierModel'
+        streetSuffixDirection:
+          $ref: '#/components/schemas/identifierModel'
+        type:
+          $ref: '#/components/schemas/identifierModel'
+        unitEnd:
+          type: string
+        unitStart:
+          type: string
+        unitType:
+          $ref: '#/components/schemas/identifierModel'
+    response_recordContactSimpleModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordContactSimpleModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_contactAddressArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/contactAddress'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordContactSimpleModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/compactAddressModel'
+        birthCity:
+          type: object
+          description: The city of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthDate:
+          description: The birth date.
+          format: date-time
+          type: string
+        birthRegion:
+          type: object
+          description: The country of birth or region of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthState:
+          type: object
+          description: The state of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        comment:
+          description: A comment about the inspection contact.
+          type: string
+        deceasedDate:
+          description: The deceased date.
+          format: date-time
+          type: string
+        driverLicenseNumber:
+          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
+          type: string
+        driverLicenseState:
+          type: object
+          description: The state that issued the driver's license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        endDate:
+          description: The date when the contact address ceases to be active.
+          format: date-time
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        fullName:
+          description: 'The contact''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The contact system id assigned by the Civic Platform server.
+          type: string
+        individualOrOrganization:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        isPrimary:
+          description: Indicates whether or not to designate the contact as the primary contact Only one address can be primary at any given time.
+          enum:
+          - Y
+          - N
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        middleName:
+          description: "The middle name.\t"
+          type: string
+        organizationName:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        passportNumber:
+          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        preferredChannel:
+          type: object
+          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        race:
+          type: object
+          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        referenceContactId:
+          description: The unique Id generated for a contact stored in the sytem.
+          type: string
+        relation:
+          type: object
+          description: The contact's relationship to the application or service request.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        socialSecurityNumber:
+          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        startDate:
+          description: The date the contact became active.
+          format: date-time
+          type: string
+        stateIdNumber:
+          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        status:
+          type: object
+          description: The contact status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        tradeName:
+          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
+          type: string
+        type:
+          type: object
+          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    compactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: The address state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    contactId:
+      description: The ID of the contact to fetch. See [Get All Contacts](./api-contacts-professionals.html#operation/v4.get.contacts).
+      in: path
+      name: contactId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

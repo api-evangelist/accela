@@ -1,0 +1,434 @@
+openapi: 3.2.0
+info:
+  description: The Contacts and Professionals APIs enable apps to manage reference contacts and licensed professionals.
+  title: Contacts and Professionals Contacts/Addresses API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Contacts/Addresses
+paths:
+  /v4/contacts/{id}/addresses:
+    get:
+      description: 'Gets detailed address information for the specified contact..
+
+
+        **API Endpoint**: GET /v4/contacts/{id}/addresses
+
+
+        **Scope**: contacts
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Contact Addresses
+      operationId: v4.get.contacts.id.addresses
+      tags:
+      - Contacts/Addresses
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idContactString'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_contactAddressModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates detailed address information for the specified contact.
+
+
+        **API Endpoint**: POST /v4/contacts/{id}/addresses
+
+
+        **Scope**: contacts
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Contact Addresses
+      operationId: v4.post.contacts.id.addresses
+      tags:
+      - Contacts/Addresses
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idContactString'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/contactAddressModel'
+              type: array
+        description: Contact Address information. Refer to ContactAddressModel json schema
+        required: true
+  /v4/contacts/{contactId}/addresses/{id}:
+    put:
+      description: 'Updates the address information for the specified contact.
+
+
+        **API Endpoint**: PUT /v4/contacts/{contactId}/addresses/{id}
+
+
+        **Scope**: contacts
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Contact Address
+      operationId: v4.put.contacts.contactId.addresses.id
+      tags:
+      - Contacts/Addresses
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/contactId'
+      - description: The ID of the address to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contactAddressModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactAddressModel'
+        description: Contact information to be updated.
+        required: true
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    contactId:
+      description: The ID of the contact to fetch.
+      in: path
+      name: contactId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_contactAddressModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/contactAddressModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    contactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city
+          type: string
+        country:
+          type: object
+          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        direction:
+          type: object
+          description: The street direction of the primary address associated with the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        effectiveDate:
+          description: The date when the address takes effect.
+          format: date-time
+          type: string
+        expirationDate:
+          description: The date when the address expires.
+          format: date-time
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        houseAlphaEnd:
+          description: The ending street number that makes up the address.
+          type: string
+        houseAlphaStart:
+          description: The beginning street number that makes up the address.
+          type: string
+        id:
+          description: The id of the address assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+          enum:
+          - Y
+          - N
+          type: string
+        levelEnd:
+          description: The ending level number (floor number) that makes up the address within a complex.
+          type: string
+        levelPrefix:
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+          type: string
+        levelStart:
+          description: The beginning level number (floor number) that makes up the address within a complex.
+          type: string
+        phone:
+          description: The phone number of the user.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        recipient:
+          description: The contact person for the contact address.
+          type: string
+        state:
+          type: object
+          description: The state corresponding to the address on record. See [Get All Address States](./api-settings.html#operation/v4.get.settings.addresses.states).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          enum:
+          - A
+          - I
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          description: The street address.
+          type: string
+        streetEnd:
+          description: The end of a range of street numbers.
+          format: int64
+          type: integer
+        streetName:
+          description: The street name for the address.
+          type: string
+        streetPrefix:
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+          type: string
+        streetStart:
+          description: The start of a range of street numbers.
+          format: int64
+          type: integer
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard". See [Get All Address Street Suffixes](./api-settings.html#operation/v4.get.settings.addresses.streetSuffixes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction. See [Get All Address Street Directions](./api-settings.html#operation/v4.get.settings.addresses.streetDirections).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type:
+          type: object
+          description: 'The address type. '
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitEnd:
+          description: The end parameter of a range of unit numbers.
+          type: string
+        unitStart:
+          description: The starting parameter of a range of unit numbers.
+          type: string
+        unitType:
+          type: object
+          description: The unit type designation of the address. See [Get All Address Unit Types](./api-settings.html#operation/v4.get.settings.addresses.unitTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-contacts-professionals.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

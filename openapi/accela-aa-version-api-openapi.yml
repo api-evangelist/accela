@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous AA Version API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: AA Version
+  description: This is to return the version number of the AA server that is running, which allows the mobile app to make decisions as to what API's they have available.
+paths:
+  /v4/serverProperties:
+    get:
+      description: 'Get the version number of the AA server that is running, which allows the mobile app to make decisions as to what API''s they have available.
+
+
+        **API Endpoint**: GET /v4/serverProperties
+
+
+        **Scope**: app_data
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 19'
+      summary: Get AA version
+      operationId: v4.get.serverProperties
+      tags:
+      - AA Version
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_getAAVersionModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_getAAVersionModel:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            version:
+              description: The version number of the AA server that is running.
+              type: string
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

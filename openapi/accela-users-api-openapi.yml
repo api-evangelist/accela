@@ -1,0 +1,405 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Users API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Users
+  description: '**Agency Users**
+
+
+    Although "users" is a broad and general term, the Accela API''s User object (user API resource) represents the agency user.'
+paths:
+  /v4/users:
+    get:
+      description: 'Returns the account information for a given agency user.
+
+
+        **API Endpoint**: GET /v4/users
+
+
+        **Scope**: users
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get User Account
+      operationId: v4.get.users
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/groupId'
+      - $ref: '#/components/parameters/groupName'
+      - $ref: '#/components/parameters/module'
+      - $ref: '#/components/parameters/exclude'
+      - $ref: '#/components/parameters/userStatus'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_userModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/users/me:
+    get:
+      description: 'Returns the account information for the currently logged in agency user.
+
+
+        **API Endpoint**: GET /v4/users/me
+
+
+        **Scope**: users
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get My User Account
+      operationId: v4.get.users.me
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_myuserModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/users/{user_id}/groups:
+    get:
+      description: 'Gets the user groups for a given user.
+
+
+        **API Endpoint**: GET /v4/users/{user_id}/groups
+
+
+        **Scope**: users
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All User Groups
+      operationId: v4.get.users.user_id.groups
+      tags:
+      - Users
+      parameters:
+      - description: The ID of the user to be fetched.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_userGroupModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_userModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/userModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
+    groupModel:
+      type: object
+      properties:
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+    userModel:
+      type: object
+      properties:
+        id:
+          description: The user system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        userGroups:
+          items:
+            $ref: '#/components/schemas/usergroupsModel'
+          type: array
+        email:
+          description: The email address.
+          type: string
+        status:
+          description: Enabled or Disabled
+          type: string
+        firstName:
+          description: The user's first name.
+          type: string
+        department:
+          $ref: '#/components/schemas/departmentModel'
+    myuserModel:
+      type: object
+      properties:
+        department:
+          $ref: '#/components/schemas/departmentModel'
+        firstName:
+          description: The user's first name.
+          type: string
+        fullName:
+          description: The user's full name.
+          type: string
+        id:
+          description: The user system id assigned by the Civic Platform server.
+          type: string
+        initial:
+          description: The user initials.
+          type: string
+        lastName:
+          description: The user's last name
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        value:
+          description: The user id value
+          type: string
+    usergroupsModel:
+      type: object
+      properties:
+        module:
+          description: The module the user group belongs to.
+          type: string
+        status:
+          description: Enabled or Disabled
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+    departmentModel:
+      type: object
+      properties:
+        agency:
+          description: The department agency.
+          type: string
+        bureau:
+          description: The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: The department group.
+          type: string
+        id:
+          description: The department system id assigned by the Civic Platform server.
+          type: string
+        office:
+          description: The department office.
+          type: string
+        section:
+          description: The department section.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        text:
+          description: The department display name.
+          type: string
+        value:
+          description: The department value.
+          type: string
+    userGroupModel:
+      type: object
+      properties:
+        firstName:
+          description: The user's first name.
+          type: string
+        groups:
+          items:
+            $ref: '#/components/schemas/groupModel'
+          type: array
+        lastName:
+          description: The user's last name.
+          type: string
+        serviceProviderCode:
+          description: The agency the user belongs to.
+          type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_userGroupModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/userGroupModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_myuserModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/myuserModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    userStatus:
+      description: The status of the user, enable or disable
+      in: query
+      name: userStatus
+      required: false
+      schema:
+        type: string
+    module:
+      description: The module that user belongs to
+      in: query
+      name: module
+      required: false
+      schema:
+        type: string
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    groupId:
+      description: The id of the group that user belongs to
+      in: query
+      name: groupId
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    exclude:
+      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
+      in: query
+      name: exclude
+      required: false
+      schema:
+        type: string
+    groupName:
+      description: The name of the group that user belongs to
+      in: query
+      name: groupName
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

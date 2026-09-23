@@ -1,0 +1,317 @@
+openapi: 3.2.0
+info:
+  description: The Contacts and Professionals APIs enable apps to manage reference contacts and licensed professionals.
+  title: Contacts and Professionals Professionals/Conditions API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Professionals/Conditions
+paths:
+  /v4/professionals/{id}/conditions:
+    get:
+      description: 'Gets the conditions for the specified professional {id}.
+
+
+        **API Endpoint**: /v4/professionals/{id}/conditions
+
+
+        **Scope**: professionals
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 8.0.0'
+      summary: Get All Professional Conditions
+      operationId: v4.get.professionals.id.conditions
+      tags:
+      - Professionals/Conditions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the licensed professional to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: Condition type filter
+        in: query
+        name: type
+        schema:
+          type: string
+      - description: Condition name filter
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: Condition status filter
+        in: query
+        name: status
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_peopleConditionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_peopleConditionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/peopleConditionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    peopleConditionModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        activeStatus:
+          type: object
+          description: Indicates whether or not the condition is active.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        additionalInformation:
+          description: An unlimited text field to use if other fields are filled.
+          type: string
+        appliedDate:
+          description: The date the standard condition was applied.
+          format: date-time
+          type: string
+        appliedbyDepartment:
+          type: object
+          description: "The department responsible for applying a condition.\t"
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        appliedbyUser:
+          type: object
+          description: "The staff member responsible for applying a condition.\t"
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        contactID:
+          description: The ID of the contact.
+          type: string
+        contactSeqNumber:
+          description: The contact id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        displayNoticeInAgency:
+          description: Indicates whether or not to display the condition notice in Accela Automation when a condition to a record or parcel is applied.
+          type: boolean
+        displayNoticeInCitizens:
+          description: Indicates whether or not to display the condition notice in Accela Citizen Access when a condition to a record or parcel is applied.
+          type: boolean
+        displayNoticeInCitizensFee:
+          description: Indicates whether or not to display the condition notice in Accela Citizen Access Fee Estimate page when a condition to a record or parcel is applied.
+          type: boolean
+        effectiveDate:
+          description: The date when you want the condition to become effective.
+          format: date-time
+          type: string
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        group:
+          type: object
+          description: The condition group is an attribute of a condition that organizes condition types. Your agency defines these groups.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The condition system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inheritable:
+          type: object
+          description: This defines whether or not Accela Automation checks for inheritable conditions when a user associates a child record with a parent record.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        isIncludeNameInNotice:
+          description: Indicates whether or not to display the condition name in the notice.
+          type: boolean
+        isIncludeShortCommentsInNotice:
+          description: Indicates whether or not to display the condition comments in the notice.
+          type: boolean
+        licenseSeqNo:
+          description: The license id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        longComments:
+          description: Narrative comments to help identify the purpose or uses of the standard condition.
+          type: string
+        name:
+          description: The name of the standard condition.
+          type: string
+        priority:
+          type: object
+          description: The priority level assigned to the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicDisplayMessage:
+          description: Text entered into this field displays in the condition notice or condition status bar for the Condition Name for the public user in Accela IVR (AIVR) and Accela Citizen Access (ACA).
+          type: string
+        resolutionAction:
+          description: he action performed in response to a condition.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        severity:
+          type: object
+          description: The severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortComments:
+          description: A brief description of the condition name. For example, the text may describe the situation that requires the system to apply the condition. You can set these short comments to display when a user accesses an application with this condition applied to it
+          type: string
+        status:
+          type: object
+          description: The condition status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        statusType:
+          description: The status type for a standard condition or an approval condition, applied or not applied for example.
+          type: string
+        type:
+          type: object
+          description: The condition type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-contacts-professionals.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

@@ -1,0 +1,399 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Part Transactions API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Part Transactions
+paths:
+  /v4/records/{recordId}/partTransaction:
+    get:
+      description: 'Gets information about the part transaction associated with the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/partTransaction
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get Record Part Transaction
+      operationId: v4.get.records.recordId.partTransaction
+      tags:
+      - Records/Part Transactions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_partTransactionModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates a part transaction for the specified record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/partTransaction
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Create Record Part Transaction
+      operationId: v4.post.records.recordId.partTransaction
+      tags:
+      - Records/Part Transactions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/partTransactionModel'
+              type: array
+        description: Part transaction information to be added.
+        required: true
+  /v4/records/{recordId}/partTransaction/{ids}:
+    delete:
+      description: 'Voids one or more part transactions for the specified record. The part transaction is voided, not deleted.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/partTransaction/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Void Record Part Transactions
+      operationId: v4.delete.records.recordId.partTransaction.ids
+      tags:
+      - Records/Part Transactions
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delimited IDs of the part transactions to be removed.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    partTransactionModel:
+      type: object
+      properties:
+        accountName:
+          description: The budget account name associated with the part transaction.
+          type: string
+        accountNumber:
+          description: The budget account number associated with the part transaction.
+          type: string
+        comments:
+          description: Comments or notes about the current context.
+          type: string
+        costTotal:
+          description: The total cost of the part transaction.
+          format: double
+          type: number
+        hardReservation:
+          description: 'Indicates whether or not the part transaction is a hard reservation. "Y": A hard reservation which guarantees the reservation, and subtract the order from the quantity on hand. "N" : A soft reservation which alerts the warehouse that houses the part that someone may request the part. The quantity on hand of the part does not change.'
+          enum:
+          - Y
+          - N
+          type: string
+        id:
+          description: The part transaction system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        locationId:
+          description: The location ID associated with the part transaction.
+          format: int64
+          type: integer
+        partBin:
+          description: The name of the part bin.
+          type: string
+        partBrand:
+          description: The name of the part brand.
+          type: string
+        partDescription:
+          description: The description of the part.
+          type: string
+        partId:
+          description: The part ID.
+          format: int64
+          type: integer
+        partLocation:
+          description: The location of the part.
+          type: string
+        partNumber:
+          description: The number of the part.
+          type: string
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        resToPartLocation:
+          description: ''
+          type: string
+        reservationNumber:
+          description: The part reservation number.
+          format: int64
+          type: integer
+        reservationStatus:
+          description: The status of the part reservation.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The part transaction status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        taxable:
+          description: Indicates whether or not the part is taxable.
+          enum:
+          - Y
+          - N
+          type: string
+        transactionCost:
+          description: The part transaction cost.
+          format: double
+          type: number
+        transactionDate:
+          description: The part transaction date.
+          format: date-time
+          type: string
+        transactionType:
+          description: "The part transaction type. Possible values: \n\n\"Issue\" : occurs either when someone requests and receives a part on the spot, or when someone receives a reserved part. \n\n\"Receive\" : occurs when someone purchases a part or returns a part to a location. \n\n\"Transfer\" : occurs when someone moves a part from one location to another. \n\n\"Adjust\" : occurs when someone makes quantity adjustments for cycle counts. \n\n\"Reserve\" : occurs when someone sets aside parts so they can issue them at a later date."
+          type: string
+          enum:
+          - Issue
+          - Receive
+          - Transfer
+          - Adjust
+          - Reserve
+        type:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The part transaction type.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitCost:
+          description: The unit cost per part.
+          format: double
+          type: number
+        unitMeasurement:
+          type: object
+          description: The unit of measurement for quantifying the part.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        updatedBy:
+          description: The user who last updated the checklist or checklist item.
+          type: string
+        workOrderTaskCode:
+          description: The work order task code associated with the part transactionmodel.
+          type: string
+        workOrderTaskCodeIndex:
+          description: The work order task code index associated with the part transactionmodel.
+          format: int64
+          type: integer
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_partTransactionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/partTransactionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

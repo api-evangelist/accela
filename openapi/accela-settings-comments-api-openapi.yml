@@ -1,0 +1,231 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Comments API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Comments
+paths:
+  /v4/settings/comments:
+    get:
+      description: 'Gets the standard comments available in the system.
+
+
+        **API Endpoint**: GET v4/settings/comments
+
+
+        **Scope**: settings
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Standard Comments
+      operationId: v4.get.settings.comments
+      tags:
+      - Settings/Comments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by group.
+        in: query
+        name: groups
+        required: false
+        schema:
+          type: string
+      - description: 'Filter by one or more (comma-delimited) standard comment types. For valid values, use types[] in [Get All Standard Comment Groups](./api-settings.html#operation/v4.get.settings.comments.groups).
+
+
+          **Civic Platform version**: 9.3.0
+
+
+          '
+        in: query
+        name: types
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_standardCommentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/comments/groups:
+    get:
+      description: 'Gets available standard comment groups.
+
+
+        **API Endpoint**: GET /v4/settings/comments/groups
+
+
+        **Scope**: settings
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Standard Comment Groups
+      operationId: v4.get.settings.comments.groups
+      tags:
+      - Settings/Comments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_standardCommentGroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_standardCommentGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/standardCommentGroupModel'
+          type: array
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_standardCommentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/standardCommentModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    standardCommentModel:
+      type: object
+      properties:
+        comments:
+          description: Additional notes about the comment.
+          type: string
+        group:
+          type: object
+          description: The name of the standard comments group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        text:
+          description: The comment text.
+          type: string
+        type:
+          type: object
+          description: The standard comment type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        value:
+          description: The comment value.
+          type: string
+    standardCommentGroupModel:
+      type: object
+      properties:
+        text:
+          description: The standard comment group name.
+          type: string
+        value:
+          description: The standard comment group value.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

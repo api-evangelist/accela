@@ -1,0 +1,4347 @@
+# x-archived-from: accela-citizens-openapi.yml
+# x-archived-on: 2026-09-16
+basePath: /
+host: apis.accela.com
+schemes:
+- https
+swagger: '2.0'
+info:
+  description: 'The Citizens API include endpoints for citizen users to manage their own accounts, authorized users to manage
+    other accounts, and manage citizen delegates, announcements, and invitations. '
+  title: Citizens
+  version: v4
+tags:
+- name: Citizen Access Self-Registration
+  description: The **citizenaccess** API endpoints allow a logged-in Citizen Access user to register and manage his or her
+    own account profile, status, and contacts.
+- name: Citizen Access User Management
+  description: description here
+- name: Citizen Access Delegate Management
+  description: description here
+- name: Citizen Access Delegate Invitations
+  description: A citizen user designates a delegate by first sending them an invitation. The invited citizen users can accept
+    or reject invitations. When the invited citizen users accept the invitation, they officially become the delegate of the
+    users who invited them. A delegate can work on another citizen user’s data based on the granted permissions.
+- name: Announcements
+  description: The **announcements** API endpoints allow apps to get agency and public announcements, and mark them as read
+    announcements.
+paths:
+  /v4/citizenaccess/register:
+    post:
+      description: "Registers a new citizen user. The agency name is required in the HTTP header x-accela-agency. The userName\
+        \ to be registered is required. Note: 7.3.3.4 version supports only 1 contact in the request contacts[]. Multiple\
+        \ contacts will be supported in a future release.\n\n\n\n**API Endpoint**:  POST /v4/citizenaccess/register \n\n**Scope**:\
+        \  users \n\n**App Type**:  All \n\n**Authorization Type**:  No authorization required \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Register Citizen
+      operationId: v4.post.citizenaccess.register
+      tags:
+      - Citizen Access Self-Registration
+      parameters:
+      - description: The user profile to register.
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/publicUserRegisterModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_publicUserRegisterModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/profile:
+    get:
+      description: "Gets the profile for the currently logged in citizen user.\n\n\n\n**API Endpoint**:  GET /v4/citizenaccess/profile\
+        \ \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.4\n\n"
+      summary: Get My Citizen Profile
+      operationId: v4.get.civicid.citizenaccess.profile
+      tags:
+      - Citizen Access Self-Registration
+      parameters:
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/citizenProfileModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/contacts:
+    get:
+      description: "Gets the contacts for the currently logged in citizen user.\n\n\n\n**API Endpoint**:  GET /v4/citizenaccess/contacts\
+        \ \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.4\n\n"
+      summary: Get My Contacts
+      operationId: v4.get.civicid.citizenaccess.contacts
+      tags:
+      - Citizen Access Self-Registration
+      parameters:
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/citizenContactModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Adds contacts to the currently logged in citizen user.\n\n\n\n**API Endpoint**:  POST /v4/citizenaccess/contacts\
+        \ \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.4\n\n"
+      summary: Create My Contacts
+      operationId: v4.post.civicid.citizenaccess.contacts
+      tags:
+      - Citizen Access Self-Registration
+      parameters:
+      - description: An array of reference contact IDs to add.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            description: A reference contact id.
+            type: string
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/contacts/{ids}:
+    delete:
+      description: "Deletes the specified contacts from the currently logged in user.\n\n\n\n**API Endpoint**:  DELETE /v4/citizenaccess/contacts/{ids}\
+        \ \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.4\n\n"
+      summary: Delete My Contacts
+      operationId: v4.delete.civicid.citizenaccess.contacts.ids
+      tags:
+      - Citizen Access Self-Registration
+      parameters:
+      - description: Comma-delimited IDs of contacts to delete.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens:
+    get:
+      description: "Returns the users whose profiles can be viewed or edited by the logged-in user. If the logged-in user\
+        \ is an Authorized Agent, the returned users are Authorized Agent Clerks. A Citizen user is not authorized to see\
+        \ other users' profiles, so if the logged-in user is a Citizen user, no users are returned. If the logged-in user\
+        \ is an Automation user, Citizen Access users are returned.\n\n\n\n**API Endpoint**:  GET /v4/citizenaccess/citizens\
+        \ \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:  No authorization required \n\n**Civic\
+        \ Platform version**: 7.3.3.4\n\n"
+      summary: Get Citizen Users
+      operationId: v4.get.citizenaccess.citizens
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: Filter by the citizen's login name.
+        in: query
+        name: loginName
+        type: string
+      - description: Related objects to be returned with the response. The related object(s) will be returned if data exists;
+          if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        enum:
+        - contacts
+        name: expand
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_publicUserModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Adds a citizen user to be associated with the currently logged-in user. The userName to be added is required.\n\
+        \n\n\n**API Endpoint**:  POST /v4/citizenaccess/citizens \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Create Citizen User
+      operationId: v4.post.citizenaccess.citizens
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: The user information to add.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/publicUserRegisterModel'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}:
+    put:
+      description: "Updates the profile of the specified citizen user.\n\n\n\n**API Endpoint**:  PUT /v4/citizenaccess/citizens/{id}\
+        \ \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Update Citizen Profile
+      operationId: v4.put.citizens.id
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: User profile information to be updated
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request_citizenProfileModel'
+      - description: The clerk citizen ID to update.
+        in: path
+        name: id
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_citizenProfileModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}/accounts:
+    get:
+      description: "Gets the status of the citizen accounts associated to the specified user.\n\n\n\n**API Endpoint**:  GET\
+        \ /v4/citizenaccess/citizens/{id}/accounts \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:\
+        \  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Get Citizen Accounts
+      operationId: v4.get.citizenaccess.citizens.id.accounts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The ID of citizen user to fetch.
+        in: path
+        name: id
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_userPINModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: "Updates the status of citizen accounts associated to the specified citizen user.\n\n\n\n**API Endpoint**:\
+        \  PUT /v4/citizenaccess/citizens/{id}/accounts \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:\
+        \  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Update Citizen Account Status
+      operationId: v4.put.citizenaccess.citizens.id.accounts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The ID of citizen user to fetch.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The user information to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/userPINModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}/contacts:
+    post:
+      description: "Adds contacts to the specified citizen user. Include the contact IDs to be added in the request array.\n\
+        \n\n\n**API Endpoint**:  POST /v4/citizenaccess/citizens/{id}/contacts  \n\n**Scope**:  users \n\n**App Type**:  All\
+        \ \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Add Citizen Contacts
+      operationId: v4.post.citizens.id.contacts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The clerk ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: An array of reference contact Ids to add.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            description: A reference contact id.
+            type: string
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}/contacts/{contactIds}:
+    delete:
+      description: "Deletes the specified contacts for the specified citizen user.\n\n\n\n**API Endpoint**:  DELETE /v4/citizenaccess/citizens/{id}/contacts/{contactIds}\
+        \ \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Delete Citizen Contacts
+      operationId: v4.delete.citizens.id.contacts.contactIds
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The clerk ID.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Comma-delimited IDs of contacts to delete.
+        in: path
+        name: contactIds
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}/password:
+    put:
+      description: "Updates the password of the specified citizen user {id}.\n\n\n\n**API Endpoint**:  PUT /v4/citizenaccess/citizens/{id}/password\
+        \ \n\n**Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Update Citizen Password
+      operationId: v4.put.citizens.id.password
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The password to update.
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/publicUserPasswordModel'
+      - description: The clerk citizen ID.
+        in: path
+        name: id
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            type: object
+            properties:
+              result:
+                type: object
+                properties:
+                  id:
+                    description: The citizen id.
+                    format: int64
+                    type: integer
+              status:
+                description: The HTTP return status.
+                type: integer
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/{id}/trustAccounts:
+    get:
+      description: "Gets the trust accounts for the specified user. If a clerk needs the associated agent's trust account,\
+        \ call the Get Citizen Accounts for the logged in clerk, and use its agentId response field as the {id} parameter\
+        \ for Get Citizen Trust Accounts.\n\n\n\n**API Endpoint**:  GET /v4/citizenaccess/citizens/{id}/trustAccounts \n\n\
+        **Scope**:  users \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3.4\n\n"
+      summary: Get Citizen Trust Accounts
+      operationId: v4.get.citizenaccess.citizens.id.trustAccounts
+      tags:
+      - Citizen Access User Management
+      parameters:
+      - description: The ID of citizen user
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_trustAccountModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/delegatePrivileges:
+    get:
+      description: "Gets the privileges of the citizen delegates associated to the logged-in user.\n\n\n\n**API Endpoint**:\
+        \  GET /v4/citizenaccess/citizens/delegatePrivileges \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\n"
+      summary: Get Citizen Delegate Privileges
+      operationId: v4.get.citizenaccess.citizens.delegatePrivileges
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_delegatePrivilegeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/delegates:
+    get:
+      description: "Gets the citizen users delegated by the logged-in user.\n\n\n\n**API Endpoint**:  GET /v4/citizenaccess/citizens/delegates\
+        \ \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.5\n\n"
+      summary: Get All Delegates
+      operationId: v4.get.citizenaccess.citizens.delegates
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - description: Filter by the delegate's login name.
+        in: query
+        name: userName
+        required: false
+        type: string
+      - description: Filter by the delegate's name.
+        in: query
+        name: name
+        required: false
+        type: string
+      - description: Filter by the delegate status.
+        enum:
+        - PENDING
+        - ACCEPT
+        - REJECT
+        - EXPIRED
+        in: query
+        name: delegateStatus
+        required: false
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_publicUserDelegateModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: "Creates the specified delegate users. The Create Delegates API allows the logged-in user to send delegate\
+        \ requests to one or more users, as specified in the request array. The specified userNames must be valid citizen\
+        \ users. The logged-in user cannot send more than one delegate request to the same userName. For each new delegate,\
+        \ the delegateStatus is set to PENDING. The citizen user receiving the delegate request will need to accept the delegate\
+        \ request (via Update Invitation API) to enable the assigned permissions. If the citizen user rejects the invitation\
+        \ (via Update Invitation API) , the permissions will not take effect; the delegate record remains until it is deleted\
+        \ by the Delete Delegates API.\n\n\n\n**API Endpoint**:  POST /v4/citizenaccess/citizens/delegates \n\n**Scope**:\
+        \  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\
+        \n"
+      summary: Create Delegates
+      operationId: v4.post.citizenaccess.citizens.delegates
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - description: Delegate information to add.
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/request_publicUserDelegateModel'
+          type: array
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/delegates/{ids}:
+    delete:
+      description: "Deletes the specified delegates whom the logged-in user has delegated.\n\n\n\n**API Endpoint**:  DELETE\
+        \ /v4/citizenaccess/citizens/delegates/{ids} \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\n"
+      summary: Delete Delegates
+      operationId: v4.delete.citizenaccess.citizens.delegates.ids
+      tags:
+      - Citizen Access Delegate Management
+      parameters:
+      - description: Comma-delimited IDs of delegates to delete.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultCountModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/invitations:
+    get:
+      description: "Gets invitations or delegate requests received by the logged-in user. To get the logged-in user's pending\
+        \ invitations, set the {delegateStatus} parameter to PENDING.\n\n\n\n**API Endpoint**:  GET /v4/citizenaccess/citizens/invitations\
+        \ \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization Type**:  Access token \n\n**Civic Platform\
+        \ version**: 7.3.3.5\n\n"
+      summary: Get All Invitations
+      operationId: v4.get.citizenaccess.citizens.invitations
+      tags:
+      - Citizen Access Delegate Invitations
+      parameters:
+      - description: Filter by the delegate's login name.
+        in: query
+        name: userName
+        required: false
+        type: string
+      - description: Filter by the delegate's name.
+        in: query
+        name: name
+        required: false
+        type: string
+      - description: Filter by the delegate status.
+        enum:
+        - PENDING
+        - ACCEPT
+        - REJECT
+        - EXPIRED
+        in: query
+        name: delegateStatus
+        required: false
+        type: string
+      - $ref: '#/parameters/offset'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_publicUserDelegateModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/citizenaccess/citizens/invitation/{id}:
+    put:
+      description: "Updates the status of the delegate invitation sent by a specified user. The Update Invitation API allows\
+        \ the logged-in user to accept or reject the delegate invitation sent by the user {id}.\n\n\n\n**API Endpoint**: \
+        \ PUT /v4/citizenaccess/citizens/invitation/{id}  \n\n**Scope**:  users \n\n**App Type**:  Citizen \n\n**Authorization\
+        \ Type**:  Access token \n\n**Civic Platform version**: 7.3.3.5\n\n"
+      summary: Update Invitation
+      operationId: v4.put.citizenaccess.citizens.invitation.id
+      tags:
+      - Citizen Access Delegate Invitations
+      parameters:
+      - description: Delegate information including the delegate status to be updated.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/publicUserDelegateStatusModel'
+      - description: The id of the citizen user who sent the delegate request.
+        in: path
+        name: id
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_publicUserDelegateStatusModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/announcements:
+    get:
+      description: "Gets all public announcements in the system.\n\n\n\n**API Endpoint**:  GET /v4/announcements \n\n**Scope**:\
+        \  announcements \n\n**App Type**:  All \n\n**Authorization Type**:  Access token \n\n**Civic Platform version**:\
+        \ 7.3.3\n\n"
+      summary: Get All Announcements
+      operationId: v4.get.announcements
+      tags:
+      - Announcements
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/offset'
+      - description: Filter by whether or not the announcement has been read.
+        in: query
+        enum:
+        - Y
+        - N
+        name: isRead
+        type: string
+      - $ref: '#/parameters/fields'
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_messageModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/announcements/{ids}/read:
+    put:
+      description: "Updates announcements to indicate that that the user has read the announcement.\n\n\n\n**API Endpoint**:\
+        \  PUT /v4/announcements/{ids}/read \n\n**Scope**:  announcements \n\n**App Type**:  Citizen \n\n**Authorization Type**:\
+        \  Access token \n\n**Civic Platform version**: 7.3.3.4\n\n"
+      summary: Mark Announcements as Read
+      operationId: v4.put.announcements.ids.read
+      tags:
+      - Announcements
+      parameters:
+      - $ref: '#/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of announcements to update.
+        in: path
+        name: ids
+        required: true
+        type: string
+      - $ref: '#/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A
+            successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          schema:
+            $ref: '#/definitions/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+definitions:
+  response_messageModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/messageModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  messageModel:
+    type: object
+    properties:
+      id:
+        description: The message id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      isRead:
+        description: Indicates whether or not an announcement has been read by the logged-in user.
+        enum:
+        - Y
+        - N
+        type: string
+      startEffectDate:
+        description: The starting effective date.
+        format: date-time
+        type: string
+      text:
+        description: The announcement text.
+        type: string
+      title:
+        description: The announcement title.
+        type: string
+  response_resultModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/resultModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  response_resultModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/resultModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultModel:
+    type: object
+    properties:
+      code:
+        description: The error code, if an error is encountered.
+        type: string
+      id:
+        description: The system id of the object in this operation.
+        format: int64
+        type: integer
+      isSuccess:
+        description: Indicates whether or not the operation on the object is successful.
+        type: boolean
+      message:
+        description: The error message, if an error is encountered
+        type: string
+  multipleObjectResultModel_v4_put_announcements_ids_read:
+    type: object
+    properties:
+      code:
+        description: ''
+        type: string
+      id:
+        description: ''
+        type: string
+      isSuccess:
+        type: boolean
+      message:
+        description: ''
+        type: string
+  capIDModel_v4_get_citizenaccess_citizens_id_trustAccounts:
+    type: object
+    properties:
+      customId:
+        description: ''
+        type: string
+      id:
+        description: ''
+        type: string
+      serviceProviderCode:
+        description: ''
+        type: string
+      trackingId:
+        description: ''
+        format: int64
+        type: integer
+      value:
+        description: ''
+        type: string
+  compactAddressModel_request_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      postalCode:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  compactAddressModel_response_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      postalCode:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  compactAddressModel_v4_get_citizenaccess_citizens:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      postalCode:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  compactAddressModel_v4_get_civicid_citizenaccess_contacts:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      zip:
+        description: ''
+        type: string
+  compactAddressModel_v4_post_citizenaccess_citizens:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      zip:
+        description: ''
+        type: string
+  contactAddressModel_request_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      direction:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: ''
+        format: date-time
+        type: string
+      expirationDate:
+        description: ''
+        format: date-time
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      houseAlphaEnd:
+        description: ''
+        type: string
+      houseAlphaStart:
+        description: ''
+        type: string
+      id:
+        description: ''
+        format: int64
+        type: integer
+      isPrimary:
+        description: ''
+        type: string
+      levelEnd:
+        description: ''
+        type: string
+      levelPrefix:
+        description: ''
+        type: string
+      levelStart:
+        description: ''
+        type: string
+      phone:
+        description: ''
+        type: string
+      phoneCountryCode:
+        description: ''
+        type: string
+      postalCode:
+        description: ''
+        type: string
+      recipient:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetAddress:
+        description: ''
+        type: string
+      streetEnd:
+        description: ''
+        format: int64
+        type: integer
+      streetName:
+        description: ''
+        type: string
+      streetPrefix:
+        description: ''
+        type: string
+      streetStart:
+        description: ''
+        format: int64
+        type: integer
+      streetSuffix:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitEnd:
+        description: ''
+        type: string
+      unitStart:
+        description: ''
+        type: string
+      unitType:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  contactAddressModel_response_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      direction:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: ''
+        format: date-time
+        type: string
+      expirationDate:
+        description: ''
+        format: date-time
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      houseAlphaEnd:
+        description: ''
+        type: string
+      houseAlphaStart:
+        description: ''
+        type: string
+      id:
+        description: ''
+        format: int64
+        type: integer
+      isPrimary:
+        description: ''
+        type: string
+      levelEnd:
+        description: ''
+        type: string
+      levelPrefix:
+        description: ''
+        type: string
+      levelStart:
+        description: ''
+        type: string
+      phone:
+        description: ''
+        type: string
+      phoneCountryCode:
+        description: ''
+        type: string
+      postalCode:
+        description: ''
+        type: string
+      recipient:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetAddress:
+        description: ''
+        type: string
+      streetEnd:
+        description: ''
+        format: int64
+        type: integer
+      streetName:
+        description: ''
+        type: string
+      streetPrefix:
+        description: ''
+        type: string
+      streetStart:
+        description: ''
+        format: int64
+        type: integer
+      streetSuffix:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitEnd:
+        description: ''
+        type: string
+      unitStart:
+        description: ''
+        type: string
+      unitType:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  contactAddressModel_v4_get_citizenaccess_citizens:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      direction:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: ''
+        format: date-time
+        type: string
+      expirationDate:
+        description: ''
+        format: date-time
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      houseAlphaEnd:
+        description: ''
+        type: string
+      houseAlphaStart:
+        description: ''
+        type: string
+      id:
+        description: ''
+        format: int64
+        type: integer
+      isPrimary:
+        description: ''
+        type: string
+      levelEnd:
+        description: ''
+        type: string
+      levelPrefix:
+        description: ''
+        type: string
+      levelStart:
+        description: ''
+        type: string
+      phone:
+        description: ''
+        type: string
+      phoneCountryCode:
+        description: ''
+        type: string
+      postalCode:
+        description: ''
+        type: string
+      recipient:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetAddress:
+        description: ''
+        type: string
+      streetEnd:
+        description: ''
+        format: int64
+        type: integer
+      streetName:
+        description: ''
+        type: string
+      streetPrefix:
+        description: ''
+        type: string
+      streetStart:
+        description: ''
+        format: int64
+        type: integer
+      streetSuffix:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitEnd:
+        description: ''
+        type: string
+      unitStart:
+        description: ''
+        type: string
+      unitType:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  contactAddressModel_v4_get_civicid_citizenaccess_contacts:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: ''
+        format: date-time
+        type: string
+      entityID:
+        description: ''
+        format: int64
+        type: integer
+      expirationDate:
+        description: ''
+        format: date-time
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      fullAddress:
+        description: ''
+        type: string
+      houseNumberAlphaEnd:
+        description: ''
+        type: string
+      houseNumberAlphaStart:
+        description: ''
+        type: string
+      houseNumberEnd:
+        description: ''
+        format: int64
+        type: integer
+      houseNumberStart:
+        description: ''
+        format: int64
+        type: integer
+      id:
+        description: ''
+        format: int64
+        type: integer
+      levelNumberEnd:
+        description: ''
+        type: string
+      levelNumberStart:
+        description: ''
+        type: string
+      levelPrefix:
+        description: ''
+        type: string
+      phone:
+        description: ''
+        type: string
+      phoneCountryCode:
+        description: ''
+        type: string
+      postalCode:
+        description: ''
+        type: string
+      primary:
+        description: ''
+        type: string
+      recipient:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        description: ''
+        type: string
+      streetDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetName:
+        description: ''
+        type: string
+      streetPrefix:
+        description: ''
+        type: string
+      streetSuffix:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitEnd:
+        description: ''
+        type: string
+      unitStart:
+        description: ''
+        type: string
+      unitType:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      validateFlag:
+        description: ''
+        type: string
+  contactAddressModel_v4_post_citizenaccess_citizens:
+    type: object
+    properties:
+      addressLine1:
+        description: ''
+        type: string
+      addressLine2:
+        description: ''
+        type: string
+      addressLine3:
+        description: ''
+        type: string
+      city:
+        description: ''
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: ''
+        format: date-time
+        type: string
+      entityID:
+        description: ''
+        format: int64
+        type: integer
+      expirationDate:
+        description: ''
+        format: date-time
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      fullAddress:
+        description: ''
+        type: string
+      houseNumberAlphaEnd:
+        description: ''
+        type: string
+      houseNumberAlphaStart:
+        description: ''
+        type: string
+      houseNumberEnd:
+        description: ''
+        format: int64
+        type: integer
+      houseNumberStart:
+        description: ''
+        format: int64
+        type: integer
+      id:
+        description: ''
+        format: int64
+        type: integer
+      levelNumberEnd:
+        description: ''
+        type: string
+      levelNumberStart:
+        description: ''
+        type: string
+      levelPrefix:
+        description: ''
+        type: string
+      phone:
+        description: ''
+        type: string
+      phoneCountryCode:
+        description: ''
+        type: string
+      postalCode:
+        description: ''
+        type: string
+      primary:
+        description: ''
+        type: string
+      recipient:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        description: ''
+        type: string
+      streetDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetName:
+        description: ''
+        type: string
+      streetPrefix:
+        description: ''
+        type: string
+      streetSuffix:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitEnd:
+        description: ''
+        type: string
+      unitStart:
+        description: ''
+        type: string
+      unitType:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      validateFlag:
+        description: ''
+        type: string
+  contractorPeopleModel_v4_get_citizenaccess_citizens:
+    type: object
+    properties:
+      additionalAddresses:
+        items:
+          $ref: '#/definitions/contactAddressModel_v4_get_citizenaccess_citizens'
+        type: array
+      address:
+        $ref: '#/definitions/compactAddressModel_v4_get_citizenaccess_citizens'
+      birthCity:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: ''
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: ''
+        type: string
+      comment:
+        description: ''
+        type: string
+      deceasedDate:
+        description: ''
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: ''
+        type: string
+      driverLicenseState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: ''
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      federalEmployerId:
+        description: ''
+        type: string
+      firstName:
+        description: ''
+        type: string
+      fullName:
+        description: ''
+        type: string
+      gender:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: ''
+        type: string
+      individualOrOrganization:
+        description: ''
+        type: string
+      lastName:
+        description: ''
+        type: string
+      middleName:
+        description: ''
+        type: string
+      organizationName:
+        description: ''
+        type: string
+      passportNumber:
+        description: ''
+        type: string
+      phone1:
+        description: ''
+        type: string
+      phone1CountryCode:
+        description: ''
+        type: string
+      phone2:
+        description: ''
+        type: string
+      phone2CountryCode:
+        description: ''
+        type: string
+      phone3:
+        description: ''
+        type: string
+      phone3CountryCode:
+        description: ''
+        type: string
+      postOfficeBox:
+        description: ''
+        type: string
+      preferredChannel:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: ''
+        type: string
+      socialSecurityNumber:
+        description: ''
+        type: string
+      stateIdNumber:
+        description: ''
+        type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: ''
+        type: string
+      title:
+        description: ''
+        type: string
+      tradeName:
+        description: ''
+        type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  contactAddressModel:
+    type: object
+    properties:
+      addressLine1:
+        type: string
+        description: The first line of the address.
+      addressLine2:
+        type: string
+        description: The first line of the address.
+      city:
+        type: string
+        description: The name of the city.
+      country:
+        type: object
+        description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      direction:
+        description: The street direction of the primary address associated with the application.
+        type: object
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      effectiveDate:
+        description: ''
+        format: date-time
+        type: string
+      expirationDate:
+        description: ''
+        format: date-time
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      houseAlphaStart:
+        type: string
+        description: The beginning alphabetic unit in street address.
+      houseAlphaEnd:
+        type: string
+        description: The ending alphabetic unit in street address.
+      id:
+        format: int64
+        type: integer
+        description: The unique address id assigned by the Civic Platform server.
+      isPrimary:
+        type: string
+        description: Indicates whether or not to designate the address as the primary address. Only one address can be primary
+          at any given time.
+      levelStart:
+        type: string
+        description: The starting level number (floor number) that makes up the address within a complex.
+      levelEnd:
+        type: string
+        description: The ending level number (floor number) that makes up the address within a complex.
+      levelPrefix:
+        type: string
+        description: The prefix for the level numbers (floor numbers) that make up the address.
+      phone:
+        description: ''
+        type: string
+      phoneCountryCode:
+        description: ''
+        type: string
+      postalCode:
+        type: string
+        description: The postal ZIP code for the address.
+      recipient:
+        description: ''
+        type: string
+      state:
+        type: object
+        description: The name of the state.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      status:
+        type: object
+        description: The address status indicating whether the address is active or inactive.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetAddress:
+        type: string
+        description: The street address.
+      streetEnd:
+        type: number
+        format: long
+        description: The ending number of a street address range.
+      streetName:
+        type: string
+        description: The name of the street.
+      streetPrefix:
+        type: string
+        description: Any part of an address that appears before a street name or number. For example, if the address is 123
+          West Main, "West" is the street prefix.
+      streetStart:
+        type: number
+        format: long
+        description: The starting number of a street address range.
+      streetSuffix:
+        type: object
+        description: The type of street such as "Lane" or "Boulevard".
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      streetSuffixDirection:
+        type: object
+        description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW"
+          is the street suffix direction.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      unitStart:
+        type: string
+        description: The starting value of a range of unit numbers.
+      unitEnd:
+        type: string
+        description: The ending value of a range of unit numbers.
+      unitType:
+        type: object
+        description: The unit type designation of the address.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  ownerAddressModel:
+    type: object
+    properties:
+      addressLine1:
+        description: The first line of the address.
+        type: string
+      addressLine2:
+        description: The second line of the address.
+        type: string
+      addressLine3:
+        description: The third line of the address.
+        type: string
+      city:
+        description: The name of the city.
+        type: string
+      country:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      postalCode:
+        description: The postal ZIP code for the address.
+        type: string
+      state:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  peopleModel:
+    type: object
+    properties:
+      additionalAddresses:
+        items:
+          $ref: '#/definitions/contactAddressModel'
+        type: array
+      address:
+        $ref: '#/definitions/ownerAddressModel'
+      birthCity:
+        type: object
+        description: The city of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDateFrom:
+        description: The start of a birth date range to search.
+        format: date-time
+        type: string
+      birthDateTo:
+        description: The end of a birth date range to search.
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: The country of birth or region of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: The state of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: A secondary business name for the applicable individual.
+        type: string
+      deceasedDate:
+        description: The deceased date, if applicable.
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: The driver's license number of the contact. This field is active only when the Contact Type selected
+          is Individual.
+        type: string
+      driverLicenseState:
+        type: object
+        description: The state that issued the driver's license.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: The contact's email address.
+        type: string
+      fax:
+        description: The fax number for the contact.
+        type: string
+      faxCountryCode:
+        description: Fax Number Country Code
+        type: string
+      federalEmployerId:
+        description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+        type: string
+      firstName:
+        description: The contact's first name.
+        type: string
+      fullName:
+        description: 'The contact''s full name. '
+        type: string
+      gender:
+        type: object
+        description: The gender (male or female) of the individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The contact system id assigned by the Civic Platform server.
+        type: string
+      individualOrOrganization:
+        description: The organization to which the contact belongs. This field is only active when the Contact Type selected
+          is Organization.
+        type: string
+      lastName:
+        description: The last name (surname).
+        type: string
+      middleName:
+        description: The middle name.
+        type: string
+      openCloseMatch:
+        description: Indicates whether or not to use close matches as hits in a search for contacts.
+        type: string
+      openSoundexSearch:
+        description: 'Indicates whether or not Soundex search is enabled for any of the following requested parameters: firstName,
+          middleName, lastName, organizationName, tradeName, businessName, streetName'
+        type: string
+        enum:
+        - Y
+        - N
+      orderBy:
+        description: 'The fields by which the search results are ordered. For each field, specify the sort order: asc for
+          ascending or desc for descending order. Use commas to separate multiple sort fields. The values are not case-sensitive.
+          For example: "orderBy":"lastName desc,email asc"'
+        enum:
+        - LastName
+        - LastName ASC
+        - LastName DESC
+        - FirstName
+        - FirstName ASC
+        - FirstName DESC
+        - birthDate
+        - birthDate ASC
+        - birthDate DESC
+        - AddressCity
+        - AddressCity ASC
+        - AddressCity DESC
+        - AddressState
+        - AddressState ASC
+        - AddressState DESC
+        - AddressZIP
+        - AddressZIP ASC
+        - AddressZIP DESC
+        - AddressCountry
+        - AddressCountry ASC
+        - AddressCountry DESC
+        - email
+        - email ASC
+        - email DESC
+        - PHONE1
+        - PHONE1 ASC
+        - PHONE1 DESC
+        - PHONE2
+        - PHONE2 ASC
+        - PHONE2 DESC
+        type: string
+      organizationName:
+        description: The organization to which the contact belongs. This field is only active when the Contact Type selected
+          is Organization.
+        type: string
+      passportNumber:
+        description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+        type: string
+      phone1:
+        description: The primary telephone number of the contact.
+        type: string
+      phone1CountryCode:
+        description: Phone Number 1 Country Code
+        type: string
+      phone2:
+        description: The secondary telephone number of the contact.
+        type: string
+      phone2CountryCode:
+        description: Phone Number 2 Country Code
+        type: string
+      phone3:
+        description: The tertiary telephone number for the contact.
+        type: string
+      phone3CountryCode:
+        description: Phone Number 3 Country Code
+        type: string
+      postOfficeBox:
+        description: The post office box number.
+        type: string
+      preferredChannel:
+        type: object
+        description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred
+          Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: The contact's relationship to the application or service request.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only
+          when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: The unique agency identifier
+        type: string
+      socialSecurityNumber:
+        description: The individual's social security number. This field is only active when the Contact Type selected is
+          Individual.
+        type: string
+      stateIdNumber:
+        description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+        type: string
+      status:
+        type: object
+        description: The contact status.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: The contact name suffix.
+        type: string
+      title:
+        description: The individual's business title.
+        type: string
+      tradeName:
+        description: The contact's preferred business or trade name. This field is active only when the Contact Type selected
+          is Organization.
+        type: string
+      type:
+        type: object
+        description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  identifierModel:
+    type: object
+    properties:
+      text:
+        description: ''
+        type: string
+      value:
+        description: ''
+        type: string
+  multipleObjectResultModel_v4_post_citizenaccess_citizens:
+    type: object
+    properties:
+      code:
+        description: ''
+        type: string
+      id:
+        description: ''
+        type: string
+      isSuccess:
+        type: boolean
+      message:
+        description: ''
+        type: string
+  multipleObjectResultModel_v4_post_citizenaccess_citizens_delegates:
+    type: object
+    properties:
+      code:
+        description: ''
+        type: string
+      id:
+        description: ''
+        type: string
+      isSuccess:
+        type: boolean
+      message:
+        description: ''
+        type: string
+  multipleObjectResultModel_v4_put_citizenaccess_citizens_id_accounts:
+    type: object
+    properties:
+      code:
+        description: ''
+        type: string
+      id:
+        description: ''
+        type: string
+      isSuccess:
+        type: boolean
+      message:
+        description: ''
+        type: string
+  peopleModel_request_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      additionalAddresses:
+        items:
+          $ref: '#/definitions/contactAddressModel_request_v4_post_citizenaccess_register'
+        type: array
+      address:
+        $ref: '#/definitions/compactAddressModel_request_v4_post_citizenaccess_register'
+      birthCity:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: ''
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: ''
+        type: string
+      comment:
+        description: ''
+        type: string
+      deceasedDate:
+        description: ''
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: ''
+        type: string
+      driverLicenseState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: ''
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      federalEmployerId:
+        description: ''
+        type: string
+      firstName:
+        description: ''
+        type: string
+      fullName:
+        description: ''
+        type: string
+      gender:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: ''
+        type: string
+      individualOrOrganization:
+        description: ''
+        type: string
+      lastName:
+        description: ''
+        type: string
+      middleName:
+        description: ''
+        type: string
+      organizationName:
+        description: ''
+        type: string
+      passportNumber:
+        description: ''
+        type: string
+      phone1:
+        description: ''
+        type: string
+      phone1CountryCode:
+        description: ''
+        type: string
+      phone2:
+        description: ''
+        type: string
+      phone2CountryCode:
+        description: ''
+        type: string
+      phone3:
+        description: ''
+        type: string
+      phone3CountryCode:
+        description: ''
+        type: string
+      postOfficeBox:
+        description: ''
+        type: string
+      preferredChannel:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: ''
+        type: string
+      socialSecurityNumber:
+        description: ''
+        type: string
+      stateIdNumber:
+        description: ''
+        type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: ''
+        type: string
+      title:
+        description: ''
+        type: string
+      tradeName:
+        description: ''
+        type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  peopleModel_response_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      additionalAddresses:
+        items:
+          $ref: '#/definitions/contactAddressModel_response_v4_post_citizenaccess_register'
+        type: array
+      address:
+        $ref: '#/definitions/compactAddressModel_response_v4_post_citizenaccess_register'
+      birthCity:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: ''
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: ''
+        type: string
+      comment:
+        description: ''
+        type: string
+      deceasedDate:
+        description: ''
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: ''
+        type: string
+      driverLicenseState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: ''
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      federalEmployerId:
+        description: ''
+        type: string
+      firstName:
+        description: ''
+        type: string
+      fullName:
+        description: ''
+        type: string
+      gender:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: ''
+        type: string
+      individualOrOrganization:
+        description: ''
+        type: string
+      lastName:
+        description: ''
+        type: string
+      middleName:
+        description: ''
+        type: string
+      organizationName:
+        description: ''
+        type: string
+      passportNumber:
+        description: ''
+        type: string
+      phone1:
+        description: ''
+        type: string
+      phone1CountryCode:
+        description: ''
+        type: string
+      phone2:
+        description: ''
+        type: string
+      phone2CountryCode:
+        description: ''
+        type: string
+      phone3:
+        description: ''
+        type: string
+      phone3CountryCode:
+        description: ''
+        type: string
+      postOfficeBox:
+        description: ''
+        type: string
+      preferredChannel:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: ''
+        type: string
+      socialSecurityNumber:
+        description: ''
+        type: string
+      stateIdNumber:
+        description: ''
+        type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: ''
+        type: string
+      title:
+        description: ''
+        type: string
+      tradeName:
+        description: ''
+        type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  citizenContactModel:
+    type: object
+    properties:
+      address:
+        $ref: '#/definitions/ownerAddressModel'
+      birthCity:
+        type: object
+        description: The city of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: The citizen's birth date
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: The country of birth or region of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: The state of birth for an individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: The business name for the applicable individual.
+        type: string
+      businessName2:
+        description: A secondary business name.
+        type: string
+      comment:
+        description: Comments or notes about the current context.
+        type: string
+      contactAddresses:
+        items:
+          $ref: '#/definitions/contactAddressModel'
+        type: array
+      deceasedDate:
+        description: The deceased date, if applicable.
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: The driver's license number of the contact. This field is active only when the Contact Type selected
+          is Individual.
+        type: string
+      driverLicenseState:
+        type: object
+        description: The state that issued the driver's license.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: The contact's email address.
+        type: string
+      faxCountryCode:
+        description: Fax Number Country Code
+        type: string
+      faxNumber:
+        description: The fax number for the contact.
+        type: string
+      federalEmployerId:
+        description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+        type: string
+      firstName:
+        description: The contact's first name.
+        type: string
+      fullName:
+        description: 'The contact''s full name. '
+        type: string
+      gender:
+        type: object
+        description: The gender (male or female) of the individual.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: The contact system id assigned by the Civic Platform server.
+        type: string
+      isPrimary:
+        description: Indicates whether or not to designate the address as the primary address. Only one address can be primary
+          at any given time.
+        type: string
+      lastName:
+        description: The last name (surname).
+        type: string
+      middleName:
+        description: The middle name.
+        type: string
+      namesuffix:
+        description: The suffix that follows the user's name
+        type: string
+      passportNumber:
+        description: The contact's passport number.
+        type: string
+      phone1CountryCode:
+        description: Phone Number 1 Country Code
+        type: string
+      phone2CountryCode:
+        description: Phone Number 2 Country Code
+        type: string
+      phone3CountryCode:
+        description: Phone Number 3 Country Code
+        type: string
+      phoneNumber1:
+        description: The user's first phone number.
+        type: string
+      phoneNumber2:
+        description: The user's second phone number.
+        type: string
+      phoneNumber3:
+        description: The user's third phone number.
+        type: string
+      postOfficeBox:
+        description: The post office box number.
+        type: string
+      preferredChannel:
+        type: object
+        description: The method by which the contact prefers to be notified, by phone for example.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: The contact's race/ethnicity.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: The contact's relationship to the application or service request.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: 'The salutation to be used when addressing the contact; for example Mr. or Ms. '
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      socialSecurityNumber:
+        description: The individual's social security number.
+        type: string
+      stateIdNumber:
+        description: The contact's state ID number.
+        type: string
+      status:
+        description: The contact status.
+        type: string
+      title:
+        description: The individual's business title
+        type: string
+      tradeName:
+        description: 'The contact''s preferred business or trade name. '
+        type: string
+      type:
+        type: object
+        description: The type of contact.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      typeFlag:
+        description: Indicates whether the contact is an individual or organization.
+        type: string
+  peopleModel_v4_post_citizenaccess_citizens:
+    type: object
+    properties:
+      additionalAddresses:
+        items:
+          $ref: '#/definitions/contactAddressModel_v4_post_citizenaccess_citizens'
+        type: array
+      address:
+        $ref: '#/definitions/compactAddressModel_v4_post_citizenaccess_citizens'
+      birthCity:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthDate:
+        description: ''
+        format: date-time
+        type: string
+      birthRegion:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      birthState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      businessName:
+        description: ''
+        type: string
+      comment:
+        description: ''
+        type: string
+      deceasedDate:
+        description: ''
+        format: date-time
+        type: string
+      driverLicenseNumber:
+        description: ''
+        type: string
+      driverLicenseState:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      email:
+        description: ''
+        type: string
+      fax:
+        description: ''
+        type: string
+      faxCountryCode:
+        description: ''
+        type: string
+      federalEmployerId:
+        description: ''
+        type: string
+      firstName:
+        description: ''
+        type: string
+      fullName:
+        description: ''
+        type: string
+      gender:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      id:
+        description: ''
+        type: string
+      individualOrOrganization:
+        description: ''
+        type: string
+      lastName:
+        description: ''
+        type: string
+      middleName:
+        description: ''
+        type: string
+      organizationName:
+        description: ''
+        type: string
+      passportNumber:
+        description: ''
+        type: string
+      phone1:
+        description: ''
+        type: string
+      phone1CountryCode:
+        description: ''
+        type: string
+      phone2:
+        description: ''
+        type: string
+      phone2CountryCode:
+        description: ''
+        type: string
+      phone3:
+        description: ''
+        type: string
+      phone3CountryCode:
+        description: ''
+        type: string
+      postOfficeBox:
+        description: ''
+        type: string
+      preferredChannel:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      race:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      relation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      salutation:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      serviceProviderCode:
+        description: ''
+        type: string
+      socialSecurityNumber:
+        description: ''
+        type: string
+      stateIdNumber:
+        description: ''
+        type: string
+      status:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      suffix:
+        description: ''
+        type: string
+      title:
+        description: ''
+        type: string
+      tradeName:
+        description: ''
+        type: string
+      type:
+        type: object
+        description: ''
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+  publicUserDelegateStatusModel:
+    type: object
+    properties:
+      delegateStatus:
+        description: The status of the delegate request.
+        enum:
+        - ACCEPT
+        - REJECT
+        type: string
+  response_publicUserDelegateStatusModel:
+    type: object
+    properties:
+      delegateStatus:
+        description: The status of the delegate request.
+        type: string
+      id:
+        description: The id of the user who sent the delegate request.
+        format: int64
+        type: integer
+  response_publicUserDelegateModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/publicUserDelegateModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  publicUserDelegateModel:
+    type: object
+    properties:
+      delegateStatus:
+        description: The status of the delegate request.
+        enum:
+        - PENDING
+        - ACCEPT
+        - REJECT
+        - EXPIRED
+        type: string
+      id:
+        description: The delegate id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      invitationMessage:
+        description: The invitation message sent to the delegate.
+        type: string
+      name:
+        description: The delegate's name.
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/publicUserDelegatePermissionModel'
+        type: array
+      userName:
+        description: The delegate's login name.
+        type: string
+  request_publicUserDelegateModel:
+    type: object
+    properties:
+      invitationMessage:
+        description: The invitation message sent to the delegate.
+        type: string
+      name:
+        description: The delegate's name.
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/publicUserDelegatePermissionModel'
+        type: array
+      userName:
+        description: The delegate's login name.
+        type: string
+  publicUserDelegatePermissionModel:
+    type: object
+    properties:
+      amendAllowed:
+        description: If true, the delegate is allowed to amend records.
+        type: boolean
+      createRecordAllowed:
+        description: If true, the delegate is allowed to create records.
+        type: boolean
+      documentAllowed:
+        description: If true, the delegate is allowed to manage documents.
+        type: boolean
+      inspectionAllowed:
+        description: If true, the delegate is allowed to manage inspections.
+        type: boolean
+      level:
+        description: The permission level.
+        type: string
+      levelValue:
+        description: The value for the permission level, as configured in Civic Platform Administration.
+        type: string
+      paymentAllowed:
+        description: If true, the delegate is allowed to make payments.
+        type: boolean
+      renewalAllowed:
+        description: If true, the delegate is allowed to renew records.
+        type: boolean
+      viewRecordAllowed:
+        description: If true, the delegate is allowed to view records.
+        type: boolean
+  publicUserDelegatePermissionModel_v4_get_citizenaccess_citizens_invitations:
+    type: object
+    properties:
+      amendAllowed:
+        type: boolean
+      createRecordAllowed:
+        type: boolean
+      documentAllowed:
+        type: boolean
+      inspectionAllowed:
+        type: boolean
+      level:
+        description: ''
+        type: string
+      levelValue:
+        description: ''
+        type: string
+      paymentAllowed:
+        type: boolean
+      renewalAllowed:
+        type: boolean
+      viewRecordAllowed:
+        type: boolean
+  publicUserPasswordModel:
+    type: object
+    properties:
+      password:
+        description: The citizen user's password.
+        type: string
+  publicUserModel_response_v4_put_citizenaccess_citizens_id_password:
+    type: object
+    properties:
+      id:
+        description: ''
+        format: int64
+        type: integer
+  response_publicUserModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/publicUserModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  publicUserModel:
+    type: object
+    properties:
+      active:
+        description: Indicates whether or not the user is active.
+        enum:
+        - 'Yes'
+        - 'No'
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/peopleModel'
+        type: array
+      email:
+        description: The citizen user's email address.
+        type: string
+      id:
+        description: The citizen id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      loginName:
+        description: The citizen user's login name.
+        type: string
+      mobilePhone:
+        description: The citizen user's 10-digit cell phone number.
+        type: string
+      receiveSMS:
+        description: Indicates whether or not the user prefers to receive SMS messages.
+        enum:
+        - Y
+        - N
+        type: string
+      registerDate:
+        description: The citizen user's registration date.
+        format: date-time
+        type: string
+      role:
+        description: The citizen user's role
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+  publicUserModel_v4_get_citizenaccess_citizens_delegatePrivileges:
+    type: object
+    properties:
+      firstName:
+        description: ''
+        type: string
+      id:
+        description: ''
+        type: string
+      lastName:
+        description: ''
+        type: string
+      permissions:
+        type: object
+      userName:
+        description: ''
+        type: string
+  citizenProfileModel:
+    type: object
+    properties:
+      email:
+        description: The citizen user's email address.
+        type: string
+      id:
+        description: The user id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      loginName:
+        description: The citizen user's login name.
+        type: string
+      mobilePhone:
+        description: The citizen user's 10-digit cell phone number.
+        type: string
+      receiveSMS:
+        description: Indicates whether or not the user prefers to receive SMS messages.
+        type: string
+      registerDate:
+        description: The citizen user's registration date.
+        format: date-time
+        type: string
+      role:
+        description: The citizen user's role
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+  response_citizenProfileModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/request_citizenProfileModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  request_citizenProfileModel:
+    type: object
+    properties:
+      email:
+        description: The citizen user's email address.
+        type: string
+      id:
+        description: The user id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      loginName:
+        description: The citizen user's login name.
+        type: string
+      mobilePhone:
+        description: The citizen user's 10-digit cell phone number.
+        type: string
+      mobilePhoneCountryCode:
+        description: The citizen user's cell phone number country code
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/publicUserQuestionModel'
+        type: array
+      receiveSMS:
+        description: Indicates whether or not the user prefers to receive SMS messages.
+        type: string
+      registerDate:
+        description: The citizen user's registration date.
+        format: date-time
+        type: string
+      role:
+        description: The citizen user's role
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+  publicUserRegisterModel_request_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      associatedLicenseIds:
+        items:
+          format: int64
+          type: integer
+        type: array
+      cellPhone:
+        description: ''
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/peopleModel_request_v4_post_citizenaccess_register'
+        type: array
+      email:
+        description: ''
+        type: string
+      id:
+        description: ''
+        format: int64
+        type: integer
+      password:
+        description: ''
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/publicUserQuestionModel'
+        type: array
+      receiveSMS:
+        description: ''
+        type: string
+      role:
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+      servProvCode:
+        description: ''
+        type: string
+      userName:
+        description: ''
+        type: string
+  publicUserRegisterModel_response_v4_post_citizenaccess_register:
+    type: object
+    properties:
+      associatedLicenseIds:
+        items:
+          format: int64
+          type: integer
+        type: array
+      cellPhone:
+        description: ''
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/peopleModel_response_v4_post_citizenaccess_register'
+        type: array
+      email:
+        description: ''
+        type: string
+      id:
+        description: ''
+        format: int64
+        type: integer
+      password:
+        description: ''
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/publicUserQuestionModel'
+        type: array
+      receiveSMS:
+        description: ''
+        type: string
+      role:
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+      servProvCode:
+        description: ''
+        type: string
+      userName:
+        description: ''
+        type: string
+  publicUserRegisterModel:
+    type: object
+    required:
+    - userName
+    properties:
+      associatedLicenseIds:
+        description: Contains license ID's associated with the citizen user.
+        items:
+          format: int64
+          type: integer
+        type: array
+      cellPhone:
+        description: The citizen user's cell phone number.
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/peopleModel'
+        type: array
+      email:
+        description: The citizen user's email address.
+        type: string
+      password:
+        description: The citizen user's password.
+        type: string
+      questions:
+        description: Contains the security questions for password reset.
+        items:
+          $ref: '#/definitions/publicUserQuestionModel'
+        type: array
+      receiveSMS:
+        description: Indicates whether or not the user prefers to receive SMS messages.
+        enum:
+        - Y
+        - N
+        type: string
+      role:
+        description: The citizen user's role
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+      servProvCode:
+        description: The unique agency identifier.
+        type: string
+      userName:
+        description: The user's unique username.
+        type: string
+  response_publicUserRegisterModel:
+    type: object
+    required:
+    - userName
+    properties:
+      associatedLicenseIds:
+        description: Contains license ID's associated with the citizen user.
+        items:
+          format: int64
+          type: integer
+        type: array
+      cellPhone:
+        description: The citizen user's cell phone number.
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/peopleModel'
+        type: array
+      email:
+        description: The citizen user's email address.
+        type: string
+      id:
+        description: The citizen id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      password:
+        description: The citizen user's password.
+        type: string
+      questions:
+        description: Contains the security questions for password reset.
+        items:
+          $ref: '#/definitions/publicUserQuestionModel'
+        type: array
+      receiveSMS:
+        description: Indicates whether or not the user prefers to receive SMS messages.
+        enum:
+        - Y
+        - N
+        type: string
+      role:
+        description: The citizen user's role
+        enum:
+        - CONTRACT_INSPECTOR
+        - CITIZEN
+        - AUTH_AGENT_CLERK
+        - AUTH_AGENT
+        - SELF_CERTIFIED_INSPECTOR
+        type: string
+      servProvCode:
+        description: The unique agency identifier.
+        type: string
+      userName:
+        description: The user's unique username.
+        type: string
+  publicUserQuestionModel:
+    type: object
+    properties:
+      answer:
+        description: The answer to the security question for password reset.
+        type: string
+      order:
+        description: The order of the security question.
+        type: string
+      question:
+        description: The security question for password reset.
+        type: string
+  response_delegatePrivilegeModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/delegatePrivilegeModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  delegatePrivilegeModel:
+    type: object
+    properties:
+      firstName:
+        description: The citizen user's first name.
+        type: string
+      id:
+        description: Ther citizen delegate's userid.
+        type: string
+      lastName:
+        description: The citizen user's last name.
+        type: string
+      permissions:
+        description: An array containing the allowed actions assigned to the user, per module.
+        items:
+          $ref: '#/definitions/permissionModel'
+        type: array
+      userName:
+        description: The user who assigned the permission.
+        type: string
+  permissionModel:
+    type: object
+    properties:
+      level:
+        $ref: '#/definitions/permissionLevelModel'
+      allowedActions:
+        description: An action the user is allowed to perform
+        enum:
+        - ViewRecords
+        - CreateRecords
+        - RenewRecords
+        - ManageInsps
+        - ManageDocs
+        - MakePayments
+        - AmendRecords
+        items:
+          type: string
+        type: array
+  permissionLevelModel:
+    type: object
+    properties:
+      MODULE:
+        description: The Civic Platform module the delegate has access to.
+        type: string
+      AGENCY:
+        description: The agency the delegate has access to, for a multi-agency environment.
+        type: string
+  response_resultCountModel:
+    type: object
+    properties:
+      result:
+        $ref: '#/definitions/resultCountModel'
+      status:
+        type: integer
+        description: The HTTP return status.
+  resultCountModel:
+    type: object
+    properties:
+      failedCount:
+        description: The number of failed results.
+        format: int64
+        type: integer
+      failedIDs:
+        description: The IDs of the entities on which the operation failed.
+        type: string
+      successCount:
+        description: The number of successful results.
+        format: int64
+        type: integer
+      successIDs:
+        description: The IDs of the entities on which the operation succeeded.
+        type: string
+  resultCountModel_v4_delete_citizens_id_contacts_contactIds:
+    type: object
+    properties:
+      failedCount:
+        description: ''
+        format: int64
+        type: integer
+      failedIDs:
+        description: ''
+        type: string
+      successCount:
+        description: ''
+        format: int64
+        type: integer
+      successIDs:
+        description: ''
+        type: string
+  resultCountModel_v4_delete_civicid_citizenaccess_contacts_ids:
+    type: object
+    properties:
+      failedCount:
+        description: ''
+        format: int64
+        type: integer
+      failedIDs:
+        description: ''
+        type: string
+      successCount:
+        description: ''
+        format: int64
+        type: integer
+      successIDs:
+        description: ''
+        type: string
+  resultCountModel_v4_post_citizens_id_contacts:
+    type: object
+    properties:
+      failedCount:
+        description: ''
+        format: int64
+        type: integer
+      failedIDs:
+        description: ''
+        type: string
+      successCount:
+        description: ''
+        format: int64
+        type: integer
+      successIDs:
+        description: ''
+        type: string
+  resultCountModel_v4_post_civicid_citizenaccess_contacts:
+    type: object
+    properties:
+      failedCount:
+        description: ''
+        format: int64
+        type: integer
+      failedIDs:
+        description: ''
+        type: string
+      successCount:
+        description: ''
+        format: int64
+        type: integer
+      successIDs:
+        description: ''
+        type: string
+  response_trustAccountModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/trustAccountModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  trustAccountModel:
+    type: object
+    properties:
+      account:
+        description: The account ID number for the trust account.
+        type: string
+      associations:
+        type: object
+        description: The trust account associations.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      balance:
+        description: The balance of the trust account in dollars.
+        format: double
+        type: number
+      description:
+        description: The description of the trust account.
+        type: string
+      id:
+        description: The trust account system id assigned by the Civic Platform server.
+        format: int64
+        type: integer
+      isPrimary:
+        description: Indicates whether or not to designate the trust account as the primary source.
+        type: string
+        enum:
+        - Y
+        - N
+      ledgerAccount:
+        description: The ledger account of the trust account.
+        type: string
+      overdraft:
+        type: object
+        description: Indicates whether or not the trust account can use the overdraft option.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+      overdraftLimit:
+        description: The overdraft limit amount, in dollars, for the trust account.
+        format: double
+        type: number
+      serviceProviderCode:
+        description: The unique agency identifier.
+        type: string
+      status:
+        type: object
+        description: The status of the trust account.
+        properties:
+          text:
+            description: The localized display value.
+            type: string
+          value:
+            description: The data value.
+            type: string
+        enum:
+        - Active
+        - Closed
+      thresholdAmount:
+        description: The minimum amount required in a trust account.
+        format: double
+        type: number
+  response_userPINModelArray:
+    type: object
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/userPINModel'
+        type: array
+      status:
+        type: integer
+        description: The HTTP return status.
+  userPINModel:
+    type: object
+    properties:
+      active:
+        description: Indicates whether or not the account is active. If the account is not activated, the user cannot login
+          Accela Citizen Access.
+        type: string
+      agentId:
+        description: The ID of the associated agent of the logged-in user.
+        type: string
+      serviceProviderCode:
+        description: The agency id.
+        type: string
+      status:
+        description: The citizen userid status.
+        type: string
+      userId:
+        description: The citizen userid.
+        format: int64
+        type: integer
+  userPINModel_v4_put_citizenaccess_citizens_id_accounts:
+    type: object
+    properties:
+      active:
+        description: ''
+        type: string
+      serviceProviderCode:
+        description: ''
+        type: string
+      status:
+        description: ''
+        type: string
+      userId:
+        description: ''
+        format: int64
+        type: integer
+parameters:
+  authHeaderParam:
+    description: Construct oAuth2 authentication token
+    in: header
+    name: Authorization
+    required: true
+    type: string
+  offset:
+    description: The offset position of the first record in the results response array. For example, if offset is 100, the
+      first item in the results array in the response is the 100th record in the search result list.
+    format: int64
+    in: query
+    name: offset
+    required: false
+    type: integer
+  limit:
+    description: Search result size limit.
+    format: int64
+    in: query
+    name: limit
+    required: false
+    type: integer
+    enum:
+    - range[1,1000]
+  fields:
+    description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and
+      only first-level fields are supported. Invalid field names are ignored.
+    in: query
+    name: fields
+    required: false
+    type: string
+  lang:
+    description: Language parameter to support I18N. Default language is en_US.
+    in: query
+    name: lang
+    required: false
+    type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-citizens.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc
+    (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/.
+    This copy is the same document serialized to YAML.
+  repairs:
+  - re-decoded from cp1252 (source not valid UTF-8)
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

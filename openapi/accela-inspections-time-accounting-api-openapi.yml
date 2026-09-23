@@ -1,0 +1,496 @@
+openapi: 3.2.0
+info:
+  description: Use the Inspections API to manage inspection records during their complete lifecycle from application submittal to permit issuance or license issuance. Your agency may need to complete inspections on new property developments, homes, or complaints.
+  title: Inspections/Time Accounting API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Inspections/Time Accounting
+paths:
+  /v4/inspections/{inspectionId}/timeAccounting:
+    get:
+      description: '**API Endpoint**: GET /v4/inspections/{inspectionId}/timeAccounting
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Inspection Time Accounting Entries
+      operationId: v4.get.inspections.inspectionId.timeAccounting
+      tags:
+      - Inspections/Time Accounting
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_timeLogModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates time accounting items for the specified inspection.
+
+
+        **API Endpoint**: POST /v4/inspections/{inspectionId}/timeAccounting
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Inspection Time Accounting Entries
+      operationId: v4.post.inspections.inspectionId.timeAccounting
+      tags:
+      - Inspections/Time Accounting
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/request_timeLogModel'
+              type: array
+        description: Inspection time log entries to be added.
+        required: true
+  /v4/inspections/{inspectionId}/timeAccounting/{id}:
+    put:
+      description: 'Updates a time accounting item for an inspection.
+
+
+        **API Endpoint**: PUT /v4/inspections/{inspectionId}/timeAccounting/{id}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Inspection Time Accounting Entry
+      operationId: v4.put.inspections.inspectionId.timeAccounting.id
+      tags:
+      - Inspections/Time Accounting
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: ID of inspection that needs to be fetched
+        in: path
+        name: inspectionId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: The ID of the inspection time accountint item to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_timeLogModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_timeLogModel'
+        description: Time accounting information to be updated.
+        required: true
+  /v4/inspections/{inspectionId}/timeAccounting/{ids}:
+    delete:
+      description: 'Deletes one or more time accounting items for an inspection.
+
+
+        **API Endpoint**: DELETE /v4/inspections/{inspectionId}/timeAccounting/{idS}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Inspection Time Accounting Entries
+      operationId: v4.delete.inspections.inspectionId.timeAccounting.ids
+      tags:
+      - Inspections/Time Accounting
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionId'
+      - description: Comma-delimited IDs of time accounting items to be deleted.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_timeLogModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/timeLogModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    timeLogModel:
+      type: object
+      properties:
+        billable:
+          description: Indicates whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        cost:
+          description: The calculated cost of the entry.
+          format: double
+          type: number
+        createBy:
+          description: The unique user id of the individual that created this entry.
+          type: string
+        createDate:
+          description: "\tThe date the entry was created."
+          format: date-time
+          type: string
+        detailDuration:
+          description: Contains details about the time accounting duration.
+          items:
+            $ref: '#/components/schemas/costingQuantityModel'
+          type: array
+        duration:
+          description: The duration of the entry, using the format hh:mm.
+          type: string
+        endTime:
+          description: The end time for the time accounting entry.
+          type: string
+        entity:
+          description: The entity associated with the time accounting item.
+          type: string
+        entityId:
+          description: The unique ID of the entity or record.
+          type: string
+        entityType:
+          description: The type of entity, such as "Record".
+          type: string
+        group:
+          type: object
+          description: The time accounting group. See [Get All Time Accounting Groups](./api-settings.html#operation/v4.get.settings.timeAccounting.groups).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The time accounting entry's system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        percent:
+          description: The percentage point for calculating the cost. 50 stands for 50%, 80 stands for 80%, and 150 stands for 150%.
+          format: double
+          type: number
+        rate:
+          description: The cost rate.
+          format: double
+          type: number
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startTime:
+          description: The start time of the time accounting entry.
+          type: string
+        totalMinutes:
+          description: The total number of billable minutes.
+          format: int64
+          type: integer
+        type:
+          type: object
+          description: The time accounting type. See [Get All Time Accounting Types](./api-settings.html#operation/v4.get.settings.timeAccounting.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        userId:
+          description: The userid assigned to the time accounting entry.
+          type: string
+    request_timeLogModel:
+      type: object
+      properties:
+        billable:
+          description: Indicates whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        cost:
+          description: The calculated cost of the entry.
+          format: double
+          type: number
+        createBy:
+          description: The unique user id of the individual that created this entry.
+          type: string
+        createDate:
+          description: "\tThe date the entry was created."
+          format: date-time
+          type: string
+        duration:
+          description: The duration of the entry, using the format hh:mm.
+          type: string
+        endTime:
+          description: The end time for the time accounting entry.
+          type: string
+        entityId:
+          description: The unique ID of the entity or record.
+          type: string
+        entityType:
+          description: The type of entity, such as "Record".
+          type: string
+        group:
+          type: object
+          description: The time accounting group. See [Get All Time Accounting Groups](./api-settings.html#operation/v4.get.settings.timeAccounting.groups).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The time accounting entry's system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        percent:
+          description: The percentage point for calculating the cost. 50 stands for 50%, 80 stands for 80%, and 150 stands for 150%.
+          format: double
+          type: number
+        rate:
+          description: The cost rate.
+          format: double
+          type: number
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startTime:
+          description: The start time of the time accounting entry.
+          type: string
+        totalMinutes:
+          description: The total number of billable minutes.
+          format: int64
+          type: integer
+        type:
+          type: object
+          description: The time accounting type. See [Get All Time Accounting Types](./api-settings.html#operation/v4.get.settings.timeAccounting.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        userId:
+          description: The userid assigned to the time accounting entry.
+          type: string
+    costingQuantityModel:
+      type: object
+      properties:
+        factor:
+          description: The cost factor.
+          format: double
+          type: number
+        minutes:
+          description: The duration in minutes.
+          format: double
+          type: number
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_timeLogModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/timeLogModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-inspections.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

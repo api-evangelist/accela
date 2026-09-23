@@ -1,0 +1,221 @@
+openapi: 3.2.0
+info:
+  description: The Citizens API include endpoints for citizen users to manage their own accounts, authorized users to manage other accounts, and manage citizen delegates, announcements, and invitations.
+  title: Citizens Announcements API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Announcements
+  description: The **announcements** API endpoints allow apps to get agency and public announcements, and mark them as read announcements.
+paths:
+  /v4/announcements:
+    get:
+      description: 'Gets all public announcements in the system.
+
+
+        **API Endpoint**: GET /v4/announcements
+
+
+        **Scope**: announcements
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get All Announcements
+      operationId: v4.get.announcements
+      tags:
+      - Announcements
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - description: Filter by whether or not the announcement has been read.
+        in: query
+        name: isRead
+        schema:
+          type: string
+          enum:
+          - Y
+          - N
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_messageModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/announcements/{ids}/read:
+    put:
+      description: 'Updates announcements to indicate that that the user has read the announcement.
+
+
+        **API Endpoint**: PUT /v4/announcements/{ids}/read
+
+
+        **Scope**: announcements
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Mark Announcements as Read
+      operationId: v4.put.announcements.ids.read
+      tags:
+      - Announcements
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of announcements to update.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    messageModel:
+      type: object
+      properties:
+        id:
+          description: The message id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isRead:
+          description: Indicates whether or not an announcement has been read by the logged-in user.
+          enum:
+          - Y
+          - N
+          type: string
+        startEffectDate:
+          description: The starting effective date.
+          format: date-time
+          type: string
+        text:
+          description: The announcement text.
+          type: string
+        title:
+          description: The announcement title.
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_messageModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/messageModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-citizens.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - re-decoded from cp1252 (source not valid UTF-8)
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

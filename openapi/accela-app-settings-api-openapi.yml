@@ -1,0 +1,101 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous App Settings API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: App Settings
+  description: App settings are defined when a developer registers the app on Accela Developer Portal. These settings include app name, ID, and so forth.
+paths:
+  /v4/appsettings:
+    get:
+      description: 'Gets the settings for the application.
+
+
+        **API Endpoint**: GET /v4/appsettings
+
+
+        **Scope**: app_data
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: App Credentials
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All App Settings
+      operationId: v4.get.appsettings
+      tags:
+      - App Settings
+      parameters:
+      - in: query
+        description: Comma-delimited app setting keys filter
+        name: keys
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: agency
+        description: The agency the app belongs to.
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: appId
+        description: The ID of the registered app on http://developer.accela.com.
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: appSecret
+        description: The secret key of the registered app on http://developer.accela.com.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_appSettingsArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_appSettingsArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/appSettings'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    appSettings:
+      type: object
+      properties:
+        key:
+          description: An app setting name.
+          type: string
+        value:
+          description: An app setting value.
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

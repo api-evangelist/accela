@@ -1,0 +1,4747 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records
+  description: A record is a fundamental Civic Platform object that captures an agency's daily process tranactions, such as applications, permits, cases, licenses, service requests, and work orders.
+paths:
+  /v4/records:
+    get:
+      description: 'Gets record information, based on the specified query parameters.
+
+
+        **API Endpoint**: GET /v4/records
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Records
+      operationId: v4.get.records
+      tags:
+      - Records
+      parameters:
+      - description: Filter by record type. See [Get All Record Types](./api-settings.html#operation/v4.get.settings.records.types).
+        in: query
+        name: type
+        schema:
+          type: string
+      - description: Filter by the record's open date range, beginning with this date.
+        in: query
+        name: openedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's open date range, ending with this date.
+        in: query
+        name: openedDateTo
+        schema:
+          type: string
+      - description: Filter by the record custom id.
+        in: query
+        name: customId
+        schema:
+          type: string
+      - description: Filter by module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+        in: query
+        name: module
+        schema:
+          type: string
+      - description: Filter by record status.
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: Filter by the assigned department.
+        in: query
+        name: assignedToDepartment
+        schema:
+          type: string
+      - description: Filter by the assigned user.
+        in: query
+        name: assignedUser
+        schema:
+          type: string
+      - description: Filter by the record's assigned date range starting with this date.
+        in: query
+        name: assignedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's assigned date range ending with this date.
+        in: query
+        name: assignedDateTo
+        schema:
+          type: string
+      - description: Filter by the record's completed date range starting with this date.
+        in: query
+        name: completedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's completed date range ending with this date.
+        in: query
+        name: completedDateTo
+        schema:
+          type: string
+      - description: Filter by the record's status date range starting with this date.
+        in: query
+        name: statusDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's status date range ending with this date.
+        in: query
+        name: statusDateTo
+        schema:
+          type: string
+      - description: Filter by the deparment which completed the application.
+        in: query
+        name: completedByDepartment
+        schema:
+          type: string
+      - description: Filter by the user who completed the application.
+        in: query
+        name: completedByUser
+        schema:
+          type: string
+      - description: Filter by the record's closed date range starting with this date.
+        in: query
+        name: closedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's closed date range ending with this date.
+        in: query
+        name: closedDateTo
+        schema:
+          type: string
+      - description: Filter by the department which closed the application.
+        in: query
+        name: closedByDepartment
+        schema:
+          type: string
+      - description: Filter by the user who closed the application.
+        in: query
+        name: closedByUser
+        schema:
+          type: string
+      - description: Filter by record class
+        in: query
+        name: recordClass
+        schema:
+          type: string
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_simpleRecordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates a new, full record in Civic Platform. The Create Record API triggers the business rules engine event ApplicationSubmitAfter.
+
+
+        Note: The Create Record API does not include custom forms and custom tables in the request body. To add or update custom forms and custom tables, use the Update Record Custom Forms and Update Record Custom Tables after the Create Record request.
+
+
+        **API Endpoint**: POST /v4/records
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Record
+      operationId: v4.post.records
+      tags:
+      - Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_simpleRecordModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_createRecordModel'
+        description: The create record information to be added.
+  /v4/records/describe/create:
+    get:
+      tags:
+      - Records
+      summary: Describe Required Record Attributes
+      description: 'Gets the field and element values the system requires in order to create a specific type of record.
+
+
+        **API Endpoint**: GET /v4/records/describe/create
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.get.records.describe.create
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter by record type. See [Get All Record Type](./api-settings.html#operation/v4.get.settings.records.types).
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_describeRecordModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/initialize:
+    post:
+      tags:
+      - Records
+      summary: Create Partial Record
+      description: 'Creates a partial record that allows a user to save an incomplete application that is work in-progress. To submit the completed application, use the Finalize Record method. See Creating Records for more information about calling Create Partial Record in tandem with Finalize Record.
+
+
+        The Create Partial Record API triggers the business rules engine event ApplicationSubmitAfter.
+
+
+        Note: The Create Partial Record API does not include custom forms and custom tables in the request body. To add or update custom forms and custom tables, use the Update Record Custom Forms and Update Record Custom Tables between the Create Partial Record and Finalize Record requests.
+
+
+        **API Endpoint**: POST /v4/records/initialize
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.post.records.initialize
+      parameters:
+      - description: Indicates whether or not it is for a fee estimate.
+        in: query
+        name: isFeeEstimate
+        required: false
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - ' false'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_simpleRecordModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_recordModel'
+        description: The record information to be initialized.
+        required: true
+  /v4/records/mine:
+    get:
+      description: 'Gets records for the currently logged-in user.
+
+
+        **API Endpoint**: GET /v4/records/mine
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get My Records
+      operationId: v4.get.records.mine
+      tags:
+      - Records
+      parameters:
+      - description: Filter by record type. See [Get All Record Types](./api-settings.html#operation/v4.get.settings.records.types).
+        in: query
+        name: type
+        schema:
+          type: string
+      - description: Filter by the record's open date range, beginning with this date.
+        in: query
+        name: openedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's open date range, ending with this date.
+        in: query
+        name: openedDateTo
+        schema:
+          type: string
+      - description: Filter by the record custom id.
+        in: query
+        name: customId
+        schema:
+          type: string
+      - description: Filter by module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+        in: query
+        name: module
+        schema:
+          type: string
+      - description: Filter by record status.
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: Filter by the record's assigned date range starting with this date.
+        in: query
+        name: assignedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's assigned date range ending with this date.
+        in: query
+        name: assignedDateTo
+        schema:
+          type: string
+      - description: Filter by the record's completed date range starting with this date.
+        in: query
+        name: completedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's completed date range ending with this date.
+        in: query
+        name: completedDateTo
+        schema:
+          type: string
+      - description: Filter by the record's status date range starting with this date.
+        in: query
+        name: statusDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's status date range ending with this date.
+        in: query
+        name: statusDateTo
+        schema:
+          type: string
+      - description: Record update Date From
+        in: query
+        name: updateDateFrom
+        schema:
+          type: string
+      - description: Record update Date To
+        in: query
+        name: updateDateTo
+        schema:
+          type: string
+      - description: Filter by the deparment which completed the application.
+        in: query
+        name: completedByDepartment
+        schema:
+          type: string
+      - description: Filter by the user who completed the application.
+        in: query
+        name: completedByUser
+        schema:
+          type: string
+      - description: Filter by the record's closed date range starting with this date.
+        in: query
+        name: closedDateFrom
+        schema:
+          type: string
+      - description: Filter by the record's closed date range ending with this date.
+        in: query
+        name: closedDateTo
+        schema:
+          type: string
+      - description: Filter by the department which closed the application.
+        in: query
+        name: closedByDepartment
+        schema:
+          type: string
+      - description: Filter by the user who closed the application.
+        in: query
+        name: closedByUser
+        schema:
+          type: string
+      - description: Filter by record class
+        in: query
+        name: recordClass
+        schema:
+          type: string
+      - description: Filter by comma-separated multiple record types.
+        in: query
+        name: types
+        schema:
+          type: string
+      - description: Filter by comma-separated multiple modules.
+        in: query
+        name: modules
+        schema:
+          type: string
+      - description: Filter by comma-separated multiple record status types.
+        in: query
+        name: statusTypes
+        schema:
+          type: string
+      - description: Comma-delimited list of related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - addresses
+          - parcels
+          - professionals
+          - contacts
+          - owners
+          - customForms
+          - customTables
+      - name: expandCustomForms
+        description: "Valid values: \"addresses\"\n          \nIf {expand} includes any of addresses, parcels, owners, or contacts, {expandCustomForms} specifies which {expand} objects should include custom forms. By default, custom forms for addresses, parcels, owners, and contacts are not included in the response data. Note that requesting APO custom forms may have performance implications, depending on the amount of data and connectivity to any external data source.\n\nAdded in Civic Platform version: 9.2.0\n"
+        in: query
+        schema:
+          type: string
+          enum:
+          - addresses
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordExtModel_1Array'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{ids}:
+    delete:
+      tags:
+      - Records
+      summary: Delete Records
+      description: 'Deletes the specified record.
+
+
+        **API Endpoint**: DELETE /v4/records/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      operationId: v4.delete.records.ids
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of the records to be deleted.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    get:
+      tags:
+      - Records
+      summary: Get Records
+      description: 'Gets the requested record(s).
+
+
+        **API Endpoint**: GET /v4/records/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.get.records.ids
+      parameters:
+      - description: Comma-delimited IDs of the records to fetch.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - description: Comma-delimited list of related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - addresses
+          - parcels
+          - professionals
+          - contacts
+          - owners
+          - customForms
+          - customTables
+          - assets
+      - name: expandCustomForms
+        description: 'Valid values: "addresses"
+
+
+          If {expand} includes any of addresses, parcels, owners, or contacts, {expandCustomForms} specifies which {expand} objects should include custom forms. By default, custom forms for addresses, parcels, owners, and contacts are not included in the response data. Note that requesting APO custom forms may have performance implications, depending on the amount of data and connectivity to any external data source.
+
+
+          Added in Civic Platform version: 9.2.0
+
+          '
+        in: query
+        schema:
+          type: string
+          enum:
+          - addresses
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{id}:
+    put:
+      tags:
+      - Records
+      summary: Update Record
+      description: 'Updates details for the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{id}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.put.records.id
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the record to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/simpleRecordModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_simpleRecordModel'
+        description: Record information to be updated.
+        required: true
+  /v4/records/{recordId}/additional:
+    get:
+      tags:
+      - Records
+      summary: Get Additional Details for Record
+      description: 'Gets additional information for the requested record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/additional
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.get.records.recordId.additional
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of record to fetch.
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordAdditionalModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      tags:
+      - Records
+      summary: Update Additional Details for Record
+      description: 'Updates additional information for the specified record.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/additional
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      operationId: v4.put.records.recordId.additional
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the record to fetch.
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordAdditionalModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recordAdditionalModel'
+        description: Additional record information for update.
+        required: true
+  /v4/records/{recordId}/finalize:
+    post:
+      description: 'Creates the finalized record in the database. Use this method after calling Create Partial Record to submit the completed record. See Creating Records for more information about calling Finalize Record in tandem with Create Partial Record.
+
+
+        The Create Partial Record API triggers the business rules engine event ApplicationSubmitAfter.
+
+
+        Note: The Finalize Record API does not include custom forms and custom tables in the request body. To add or update custom forms and custom tables, use the Update Record Custom Forms and Update Record Custom Tables between the Create Partial Record and Finalize Record requests.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/finalize
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Finalize Record
+      operationId: v4.post.records.recordId.finalize
+      tags:
+      - Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_simpleRecordModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_recordModel'
+        description: Create Record request information.
+        required: true
+  /v4/records/{recordId}/related:
+    get:
+      description: 'Gets the records related, by a parent or child relation, to the specified record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/related
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Related Details for Record
+      operationId: v4.get.records.recordId.related
+      tags:
+      - Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Filter by record relationship.
+        in: query
+        name: relationship
+        required: false
+        schema:
+          type: string
+          enum:
+          - parent
+          - child
+          - renewal
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordRelatedModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates a child relationship to the specified (parent) record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/related
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Related Details for Record
+      operationId: v4.post.records.recordId.related
+      tags:
+      - Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+              type: array
+        description: Related record information to be added.
+        required: true
+  /v4/records/{recordId}/related/{childRecordIds}:
+    delete:
+      description: 'Removes the relationship between the specifed child record(s) and their specified parent record.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/related/{childRecordIds}
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Related Details from Record
+      operationId: v4.delete.records.recordId.related.childRecordIds
+      tags:
+      - Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delimited IDs of the related records to be removed.
+        in: path
+        name: childRecordIds
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+  schemas:
+    response_recordAdditionalModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordAdditionalModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordTypeNoAliasModel:
+      type: object
+      properties:
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type system id assigned by the Civic Platform server.
+          type: string
+        module:
+          description: Use to filter by the module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The record type display text
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The record type value.
+          type: string
+    simpleRecordModel:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        assignedUser:
+          description: The staff member responsible for the action.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedByUser:
+          description: The staff member responsible for closure.
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completeDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        completedByUser:
+          description: The staff member responsible for completion.
+          type: string
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        costPerUnit:
+          description: The cost for one unit associated to the record.
+          format: double
+          type: number
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        createdByCloning:
+          description: Indictes whether or not the record was cloned.
+          enum:
+          - Y
+          - N
+          type: string
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        enforceUser:
+          description: Name of the enforcement officer.
+          type: string
+        enforceUserId:
+          description: ID number of the enforcement officer.
+          type: string
+        estimatedCostPerUnit:
+          description: The estimated cost per unit.
+          format: double
+          type: number
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        housingUnits:
+          description: The number of housing units.
+          format: int64
+          type: integer
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        initiatedProduct:
+          description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA" : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela Asset Management, Accela Land Management.'
+          type: string
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        module:
+          description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        name:
+          description: The name associated to the record.
+          type: string
+        numberOfBuildings:
+          description: The number of buildings.
+          format: int64
+          type: integer
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        openedDate:
+          description: The date the application was opened.
+          format: date-time
+          type: string
+        overallApplicationTime:
+          description: The amount of elapsed time from the time tracking start date to the completion of the application.
+          format: double
+          type: number
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        recordClass:
+          description: General information about the record.
+          type: string
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedDate:
+          description: The date the complaint was reported.
+          format: date-time
+          type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier,
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: "The date when the current status changed.\t"
+          format: date-time
+          type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        totalFee:
+          description: The total amount of the fees invoiced to the record.
+          format: double
+          type: number
+        totalJobCost:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        totalPay:
+          description: The total amount of pay.
+          format: double
+          type: number
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/recordTypeModel'
+        undistributedCost:
+          description: The undistributed costs for this work order.
+          format: double
+          type: number
+        value:
+          description: The record value.
+          type: string
+    recordExtModel_1:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        addresses:
+          items:
+            $ref: '#/components/schemas/recordAddressCustomFormsModel'
+          type: array
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        assignedUser:
+          description: The staff member responsible for the action.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedByUser:
+          description: The staff member responsible for closure.
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completeDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        completedByUser:
+          description: The staff member responsible for completion.
+          type: string
+        conditionOfApprovals:
+          items:
+            $ref: '#/components/schemas/capConditionModel_2'
+          type: array
+        conditions:
+          items:
+            $ref: '#/components/schemas/noticeConditionModel'
+          type: array
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/recordContactSimpleModel'
+          type: array
+        costPerUnit:
+          description: The cost for one unit associated to the record.
+          format: double
+          type: number
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        customTables:
+          items:
+            $ref: '#/components/schemas/tableModel'
+          type: array
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        enforceUser:
+          description: Name of the enforcement officer.
+          type: string
+        enforceUserId:
+          description: ID number of the enforcement officer.
+          type: string
+        estimatedCostPerUnit:
+          description: The estimated cost per unit.
+          format: double
+          type: number
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        housingUnits:
+          description: The number of housing units.
+          format: int64
+          type: integer
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        initiatedProduct:
+          description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA" : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela Asset Management, Accela Land Management.'
+          type: string
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        module:
+          description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        name:
+          description: The name associated to the record.
+          type: string
+        numberOfBuildings:
+          description: The number of buildings.
+          format: int64
+          type: integer
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        openedDate:
+          description: The date the application was opened.
+          format: date-time
+          type: string
+        overallApplicationTime:
+          description: The amount of elapsed time from the time tracking start date to the completion of the application.
+          format: double
+          type: number
+        owners:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        parcels:
+          items:
+            $ref: '#/components/schemas/parcelModel_1'
+          type: array
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        professionals:
+          items:
+            $ref: '#/components/schemas/licenseProfessionalModel'
+          type: array
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        recordClass:
+          description: General information about the record.
+          type: string
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusType:
+          description: The record status type.
+          enum:
+          - APPROVED
+          - CLOSED
+          - COMPLETE
+          - DENIED
+          - INCOMPLETE
+          - OPEN
+          - PENDING
+          - UNASSIGNED
+          - VOID
+          items:
+            type: string
+          type: array
+        totalJobCost:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        totalPay:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        trackingId:
+          description: The total amount of pay.
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/recordTypeModel'
+        undistributedCost:
+          description: The undistributed costs for this work order.
+          format: double
+          type: number
+        updateDate:
+          description: The last update date.
+          format: date-time
+          type: string
+        value:
+          type: string
+    parcelModel_1:
+      type: object
+      properties:
+        block:
+          type: string
+        book:
+          type: string
+        censusTract:
+          type: string
+        councilDistrict:
+          type: string
+        exemptionValue:
+          format: double
+          type: number
+        gisSequenceNumber:
+          format: int64
+          type: integer
+        id:
+          type: string
+        improvedValue:
+          format: double
+          type: number
+        isPrimary:
+          type: string
+        landValue:
+          format: double
+          type: number
+        legalDescription:
+          type: string
+        lot:
+          type: string
+        mapNumber:
+          type: string
+        mapReferenceInfo:
+          type: string
+        page:
+          type: string
+        parcel:
+          type: string
+        parcelArea:
+          format: double
+          type: number
+        parcelNumber:
+          type: string
+        planArea:
+          type: string
+        range:
+          type: string
+        section:
+          format: int64
+          type: integer
+        status:
+          $ref: '#/components/schemas/identifierModel'
+        subdivision:
+          $ref: '#/components/schemas/identifierModel'
+        supervisorDistrict:
+          type: string
+        township:
+          type: string
+        tract:
+          type: string
+    capConditionModel_2:
+      type: object
+      properties:
+        actionbyDepartment:
+          $ref: '#/components/schemas/identifierModel'
+        actionbyUser:
+          $ref: '#/components/schemas/identifierModel'
+        activeStatus:
+          $ref: '#/components/schemas/identifierModel'
+        additionalInformation:
+          type: string
+        additionalInformationPlainText:
+          type: string
+        agencyListSQL:
+          type: string
+        appliedDate:
+          format: date-time
+          type: string
+        appliedbyDepartment:
+          $ref: '#/components/schemas/identifierModel'
+        appliedbyUser:
+          $ref: '#/components/schemas/identifierModel'
+        dispAdditionalInformationPlainText:
+          type: string
+        displayNoticeInAgency:
+          type: boolean
+        displayNoticeInCitizens:
+          type: boolean
+        displayNoticeInCitizensFee:
+          type: boolean
+        displayOrder:
+          format: int64
+          type: integer
+        effectiveDate:
+          format: date-time
+          type: string
+        expirationDate:
+          format: date-time
+          type: string
+        group:
+          $ref: '#/components/schemas/identifierModel'
+        id:
+          format: int64
+          type: integer
+        inheritable:
+          $ref: '#/components/schemas/identifierModel'
+        isIncludeNameInNotice:
+          type: boolean
+        isIncludeShortCommentsInNotice:
+          type: boolean
+        longComments:
+          type: string
+        name:
+          type: string
+        priority:
+          $ref: '#/components/schemas/identifierModel'
+        publicDisplayMessage:
+          type: string
+        recordId:
+          $ref: '#/components/schemas/capIDModel'
+        resAdditionalInformationPlainText:
+          type: string
+        resolutionAction:
+          type: string
+        serviceProviderCode:
+          type: string
+        serviceProviderCodes:
+          items: {}
+          type: string
+        severity:
+          $ref: '#/components/schemas/identifierModel'
+        shortComments:
+          type: string
+        status:
+          $ref: '#/components/schemas/identifierModel'
+        statusDate:
+          format: date-time
+          type: string
+        statusType:
+          type: string
+        type:
+          $ref: '#/components/schemas/identifierModel'
+    request_recordModel:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        addresses:
+          items:
+            $ref: '#/components/schemas/recordAddressModel'
+          type: array
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        assignedUser:
+          description: The staff member responsible for the action.
+          type: string
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedByUser:
+          description: The staff member responsible for closure.
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completeDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        completedByUser:
+          description: The staff member responsible for completion.
+          type: string
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        contact:
+          $ref: '#/components/schemas/recordContactModel'
+        costPerUnit:
+          description: The cost for one unit associated to the record.
+          format: double
+          type: number
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        createdByCloning:
+          description: Indictes whether or not the record was cloned.
+          enum:
+          - Y
+          - N
+          type: string
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        customTables:
+          items:
+            $ref: '#/components/schemas/tableModel'
+          type: array
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        enforceUser:
+          description: Name of the enforcement officer.
+          type: string
+        enforceUserId:
+          description: ID number of the enforcement officer.
+          type: string
+        estimatedCostPerUnit:
+          description: The estimated cost per unit.
+          format: double
+          type: number
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        housingUnits:
+          description: The number of housing units.
+          format: int64
+          type: integer
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        initiatedProduct:
+          description: 'The product or app that created the record. If initiatedProduct is null or not specified in the request, the default is "AV360" (Civic Platform application).
+
+
+            Added in Civic Platform version: 9.2.0'
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        module:
+          description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        name:
+          description: The name associated to the record.
+          type: string
+        numberOfBuildings:
+          description: The number of buildings.
+          format: int64
+          type: integer
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        owner:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        parcel:
+          items:
+            $ref: '#/components/schemas/parcelModel_1'
+          type: array
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        professional:
+          items:
+            $ref: '#/components/schemas/licenseProfessionalModel'
+          type: array
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        recordClass:
+          description: General information about the record.
+          type: string
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedDate:
+          description: The date the complaint was reported.
+          format: date-time
+          type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        totalJobCost:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        type:
+          $ref: '#/components/schemas/recordTypeModel'
+        undistributedCost:
+          description: The undistributed costs for this work order.
+          format: double
+          type: number
+    recordAddressCustomFormsModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The second line of the address.
+        addressTypeFlag:
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+          description: A code name or an abbreviation of the address type.
+        city:
+          type: string
+          description: The name of the city.
+        country:
+          type: object
+          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        crossStreetNameStart:
+          type: string
+          description: 'The beginning intersecting street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        crossStreetNameEnd:
+          type: string
+          description: 'The ending intersecting street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        county:
+          type: string
+          description: The name of the county.
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        description:
+          type: string
+          description: A description of the address.
+        direction:
+          description: The street direction of the primary address associated with the application.
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        distance:
+          type: number
+          format: double
+          description: The distance from another landmark used to locate the address.
+        houseAlphaStart:
+          type: string
+          description: The beginning alphabetic unit in street address.
+        houseAlphaEnd:
+          type: string
+          description: The ending alphabetic unit in street address.
+        houseFractionStart:
+          type: object
+          description: Beginning fraction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        houseFractionEnd:
+          type: object
+          description: Ending franction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          format: int64
+          type: integer
+          description: The unique address id assigned by the Civic Platform server.
+        inspectionDistrict:
+          type: string
+          description: The inspection district where the address is located.
+        inspectionDistrictPrefix:
+          type: string
+          description: The prefix for the inspection district where the address is located.
+        isPrimary:
+          type: string
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+        levelEnd:
+          type: string
+          description: The ending level number (floor number) that makes up the address within a complex.
+        levelPrefix:
+          type: string
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+        levelStart:
+          type: string
+          description: The starting level number (floor number) that makes up the address within a complex.
+        locationType:
+          type: string
+          description: 'The type of location used for Right of Way Management. The valid values are configured with the LOCATION_TYPE standard choice in Civic Platform Administration.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        neighborhood:
+          type: string
+          description: The neighborhood where the address is located.
+        neighborhoodPrefix:
+          type: string
+          description: The prefix for neighborhood where the address is located.
+        postalCode:
+          type: string
+          description: The postal ZIP code for the address.
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        refAddressId:
+          description: The reference address id.
+          format: int64
+          type: integer
+        secondaryStreet:
+          type: string
+          description: This field (along with the Secondary Road Number field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        secondaryStreetNumber:
+          type: number
+          format: long
+          description: This field (along with the Secondary Road field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        state:
+          type: object
+          description: The name of the state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          type: string
+          description: The street address.
+        streetEnd:
+          type: number
+          format: long
+          description: The ending number of a street address range.
+        streetEndFrom:
+          description: The beginning number of a street end address range.
+          format: int64
+          type: integer
+        streetEndTo:
+          description: The ending number of a street end address range.
+          format: int64
+          type: integer
+        streetName:
+          type: string
+          description: The name of the street.
+        streetNameStart:
+          type: string
+          description: 'The beginning street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        streetNameEnd:
+          type: string
+          description: 'The ending street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        streetPrefix:
+          type: string
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+        streetStart:
+          type: number
+          format: long
+          description: The starting number of a street address range.
+        streetStartFrom:
+          description: The beginning number of a street start address range.
+          format: int64
+          type: integer
+        streetStartTo:
+          description: The ending number of a street start address range.
+          format: int64
+          type: integer
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard".
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type:
+          type: object
+          description: The address type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitStart:
+          type: string
+          description: The starting value of a range of unit numbers.
+        unitEnd:
+          type: string
+          description: The ending value of a range of unit numbers.
+        unitType:
+          type: object
+          description: The unit type designation of the address.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        xCoordinate:
+          type: number
+          format: double
+          description: The longitudinal coordinate for this address.
+        yCoordinate:
+          type: number
+          format: double
+          description: The latitudinal coordinate for this address.
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    refOwnerModel:
+      type: object
+      properties:
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        firstName:
+          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        fullName:
+          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        id:
+          description: The owner system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the owner as the primary owner.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        mailAddress:
+          $ref: '#/components/schemas/ownerAddressModel'
+        middleName:
+          description: The contact's middle name.
+          type: string
+        parcelId:
+          description: The unique Id generated for a parcel.
+          type: string
+        phone:
+          description: The telephone number of the owner.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        refOwnerId:
+          description: The reference owner id.
+          format: double
+          type: number
+        status:
+          type: object
+          description: The owner status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        taxId:
+          description: The owner's tax ID number.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        type:
+          description: The owner type.
+          type: string
+    assetMasterModel:
+      type: object
+      properties:
+        assetId:
+          description: "The unique alpha-numeric asset ID in an asset group. \n\n**Added in Civic Platform version**: 9.2.0\n\n"
+          type: string
+        classType:
+          description: "A Class Type is how Civic Platform groups objects that an agency owns or maintains. The five class types are component, linear, node-link linear, point, and polygon. Asset class types provide the ability to assign or group multiple asset types together.\t"
+          type: string
+        comments:
+          type: object
+          description: General comments about the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        currentValue:
+          description: The current value of the asset.
+          format: double
+          type: number
+        dateOfService:
+          description: The date the asset was initially placed into service.
+          format: date-time
+          type: string
+        dependentFlag:
+          description: Indicates whether or not the parent asset is dependent on this asset.
+          enum:
+          - Y
+          - N
+          type: string
+        depreciationAmount:
+          description: The decline in the asset value by the asset depreciation calculation.
+          format: double
+          type: number
+        depreciationEndDate:
+          description: The end date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+          format: date-time
+          type: string
+        depreciationStartDate:
+          description: The start date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+          format: date-time
+          type: string
+        depreciationValue:
+          description: The asset value after the asset depreciation calculation, which is based on the start value, depreciation start and end dates, useful life, and salvage value.
+          format: double
+          type: number
+        description:
+          type: object
+          description: The description of the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        endID:
+          description: The ending point asset ID.
+          type: string
+        gisObjects:
+          items:
+            $ref: '#/components/schemas/gISObjectModel'
+          type: array
+        id:
+          description: The asset system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        name:
+          type: object
+          description: The descriptive name of the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        number:
+          description: The unique, alpha-numeric asset ID.
+          type: string
+        salvageValue:
+          description: The residual value of the asset at the end of itâ€™s useful life.
+          format: double
+          type: number
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        size:
+          description: A positive numeric value for the asset size.
+          format: double
+          type: number
+        sizeUnit:
+          description: The unit of measure corresponding to the asset size.
+          type: string
+        startID:
+          description: The starting point asset ID.
+          type: string
+        startValue:
+          description: The beginning value or purchase price of the asset.
+          format: double
+          type: number
+        status:
+          type: object
+          description: The status of the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date the asset status changed.
+          format: date-time
+          type: string
+        type:
+          type: object
+          description: The type of asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    recordAPOCustomFormsModel:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        addresses:
+          items:
+            $ref: '#/components/schemas/recordAddressCustomFormsModel'
+          type: array
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assets:
+          items:
+            $ref: '#/components/schemas/assetMasterModel'
+          type: array
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        assignedUser:
+          description: The staff member responsible for the action.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedByUser:
+          description: The staff member responsible for closure.
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completeDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        completedByUser:
+          description: The staff member responsible for completion.
+          type: string
+        conditionOfApprovals:
+          items:
+            $ref: '#/components/schemas/capConditionModel_2'
+          type: array
+        conditions:
+          items:
+            $ref: '#/components/schemas/noticeConditionModel'
+          type: array
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        contact:
+          items:
+            $ref: '#/components/schemas/recordContactSimpleModel'
+          type: array
+        costPerUnit:
+          description: The cost for one unit associated to the record.
+          format: double
+          type: number
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        createdByCloning:
+          description: Indictes whether or not the record was cloned.
+          enum:
+          - Y
+          - N
+          type: string
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        customTables:
+          items:
+            $ref: '#/components/schemas/tableModel'
+          type: array
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        enforceUser:
+          description: Name of the enforcement officer.
+          type: string
+        enforceUserId:
+          description: ID number of the enforcement officer.
+          type: string
+        estimatedCostPerUnit:
+          description: The estimated cost per unit.
+          format: double
+          type: number
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        housingUnits:
+          description: The number of housing units.
+          format: int64
+          type: integer
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        initiatedProduct:
+          description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA" : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela Asset Management, Accela Land Management.'
+          type: string
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        module:
+          description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        name:
+          description: The name associated to the record.
+          type: string
+        numberOfBuildings:
+          description: The number of buildings.
+          format: int64
+          type: integer
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        openedDate:
+          description: The date the application was opened.
+          format: date-time
+          type: string
+        overallApplicationTime:
+          description: The amount of elapsed time from the time tracking start date to the completion of the application.
+          format: double
+          type: number
+        owner:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        parcel:
+          items:
+            $ref: '#/components/schemas/parcelModel_1'
+          type: array
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        professional:
+          items:
+            $ref: '#/components/schemas/licenseProfessionalModel'
+          type: array
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        recordClass:
+          description: General information about the record.
+          type: string
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedDate:
+          description: The date the complaint was reported.
+          format: date-time
+          type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: "The date when the current status changed.\t"
+          format: date-time
+          type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusType:
+          description: The record status type.
+          enum:
+          - APPROVED
+          - CLOSED
+          - COMPLETE
+          - DENIED
+          - INCOMPLETE
+          - OPEN
+          - PENDING
+          - UNASSIGNED
+          - VOID
+          items:
+            type: string
+          type: array
+        totalFee:
+          description: The total amount of the fees invoiced to the record.
+          format: double
+          type: number
+        totalJobCost:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        totalPay:
+          description: The total amount of pay.
+          format: double
+          type: number
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/recordTypeModel'
+        undistributedCost:
+          description: The undistributed costs for this work order.
+          format: double
+          type: number
+        updateDate:
+          description: The last update date.
+          format: date-time
+          type: string
+        value:
+          description: The record value.
+          type: string
+    licenseProfessionalModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        birthDate:
+          description: The birth date of an individual.
+          format: date-time
+          type: string
+        businessLicense:
+          description: The official business license number issued by an agency. A licensed professional can have the same license number assigned to multiple license types.
+          type: string
+        businessName:
+          description: A business name for the applicable individual.
+          type: string
+        businessName2:
+          description: A secondary business name for the applicable individual.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        comment:
+          description: Comments or notes about the current context.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        expirationDate:
+          description: The license expiration date.
+          format: date-time
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: 'The licensed professional''s first name. '
+          type: string
+        fullName:
+          description: 'The licensed professional''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The licensed professional system id assigned by the Civic Platform server.
+          type: string
+        isPrimary:
+          description: Indicates whether or not to designate the professional as the primary professional.
+          type: string
+        lastName:
+          description: 'The licensed professional''s last name. '
+          type: string
+        lastRenewalDate:
+          description: The last date for a professionals renewal license.
+          format: date-time
+          type: string
+        licenseNumber:
+          description: The licensed professional's license number.
+          type: string
+        licenseType:
+          type: object
+          description: The type of license held by the professional.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        licensingBoard:
+          type: object
+          description: The name of the licensing board that issued the license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        middleName:
+          description: 'The licensed professional''s middle name. '
+          type: string
+        originalIssueDate:
+          description: The original issuance date of license.
+          format: date-time
+          type: string
+        phone1:
+          description: The primary phone number of the contact.
+          type: string
+        phone2:
+          description: The secondary phone number of the contact.
+          type: string
+        phone3:
+          description: "The tertiary phone number for the contact.\t"
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        referenceLicenseId:
+          description: The unique Id generated for a professional stored in the system.
+          type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. or Ms. This field is active only when Contact Type = Individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        state:
+          type: object
+          description: The state corresponding to the address on record.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The licensed professional's name suffix.
+          type: string
+        title:
+          description: The individual's professional title.
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordContactSimpleModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/compactAddressModel'
+        birthCity:
+          type: object
+          description: The city of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthDate:
+          description: The birth date.
+          format: date-time
+          type: string
+        birthRegion:
+          type: object
+          description: The country of birth or region of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthState:
+          type: object
+          description: The state of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        comment:
+          description: A comment about the inspection contact.
+          type: string
+        deceasedDate:
+          description: The deceased date.
+          format: date-time
+          type: string
+        driverLicenseNumber:
+          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
+          type: string
+        driverLicenseState:
+          type: object
+          description: The state that issued the driver's license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        endDate:
+          description: The date when the contact address ceases to be active.
+          format: date-time
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        fullName:
+          description: 'The contact''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The contact system id assigned by the Civic Platform server.
+          type: string
+        individualOrOrganization:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        isPrimary:
+          description: Indicates whether or not to designate the contact as the primary contact Only one address can be primary at any given time.
+          enum:
+          - Y
+          - N
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        middleName:
+          description: "The middle name.\t"
+          type: string
+        organizationName:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        passportNumber:
+          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        preferredChannel:
+          type: object
+          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        race:
+          type: object
+          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        referenceContactId:
+          description: The unique Id generated for a contact stored in the sytem.
+          type: string
+        relation:
+          type: object
+          description: The contact's relationship to the application or service request.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        socialSecurityNumber:
+          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        startDate:
+          description: The date the contact became active.
+          format: date-time
+          type: string
+        stateIdNumber:
+          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        status:
+          type: object
+          description: The contact status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        tradeName:
+          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
+          type: string
+        type:
+          type: object
+          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    request_simpleRecordModel:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completeDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        name:
+          description: The name associated to the record.
+          type: string
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedDate:
+          description: The date the complaint was reported.
+          format: date-time
+          type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        totalFee:
+          description: The total amount of the fees invoiced to the record.
+          format: double
+          type: number
+        totalPay:
+          description: The total amount of pay.
+          format: double
+          type: number
+    request_createRecordModel:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        addresses:
+          items:
+            $ref: '#/components/schemas/recordAddressModel'
+          type: array
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        assignedUser:
+          description: The staff member responsible for the action.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedByUser:
+          description: The staff member responsible for closure.
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completeDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        completedByUser:
+          description: The staff member responsible for completion.
+          type: string
+        conditionOfApprovals:
+          items:
+            $ref: '#/components/schemas/capConditionModel_2'
+          type: array
+        conditions:
+          items:
+            $ref: '#/components/schemas/noticeConditionModel'
+          type: array
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/recordContactSimpleModel'
+          type: array
+        costPerUnit:
+          description: The cost for one unit associated to the record.
+          format: double
+          type: number
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        createdByCloning:
+          description: Indictes whether or not the record was cloned.
+          enum:
+          - Y
+          - N
+          type: string
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        customTables:
+          items:
+            $ref: '#/components/schemas/tableModel'
+          type: array
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        enforceUser:
+          description: Name of the enforcement officer.
+          type: string
+        enforceUserId:
+          description: ID number of the enforcement officer.
+          type: string
+        estimatedCostPerUnit:
+          description: The estimated cost per unit.
+          format: double
+          type: number
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        housingUnits:
+          description: The number of housing units.
+          format: int64
+          type: integer
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        initiatedProduct:
+          description: 'The product or app that created the record. If initiatedProduct is null or not specified in the request, the default is "AV360" (Civic Platform application).
+
+
+            Added in Civic Platform version: 9.2.0'
+          type: string
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        module:
+          description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        name:
+          description: The name associated to the record.
+          type: string
+        numberOfBuildings:
+          description: The number of buildings.
+          format: int64
+          type: integer
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        openedDate:
+          description: The date the application was opened.
+          format: date-time
+          type: string
+        overallApplicationTime:
+          description: The amount of elapsed time from the time tracking start date to the completion of the application.
+          format: double
+          type: number
+        owners:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        parcels:
+          items:
+            $ref: '#/components/schemas/parcelModel_1'
+          type: array
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        professionals:
+          items:
+            $ref: '#/components/schemas/licenseProfessionalModel'
+          type: array
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        recordClass:
+          description: General information about the record.
+          type: string
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusType:
+          description: The record status type.
+          enum:
+          - APPROVED
+          - CLOSED
+          - COMPLETE
+          - DENIED
+          - INCOMPLETE
+          - OPEN
+          - PENDING
+          - UNASSIGNED
+          - VOID
+          items:
+            type: string
+          type: array
+        totalJobCost:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        totalPay:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        trackingId:
+          description: The total amount of pay.
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/recordTypeModel'
+        undistributedCost:
+          description: The undistributed costs for this work order.
+          format: double
+          type: number
+        updateDate:
+          description: The last update date.
+          format: date-time
+          type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    response_recordModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordAPOCustomFormsModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The second line of the address.
+        addressTypeFlag:
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+          description: A code name or an abbreviation of the address type.
+        city:
+          type: string
+          description: The name of the city.
+        country:
+          type: object
+          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        crossStreetNameStart:
+          type: string
+          description: 'The beginning intersecting street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        crossStreetNameEnd:
+          type: string
+          description: 'The ending intersecting street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        county:
+          type: string
+          description: The name of the county.
+        description:
+          type: string
+          description: A description of the address.
+        direction:
+          description: The street direction of the primary address associated with the application.
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        distance:
+          type: number
+          format: double
+          description: The distance from another landmark used to locate the address.
+        houseAlphaStart:
+          type: string
+          description: The beginning alphabetic unit in street address.
+        houseAlphaEnd:
+          type: string
+          description: The ending alphabetic unit in street address.
+        houseFractionStart:
+          type: object
+          description: Beginning fraction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        houseFractionEnd:
+          type: object
+          description: Ending franction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          format: int64
+          type: integer
+          description: The unique address id assigned by the Civic Platform server.
+        inspectionDistrict:
+          type: string
+          description: The inspection district where the address is located.
+        inspectionDistrictPrefix:
+          type: string
+          description: The prefix for the inspection district where the address is located.
+        isPrimary:
+          type: string
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+        levelEnd:
+          type: string
+          description: The ending level number (floor number) that makes up the address within a complex.
+        levelPrefix:
+          type: string
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+        levelStart:
+          type: string
+          description: The starting level number (floor number) that makes up the address within a complex.
+        locationType:
+          type: string
+          description: 'The type of location used for Right of Way Management. The valid values are configured with the LOCATION_TYPE standard choice in Civic Platform Administration.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        neighborhood:
+          type: string
+          description: The neighborhood where the address is located.
+        neighborhoodPrefix:
+          type: string
+          description: The prefix for neighborhood where the address is located.
+        postalCode:
+          type: string
+          description: The postal ZIP code for the address.
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        refAddressId:
+          description: The reference address id.
+          format: int64
+          type: integer
+        secondaryStreet:
+          type: string
+          description: This field (along with the Secondary Road Number field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        secondaryStreetNumber:
+          type: number
+          format: long
+          description: This field (along with the Secondary Road field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        state:
+          type: object
+          description: The name of the state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          type: string
+          description: The street address.
+        streetEnd:
+          type: number
+          format: long
+          description: The ending number of a street address range.
+        streetEndFrom:
+          description: The beginning number of a street end address range.
+          format: int64
+          type: integer
+        streetEndTo:
+          description: The ending number of a street end address range.
+          format: int64
+          type: integer
+        streetName:
+          type: string
+          description: The name of the street.
+        streetNameStart:
+          type: string
+          description: 'The beginning street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        streetNameEnd:
+          type: string
+          description: 'The ending street name for searching.
+
+
+            Added in Civic Platform version: 9.2.0
+
+            '
+        streetPrefix:
+          type: string
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+        streetStart:
+          type: number
+          format: long
+          description: The starting number of a street address range.
+        streetStartFrom:
+          description: The beginning number of a street start address range.
+          format: int64
+          type: integer
+        streetStartTo:
+          description: The ending number of a street start address range.
+          format: int64
+          type: integer
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard".
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type:
+          type: object
+          description: The address type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitStart:
+          type: string
+          description: The starting value of a range of unit numbers.
+        unitEnd:
+          type: string
+          description: The ending value of a range of unit numbers.
+        unitType:
+          type: object
+          description: The unit type designation of the address.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        xCoordinate:
+          type: number
+          format: double
+          description: The longitudinal coordinate for this address.
+        yCoordinate:
+          type: number
+          format: double
+          description: The latitudinal coordinate for this address.
+    contactTypeModel:
+      type: object
+      properties:
+        maxOccurance:
+          description: The maximum number of times a contact type is used.
+          format: int64
+          type: integer
+        minOccurance:
+          description: The minimum number of times a contact type is used.
+          format: int64
+          type: integer
+        value:
+          description: The contact type value.
+          type: string
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_recordExtModel_1Array:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordExtModel_1'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    rowModel:
+      type: object
+      properties:
+        action:
+          description: The requested operation on the row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The row id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    describeRecordModel:
+      type: object
+      properties:
+        elements:
+          items:
+            $ref: '#/components/schemas/elementModel'
+          type: array
+        fields:
+          items:
+            $ref: '#/components/schemas/fieldModel'
+          type: array
+    noticeConditionModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          $ref: '#/components/schemas/identifierModel'
+        actionbyUser:
+          $ref: '#/components/schemas/identifierModel'
+        activeStatus:
+          $ref: '#/components/schemas/identifierModel'
+        additionalInformation:
+          type: string
+        additionalInformationPlainText:
+          type: string
+        agencyListSQL:
+          type: string
+        appliedDate:
+          format: date-time
+          type: string
+        appliedbyDepartment:
+          $ref: '#/components/schemas/identifierModel'
+        appliedbyUser:
+          $ref: '#/components/schemas/identifierModel'
+        dispAdditionalInformationPlainText:
+          type: string
+        displayNoticeInAgency:
+          type: boolean
+        displayNoticeInCitizens:
+          type: boolean
+        displayNoticeInCitizensFee:
+          type: boolean
+        displayOrder:
+          format: int64
+          type: integer
+        effectiveDate:
+          format: date-time
+          type: string
+        expirationDate:
+          format: date-time
+          type: string
+        group:
+          $ref: '#/components/schemas/identifierModel'
+        id:
+          format: int64
+          type: integer
+        inheritable:
+          $ref: '#/components/schemas/identifierModel'
+        isIncludeNameInNotice:
+          type: boolean
+        isIncludeShortCommentsInNotice:
+          type: boolean
+        longComments:
+          type: string
+        name:
+          type: string
+        priority:
+          $ref: '#/components/schemas/identifierModel'
+        publicDisplayMessage:
+          type: string
+        recordId:
+          $ref: '#/components/schemas/capIDModel'
+        resAdditionalInformationPlainText:
+          type: string
+        resolutionAction:
+          type: string
+        serviceProviderCode:
+          type: string
+        serviceProviderCodes:
+          items: {}
+          type: string
+        severity:
+          $ref: '#/components/schemas/identifierModel'
+        shortComments:
+          type: string
+        status:
+          $ref: '#/components/schemas/identifierModel'
+        statusDate:
+          format: date-time
+          type: string
+        statusType:
+          type: string
+        type:
+          $ref: '#/components/schemas/identifierModel'
+    recordAdditionalModel:
+      type: object
+      properties:
+        buildingCount:
+          description: The number of buildings associated with the record.
+          format: int64
+          type: integer
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        estimatedValue:
+          description: The application's estimated value.
+          format: double
+          type: number
+        houseUnit:
+          description: The house unit associated with the application.
+          format: int64
+          type: integer
+        publicOwned:
+          description: A flag that indicates whether or not the public owns the item.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdSimpleModel'
+    response_simpleRecordModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/simpleRecordModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    elementModel:
+      type: object
+      properties:
+        isReference:
+          description: Indicates whether or not the entity is a reference.
+          type: boolean
+        isRequired:
+          description: Indicates whether or not the entity is required.
+          type: boolean
+        name:
+          description: The entity name.
+          type: string
+        types:
+          items:
+            $ref: '#/components/schemas/contactTypeModel'
+          type: array
+    recordIdSimpleModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+    capIDModel:
+      type: object
+      properties:
+        customId:
+          type: string
+        id:
+          type: string
+        serviceProviderCode:
+          type: string
+        trackingId:
+          format: int64
+          type: integer
+        value:
+          type: string
+    recordTypeModel:
+      type: object
+      properties:
+        alias:
+          description: The record type alias.
+          type: string
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    response_recordRelatedModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordRelatedModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordRelatedModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        relationship:
+          description: The type of relationship of a related record.
+          enum:
+          - parent
+          - child
+          - renewal
+          type: string
+        serviceProveCode:
+          description: The unique agency id.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/recordTypeNoAliasModel'
+    tableModel:
+      type: object
+      properties:
+        id:
+          description: The custom table id.
+          type: string
+        rows:
+          items:
+            $ref: '#/components/schemas/rowModel'
+          description: A table row containing custom fields.
+          type: array
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        postalCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+    gISObjectModel:
+      type: object
+      properties:
+        gisId:
+          description: The GIS object id.
+          type: string
+        layerId:
+          description: The map layer id.
+          type: string
+        serviceId:
+          description: The map service id.
+          type: string
+    response_describeRecordModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/describeRecordModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    fieldModel:
+      type: object
+      properties:
+        isRequired:
+          description: Indicates whether or not the information is required.
+          type: boolean
+        name:
+          description: The field name.
+          type: string
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+    response_simpleRecordModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/simpleRecordModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordContactModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/compactAddressModel'
+        birthCity:
+          type: object
+          description: The city of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthDate:
+          description: The birth date.
+          format: date-time
+          type: string
+        birthRegion:
+          type: object
+          description: The country of birth or region of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthState:
+          type: object
+          description: The state of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        comment:
+          description: A comment about the inspection contact.
+          type: string
+        deceasedDate:
+          description: The deceased date.
+          format: date-time
+          type: string
+        driverLicenseNumber:
+          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
+          type: string
+        driverLicenseState:
+          type: object
+          description: The state that issued the driver's license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        endDate:
+          description: The date when the contact address ceases to be active.
+          format: date-time
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        fullName:
+          description: 'The contact''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The contact system id assigned by the Civic Platform server.
+          type: string
+        individualOrOrganization:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        isPrimary:
+          description: Indicates whether or not to designate the contact as the primary contact Only one address can be primary at any given time.
+          enum:
+          - Y
+          - N
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        middleName:
+          description: "The middle name.\t"
+          type: string
+        organizationName:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        passportNumber:
+          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        preferredChannel:
+          type: object
+          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        race:
+          type: object
+          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        referenceContactId:
+          description: The unique Id generated for a contact stored in the sytem.
+          type: string
+        relation:
+          type: object
+          description: The contact's relationship to the application or service request.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        socialSecurityNumber:
+          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        startDate:
+          description: The date the contact became active.
+          format: date-time
+          type: string
+        stateIdNumber:
+          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        status:
+          type: object
+          description: The contact status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        tradeName:
+          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
+          type: string
+        type:
+          type: object
+          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    compactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: The address state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

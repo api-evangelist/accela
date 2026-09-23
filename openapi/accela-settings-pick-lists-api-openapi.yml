@@ -1,0 +1,212 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Pick Lists API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Pick Lists
+paths:
+  /v4/settings/pickLists:
+    get:
+      description: 'Gets all pick lists in the system.
+
+
+        **API Endpoint**: GET /v4/settings/pickLists
+
+
+        **Scope**: settings
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get All Pick Lists
+      operationId: v4.get.settings.pickLists
+      tags:
+      - Settings/Pick Lists
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/response_sharedPickListModelArray'
+                type: array
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/pickLists/{id}:
+    get:
+      description: 'Gets the specified pick list, its values, and the fields that are associated with it.
+
+
+        **API Endpoint**: GET /v4/settings/pickLists/{id}
+
+
+        **Scope**: settings
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Pick List
+      operationId: v4.get.settings.pickLists.id
+      tags:
+      - Settings/Pick Lists
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the pick list to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_sharedPickListValuesModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    pickListValueModel:
+      type: object
+      properties:
+        description:
+          type: object
+          description: The pick list value description.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        displayOrder:
+          description: The order of the item in comparison to the other items.
+          format: int64
+          type: integer
+        status:
+          type: object
+          description: The pick list value status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        text:
+          description: The pick list display label.
+          type: string
+        value:
+          description: The pick list value.
+          type: string
+    response_sharedPickListModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/sharedPickListModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    sharedPickListModel:
+      type: object
+      properties:
+        description:
+          description: The pick list description.
+          type: string
+        status:
+          type: object
+          description: The pick list status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    sharedPickListValuesModel:
+      type: object
+      properties:
+        description:
+          description: The pick list description.
+          type: string
+        status:
+          type: object
+          description: The pick list status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        values:
+          description: Contains the pick list values.
+          items:
+            $ref: '#/components/schemas/pickListValueModel'
+          type: array
+    response_sharedPickListValuesModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/sharedPickListValuesModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

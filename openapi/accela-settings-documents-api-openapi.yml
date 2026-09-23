@@ -1,0 +1,685 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Documents API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Documents
+paths:
+  /v4/settings/documents/types:
+    get:
+      description: 'Get all document types (including document groups).
+
+
+        **API Endpoint**: GET /v4/settings/documents/types
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 22.1.0'
+      summary: Get Document Types
+      operationId: v4.get.documents.types
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - description: The related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - associations
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentTypesModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/documents/folders:
+    post:
+      description: 'Creates document folders.
+
+
+        **API Endpoint**: POST /v4/settings/documents/folders
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Create Folders
+      operationId: v4.post.settings.documents.folders
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/documentFolderModel'
+              type: array
+        description: The document folders to create.
+        required: true
+    put:
+      description: 'Updates document folders.
+
+
+        **API Endpoint**: PUT /v4/settings/documents/folders
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Update Folders
+      operationId: v4.put.settings.documents.folders
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/documentFolderModel'
+              type: array
+        description: The document folder information to be updated.
+        required: true
+  /v4/settings/documents/folders/{ids}:
+    delete:
+      description: 'Deletes the specified document folders.
+
+
+        **API Endpoint**: DELETE /v4/settings/documents/folders/{ids}
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Delete Folders
+      operationId: v4.delete.settings.documents.folders.ids
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited IDs of the document folders to delete.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/documents/categories:
+    get:
+      description: 'Gets the document types.
+
+
+        **API Endpoint**: GET /v4/settings/documents/categories
+
+
+        **Scope**: documents
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Document Categories
+      operationId: v4.get.settings.documents.categories
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentTypeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/documents/folderGroups:
+    get:
+      description: 'Gets all folder groups in the system.
+
+
+        **API Endpoint**: GET /v4/settings/documents/folderGroups
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get All Folder Groups
+      operationId: v4.get.settings.documents.folderGroups
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Filter whether or not the folder gorup is active.
+        in: query
+        name: isActive
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_folderGroupModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates folder groups for documents.
+
+
+        **API Endpoint**: PUT /v4/settings/documents/folderGroups
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Update Folder Groups
+      operationId: v4.put.settings.documents.folderGroups
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/folderGroupModel'
+              type: array
+        description: The document folder group information to be updated.
+        required: true
+  /v4/settings/documents/folders/{groupId}:
+    get:
+      description: 'Gets the folders in the specified folder group.
+
+
+        **API Endpoint**: GET /v4/settings/documents/folders/{groupId}
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get Folder Group
+      operationId: v4.get.settings.documents.folders.groupId
+      tags:
+      - Settings/Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the folder group to fetch.
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - description: Filter by whether or not the folder is active.
+        in: query
+        name: isActive
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentFolderModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_documentFolderModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentFolderModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    optionsModel:
+      type: object
+      properties:
+        value:
+          type: string
+        text:
+          type: string
+    response_documentTypesModel:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            customForms:
+              items:
+                $ref: '#/components/schemas/customFormModel'
+              type: array
+            autoDownload:
+              type: boolean
+            customTables:
+              items:
+                $ref: '#/components/schemas/customTableModel'
+              type: array
+            value:
+              type: string
+            id:
+              type: string
+            text:
+              type: string
+            group:
+              type: object
+              properties:
+                value:
+                  type: string
+                text:
+                  type: string
+        status:
+          type: integer
+          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_documentTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    folderGroupModel:
+      type: object
+      properties:
+        description:
+          description: The folder group description.
+          type: string
+        id:
+          description: The ID of the folder group assigned by the Civic Platform server.
+          type: string
+        isActive:
+          description: Indicates whether or not the folder group is active.
+          enum:
+          - Y
+          - N
+          type: string
+        name:
+          description: The folder group name.
+          type: string
+        type:
+          description: The folder group type.
+          type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    documentFolderModel:
+      type: object
+      properties:
+        description:
+          type: object
+          description: The document folder description.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        groupId:
+          description: The ID of the document group.
+          type: string
+        groupName:
+          description: The name of the document group.
+          type: string
+        id:
+          description: The ID of the document folder assigned by the Civic Platform server.
+          type: string
+        isActive:
+          description: Indicates whether or not the document folder is active.
+          enum:
+          - Y
+          - N
+          type: string
+        order:
+          description: The document folder order.
+          format: int64
+          type: integer
+        text:
+          description: The document folder display name.
+          type: string
+        value:
+          description: The document folder value.
+          type: string
+    response_folderGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/folderGroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    documentTypeModel:
+      type: object
+      properties:
+        groups:
+          items:
+            type: object
+            description: ''
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        id:
+          description: The ID of the document type assigned by the Civic Platform server.
+          type: string
+        text:
+          description: The document type display name.
+          type: string
+        value:
+          description: The document type value.
+          type: string
+    customFormModel:
+      type: object
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/fieldModel'
+          type: array
+        id:
+          type: string
+        text:
+          type: string
+        displayOrder:
+          type: integer
+    fieldModel:
+      type: object
+      properties:
+        id:
+          type: string
+        fieldType:
+          type: string
+        text:
+          type: string
+        maxLength:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/optionsModel'
+        displayOrder:
+          type: integer
+        isRequired:
+          type: string
+        isReadonly:
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    customTableModel:
+      type: object
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/fieldModel'
+          type: array
+        id:
+          type: string
+        text:
+          type: string
+        displayOrder:
+          type: integer
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

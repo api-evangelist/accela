@@ -1,0 +1,397 @@
+openapi: 3.2.0
+info:
+  description: Document and DocumentReview APIs
+  title: Documents API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Documents
+  description: The Documents API enables apps to upload and download documents, and attach a document to a record or inspection.
+paths:
+  /v4/documents/{documentIds}:
+    get:
+      description: 'Gets a list of requested documents.
+
+
+        **API Endpoint**: GET /v4/documents/{documentIds}
+
+
+        **Scope**: documents
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Documents
+      operationId: v4.get.documents.documentIds
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Comma-delimited document ID's.
+        in: path
+        name: documentIds
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documents/{documentId}/download:
+    get:
+      description: 'Downloads the requested document.
+
+
+        **API Endpoint**: GET /v4/documents/{documentId}/download
+
+
+        **Scope**: documents
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.2'
+      summary: Download Document
+      operationId: v4.get.documents.documentId.download
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/documentIdPathParam'
+      - description: The EDMS userid for user level authentication.
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+      - description: The EDMS password for user level authentication.
+        in: query
+        name: password
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "A successful request returns a binary stream containing the requested document. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: The HTTP return status.
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/documents/{documentId}:
+    put:
+      description: 'Updates the specified document.
+
+
+        **API Endpoint**: PUT /v4/documents/{documentId}
+
+
+        **Scope**: documents
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Update Document
+      operationId: v4.put.documents.documentId
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/documentIdPathParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_documentModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/documentModel'
+        description: Document request information.
+  /v4/documents/{documentId}/thumbnail:
+    get:
+      description: 'Gets the thumbnail for the requested {documentId} of an image file.
+
+
+        **API Endpoint**: GET /v4/documents/{documentId}/thumbnail
+
+
+        **Scope**: documents
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Image Document Thumbnail
+      operationId: v4.get.documents.documentId.thumbnail
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/documentIdPathParam'
+      - in: query
+        name: pixelHeight
+        required: false
+        description: The height of the thumbnail.
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: pixelWidth
+        required: false
+        description: The width of the thumbnail.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    documentIdPathParam:
+      description: The ID of document to fetch.
+      in: path
+      name: documentId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    documentModel:
+      type: object
+      properties:
+        category:
+          type: object
+          description: The document category. The list of category options varies depending on the document group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        deletable:
+          description: Contains permission assignments for deleting documents.
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        department:
+          description: The name of the department the document belongs to.
+          type: string
+        description:
+          description: The document description.
+          type: string
+        downloadable:
+          description: Contains permission assignments for downloading documents.
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        entityId:
+          description: The unique ID of the entity or record.
+          type: string
+        entityType:
+          description: The type of entity.
+          type: string
+        fileName:
+          description: The name of the file as it displays in the source location.
+          type: string
+        group:
+          type: object
+          description: The document group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The document id.
+          format: int64
+          type: integer
+        modifiedBy:
+          description: The user account that last modified the document.
+          type: string
+        modifiedDate:
+          description: The date the document was last modified.
+          format: date-time
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        size:
+          description: The file size of the document.
+          format: double
+          type: number
+        source:
+          description: The name for your agency's electronic document management system.
+          type: string
+        status:
+          type: object
+          description: The documet status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        titleViewable:
+          description: Contains permission assignments for viewing document names.
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        type:
+          description: The document type.
+          type: string
+        uploadedBy:
+          description: The user who uploaded the document to the record.
+          type: string
+        uploadedDate:
+          description: The date when the document was uploaded.
+          format: date-time
+          type: string
+        virtualFolders:
+          description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
+          type: string
+    response_documentModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/documentModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    userRolePrivilegeModel:
+      type: object
+      properties:
+        citizenRoles:
+          description: Contains the citizen roles who are given the permission.
+          items:
+            type: string
+            enum:
+            - registeredUser
+            - licensedProfessional
+            - owner
+            - contact
+            - citizenUser
+            - recordCreator
+          type: array
+        licenseTypeRules:
+          description: A string array containing the types of licensed professionals who are given the permission. See [Get All Professional License Types](./api-settings.html#operation/v4.get.settings.professionals.types).
+          items:
+            type: string
+          type: array
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-documents.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - removed trailing commas
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

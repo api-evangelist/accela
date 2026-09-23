@@ -1,0 +1,596 @@
+openapi: 3.2.0
+info:
+  description: The Payments API enables apps to submit payment transactions on Civic Platform records.
+  title: Payments API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Payments
+  description: Payments represent the acceptance of monetary funds submitted to the agency in relation to a transactional record. The system uses payments to invoice for services rendered and to create credit card transactions for payment.
+paths:
+  /v4/payments/initialize:
+    post:
+      description: 'Initializes citizen payment information for processing by a third party payment system that will send and commit final payment information into Automation. Call Initialize Payment to get the transaction ID required to call Commit Payment. Note: This API does not consider fees that have been marked as Pay Later in ACA.
+
+
+        **API Endpoint**: POST /v4/payments/initialize
+
+
+        **Scope**: payments
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.5'
+      summary: Initialize Payment
+      operationId: v4.post.payments.initialize
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_paymentTransactionModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentInitializeModel'
+        description: Payment initialization request information.
+        required: true
+  /v4/payments/{id}:
+    put:
+      description: 'Processes and commits citizen payment information for the specified payment transaction ID. The Commit Payment API allows a third-party payment vendor to send payment information to Automation. The Commit Payment API processes the payment information, logs merchant account audit information, triggers the EMSE events ConvertToRealCAPBefore and PaymentReceiveBefore, creates a transaction record, triggers the EMSE event ConvertToRealCAPAfter, finishes the Automation payment, triggers the EMSE event PaymentReceiveAfter, and appoves the transaction.
+
+
+        Note: An agency Construct administrator controls which apps can call Commit Payment. By default, Commit Payment is disabled. To allow an app to call Commit Payment, an agency administrator must go to the Construct Admin Portal > Agencies > {Agency} > Apps, and enable the Payment Enabled property for the app.
+
+
+        **API Endpoint**: PUT /v4/payments/{id}
+
+
+        **Scope**: payments
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3.4'
+      summary: Commit Payment
+      operationId: v4.put.payments.id
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The Transaction ID of an initialized transaction to be committed. Also known as "Batch Transaction Number".
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_paymentCommitResultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentCommitModel'
+        description: The payment information to commit.
+  /v4/payments/{paymentId}/void:
+    put:
+      description: 'Voids a given payment. When you void a payment, Civic Platform decreases the total payment amount and then increases the balance owed, as if you never made the payment.
+
+
+        **API Endpoint**: PUT /v4/payments/{paymentId}/void
+
+
+        **Scope**: payments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Void Payment
+      operationId: v4.put.payments.paymentId.void
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The id of the payment to void. See [Get All Payments for Record](./api-records.html#operation/v4.get.records.recordId.payments)
+        in: path
+        name: paymentId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentVoidModel'
+        description: Payment information to void.
+        required: true
+  /v4/payments/transactions/{id}/fees:
+    get:
+      description: 'Returns fees information for a given transaction id.
+
+
+        **API Endpoint**: GET /v4/payments/transactions/{id}/fees
+
+
+        **Scope**: payments
+
+
+        **App Type**: Agency App
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 19.2.0'
+      summary: Get Transaction Fees
+      operationId: v4.get.transaction.fees
+      tags:
+      - Payments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The id of the transaction to get.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_transaction_fees'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    paymentCommitModel:
+      type: object
+      required:
+      - amount
+      - convenienceFee
+      - paymentMethod
+      - paymentSystemTransactionId
+      properties:
+        amount:
+          description: The payment amount.
+          format: double
+          type: number
+        comments:
+          description: Comments related to the payment transaction.
+          type: string
+        convenienceFee:
+          description: The payment convenience fee to be applied. Set to 0 if none.
+          format: double
+          type: number
+        creditCard:
+          $ref: '#/components/schemas/creditCardLastFourDigitsModel'
+        merchantAccountId:
+          description: The account ID of the merchant receiving the payment.
+          type: string
+        payeePhone:
+          description: The area code and phone number of the payee.
+          type: string
+        paymentMethod:
+          description: The method of payment, either Credit Card or Check.
+          type: string
+          enum:
+          - Credit Card
+          - Check
+        paymentSystemTransactionId:
+          description: The third party payment system's payment transaction ID.
+          type: string
+    paymentCompleteModel:
+      type: object
+      properties:
+        paymentId:
+          description: The payment id.
+          type: string
+        paymentStatus:
+          description: The payment status (currently, this field always returns "PAID").
+          type: string
+        receiptId:
+          description: The payment receipt id.
+          type: string
+        recordId:
+          description: "The record id the payment is applied to.\t"
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+    response_paymentCommitResultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/paymentCommitResultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    creditCardLastFourDigitsModel:
+      type: object
+      properties:
+        billingAddress:
+          $ref: '#/components/schemas/billingAddressV4_V4_put_payments_id'
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        cardNumberLastDigits:
+          description: The last 4 digits of the credit card number.
+          type: string
+        cardType:
+          description: The credit card type. For example, Visa, American Express, or Discover.
+          type: string
+        holderName:
+          description: The check holder's name.
+          type: string
+    transactionFeesModel:
+      type: object
+      properties:
+        version:
+          type: object
+          description: The payment schedule version
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        subGroup:
+          type: object
+          description: The subgroup the fee is associated with.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        balanceDue:
+          description: The amount due.
+          format: double
+          type: number
+        schedule:
+          type: object
+          description: The payment schedule name.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        code:
+          type: object
+          description: A code identifying an associated item
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        description:
+          type: object
+          description: The fee description.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unit:
+          type: object
+          description: The unit of measure used for the object.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        userDefinedField1:
+          description: User defined field 1
+          type: string
+        userDefinedField2:
+          description: User defined field 2
+          type: string
+        userDefinedField3:
+          description: User defined field 3
+          type: string
+        userDefinedField4:
+          description: User defined field 4
+          type: string
+        status:
+          description: The transaction status
+          type: string
+        notes:
+          description: The transaction notes
+          type: string
+        amount:
+          description: The payment amount.
+          format: double
+          type: number
+        assessDate:
+          description: The access date
+          type: string
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        id:
+          description: The transaction id
+          format: int64
+          type: integer
+        account1:
+          description: The first account
+          type: string
+        account2:
+          description: The second account
+          type: string
+        account3:
+          description: The third account
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        allocation:
+          description: Allocation proportion or amount of account.
+          format: double
+          type: number
+        invoiceNumber:
+          description: The invoice number string.
+          type: string
+    paymentTransactionModel:
+      type: object
+      properties:
+        transactionId:
+          description: The payment transaction ID to be processed and commited by the Commit Payment API.
+          format: int64
+          type: integer
+    paymentInitializeModel:
+      type: object
+      properties:
+        entityIds:
+          description: An array containing the entity ID's to initialize the payment for.
+          items:
+            type: string
+          type: array
+        entityType:
+          description: The type of entity to initialize the payment for.
+          type: string
+          enum:
+          - record
+        merchantAccountId:
+          description: The account ID of the merchant receiving the payment.
+          type: string
+        paymentMethod:
+          description: The method of payment, either Credit Card or Check.
+          type: string
+          enum:
+          - Check
+          - Credit Card
+    billingAddressV4_V4_put_payments_id:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        countryCode:
+          type: string
+        postalCode:
+          type: string
+        state:
+          type: string
+    paymentCommitResultModel:
+      type: object
+      properties:
+        completePayments:
+          $ref: '#/components/schemas/paymentCompleteModel'
+        message:
+          description: Response message for the payment transaction.
+          type: string
+    response_transaction_fees:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/transactionFeesModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    paymentVoidModel:
+      type: object
+      properties:
+        comments:
+          description: Comments or notes about the void payment transaction.
+          type: string
+        reason:
+          type: object
+          description: The void payment reason.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The object's system id.
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered.
+          type: string
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_paymentTransactionModel:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/paymentTransactionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-payments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - escaped stray backslashes
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

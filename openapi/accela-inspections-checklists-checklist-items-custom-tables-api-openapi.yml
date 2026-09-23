@@ -1,0 +1,502 @@
+openapi: 3.2.0
+info:
+  description: Use the Inspections API to manage inspection records during their complete lifecycle from application submittal to permit issuance or license issuance. Your agency may need to complete inspections on new property developments, homes, or complaints.
+  title: Inspections/Checklists/Checklist Items/Custom Tables API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Inspections/Checklists/Checklist Items/Custom Tables
+paths:
+  /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables/{tableId}:
+    get:
+      description: 'Gets a custom table for the requested checklist item for a specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables/{tableId}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Custom Table for Inspection Checklist Item
+      operationId: v4.get.inspections.id.checklists.checklistId.checklistItems.checklistItemId.customTables.tableId
+      tags:
+      - Inspections/Checklists/Checklist Items/Custom Tables
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idInspection'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/checklistItemId'
+      - description: The ID of the custom table to fetch.
+        in: path
+        name: tableId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customTablesModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables:
+    get:
+      description: 'Gets the custom tables for the requested checklist item for a specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Tables for Inspection Checklist Item
+      operationId: v4.get.inspections.id.checklists.checklistId.checklistItems.checklistItemId.customTables
+      tags:
+      - Inspections/Checklists/Checklist Items/Custom Tables
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idInspection'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/checklistItemId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customTablesModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Updates custom tables for the requested checklist item for a specified inspection.
+
+
+        **API Endpoint**: PUT /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Update Custom Tables for Inspection Checklist Item
+      operationId: v4.put.inspections.id.checklists.checklistId.checklistItems.checklistItemId.customTables
+      tags:
+      - Inspections/Checklists/Checklist Items/Custom Tables
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idInspection'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/checklistItemId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/inpsectionChecklistItem_customTable'
+              type: array
+        description: Custom tables to be updated.
+        required: true
+  /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables/meta:
+    get:
+      description: 'Gets the metadata for the custom tables of the requested checklist item for the specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables/meta
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Tables Metadata for an Inspection Checklist Item
+      operationId: v4.get.inspections.id.checklists.checklistId.checklistItems.checklistItemId.customTables.meta
+      tags:
+      - Inspections/Checklists/Checklist Items/Custom Tables
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idInspection'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/checklistItemId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customTableMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables/{tableId}/meta:
+    get:
+      description: 'Gets the metadata for the custom tables of the requested checklist item for the specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{id}/checklists/{checklistId}/checklistItems/{checklistItemId}/customTables/{tableId}/meta
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Custom Table Metadata for an Inspection Checklist Item
+      operationId: v4.get.inspections.id.checklists.checklistId.checklistItems.checklistItemId.customTables.tableId.meta
+      tags:
+      - Inspections/Checklists/Checklist Items/Custom Tables
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idInspection'
+      - $ref: '#/components/parameters/checklistId'
+      - $ref: '#/components/parameters/checklistItemId'
+      - description: The ID of the custom table to fetch.
+        in: path
+        name: tableId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customTableMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    customTableMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customTableMetadataFields'
+          type: array
+        id:
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
+          type: string
+    inpsectionChecklistItem_customTable:
+      type: object
+      properties:
+        id:
+          description: The custom table id.
+          type: string
+        rows:
+          items:
+            $ref: '#/components/schemas/inspectionChecklist_rowModel'
+          type: array
+    customTableMetadataFields:
+      type: object
+      properties:
+        displayOrder:
+          description: The field's display order.
+          format: int64
+          type: integer
+        fieldType:
+          description: The field's data type.
+          type: string
+        id:
+          description: The field id.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The field's maximum field length.
+          format: int64
+          type: integer
+    response_customTablesModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customTablesModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customTablesModel:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        more:
+          type: string
+        page:
+          $ref: '#/components/schemas/pageModel'
+        resultStatus:
+          $ref: '#/components/schemas/customTablesStatusModel'
+        result:
+          type: string
+        status:
+          format: int64
+          type: integer
+        traceId:
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    inspectionChecklist_rowModel:
+      type: object
+      required:
+      - action
+      - fields
+      - id
+      properties:
+        action:
+          description: Specifies whether to add, update, or delete the custom table row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The unique identifier for the custom field. Required only if modifying or deleting a row.
+          type: string
+    customTablesStatusModel:
+      type: object
+      properties:
+        detail:
+          $ref: '#/components/schemas/customTablesStatusDetailModel'
+        status:
+          format: int64
+          type: integer
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    customTablesStatusDetailModel:
+      type: object
+      properties:
+        code:
+          format: int64
+          type: integer
+        message:
+          type: string
+        traceId:
+          type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_customTableMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      description: 'A custom field name and value pair. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        <aCustomFieldName>:
+          type: string
+        <aCustomFieldValue>:
+          type: string
+  parameters:
+    checklistItemId:
+      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
+      in: path
+      name: checklistItemId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    idInspection:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    checklistId:
+      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
+      in: path
+      name: checklistId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-inspections.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

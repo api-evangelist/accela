@@ -1,0 +1,372 @@
+openapi: 3.2.0
+info:
+  description: The Payments API enables apps to submit payment transactions on Civic Platform records.
+  title: Payments Shopping Carts API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Shopping Carts
+  description: 'Shopping carts allow public users to add and manage multiple record payment
+
+    transactions.A shopping cart contains attributes indicating the payment processing type and whether the shopping cart item is to be paid now.'
+paths:
+  /v4/shoppingCart:
+    get:
+      description: 'Gets all shopping carts in the system.
+
+
+        **API Endpoint**: GET /v4/shoppingCart
+
+
+        **Scope**: shoppingcart
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get All Shopping Carts
+      operationId: v4.get.shoppingCart
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_shoppingCartModelArray'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates a shopping cart.
+
+
+        **API Endpoint**: POST /v4/shoppingCart
+
+
+        **Scope**: shoppingcart
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Create Shopping Cart
+      operationId: v4.post.shoppingCart
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/shoppingCartModel'
+              type: array
+        description: Shopping cart item models for create
+        required: true
+  /v4/shoppingCart/{ids}:
+    get:
+      description: 'Gets information about the specified shopping carts.
+
+
+        **API Endpoint**: GET /v4/shoppingCart/{ids}
+
+
+        **Scope**: shoppingcart
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get Shopping Carts
+      operationId: v4.get.shoppingCart.ids
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: One or more comma-separated id's of shopping carts to fetch.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_shoppingCartModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: 'Deletes one or more shopping carts.
+
+
+        **API Endpoint**: DELETE /v4/shoppingCart/{ids}
+
+
+        **Scope**: shoppingcart
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Delete Shopping Carts
+      operationId: v4.delete.shoppingCart.ids
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: One or more comma-separated id's of shopping carts to delete.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/shoppingCart/{id}:
+    put:
+      description: 'Updates the specified shopping cart.
+
+
+        **API Endpoint**: PUT /v4/shoppingCart/{id}
+
+
+        **Scope**: shoppingcart
+
+
+        **App Type**: Citizen
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Update Shopping Cart
+      operationId: v4.put.shoppingCart.id
+      tags:
+      - Shopping Carts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The system id of the shopping cart to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_shoppingCartModel'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/shoppingCartModel'
+        description: Shopping cart information to update
+        required: true
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_shoppingCartModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/shoppingCartModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The object's system id.
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered.
+          type: string
+    response_shoppingCartModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/shoppingCartModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    shoppingCartModel:
+      type: object
+      properties:
+        createdDate:
+          description: The date the shopping cart was created.
+          format: date-time
+          type: string
+        id:
+          description: The shopping cart system id assigned by the Civic Platform server.
+          type: string
+        payNow:
+          description: Indicates whether the shopping cart item is to be paid now or saved for later.
+          type: string
+          enum:
+          - Y
+          - N
+        processType:
+          description: The process for which the record is added to the shopping cart.
+          type: string
+          enum:
+          - PayFees
+          - Renewal
+          - PayFeeDue4Renewal
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-payments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
+  repairs:
+  - escaped stray backslashes
+  - The published JSON did not parse as strict JSON; only syntax was repaired, no content was added or changed.

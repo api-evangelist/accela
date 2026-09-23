@@ -1,0 +1,483 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Costs API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Costs
+paths:
+  /v4/records/{recordId}/costs:
+    get:
+      description: 'Returns the costs associated to a given record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/costs
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get Record Costs
+      operationId: v4.get.records.recordId.costs
+      tags:
+      - Records/Costs
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_costingModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/records/{recordId}/costs/{ids}:
+    delete:
+      description: 'Deletes one or more costs from a given record.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/costs/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Delete Record Costs
+      operationId: v4.delete.records.recordId.costs.ids
+      tags:
+      - Records/Costs
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delimited IDs of costs to be removed
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    put:
+      description: 'Update the details of the costs for given records.
+
+
+        **API Endpoint**: PUT /v4/records/{recordId}/costs/{id}
+
+
+        **Scope**: costs
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 20.1.4'
+      summary: Update Record Costs
+      operationId: v4.put.records.recordId.costs.id
+      tags:
+      - Records/Costs
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the record to update.
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+      - description: The ID of the cost to update.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_costingModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/request_costingModelArray'
+              type: array
+        description: The cost information to be updated.
+        required: true
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    request_costingModelArray:
+      type: object
+      properties:
+        comments:
+          description: Comments about the cost.
+          type: string
+        costAccount:
+          description: The cost account name.
+          type: string
+        costDate:
+          description: The date when the cost applied.
+          format: date-time
+          type: string
+        costFactor:
+          type: object
+          description: The cost factor.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        costItem:
+          description: The cost item name.
+          type: string
+        dispCostingCostItem:
+          description: The cost item display name.
+          type: string
+        distributeFlag:
+          description: Indicates whether or not costing is distributed.
+          enum:
+          - Y
+          - N
+          type: string
+        endTime:
+          description: The end time associated to the cost item.
+          type: string
+        fixedRate:
+          description: The fixed rate associated to the cost item.
+          format: double
+          type: number
+        id:
+          description: The cost item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        quantity:
+          description: The cost item quantity.
+          format: double
+          type: number
+        quantityDetail:
+          description: Details about the cost item quantity.
+          type: string
+        quantityDetailList:
+          $ref: '#/components/schemas/costingQuantityModel'
+        relatedAsgnNbr:
+          description: Related cost item.
+          format: int64
+          type: integer
+        startTime:
+          description: The start time associated to the cost item.
+          type: string
+        status:
+          type: object
+          description: The cost item status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        totalCost:
+          description: The total cost.
+          format: double
+          type: number
+        type:
+          type: object
+          description: The cost item type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitOfMeasure:
+          type: object
+          description: The cost item's unit of measure.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitRate:
+          description: The cost unit rate.
+          format: double
+          type: number
+        workOrderTaskCode:
+          description: The work order task code associated to the cost item.
+          type: string
+        workOrderTaskCodeIndex:
+          description: The order of the work order task.
+          format: int64
+          type: integer
+    costingQuantityModel:
+      type: object
+      properties:
+        factor:
+          description: The cost factor.
+          format: double
+          type: number
+        minutes:
+          description: The number of minutes associated to the cost.
+          format: double
+          type: number
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    costingModel:
+      type: object
+      properties:
+        comments:
+          description: Comments about the cost.
+          type: string
+        costAccount:
+          description: The cost account name.
+          type: string
+        costDate:
+          description: The date when the cost applied.
+          format: date-time
+          type: string
+        costFactor:
+          type: object
+          description: The cost factor.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        costItem:
+          description: The cost item name.
+          type: string
+        dispCostingCostItem:
+          description: The cost item display name.
+          type: string
+        distributeFlag:
+          description: Indicates whether or not costing is distributed.
+          enum:
+          - Y
+          - N
+          type: string
+        endTime:
+          description: The end time associated to the cost item.
+          type: string
+        fixedRate:
+          description: The fixed rate associated to the cost item.
+          format: double
+          type: number
+        id:
+          description: The cost item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        quantity:
+          description: The cost item quantity.
+          format: double
+          type: number
+        quantityDetail:
+          description: Details about the cost item quantity.
+          type: string
+        quantityDetailList:
+          $ref: '#/components/schemas/costingQuantityModel'
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        relatedAsgnNbr:
+          description: Related cost item.
+          format: int64
+          type: integer
+        startTime:
+          description: The start time associated to the cost item.
+          type: string
+        status:
+          type: object
+          description: The cost item status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        totalCost:
+          description: The total cost.
+          format: double
+          type: number
+        type:
+          type: object
+          description: The cost item type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitOfMeasure:
+          type: object
+          description: The cost item's unit of measure.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitRate:
+          description: The cost unit rate.
+          format: double
+          type: number
+        workOrderTaskCode:
+          description: The work order task code associated to the cost item.
+          type: string
+        workOrderTaskCodeIndex:
+          description: The order of the work order task.
+          format: int64
+          type: integer
+    response_costingModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/costingModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

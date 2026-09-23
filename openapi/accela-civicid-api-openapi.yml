@@ -1,0 +1,510 @@
+openapi: 3.2.0
+info:
+  description: Civic ID is a userid that allows a user to login multiple Accela products including Civic Platform and Accela apps, as well as social network apps such as Facebook and Twitter. Civic ID is agency agnostic; it allows a user to link multiple agency Citizen Access accounts to a single login account which enables cross-agency searches. The Civic ID has a profile and has links to one or more user accounts.
+  title: Civic ID API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: CivicId
+paths:
+  /v4/civicid/accounts:
+    get:
+      description: 'Gets all user accounts that are linked to the currently logged in civicID user.
+
+
+        **API Endpoint**: GET /v4/civicid/accounts
+
+
+        **Scope**: civicid
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access tokeon
+
+
+        **Civic Platform version**: All'
+      summary: Get All Linked User Accounts
+      tags:
+      - CivicId
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: lang
+        required: false
+        description: Language parameter to support I18N. Default language is en_US.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_linkedAccounts'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      operationId: getV4CivicidAccounts
+      x-operation-id-source: derived
+    post:
+      description: 'Links an agency or user account to the currently logged-in CivicId user. The user account to be linked must be a valid user account in Automation or Accela Citizen Access. Specify the required agency name in the HTTP header x-accela-agency, and the optional environment in the HTTP header x-accela-environment. The default environment is PROD.
+
+
+        **API Endpoint**: POST /v4/civicid/accounts
+
+
+        **Scope**: civicid
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access tokeon
+
+
+        **Civic Platform version**: All'
+      operationId: v4.post.civicid.accounts
+      summary: Create Linked User Account
+      tags:
+      - CivicId
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_linkedAccount'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accountModel'
+        description: Account information to link with user.
+        required: true
+  /v4/civicid/accounts/{id}:
+    get:
+      description: 'Gets the specified user account that is linked to the currently logged in civicID user.
+
+
+        **API Endpoint**: GET /v4/civicid/accounts/{id}
+
+
+        **Scope**: civicid
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access tokeon
+
+
+        **Civic Platform version**: All'
+      operationId: v4.get.civicid.accounts.id
+      summary: Get Linked User Account
+      tags:
+      - CivicId
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: The system id of the account link to be queried.
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_linkedAccountInfo'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    delete:
+      description: 'Deletes the specified user account that is linked to the currently logged-in CivicId user. Specify the required agency name in the HTTP header x-accela-agency, and the optional environment in the HTTP header x-accela-environment. The default environment is PROD.
+
+
+        **API Endpoint**: DELETE /v4/civicid/accounts/{id}
+
+
+        **Scope**: civicid
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access tokeon
+
+
+        **Civic Platform version**: All'
+      operationId: v4.delete.civicid.accounts.id
+      summary: Delete Linked User Account
+      tags:
+      - CivicId
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: The system id of the account link to be deleted.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/returnStatus'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/civicid/profile:
+    get:
+      description: 'Gets the profile for the currently logged in civicID user.
+
+
+        **API Endpoint**: GET /v4/civicid/profile
+
+
+        **Scope**: civicid
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access tokeon
+
+
+        **Civic Platform version**: All'
+      operationId: v4.get.civicid.profile
+      summary: Get CivicID Profile
+      tags:
+      - CivicId
+      parameters:
+      - description: Construct oAuth2 authentication token
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Language parameter to support I18N. Default language is en_US
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_civicIdProfile'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    accountInfo:
+      type: object
+      properties:
+        agencyDisplayName:
+          type: string
+          description: The name of the agency, as displayed in the application.
+        agencyName:
+          type: string
+          description: The name that identifies the agency.
+        id:
+          type: string
+          description: The account userid.
+        name:
+          type: string
+          description: The user's full name.
+    response_civicIdProfile:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/civicIdProfile'
+        status:
+          type: integer
+          description: The HTTP return status.
+    accountModel:
+      type: object
+      properties:
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - Agency
+          - Citizen
+        loginName:
+          type: string
+          description: The login of the user to be linked to the logged-in CivicID.
+        password:
+          type: string
+          description: The password of the user to be linked to the logged-in CivicID.
+    response_linkedAccounts:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/linkedAccountsArrays'
+        status:
+          type: string
+          description: The HTTP return status.
+    linkedAccountsArrays:
+      type: object
+      properties:
+        agencyAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+        citizenAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+        socialAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+    civicIdProfile:
+      type: object
+      properties:
+        avatarUrl:
+          description: The URL for the user's avatar.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        countryCode:
+          description: The country code for phone and fax numbers.
+          type: string
+        email:
+          description: The contact's email address.
+          type: string
+        firstName:
+          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        id:
+          description: The unique identifier for the object, assigned by the Civic Platform server and provided in a response.
+          type: string
+        lastName:
+          description: 'The last name (surname). '
+          type: string
+        loginName:
+          description: The login name for the public user.
+          type: string
+        phoneAreaCode:
+          description: The area code for the assoicated phone number.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        phoneNumber:
+          description: A user's phone number.
+          type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          description: The state corresponding to the address on record.
+          type: string
+        streetAddress:
+          description: 'The street address. '
+          type: string
+    response_linkedAccount:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The system id of the linked account.
+        status:
+          type: integer
+          description: The HTTP return status.
+        code:
+          type: string
+          description: The error code, if an error is encountered.
+        message:
+          type: string
+          description: The error message, if an error is encountered.
+        traceid:
+          type: string
+          description: The id of the trace log entry, if an error is encountered.
+    department:
+      type: object
+      properties:
+        id:
+          description: (For agency token only) The department id.
+          type: string
+        agency:
+          description: (For agency token only) The department agency.
+          type: string
+        bureau:
+          description: (For agency token only) The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: (For agency token only) The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: (For agency token only) The department group.
+          type: string
+        section:
+          description: (For agency token only) A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: (For agency token only) The unique agency identifier on the Accela Civic Platform.
+          type: string
+        text:
+          description: (For agency token only) The localized display text.
+          type: string
+        value:
+          description: "\t(For agency token only) The display value."
+          type: string
+    returnStatus:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP return status.
+        code:
+          type: string
+          description: The error code, if an error is encountered.
+        message:
+          type: string
+          description: The error message, if an error is encountered.
+        traceid:
+          type: string
+          description: The id of the trace log entry, if an error is encountered.
+    response_linkedAccountInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/linkedAccountInfo'
+        status:
+          type: integer
+          description: The HTTP return status.
+    linkedAccountInfo:
+      type: object
+      properties:
+        agencyName:
+          description: The name that identifies the agency.
+          type: string
+        id:
+          description: The unique identifier of the user.
+          type: string
+        name:
+          description: The name for the user.
+          type: string
+        firstName:
+          description: (For agency token only) The user's first name.
+          type: string
+        middleName:
+          description: (For agency token only) The user's middle name.
+          type: string
+        lastName:
+          description: (For agency token only) The user's first name.
+          type: string
+        fullName:
+          description: (For agency token only) The user's full name.
+          type: string
+        initial:
+          description: (For agency token only) The user initials.
+          type: string
+        value:
+          description: (For agency token only) The id display value.
+          type: string
+        department:
+          description: (For agency token only) Contains department information.
+          $ref: '#/components/schemas/department'
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-civicid.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

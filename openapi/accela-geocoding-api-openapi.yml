@@ -1,0 +1,133 @@
+openapi: 3.2.0
+info:
+  description: Miscellaneous Accela API
+  title: Miscellaneous Geocoding API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Geocoding
+  description: The Geocoding API provides geo-coded address information based on map services configured on Construct Admin Portal > Agencies > {Agency} > Agency Settings > GIS Settings.
+paths:
+  /v4/geo/geocode/reverse:
+    get:
+      description: 'Returns address information for the given longitude and latitude coordinates. This API returns address information from map services configured on **Construct Admin Portal > {Agency} > Agency Settings > GIS Settings**.
+
+
+        **API Endpoint**: GET /v4/geo/geocode/reverse
+
+
+        **Scope**: gis
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: All'
+      summary: Reverse Geocode Address
+      operationId: v4.get.geo.geocode.reverse
+      tags:
+      - Geocoding
+      parameters:
+      - description: The north-south, x-coordinate of an address. The value must be between -180 and +180.
+        in: query
+        required: true
+        name: longitude
+        schema:
+          type: string
+      - description: The east-west, y-coordinate of an address. The value must be between -90 and +90.
+        in: query
+        name: latitude
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: "Successful request. \n\nNote: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_geocodeAddressModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_geocodeAddressModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/geocodeAddressModel'
+    geocodeAddressModel:
+      type: object
+      description: Contains the address information for the given coordinates.
+      properties:
+        addressFormat:
+          description: The full address.
+          type: string
+        houseNumber:
+          description: The street address number.
+          type: string
+        houseNumberFraction:
+          description: A fraction used in combination with the street number.
+          type: string
+        street:
+          description: The street address, including number and name.
+          type: string
+        streetDirection:
+          description: The street direction, such as "N", "SW", "East", etc.
+          type: string
+        streetName:
+          description: The name of the street.
+          type: string
+        streetPrefix:
+          description: A prefix used with the street address, such as a directional street number prefix.
+          type: string
+        streetSuffix:
+          description: A suffix used with the street address, such as a building suite suffix.
+          type: string
+        streetSuffixDirection:
+          description: The street direction used in a street suffix.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        state:
+          description: The name of the state.
+          type: string
+        stateAbbreviation:
+          description: The state code or abbreviation.
+          type: string
+        postalCode:
+          description: The postal zip code.
+          type: string
+        country:
+          description: The name of the country.
+          type: string
+        countryCode:
+          description: The country code or abbreviation.
+          type: string
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-misc.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

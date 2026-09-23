@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  description: The Assets and Assessments APIs enable apps to manage assets and their related condition assessments.
+  title: Assets and Assessments Assets/Assessments API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Assets/Assessments
+  description: Condition assessments apply to assets that change or deteriorate over time. These assets may require a visual condition assessment to effectively manage their life cycle. Transaction records and documents can also be attached to assets. In Civic Platform, an asset is created based on its asset type. An asset type can be associated to specific work order types ("record types"), rating types, and usage types.
+paths:
+  /v4/assets/{id}/assessments:
+    post:
+      description: 'Creates condition assessments for a given asset.
+
+
+        **API Endpoint**: POST /v4/assets/{id}/assessments
+
+
+        **Scope**: assessments
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Create Asset Assessment
+      operationId: v4.post.assets.id.assessments
+      tags:
+      - Assets/Assessments
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/idAssetPathParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_assessmentModel'
+        description: 'Asset attributes to be added. Ex. [{ "field1": "field1Val", "field2": "field2Val"}]'
+        required: true
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    idAssetPathParam:
+      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+  schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    request_assessmentModel:
+      type: object
+      required:
+      - status
+      properties:
+        attributes:
+          $ref: '#/components/schemas/customAttributeModel'
+        comment:
+          description: Comments or notes about the assessment.
+          type: string
+        conditionAssessment:
+          description: The condition assessment type. See [Get All Condition Assessment Types](./api-settings.html#operation/v4.get.settings.assessments.types).
+          type: string
+        inspectionDate:
+          description: The inspection date for the assessment, in yyyy-mm-dd format.
+          type: string
+        inspectionTime:
+          description: The inspection time for the assessment, in hh:mm AM/PM format.
+          type: string
+        inspectorId:
+          description: The ID of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        scheduleDate:
+          description: The scheduled assessment date, in yyyy-mm-dd format.
+          type: string
+        scheduleTime:
+          description: The scheduled assessment time, in hh:mm AM/PM format.
+          type: string
+        status:
+          description: The status of the condition assessment
+          enum:
+          - Completed
+          - Scheduled
+          type: string
+        timeSpent:
+          description: The number of hours spent on the assessment.
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-assets-assessments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

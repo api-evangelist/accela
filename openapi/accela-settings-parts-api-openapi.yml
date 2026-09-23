@@ -1,0 +1,226 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Parts API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Parts
+paths:
+  /v4/settings/parts/locations:
+    get:
+      description: 'Gets all part locations in the system.
+
+
+        **API Endpoint**: GET /v4/settings/parts/locations
+
+
+        **Scope**: settings
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get All Part Locations
+      operationId: v4.get.settings.parts.locations
+      tags:
+      - Settings/Parts
+      parameters:
+      - description: Filter by the transaction type.
+        in: query
+        name: transactionType
+        required: false
+        schema:
+          type: string
+      - description: Filter by part id.
+        in: query
+        name: partId
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_partLocationModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/parts/types:
+    get:
+      description: 'Gets the part type settings.
+
+
+        **API Endpoint**: GET /v4/settings/parts/types
+
+
+        **Scope**: settings
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.3'
+      summary: Get Part Types
+      operationId: v4.get.settings.parts.types
+      tags:
+      - Settings/Parts
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    response_partLocationModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/partLocationModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
+    partLocationModel:
+      type: object
+      properties:
+        address1:
+          description: The first line of the address of the part location.
+          type: string
+        address2:
+          description: The second line of the address of the part location.
+          type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        comments:
+          description: Comments or notes about the part location.
+          type: string
+        contactFname:
+          description: The first name of the contact
+          type: string
+        contactLname:
+          description: The last name of the contact.
+          type: string
+        contactTitle:
+          description: The title of the contact.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        id:
+          description: The id of the part location assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        phone:
+          description: The number associated with the entity.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        resColumns:
+          items:
+            type: string
+          type: array
+        state:
+          description: The state corresponding to the address on record.
+          type: string
+        zip:
+          description: The zip code for the part location.
+          type: string
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

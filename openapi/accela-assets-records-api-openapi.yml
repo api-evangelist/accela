@@ -1,0 +1,548 @@
+openapi: 3.2.0
+info:
+  description: The Assets and Assessments APIs enable apps to manage assets and their related condition assessments.
+  title: Assets and Assessments Assets/Records API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Assets/Records
+  description: Assets can be associated to transactional records when an asset assessment necessitates a service work order or if an application pertains to an agency asset.
+paths:
+  /v4/assets/records?assetIds={assetIds}:
+    get:
+      summary: Get Records By Asset Ids
+      description: 'Gets the list of records associated with the given asset ID(s).
+
+
+        **API Endpoint**: GET /v4/assets/records?assetIds={assetIds}
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 22.1.0'
+      operationId: v4.get.assets.records
+      tags:
+      - Assets/Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The IDs of the assets.
+        in: path
+        name: assetIds
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_assetsRecordsModel'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/assets/{assetId}/records:
+    get:
+      description: 'Returns all records for a given asset.
+
+
+        **API Endpoint**: GET /v4/assets/{assetId}/records
+
+
+        **Scope**: assets
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All Asset Records
+      operationId: v4.get.assets.assetId.records
+      tags:
+      - Assets/Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/assetIdPathParam'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_simpleRecordModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    recordsArrayInAssetsRecordsArray:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+    assetsRecordsArray:
+      type: object
+      properties:
+        id:
+          type: string
+        page:
+          type: object
+          properties:
+            offset:
+              type: string
+            limit:
+              type: string
+            hasmore:
+              type: boolean
+        records:
+          items:
+            $ref: '#/components/schemas/recordsArrayInAssetsRecordsArray'
+          type: array
+    recordTypeModel:
+      type: object
+      properties:
+        alias:
+          description: The record type alias.
+          type: string
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    simpleRecordModel:
+      type: object
+      properties:
+        actualProductionUnit:
+          description: Estimated cost per production unit.
+          format: double
+          type: number
+        appearanceDate:
+          description: The date for a hearing appearance.
+          format: date-time
+          type: string
+        appearanceDayOfWeek:
+          description: The day for a hearing appearance.
+          type: string
+        assignedDate:
+          description: The date the application was assigned.
+          format: date-time
+          type: string
+        assignedToDepartment:
+          description: The department responsible for the action. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        assignedUser:
+          description: The staff member responsible for the action.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        booking:
+          description: Indicates whether or not there was a booking in addition to a citation.
+          type: boolean
+        closedByDepartment:
+          description: The department responsible for closing the record. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        closedByUser:
+          description: The staff member responsible for closure.
+          type: string
+        closedDate:
+          description: The date the application was closed.
+          format: date-time
+          type: string
+        completedByDepartment:
+          description: The department responsible for completion. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        completedByUser:
+          description: The staff member responsible for completion.
+          type: string
+        completedDate:
+          description: The date the application was completed.
+          format: date-time
+          type: string
+        constructionType:
+          type: object
+          description: The US Census Bureau construction type code. See [Get All Record Construction Types](./api-settings.html#operation/v4.get.settings.records.constructionTypes).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        costPerUnit:
+          description: The cost for one unit associated to the record.
+          format: double
+          type: number
+        createdBy:
+          description: The unique user id of the individual that created the entry.
+          type: string
+        createdByCloning:
+          description: Indictes whether or not the record was cloned.
+          enum:
+          - Y
+          - N
+          type: string
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Civic Platform auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        defendantSignature:
+          description: Indicates whether or not a defendant's signature has been obtained.
+          type: boolean
+        description:
+          description: The description of the record or item.
+          type: string
+        enforceDepartment:
+          description: The name of the department responsible for enforcement. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        enforceUser:
+          description: Name of the enforcement officer.
+          type: string
+        enforceUserId:
+          description: ID number of the enforcement officer.
+          type: string
+        estimatedCostPerUnit:
+          description: The estimated cost per unit.
+          format: double
+          type: number
+        estimatedDueDate:
+          description: The estimated date of completion.
+          format: date-time
+          type: string
+        estimatedProductionUnit:
+          description: The estimated number of production units.
+          format: double
+          type: number
+        estimatedTotalJobCost:
+          description: The estimated cost of the job.
+          format: double
+          type: number
+        firstIssuedDate:
+          description: The first issued date for license
+          format: date-time
+          type: string
+        housingUnits:
+          description: The number of housing units.
+          format: int64
+          type: integer
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        infraction:
+          description: Indicates whether or not an infraction occurred.
+          type: boolean
+        initiatedProduct:
+          description: 'The Civic Platform product  where the application is submitted: "AA" : Classic Accela Automation. "ACA" : Accela Citizen Access. "AIVR" : Accela Integrated Voice Response. "AMO" : Accela Mobile Office. "AV360" : Accela Asset Management, Accela Land Management.'
+          type: string
+        inPossessionTime:
+          description: The application level in possession time of the time tracking feature.
+          format: double
+          type: number
+        inspectorDepartment:
+          description: The name of the department where the inspector works. See [Get All Departments](./api-settings.html#operation/v4.get.settings.departments).
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        inspectorName:
+          description: The name of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        jobValue:
+          description: The value of the job.
+          format: double
+          type: number
+        misdemeanor:
+          description: Indicates whether or not a misdemeanor occurred.
+          type: boolean
+        module:
+          description: The module the record belongs to. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        name:
+          description: The name associated to the record.
+          type: string
+        numberOfBuildings:
+          description: The number of buildings.
+          format: int64
+          type: integer
+        offenseWitnessed:
+          description: Indicates whether or not  there was a witness to the alleged offense.
+          type: boolean
+        openedDate:
+          description: The date the application was opened.
+          format: date-time
+          type: string
+        overallApplicationTime:
+          description: The amount of elapsed time from the time tracking start date to the completion of the application.
+          format: double
+          type: number
+        priority:
+          type: object
+          description: The priority level assigned to the record. See [Get All Priorities](./api-settings.html#operation/v4.get.settings.priorities).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicOwned:
+          description: Indicates whether or not the record is for the public.
+          type: boolean
+        recordClass:
+          description: General information about the record.
+          type: string
+        renewalInfo:
+          $ref: '#/components/schemas/recordExpirationModel'
+        reportedChannel:
+          type: object
+          description: The incoming channel through which the applicant submitted the application.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        reportedDate:
+          description: The date the complaint was reported.
+          format: date-time
+          type: string
+        reportedType:
+          type: object
+          description: The type of complaint or incident being reported.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        scheduledDate:
+          description: The date when the inspection gets scheduled.
+          format: date-time
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier,
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortNotes:
+          description: A brief note about the record subject.
+          type: string
+        status:
+          type: object
+          description: The record status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: "The date when the current status changed.\t"
+          format: date-time
+          type: string
+        statusReason:
+          type: object
+          description: "\tThe reason for the status setting on the record."
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusType:
+          description: The record status type.
+          enum:
+          - APPROVED
+          - CLOSED
+          - COMPLETE
+          - DENIED
+          - INCOMPLETE
+          - OPEN
+          - PENDING
+          - UNASSIGNED
+          - VOID
+          type: string
+        totalFee:
+          description: The total amount of the fees invoiced to the record.
+          format: double
+          type: number
+        totalJobCost:
+          description: The combination of work order assignments (labor) and costs.
+          format: double
+          type: number
+        totalPay:
+          description: The total amount of pay.
+          format: double
+          type: number
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/recordTypeModel'
+        undistributedCost:
+          description: The undistributed costs for this work order.
+          format: double
+          type: number
+        updateDate:
+          description: The date the record was last updated.
+          format: date-time
+          type: string
+        value:
+          description: The record value.
+          type: string
+    response_assetsRecordsModel:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetsRecordsArray'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_simpleRecordModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/simpleRecordModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    assetIdPathParam:
+      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+      in: path
+      name: assetId
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-assets-assessments.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

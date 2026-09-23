@@ -1,0 +1,434 @@
+openapi: 3.2.0
+info:
+  description: Use the Inspections API to manage inspection records during their complete lifecycle from application submittal to permit issuance or license issuance. Your agency may need to complete inspections on new property developments, homes, or complaints.
+  title: Inspections/Checklists API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Inspections/Checklists
+paths:
+  /v4/inspections/{inspectionId}/checklists:
+    get:
+      description: 'Gets the checklists for the specified inspection.
+
+
+        **API Endpoint**: GET /v4/inspections/{inspectionId}/checklists
+
+
+        **Scope**: inspections
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Checklists for Inspection
+      operationId: v4.get.inspections.inspectionId.checklists
+      tags:
+      - Inspections/Checklists
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: Inspection sequence number
+        in: path
+        name: inspectionId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_inpsectionChecklistModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Creates checklists for the specified inspections.
+
+
+        **API Endpoint**: POST /v4/inspections/{inspectionId}/checklists
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Create Inspection Checklist
+      operationId: v4.post.inspections.inspectionId.checklists
+      tags:
+      - Inspections/Checklists
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the inspection to fetch
+        in: path
+        name: inspectionId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_checklistModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/inpsectionChecklistModel'
+              type: array
+        description: Inspection checklist to be created
+        required: true
+  /v4/inspections/{inspectionId}/checklists/{ids}:
+    delete:
+      description: 'Deletes checklists for the specified inspection.
+
+
+        **API Endpoint**: DELETE /v4/inspections/{inspectionId}/checklists/{ids}
+
+
+        **Scope**: inspections
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Delete Inspection Checklists
+      operationId: v4.delete.inspections.inspectionId.checklists.ids
+      tags:
+      - Inspections/Checklists
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/inspectionIdString'
+      - description: Comma-delimited IDs of inspection checklists to delete.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    inspectionIdString:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: string
+  schemas:
+    checklistModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    inpsectionChecklistModel:
+      type: object
+      properties:
+        teamName:
+          description: Inspection Team name.
+          type: string
+        floor:
+          description: Inspection Floor.
+          type: string
+        floorUnit:
+          description: Inspection Floor Unit.
+          type: string
+        checklistDesc:
+          description: The checklist description.
+          type: string
+        checklistStatus:
+          description: The status of the checklist.
+          type: string
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        defaultOrderBy:
+          description: The field by which the checklist items are ordered by default.
+          type: string
+        entityType:
+          description: The type of entity, for example "INSPECTION".
+          type: string
+        group:
+          description: The inspection checklist group.
+          type: string
+        guideType:
+          type: object
+          description: The inspection checklist type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The checklist system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inspectionId:
+          description: The ID of the inspection.
+          type: string
+        isRequired:
+          description: Indicates whether or not the checklist is required.
+          enum:
+          - Y
+          - N
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/inspectionChecklistItemModel'
+          type: array
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+    inspectionChecklistItemModel:
+      type: object
+      properties:
+        checklist:
+          description: The name of a checklist.
+          type: string
+        checklistId:
+          description: The unique ID associated with the checklist.
+          format: int64
+          type: integer
+        checklistItem:
+          type: object
+          description: An item in the checklist.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        comment:
+          type: object
+          description: Comments or notes about the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        customId:
+          description: The checklist item's custom ID.
+          type: string
+        displayOrder:
+          description: The item's display order.
+          format: int64
+          type: integer
+        id:
+          description: The checklist item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        refGuideType:
+          description: The name of the checklist group the given item is originally from.
+          type: string
+        isCritical:
+          description: Indicates whether or not the checklist item is critical.
+          enum:
+          - Y
+          - N
+          type: string
+        isMajorViolation:
+          description: Indicates whether or not the checklist item is a major violation.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        score:
+          description: The inspection score for a checklist or checklist item.
+          format: int64
+          type: integer
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The checklist item status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_checklistModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_inpsectionChecklistModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inpsectionChecklistModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-inspections.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

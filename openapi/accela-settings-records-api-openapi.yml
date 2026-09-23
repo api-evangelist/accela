@@ -1,0 +1,801 @@
+openapi: 3.2.0
+info:
+  description: The Settings API provides configuration values that have been defined in Civic Platform Administration, typically as standard choice values. The Settings APIs are helpful when you need reference or custom-configured values in your API calls.
+  title: Settings/Records API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Settings/Records
+paths:
+  /v4/settings/records/constructionTypes:
+    get:
+      description: 'Gets the construction types for the specified record type.
+
+
+        **API Endpoint**: GET /v4/settings/records/constructionTypes
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Record Construction Types
+      operationId: v4.get.settings.records.constructionTypes
+      tags:
+      - Settings/Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/expirationStatuses:
+    get:
+      description: 'Gets the expiration status values for use with records..
+
+
+        **API Endpoint**: GET /v4/settings/records/expirationStatuses
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Record Expiration Statuses
+      operationId: v4.get.settings.records.expirationStatuses
+      tags:
+      - Settings/Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/types:
+    get:
+      description: 'Gets predefined record types.
+
+
+        **API Endpoint**: GET /v4/settings/records/types
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Record Types
+      operationId: v4.get.settings.records.types
+      tags:
+      - Settings/Records
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - description: Search result size limit.
+        in: query
+        name: limit
+        schema:
+          type: integer
+          format: int64
+          enum:
+          - range[1,1000]
+      - description: Filter by module. This is required for citizen-facing apps, but not required for agency-facing apps.
+        in: query
+        name: module
+        required: true
+        schema:
+          type: string
+      - description: Filter by whether or not it is a fee estimate.
+        in: query
+        name: isFeeEstimate
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      - description: Filter by action associated with the record type.
+        in: query
+        name: action
+        schema:
+          type: string
+          enum:
+          - createApplication
+          - createHuntingLicense
+          - amendApplication
+          - amendContact
+      - description: The related objects to be returned with the response. The related object(s) will be returned if data exists; if data does not exist, the requested object(s) will not be included in the response.
+        in: query
+        name: expand
+        schema:
+          type: string
+          enum:
+          - associations
+      - description: Filter by record type filter name.
+        in: query
+        name: filterName
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordTypeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/types/{recordTypeId}/assetTypes:
+    get:
+      description: 'Returns all asset types for a given record type.
+
+
+        **API Endpoint**: GET /v4/settings/records/types/{recordTypeId}/assetTypes
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All Asset Types for Record Type
+      operationId: v4.get.settings.records.types.recordTypeId.assetTypes
+      tags:
+      - Settings/Records
+      parameters:
+      - description: The id of the record type to fetch.
+        in: path
+        name: recordTypeId
+        required: true
+        schema:
+          type: string
+      - description: Filter by asset group.
+        in: query
+        name: group
+        schema:
+          type: string
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordTypeAssetTypeModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/types/{id}/customForms:
+    get:
+      description: 'Gets the metadata of custom forms for a specified record type.
+
+
+        **API Endpoint**: GET /v4/settings/records/types/{id}/customForms
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Forms Metadata for Record Type
+      operationId: v4.get.settings.records.types.id.customForms
+      tags:
+      - Settings/Records
+      parameters:
+      - description: The id of the record type to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customFormMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/types/{id}/customTables:
+    get:
+      description: 'Gets the metadata of all custom tables for a specified record type.
+
+
+        **API Endpoint**: GET /v4/settings/records/types/{id}/customTables
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: No authorization required
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Custom Tables Metadata for Record Type
+      operationId: v4.get.settings.records.types.id.customTables
+      tags:
+      - Settings/Records
+      parameters:
+      - description: The id of the record type to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_customTableMetadataModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/types/{id}/fees/schedules:
+    get:
+      description: 'Gets the types of available fee schedules.
+
+
+        **API Endpoint**: GET /v4/settings/records/types/{id}/fees/schedules
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Fee Schedules for Record Type
+      operationId: v4.get.settings.records.types.id.fees.schedules
+      tags:
+      - Settings/Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the record type to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_settingValueModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+  /v4/settings/records/types/{id}/statuses:
+    get:
+      description: 'Gets the status values for use with a specified record type.
+
+
+        **API Endpoint**: GET /v4/settings/records/types/{id}/statuses
+
+
+        **Scope**: records
+
+
+        **App Type**: All
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Get All Statuses for Record Type
+      operationId: v4.get.settings.records.types.id.statuses
+      tags:
+      - Settings/Records
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - description: The ID of the record type to fetch.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_recordStatusModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  schemas:
+    customTableMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
+          type: string
+    response_recordTypeAssetTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordTypeAssetTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordTypeAssociationsModel:
+      type: object
+      properties:
+        addressTypeGroup:
+          description: The name of the address type group that contains permissible address tyeps for instances of the record type.
+          type: string
+        customFormGroup:
+          description: The name of the custom forms group for instances of the record type.
+          type: string
+        documentCode:
+          description: The code that defines the document types for the record type.
+          type: string
+        expirationCode:
+          description: The code that defines the parameters for expiring records that are instances of the record type.
+          type: string
+        feeSchedule:
+          description: The name of the fee schedule associated with instances of the record type.
+          type: string
+        inspectionGroup:
+          description: The name of the inspection group that contains the inspection-related parameters applied to instances of the record type.
+          type: string
+        recordStatusGroup:
+          description: The group of record statuses associated with the record type.
+          type: string
+        standardCommentGroup:
+          items:
+            type: object
+            description: The name of the standard comment group associated with instances of the record type.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        virtualFolderGroup:
+          description: The name of the virtual folder group associated with instances of the record type.
+          type: string
+        workflow:
+          description: The name of the workflow associated with instances of the record type.
+          type: string
+    response_recordTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_recordStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
+    aSITableDrill:
+      description: Contains drilldown field information.
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    gISLayerIdModel:
+      description: The GIS layer in the GIS service to be used with the asset. The GIS layer should be a configured map layer on the GIS service in Accela GIS Administration.
+      type: object
+      properties:
+        display:
+          description: The display name of the GIS layer ID.
+          type: string
+    recordStatusModel:
+      type: object
+      properties:
+        group:
+          description: The record status group.
+          type: string
+        text:
+          description: The record status name.
+          type: string
+        value:
+          description: The record status value.
+          type: string
+    recordTypeAssetTypeModel:
+      type: object
+      properties:
+        gisIDForAssetID:
+          description: "\tThe name of the GIS ID field that is mapped to the asset ID."
+          type: string
+        gisLayer:
+          $ref: '#/components/schemas/gISLayerIdModel'
+        gisService:
+          description: "\tThe GIS service to be used with the asset. The GIS service should be a configured map service in Accela GIS Administration."
+          type: string
+        group:
+          description: 'The name of the asset group. For example: Water or Street. An Asset Group is an agency-defined collection of objects the agency owns or maintains.'
+          type: string
+        type:
+          description: 'The type of asset. For example: Hydrant or Manhole. An Asset Type is an agencydefined classification of similar objects that share the same standard asset attributes. Related asset types belong to an asset group, and multiple asset types can share the same Class Type.'
+          type: string
+    customFormMetadataModel:
+      description: Contains the metadata for a custom form.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom form's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom form id.
+          type: string
+        text:
+          description: The custom form name.
+          type: string
+    recordTypeModel:
+      type: object
+      properties:
+        alias:
+          description: The record type alias.
+          type: string
+        associations:
+          $ref: '#/components/schemas/recordTypeAssociationsModel'
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        createable:
+          description: Indicates whether or not the record can be created.
+          type: boolean
+        deletable:
+          description: Indicates whether or not the record can be deleted.
+          type: boolean
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        asChildOnly:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        readable:
+          description: Indicates whether or not values for sibling fields are readable.
+          type: boolean
+        searchable:
+          description: Indicates whether or not the item is searchable.
+          type: boolean
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        updatable:
+          description: Indicates whether or not the item can be updated.
+          type: boolean
+        value:
+          description: The stored value.
+          type: string
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          description: The ID of the drilldown child record.
+          format: int64
+          type: integer
+        id:
+          description: The ID of the current record.
+          type: string
+    customFormField:
+      type: object
+      properties:
+        displayOrder:
+          description: ''
+          format: int64
+          type: integer
+        drillDown:
+          $ref: '#/components/schemas/aSITableDrill'
+        fieldType:
+          description: The custom field data type.
+          type: string
+        id:
+          description: The custom field system id assigned by the Civic Platform server.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the custom field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the custom field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The custom field length
+          format: int64
+          type: integer
+        options:
+          items:
+            type: object
+            description: Contains dropdown option values.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The custom field localized text.
+          type: string
+        value:
+          description: The custom field stored value.
+          type: string
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customTableMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-settings.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.

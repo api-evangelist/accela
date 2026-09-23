@@ -1,0 +1,387 @@
+openapi: 3.2.0
+info:
+  description: Accela API for transactional records and related record resources
+  title: Records/Assets API
+  version: v4
+servers:
+- url: https://apis.accela.com/
+tags:
+- name: Records/Assets
+  description: A work order record is linked to assets that require inspection, repair service, or any kind of task that needs to be performed and tracked in the system.
+paths:
+  /v4/records/{recordId}/assets:
+    get:
+      description: 'Returns all assets for a given record.
+
+
+        **API Endpoint**: GET /v4/records/{recordId}/assets
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Get All Assets for Record
+      operationId: v4.get.records.recordId.assets
+      tags:
+      - Records/Assets
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_assetMasterModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+    post:
+      description: 'Adds one or more assets to a given record.
+
+
+        **API Endpoint**: POST /v4/records/{recordId}/assets
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 7.3.2'
+      summary: Add Assets to Record
+      operationId: v4.post.records.recordId.assets
+      tags:
+      - Records/Assets
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+              type: array
+        description: An array of asset IDs to be linked to the record.
+  /v4/records/{recordId}/assets/{ids}:
+    delete:
+      description: 'Deletes one or more assets from a given record.
+
+
+        **API Endpoint**: DELETE /v4/records/{recordId}/assets/{ids}
+
+
+        **Scope**: records
+
+
+        **App Type**: Agency
+
+
+        **Authorization Type**: Access token
+
+
+        **Civic Platform version**: 9.0.0'
+      summary: Delete Assets from Record
+      operationId: v4.delete.records.recordId.assets.ids
+      tags:
+      - Records/Assets
+      parameters:
+      - $ref: '#/components/parameters/authHeaderParam'
+      - $ref: '#/components/parameters/recordId'
+      - description: Comma-delimited IDs of the assets to be removed.
+        in: path
+        name: ids
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/lang'
+      responses:
+        '200':
+          description: 'Successful request. Note: A successful request may return no data matching the filter criteria. A successful request may also return messages related to Event Manager Scripting Engine back-end processing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_resultModelArray'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Authorization failed.
+        '403':
+          description: Forbidden request.
+        '404':
+          description: Requested resource not found.
+        '500':
+          description: Internal server error or bad connection.
+components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+  schemas:
+    assetMasterModel:
+      type: object
+      properties:
+        assetId:
+          description: "The unique alpha-numeric asset ID in an asset group. \n\n**Added in Civic Platform version**: 9.2.0\n\n"
+          type: string
+        classType:
+          description: "A Class Type is how Civic Platform groups objects that an agency owns or maintains. The five class types are component, linear, node-link linear, point, and polygon. Asset class types provide the ability to assign or group multiple asset types together.\t"
+          type: string
+        comments:
+          type: object
+          description: General comments about the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        currentValue:
+          description: The current value of the asset.
+          format: double
+          type: number
+        dateOfService:
+          description: The date the asset was initially placed into service.
+          format: date-time
+          type: string
+        dependentFlag:
+          description: Indicates whether or not the parent asset is dependent on this asset.
+          enum:
+          - Y
+          - N
+          type: string
+        depreciationAmount:
+          description: The decline in the asset value by the asset depreciation calculation.
+          format: double
+          type: number
+        depreciationEndDate:
+          description: The end date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+          format: date-time
+          type: string
+        depreciationStartDate:
+          description: The start date for the asset depreciation calculation. This field is used in the asset depreciation calculation.
+          format: date-time
+          type: string
+        depreciationValue:
+          description: The asset value after the asset depreciation calculation, which is based on the start value, depreciation start and end dates, useful life, and salvage value.
+          format: double
+          type: number
+        description:
+          type: object
+          description: The description of the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        endID:
+          description: The ending point asset ID.
+          type: string
+        gisObjects:
+          items:
+            $ref: '#/components/schemas/gISObjectModel'
+          type: array
+        id:
+          description: The asset system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        name:
+          type: object
+          description: The descriptive name of the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        number:
+          description: The unique, alpha-numeric asset ID.
+          type: string
+        salvageValue:
+          description: The residual value of the asset at the end of itâ€™s useful life.
+          format: double
+          type: number
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        size:
+          description: A positive numeric value for the asset size.
+          format: double
+          type: number
+        sizeUnit:
+          description: The unit of measure corresponding to the asset size.
+          type: string
+        startID:
+          description: The starting point asset ID.
+          type: string
+        startValue:
+          description: The beginning value or purchase price of the asset.
+          format: double
+          type: number
+        status:
+          type: object
+          description: The status of the asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date the asset status changed.
+          format: date-time
+          type: string
+        type:
+          type: object
+          description: The type of asset.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    gISObjectModel:
+      type: object
+      properties:
+        gisId:
+          description: The GIS object id.
+          type: string
+        layerId:
+          description: The map layer id.
+          type: string
+        serviceId:
+          description: The map service id.
+          type: string
+    response_assetMasterModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetMasterModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+x-api-evangelist-provenance:
+  generated: '2026-09-06'
+  method: searched
+  source: https://developer.accela.com/api/v4/v4-records.json
+  note: Harvested verbatim from the Accela Developer Portal API Reference, which renders these Swagger 2.0 documents via ReDoc (spec-url on developer.accela.com/docs/api_reference/api-*.html). The byte-identical original is kept at openapi/_original/. This copy is the same document serialized to YAML.
