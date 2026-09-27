@@ -83,16 +83,6 @@ components:
         customFormType:
           type: string
           description: Indicates whether the custom form is for an address, parcel, or owner.
-    response_apo_customForms_metadata:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/apo_customForms_metadata'
-          type: array
-        status:
-          type: integer
-          description: The return status code.
     apo_customForms_metadata_fields:
       description: "Describes the metadata of a custom field. \n\nAdded in Civic Platform version: 9.2.0"
       type: object
@@ -174,6 +164,16 @@ components:
         sharedDropdownListName:
           type: string
           description: The name of the shared dropdown list, if the field is a dropdown field type.
+    response_apo_customForms_metadata:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/apo_customForms_metadata'
+          type: array
+        status:
+          type: integer
+          description: The return status code.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

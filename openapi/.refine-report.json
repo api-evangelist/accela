@@ -128,7 +128,7 @@
     "accela-settings-time-accounting-api-openapi.yml"
   ],
   "archived": [
-    "deleted 2 superseded output(s) from the previous generation"
+    "deleted 1 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
@@ -195,8 +195,8 @@
     "accela-settings-openapi.yml: declared missing tag: Settings/Professsionals",
     "accela-settings-openapi.yml: declared missing tag: Settings/Records",
     "accela-settings-openapi.yml: declared missing tag: Settings/Time Accounting",
-    "superseded outputs removed: accela-document-review-api-openapi.yml, accela-o-auth2-api-openapi.yml",
-    "apis.yml register: written (+2 apis, 109 total)"
+    "superseded outputs removed: accela-document-review-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 109 total)"
   ],
   "skipped": [
     "_original/accela-settings.json: archived document superseded by a larger archived document",
@@ -259,7 +259,7 @@
     "accela-inspectors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "accela-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "accela-mileage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "accela-o-auth2-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "accela-oauth2-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "accela-owners-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "accela-parcels-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "accela-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",

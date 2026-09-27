@@ -389,126 +389,27 @@ paths:
               - uploadedFile
               - fileInfo
 components:
-  parameters:
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
-    checklistIdString:
-      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
-      in: path
-      name: checklistId
-      required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    checklistId:
-      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
-      in: path
-      name: checklistId
-      required: true
-      schema:
-        type: integer
-        format: int64
-    expand:
-      description: 'Parameter to bring comment group. '
-      in: query
-      name: expand
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    inspectionIdString:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
-      in: path
-      name: inspectionId
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    checklistItemIdString:
-      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
-      in: path
-      name: checklistItemId
-      required: true
-      schema:
-        type: string
-    inspectionId:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
-      in: path
-      name: inspectionId
-      required: true
-      schema:
-        type: integer
-        format: int64
   schemas:
-    userRolePrivilegeModel:
+    response_resultModelArray:
       type: object
       properties:
-        contactAllowed:
-          description: Indicates whether or not the permission is given to a contact.
-          type: boolean
-        deleteAllowed:
-          description: "Indicates whether or not the permission to delete a document is allowed.\t"
-          type: boolean
-        downloadAllowed:
-          description: Indicates whether or not the permission to download a document is allowed.
-          type: boolean
-        licenseTypeRules:
+        result:
           items:
-            type: string
-            description: "A string array containing the types of licensed professionals who are given the permission.\t"
+            $ref: '#/components/schemas/resultModel'
           type: array
-        licensendProfessionalAllowed:
-          description: Indicates whether or not the permission is given to a licensed professional.
-          type: boolean
-        ownerAllowed:
-          description: Indicates whether or not the permission is given to an owner.
-          type: boolean
-        recordCreatorAllowed:
-          description: Indicates whether or not the permission is given to a record creator.
-          type: boolean
-        registeredUserAllowed:
-          description: Indicates whether or not the permission is given to a registered public user.
-          type: boolean
-        titleViewAllowed:
-          description: Indicates whether or not the permission to view a document name is allowed.
-          type: boolean
-        uploadAllowed:
-          description: Indicates whether or not the permission to upload a document is allowed.
-          type: boolean
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_checklistItemStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistItemStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     response_checklistItemStatusSearchModelArray:
       type: object
       properties:
@@ -604,6 +505,14 @@ components:
             value:
               description: The data value.
               type: string
+    response_chekclistItemHistoryModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/chekclistItemHistoryModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     checklistModel:
       type: object
       properties:
@@ -626,26 +535,84 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_resultModelArray:
+    userRolePrivilegeModel:
       type: object
       properties:
-        result:
+        contactAllowed:
+          description: Indicates whether or not the permission is given to a contact.
+          type: boolean
+        deleteAllowed:
+          description: "Indicates whether or not the permission to delete a document is allowed.\t"
+          type: boolean
+        downloadAllowed:
+          description: Indicates whether or not the permission to download a document is allowed.
+          type: boolean
+        licenseTypeRules:
           items:
-            $ref: '#/components/schemas/resultModel'
+            type: string
+            description: "A string array containing the types of licensed professionals who are given the permission.\t"
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_documentModelArray:
+        licensendProfessionalAllowed:
+          description: Indicates whether or not the permission is given to a licensed professional.
+          type: boolean
+        ownerAllowed:
+          description: Indicates whether or not the permission is given to an owner.
+          type: boolean
+        recordCreatorAllowed:
+          description: Indicates whether or not the permission is given to a record creator.
+          type: boolean
+        registeredUserAllowed:
+          description: Indicates whether or not the permission is given to a registered public user.
+          type: boolean
+        titleViewAllowed:
+          description: Indicates whether or not the permission to view a document name is allowed.
+          type: boolean
+        uploadAllowed:
+          description: Indicates whether or not the permission to upload a document is allowed.
+          type: boolean
+    chekclistItemHistoryModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
+        checklistItemId:
+          description: The checklist item id.
+          format: int64
           type: integer
-          description: The HTTP return status.
+        comments:
+          description: Comments or note about the checklist item.
+          type: string
+        inspectionType:
+          description: The inspection type.
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        majorViolation:
+          type: object
+          description: The major violation related to the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        score:
+          description: The inspection score related to the checklist item.
+          format: int64
+          type: integer
+        status:
+          description: The checklist item status.
+          type: string
+        updatedBy:
+          description: The user who last updated the checklist item.
+          type: string
+        updatedDate:
+          description: The date and time the checklist item was last updated.
+          format: date-time
+          type: string
     documentModel:
       type: object
       properties:
@@ -738,26 +705,6 @@ components:
         virtualFolders:
           description: The virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_checklistItemStatusModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/checklistItemStatusModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    checklistItemStatusModel:
-      description: A checklist item status
-      type: object
-      properties:
-        text:
-          description: The status display label.
-          type: string
-        value:
-          description: The status value.
-          type: string
     inspectionChecklistItemModel:
       type: object
       properties:
@@ -837,63 +784,12 @@ components:
             value:
               description: The data value.
               type: string
-    response_chekclistItemHistoryModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/chekclistItemHistoryModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    chekclistItemHistoryModel:
-      type: object
-      properties:
-        checklistItemId:
-          description: The checklist item id.
-          format: int64
-          type: integer
-        comments:
-          description: Comments or note about the checklist item.
-          type: string
-        inspectionType:
-          description: The inspection type.
-          type: string
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        majorViolation:
-          type: object
-          description: The major violation related to the checklist item.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        score:
-          description: The inspection score related to the checklist item.
-          format: int64
-          type: integer
-        status:
-          description: The checklist item status.
-          type: string
-        updatedBy:
-          description: The user who last updated the checklist item.
-          type: string
-        updatedDate:
-          description: The date and time the checklist item was last updated.
-          format: date-time
-          type: string
-    response_inspectionChecklistItemModelArray:
+    response_checklistModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/inspectionChecklistItemModel'
+            $ref: '#/components/schemas/checklistModel'
           type: array
         status:
           type: integer
@@ -920,16 +816,120 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_checklistModelArray:
+    response_documentModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/checklistModel'
+            $ref: '#/components/schemas/documentModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
+    checklistItemStatusModel:
+      description: A checklist item status
+      type: object
+      properties:
+        text:
+          description: The status display label.
+          type: string
+        value:
+          description: The status value.
+          type: string
+    response_inspectionChecklistItemModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionChecklistItemModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    checklistId:
+      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
+      in: path
+      name: checklistId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    inspectionIdString:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: string
+    checklistItemIdString:
+      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
+      in: path
+      name: checklistItemId
+      required: true
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    checklistIdString:
+      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
+      in: path
+      name: checklistId
+      required: true
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    expand:
+      description: 'Parameter to bring comment group. '
+      in: query
+      name: expand
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

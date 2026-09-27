@@ -204,30 +204,7 @@ paths:
               $ref: '#/components/schemas/timeLogModel'
         description: Time accounting request information.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
-    response_timeLogModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/timeLogModel'
-        status:
-          type: integer
-          description: The HTTP return status.
     response_resultModelArray:
       type: object
       properties:
@@ -388,6 +365,40 @@ components:
             value:
               description: The data value.
               type: string
+    response_timeLogModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/timeLogModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_timeLogModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/timeLogModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     costingQuantityModel:
       type: object
       properties:
@@ -418,32 +429,21 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_timeLogModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/timeLogModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -210,6 +210,59 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        postalCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+    response_refOwnerModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
     identifierModel:
       type: object
       properties:
@@ -281,40 +334,11 @@ components:
         type:
           description: The owner type.
           type: string
-    ownerAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          type: string
-        addressLine3:
-          type: string
-        city:
-          type: string
-        country:
-          $ref: '#/components/schemas/identifierModel'
-        postalCode:
-          type: string
-        state:
-          $ref: '#/components/schemas/identifierModel'
-    response_resultModelArray:
+    response_refOwnerModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_refOwnerModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/refOwnerModel'
-          type: array
+          $ref: '#/components/schemas/refOwnerModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -337,38 +361,7 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_refOwnerModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/refOwnerModel'
-        status:
-          type: integer
-          description: The HTTP return status.
   parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     recordId:
       description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
       in: path
@@ -388,6 +381,13 @@ components:
       in: header
       name: Authorization
       required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

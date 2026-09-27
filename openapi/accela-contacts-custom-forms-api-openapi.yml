@@ -196,35 +196,6 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
     response_resultModelArray:
       type: object
@@ -236,16 +207,91 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    childDrill:
+    customFormMetadataModel:
+      description: Contains the metadata for a custom table.
       type: object
       properties:
-        drillId:
-          description: The ID of the drilldown child record.
+        displayOrder:
+          description: The custom table's display order.
           format: int64
           type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
         id:
-          description: The ID of the current record.
+          description: The custom table id.
           type: string
+        text:
+          description: The custom table name.
+          type: string
+    aSITableDrill:
+      description: Contains drilldown field information.
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
+          type: string
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customFormModel:
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: A custom field name.
+          type: string
+        <aCustomFieldValue>:
+          description: A custom field value.
+          type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -295,91 +341,45 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    response_customAttributeModelArray:
+    childDrill:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    customFormMetadataModel:
-      description: Contains the metadata for a custom table.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom table's display order.
+        drillId:
+          description: The ID of the drilldown child record.
           format: int64
           type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
         id:
-          description: The custom table id.
+          description: The ID of the current record.
           type: string
-        text:
-          description: The custom table name.
-          type: string
-    customFormModel:
-      type: object
-      properties:
-        id:
-          description: The custom form id.
-          type: string
-        <aCustomFieldName>:
-          description: A custom field name.
-          type: string
-        <aCustomFieldValue>:
-          description: A custom field value.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: ''
-          type: string
-        aCustomFieldValue:
-          description: ''
-          type: string
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    aSITableDrill:
-      description: Contains drilldown field information.
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

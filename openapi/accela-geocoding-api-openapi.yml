@@ -64,11 +64,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_geocodeAddressModel:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/geocodeAddressModel'
     geocodeAddressModel:
       type: object
       description: Contains the address information for the given coordinates.
@@ -118,6 +113,11 @@ components:
         countryCode:
           description: The country code or abbreviation.
           type: string
+    response_geocodeAddressModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/geocodeAddressModel'
   parameters:
     lang:
       description: Language parameter to support I18N. Default language is en_US.

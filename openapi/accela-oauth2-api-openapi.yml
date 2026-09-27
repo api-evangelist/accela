@@ -209,6 +209,69 @@ paths:
       - OAuth2
 components:
   schemas:
+    response_token:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The issued user access token.
+        token_type:
+          type: string
+          description: The type of the token issued. It contains the fixed value "bearer" for authorization_code grant type.
+        expires_in:
+          type: string
+          description: The lifetime in seconds of the access token. For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated.
+        refresh_token:
+          type: string
+          description: The refresh token that can be used to obtain a new access token.
+        scope:
+          type: string
+          description: The scope of the resources authenticated by the authorization server.
+        state:
+          type: string
+          description: 'The exact value received from the client. '
+    response_authorize:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The authorization code (for an authorization code flow request where response_type=code). The client app uses the authorization code to exchange for an access token.
+        environment:
+          type: string
+          description: "The environment name that the user selected when signing into the app (for an authorization code flow request where response_type=code). \n\t\t\t\t\t\n\nFor an implicit flow request where response_type=token, environment is returned as a parameter in the redirection URI using the \"application/x-www-form-urlencoded\" format. "
+        agency_name:
+          type: string
+          description: "The agency name that the user entered when signing into the app (for an authorization code flow request where response_type=code). \n\t\t\t\t\t\n\nFor an implicit flow request where response_type=token, agency_name is returned as a parameter in the redirection URI using the \"application/x-www-form-urlencoded\" format. "
+        state:
+          type: string
+          description: "The exact value received from the client (for an authorization code flow request where response_type=code). Check this value against original state value sent in the request to verify and protect against CSRF. \n\nFor an implicit flow request where response_type=token, state is returned as a parameter in the redirection URI using the \"application/x-www-form-urlencoded\" format. "
+        access_token:
+          type: string
+          description: 'The issued user access token (for an implicit flow request where response_type=token). access_token is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
+        token_type:
+          type: string
+          description: 'The type of the token issued (for an implicit flow request where response_type=token). token_type is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
+        expires_in:
+          type: string
+          description: 'The lifetime in seconds of the access token (for an implicit flow request where response_type=token). For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated. expires_in is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
+        scope:
+          type: string
+          description: 'The scope of the resources authenticated by the authorization server (for an implicit flow request where response_type=token). scope is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
+    response_error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code. Refer [here](https://tools.ietf.org/html/rfc6749#section-4.1.2) for details.
+        error_description:
+          type: string
+          description: The error description text.
+        error_uri:
+          type: string
+          description: The URI of web page with more information about the error.
+        state:
+          type: string
+          description: 'The exact value received from the client. '
     request_authorize:
       type: object
       required:
@@ -245,84 +308,6 @@ components:
         state:
           description: An opaque value that the client uses for maintaining the state between the request and callback. Enter a unique value. This can be used for [Cross-Site Request Forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) protection.
           type: string
-    response_authorize:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The authorization code (for an authorization code flow request where response_type=code). The client app uses the authorization code to exchange for an access token.
-        environment:
-          type: string
-          description: "The environment name that the user selected when signing into the app (for an authorization code flow request where response_type=code). \n\t\t\t\t\t\n\nFor an implicit flow request where response_type=token, environment is returned as a parameter in the redirection URI using the \"application/x-www-form-urlencoded\" format. "
-        agency_name:
-          type: string
-          description: "The agency name that the user entered when signing into the app (for an authorization code flow request where response_type=code). \n\t\t\t\t\t\n\nFor an implicit flow request where response_type=token, agency_name is returned as a parameter in the redirection URI using the \"application/x-www-form-urlencoded\" format. "
-        state:
-          type: string
-          description: "The exact value received from the client (for an authorization code flow request where response_type=code). Check this value against original state value sent in the request to verify and protect against CSRF. \n\nFor an implicit flow request where response_type=token, state is returned as a parameter in the redirection URI using the \"application/x-www-form-urlencoded\" format. "
-        access_token:
-          type: string
-          description: 'The issued user access token (for an implicit flow request where response_type=token). access_token is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
-        token_type:
-          type: string
-          description: 'The type of the token issued (for an implicit flow request where response_type=token). token_type is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
-        expires_in:
-          type: string
-          description: 'The lifetime in seconds of the access token (for an implicit flow request where response_type=token). For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated. expires_in is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
-        scope:
-          type: string
-          description: 'The scope of the resources authenticated by the authorization server (for an implicit flow request where response_type=token). scope is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
-    response_token:
-      type: object
-      properties:
-        access_token:
-          type: string
-          description: The issued user access token.
-        token_type:
-          type: string
-          description: The type of the token issued. It contains the fixed value "bearer" for authorization_code grant type.
-        expires_in:
-          type: string
-          description: The lifetime in seconds of the access token. For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated.
-        refresh_token:
-          type: string
-          description: The refresh token that can be used to obtain a new access token.
-        scope:
-          type: string
-          description: The scope of the resources authenticated by the authorization server.
-        state:
-          type: string
-          description: 'The exact value received from the client. '
-    response_status:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The HTTP error code.
-        code:
-          type: string
-          description: The error code.
-        message:
-          type: string
-          description: The error message.
-        traceId:
-          type: string
-          description: 'The traceid for debugging purposes. '
-    response_error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The error code. Refer [here](https://tools.ietf.org/html/rfc6749#section-4.1.2) for details.
-        error_description:
-          type: string
-          description: The error description text.
-        error_uri:
-          type: string
-          description: The URI of web page with more information about the error.
-        state:
-          type: string
-          description: 'The exact value received from the client. '
     request_token:
       type: object
       required:
@@ -376,6 +361,21 @@ components:
         state:
           description: "An opaque value that the client uses for maintaining the state between the request and callback. Enter a unique value. This can be used for [Cross-Site Request Forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) protection.\n\nThis parameter is not used when refreshing a token.\n\t\t\t\t\t\n\n**Note**: state is used and optional only when calling this API with grant_type=authorization_code for [Authorization Code Flow](../construct-authCodeFlow.html). "
           type: string
+    response_status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The HTTP error code.
+        code:
+          type: string
+          description: The error code.
+        message:
+          type: string
+          description: The error message.
+        traceId:
+          type: string
+          description: 'The traceid for debugging purposes. '
     response_tokeninfo:
       type: object
       properties:

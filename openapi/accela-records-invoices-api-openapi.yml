@@ -106,13 +106,6 @@ paths:
         required: true
 components:
   parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     recordId:
       description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
       in: path
@@ -134,17 +127,14 @@ components:
       required: true
       schema:
         type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
   schemas:
-    response_invoiceModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/invoiceModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     invoiceModel:
       type: object
       properties:
@@ -210,6 +200,30 @@ components:
           type: string
         udf4:
           description: Invoice user defined field 4.
+          type: string
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
           type: string
     feeItemModel:
       type: object
@@ -403,6 +417,16 @@ components:
             value:
               description: The data value.
               type: string
+    response_invoiceModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/invoiceModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     recordIdModel:
       type: object
       properties:
@@ -422,30 +446,6 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_resultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

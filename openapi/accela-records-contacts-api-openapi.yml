@@ -416,13 +416,16 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    identifierModel:
+    response_resultModelArray:
       type: object
       properties:
-        text:
-          type: string
-        value:
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     contactAddress:
       type: object
       properties:
@@ -499,16 +502,67 @@ components:
           type: string
         unitType:
           $ref: '#/components/schemas/identifierModel'
-    response_recordContactSimpleModelArray:
+    resultModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/recordContactSimpleModel'
-          type: array
-        status:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
           type: integer
-          description: The HTTP return status.
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    compactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: The address state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
     response_contactAddressArray:
       type: object
       properties:
@@ -519,12 +573,12 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_resultModelArray:
+    response_recordContactSimpleModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/recordContactSimpleModel'
           type: array
         status:
           type: integer
@@ -771,80 +825,12 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    compactAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: The address state.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
   parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     recordId:
       description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
       in: path
       name: recordId
       required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
       schema:
         type: string
     contactId:
@@ -855,11 +841,25 @@ components:
       schema:
         type: integer
         format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
       name: Authorization
       required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

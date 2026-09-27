@@ -155,7 +155,96 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    exclude:
+      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
+      in: query
+      name: exclude
+      required: false
+      schema:
+        type: string
+    groupId:
+      description: The id of the group that user belongs to
+      in: query
+      name: groupId
+      required: false
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    module:
+      description: The module that user belongs to
+      in: query
+      name: module
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    userStatus:
+      description: The status of the user, enable or disable
+      in: query
+      name: userStatus
+      required: false
+      schema:
+        type: string
+    groupName:
+      description: The name of the group that user belongs to
+      in: query
+      name: groupName
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
+    usergroupsModel:
+      type: object
+      properties:
+        module:
+          description: The module the user group belongs to.
+          type: string
+        status:
+          description: Enabled or Disabled
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
     response_userModel:
       type: object
       properties:
@@ -166,18 +255,21 @@ components:
           description: The HTTP return status.
         page:
           $ref: '#/components/schemas/pageModel'
-    groupModel:
+    userGroupModel:
       type: object
       properties:
-        id:
-          description: The user group system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        moduleName:
-          description: The module the user group belongs to.
+        firstName:
+          description: The user's first name.
           type: string
-        name:
-          description: The name of the user group.
+        groups:
+          items:
+            $ref: '#/components/schemas/groupModel'
+          type: array
+        lastName:
+          description: The user's last name.
+          type: string
+        serviceProviderCode:
+          description: The agency the user belongs to.
           type: string
     userModel:
       type: object
@@ -203,6 +295,19 @@ components:
           type: string
         department:
           $ref: '#/components/schemas/departmentModel'
+    groupModel:
+      type: object
+      properties:
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
     myuserModel:
       type: object
       properties:
@@ -229,22 +334,22 @@ components:
         value:
           description: The user id value
           type: string
-    usergroupsModel:
+    response_userGroupModel:
       type: object
       properties:
-        module:
-          description: The module the user group belongs to.
-          type: string
+        result:
+          $ref: '#/components/schemas/userGroupModel'
         status:
-          description: Enabled or Disabled
-          type: string
-        name:
-          description: The name of the user group.
-          type: string
-        id:
-          description: The user group system id assigned by the Civic Platform server.
-          format: int64
           type: integer
+          description: The HTTP return status.
+    response_myuserModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/myuserModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     departmentModel:
       type: object
       properties:
@@ -278,22 +383,6 @@ components:
         value:
           description: The department value.
           type: string
-    userGroupModel:
-      type: object
-      properties:
-        firstName:
-          description: The user's first name.
-          type: string
-        groups:
-          items:
-            $ref: '#/components/schemas/groupModel'
-          type: array
-        lastName:
-          description: The user's last name.
-          type: string
-        serviceProviderCode:
-          description: The agency the user belongs to.
-          type: string
     pageModel:
       type: object
       properties:
@@ -309,95 +398,6 @@ components:
         hasmore:
           type: boolean
           description: true if there are more results to fetch; false if all results have been fetched.
-    response_userGroupModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/userGroupModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_myuserModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/myuserModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-  parameters:
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-    userStatus:
-      description: The status of the user, enable or disable
-      in: query
-      name: userStatus
-      required: false
-      schema:
-        type: string
-    module:
-      description: The module that user belongs to
-      in: query
-      name: module
-      required: false
-      schema:
-        type: string
-    fields:
-      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    groupId:
-      description: The id of the group that user belongs to
-      in: query
-      name: groupId
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    exclude:
-      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
-      in: query
-      name: exclude
-      required: false
-      schema:
-        type: string
-    groupName:
-      description: The name of the group that user belongs to
-      in: query
-      name: groupName
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

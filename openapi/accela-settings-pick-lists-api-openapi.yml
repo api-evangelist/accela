@@ -101,21 +101,6 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
     pickListValueModel:
       type: object
@@ -150,6 +135,14 @@ components:
         value:
           description: The pick list value.
           type: string
+    response_sharedPickListValuesModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/sharedPickListValuesModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     response_sharedPickListModelArray:
       type: object
       properties:
@@ -197,14 +190,21 @@ components:
           items:
             $ref: '#/components/schemas/pickListValueModel'
           type: array
-    response_sharedPickListValuesModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/sharedPickListValuesModel'
-        status:
-          type: integer
-          description: The HTTP return status.
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

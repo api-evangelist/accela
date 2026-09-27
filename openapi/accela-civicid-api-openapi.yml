@@ -293,44 +293,29 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    accountInfo:
+    returnStatus:
       type: object
       properties:
-        agencyDisplayName:
-          type: string
-          description: The name of the agency, as displayed in the application.
-        agencyName:
-          type: string
-          description: The name that identifies the agency.
-        id:
-          type: string
-          description: The account userid.
-        name:
-          type: string
-          description: The user's full name.
-    response_civicIdProfile:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/civicIdProfile'
         status:
           type: integer
           description: The HTTP return status.
-    accountModel:
+        code:
+          type: string
+          description: The error code, if an error is encountered.
+        message:
+          type: string
+          description: The error message, if an error is encountered.
+        traceid:
+          type: string
+          description: The id of the trace log entry, if an error is encountered.
+    response_linkedAccountInfo:
       type: object
       properties:
-        accountType:
-          type: string
-          description: The type of account.
-          enum:
-          - Agency
-          - Citizen
-        loginName:
-          type: string
-          description: The login of the user to be linked to the logged-in CivicID.
-        password:
-          type: string
-          description: The password of the user to be linked to the logged-in CivicID.
+        result:
+          $ref: '#/components/schemas/linkedAccountInfo'
+        status:
+          type: integer
+          description: The HTTP return status.
     response_linkedAccounts:
       type: object
       properties:
@@ -339,21 +324,6 @@ components:
         status:
           type: string
           description: The HTTP return status.
-    linkedAccountsArrays:
-      type: object
-      properties:
-        agencyAccounts:
-          items:
-            $ref: '#/components/schemas/accountInfo'
-          type: array
-        citizenAccounts:
-          items:
-            $ref: '#/components/schemas/accountInfo'
-          type: array
-        socialAccounts:
-          items:
-            $ref: '#/components/schemas/accountInfo'
-          type: array
     civicIdProfile:
       type: object
       properties:
@@ -399,77 +369,36 @@ components:
         streetAddress:
           description: 'The street address. '
           type: string
-    response_linkedAccount:
+    accountInfo:
       type: object
       properties:
-        result:
+        agencyDisplayName:
           type: string
-          description: The system id of the linked account.
-        status:
-          type: integer
-          description: The HTTP return status.
-        code:
+          description: The name of the agency, as displayed in the application.
+        agencyName:
           type: string
-          description: The error code, if an error is encountered.
-        message:
-          type: string
-          description: The error message, if an error is encountered.
-        traceid:
-          type: string
-          description: The id of the trace log entry, if an error is encountered.
-    department:
-      type: object
-      properties:
+          description: The name that identifies the agency.
         id:
-          description: (For agency token only) The department id.
           type: string
-        agency:
-          description: (For agency token only) The department agency.
+          description: The account userid.
+        name:
           type: string
-        bureau:
-          description: (For agency token only) The name of the bureau, which is an organization level within an agency.
-          type: string
-        division:
-          description: (For agency token only) The name of the division, which is an organization level within a bureau.
-          type: string
-        group:
-          description: (For agency token only) The department group.
-          type: string
-        section:
-          description: (For agency token only) A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
-          type: string
-        serviceProviderCode:
-          description: (For agency token only) The unique agency identifier on the Accela Civic Platform.
-          type: string
-        text:
-          description: (For agency token only) The localized display text.
-          type: string
-        value:
-          description: "\t(For agency token only) The display value."
-          type: string
-    returnStatus:
+          description: The user's full name.
+    linkedAccountsArrays:
       type: object
       properties:
-        status:
-          type: integer
-          description: The HTTP return status.
-        code:
-          type: string
-          description: The error code, if an error is encountered.
-        message:
-          type: string
-          description: The error message, if an error is encountered.
-        traceid:
-          type: string
-          description: The id of the trace log entry, if an error is encountered.
-    response_linkedAccountInfo:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/linkedAccountInfo'
-        status:
-          type: integer
-          description: The HTTP return status.
+        agencyAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+        citizenAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+        socialAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
     linkedAccountInfo:
       type: object
       properties:
@@ -503,6 +432,77 @@ components:
         department:
           description: (For agency token only) Contains department information.
           $ref: '#/components/schemas/department'
+    department:
+      type: object
+      properties:
+        id:
+          description: (For agency token only) The department id.
+          type: string
+        agency:
+          description: (For agency token only) The department agency.
+          type: string
+        bureau:
+          description: (For agency token only) The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: (For agency token only) The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: (For agency token only) The department group.
+          type: string
+        section:
+          description: (For agency token only) A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: (For agency token only) The unique agency identifier on the Accela Civic Platform.
+          type: string
+        text:
+          description: (For agency token only) The localized display text.
+          type: string
+        value:
+          description: "\t(For agency token only) The display value."
+          type: string
+    accountModel:
+      type: object
+      properties:
+        accountType:
+          type: string
+          description: The type of account.
+          enum:
+          - Agency
+          - Citizen
+        loginName:
+          type: string
+          description: The login of the user to be linked to the logged-in CivicID.
+        password:
+          type: string
+          description: The password of the user to be linked to the logged-in CivicID.
+    response_linkedAccount:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The system id of the linked account.
+        status:
+          type: integer
+          description: The HTTP return status.
+        code:
+          type: string
+          description: The error code, if an error is encountered.
+        message:
+          type: string
+          description: The error message, if an error is encountered.
+        traceid:
+          type: string
+          description: The id of the trace log entry, if an error is encountered.
+    response_civicIdProfile:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/civicIdProfile'
+        status:
+          type: integer
+          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

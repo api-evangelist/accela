@@ -117,18 +117,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
     settingValueModel:
       type: object
       properties:
@@ -153,6 +141,18 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
   parameters:
     lang:
       description: Language parameter to support I18N. Default language is en_US.

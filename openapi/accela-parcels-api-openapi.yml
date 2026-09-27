@@ -441,10 +441,24 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    limit:
-      description: Search result size limit.
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
-      name: limit
+      name: fields
+      required: false
+      schema:
+        type: string
+    parcelIdPathParam:
+      description: The system id of the parcel to fetch.
+      in: path
+      name: parcelId
+      required: true
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
       required: false
       schema:
         type: integer
@@ -456,38 +470,23 @@ components:
       required: true
       schema:
         type: string
-    conditionNameQueryParam:
-      description: Filter by condition name.
-      in: query
-      name: name
-      schema:
-        type: string
     conditionStatusQueryParam:
       description: Filter by condition status. See [Get All Standard Condition Statuses](./api-settings.html#operation/v4.get.settings.conditions.statuses), [Get All Approval Condition Statuses](./api-settings.html#operation/v4.get.settings.conditionApprovals.statuses)
       in: query
       name: status
       schema:
         type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
       in: query
-      name: fields
+      name: lang
       required: false
       schema:
         type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+    conditionNameQueryParam:
+      description: Filter by condition name.
       in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    parcelNumberQueryParam:
-      description: Filter by parcel number.
-      in: query
-      name: parcelNumber
-      required: false
+      name: name
       schema:
         type: string
     conditionTypeQueryParam:
@@ -503,21 +502,472 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
+    limit:
+      description: Search result size limit.
       in: query
-      name: lang
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    parcelNumberQueryParam:
+      description: Filter by parcel number.
+      in: query
+      name: parcelNumber
       required: false
       schema:
         type: string
-    parcelIdPathParam:
-      description: The system id of the parcel to fetch.
-      in: path
-      name: parcelId
-      required: true
-      schema:
-        type: string
   schemas:
+    conditionModel:
+      type: object
+      properties:
+        actionbyDepartment:
+          type: object
+          description: The department responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: The individual responsible for the action.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        activeStatus:
+          type: object
+          description: Indicates whether or not the condition is active.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        additionalInformation:
+          description: An unlimited text field to use if other fields are filled.
+          type: string
+        appliedDate:
+          description: 'The date when condition is applied. The Applied Date defaults to the current date in any of the following scenarios: 1) you are adding a standard condition, 2) you are creating a new condition, or 3) The condition is auto-assigned to a record.'
+          format: date-time
+          type: string
+        appliedbyDepartment:
+          type: object
+          description: The department responsible for applying the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        appliedbyUser:
+          type: object
+          description: The staff member responsible for applying the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        displayNoticeInAgency:
+          description: Indicates whether or not to display the condition notice in Civic Platform when a condition is applied.
+          type: boolean
+        displayNoticeInCitizens:
+          description: Indicates whether or not to display the condition notice in Citizen Access when a condition to a record or parcel is applied.
+          type: boolean
+        displayNoticeInCitizensFee:
+          description: Indicates whether or not to display the condition notice in Citizen Access Fee Estimate page when a condition to a record or parcel is applied.
+          type: boolean
+        effectiveDate:
+          description: The date when the condition becomes effective.
+          format: date-time
+          type: string
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        group:
+          type: object
+          description: The condition group, which is a set of condition types.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The condition system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inheritable:
+          type: object
+          description: Indicates whether or not Civic Platform checks for inheritable conditions when a user associates a child record with a parent record.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        isIncludeNameInNotice:
+          description: Indicates whether or not to display the condition name in the notice.
+          type: boolean
+        isIncludeShortCommentsInNotice:
+          description: Indicates whether or not to display the condition comments in the notice.
+          type: boolean
+        longComments:
+          description: Narrative comments to help identify the purpose or uses of the standard condition.
+          type: string
+        name:
+          description: The full name for the application contact.
+          type: string
+        ownerNumber:
+          description: (For owner conditions only) The owner number the condition applies to.
+          type: string
+        parcelNumber:
+          description: (For parcel conditions only) The parcel number the condition applies to.
+          type: string
+        priority:
+          type: object
+          description: The priority level assigned to the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicDisplayMessage:
+          description: Text entered into this field displays in the condition notice or condition status bar for the Condition Name for the public user in Accela IVR (AIVR) and Citizen Access (ACA).
+          type: string
+        resolutionAction:
+          description: The action performed in response to a condition.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        severity:
+          type: object
+          description: Indicates the severity of the condition.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortComments:
+          description: A brief description of the condition name. For example, the text may describe the situation that requires the system to apply the condition. You can set these short comments to display when a user accesses an application with this condition applied to it
+          type: string
+        status:
+          type: object
+          description: The condition status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        statusType:
+          description: The status type for a standard condition or an approval condition, applied or not applied for example.
+          type: string
+        type:
+          type: object
+          description: The condition type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_parcelModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/parcelModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    recordTypeModel:
+      type: object
+      properties:
+        alias:
+          description: The record type alias.
+          type: string
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom form data uses the configured address-parcel-owner template metadata. The custom fields use the configured address-parcel-owner template metadata. Note the following custom field data types: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+    response_simpleRecordModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/simpleRecordModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_parcelModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/parcelModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_conditionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_deleteDocument:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP return status.
+        result:
+          items:
+            $ref: '#/components/schemas/resultArrary'
+          type: array
+    parcelModel:
+      type: object
+      properties:
+        block:
+          description: The block number associated with the parcel.
+          type: string
+        book:
+          description: A reference to the physical location of parcel information in the County Assessor's office.
+          type: string
+        censusTract:
+          description: The unique number assigned by the Census Bureau that identifies the tract to which this parcel belongs.
+          type: string
+        councilDistrict:
+          description: The council district to which the parcel belongs.
+          type: string
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        exemptionValue:
+          description: The total value of any tax exemptions that apply to the land within the parcel.
+          format: double
+          type: number
+        gisSequenceNumber:
+          description: The GIS object ID of the parcel.
+          format: int64
+          type: integer
+        id:
+          description: The system id of the parcel assigned by the Civic Platform server.
+          type: string
+        improvedValue:
+          description: The total value of any improvements to the land within the parcel.
+          format: double
+          type: number
+        isPrimary:
+          description: Indicates whether or not to designate the parcel as the primary parcel.
+          type: string
+        landValue:
+          description: The total value of the land within the parcel.
+          format: double
+          type: number
+        legalDescription:
+          description: The legal description of the parcel.
+          type: string
+        lot:
+          description: The lot name.
+          type: string
+        mapNumber:
+          description: The unique map number that identifies the map for this parcel.
+          type: string
+        mapReferenceInfo:
+          description: The map reference for this parcel.
+          type: string
+        page:
+          description: A reference to the physical location of the parcel information in the records of the County Assessor (or other responsible department).
+          type: string
+        parcel:
+          description: The official parcel name or number, as determined by the county assessor or other responsible department.
+          type: string
+        parcelArea:
+          description: The total area of the parcel. Your agency determines the standard unit of measure.
+          format: double
+          type: number
+        parcelNumber:
+          description: The alpha-numeric parcel number.
+          type: string
+        planArea:
+          description: The total area of the parcel. Your agency determines the standard unit of measure.
+          type: string
+        range:
+          description: When land is surveyed using the rectangular-survey system, range represents the measure of units east and west of the base line.
+          type: string
+        section:
+          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          format: int64
+          type: integer
+        status:
+          type: object
+          description: The parcel status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        subdivision:
+          type: object
+          description: The name of the subdivision.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        supervisorDistrict:
+          description: The supervisor district to which the parcel belongs.
+          type: string
+        township:
+          description: When land is surveyed using the rectangular-survey system, township represents the measure of units North or South of the base line. Townships typically measure 6 miles to a side, or 36 square miles.
+          type: string
+        tract:
+          description: The name of the tract associated with this application. A tract may contain one or more related parcels.
+          type: string
+    response_ownerModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/ownerModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     simpleRecordModel:
       type: object
       properties:
@@ -804,12 +1254,27 @@ components:
         isSuccess:
           description: Indicates whether or not the operation on the object is successful.
           type: boolean
-    response_conditionModelArray:
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_addressModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/conditionModel'
+            $ref: '#/components/schemas/addressModel'
           type: array
         page:
           $ref: '#/components/schemas/pageModel'
@@ -881,55 +1346,6 @@ components:
         title:
           description: The individual's business title.
           type: string
-    response_parcelModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/parcelModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_parcelModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/parcelModel'
-          type: array
-        page:
-          $ref: '#/components/schemas/pageModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
-    response_deleteDocument:
-      type: object
-      properties:
-        status:
-          type: integer
-          description: The HTTP return status.
-        result:
-          items:
-            $ref: '#/components/schemas/resultArrary'
-          type: array
     recordExpirationModel:
       type: object
       properties:
@@ -947,194 +1363,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_addressModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/addressModel'
-          type: array
-        page:
-          $ref: '#/components/schemas/pageModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    parcelModel:
-      type: object
-      properties:
-        block:
-          description: The block number associated with the parcel.
-          type: string
-        book:
-          description: A reference to the physical location of parcel information in the County Assessor's office.
-          type: string
-        censusTract:
-          description: The unique number assigned by the Census Bureau that identifies the tract to which this parcel belongs.
-          type: string
-        councilDistrict:
-          description: The council district to which the parcel belongs.
-          type: string
-        customForms:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        exemptionValue:
-          description: The total value of any tax exemptions that apply to the land within the parcel.
-          format: double
-          type: number
-        gisSequenceNumber:
-          description: The GIS object ID of the parcel.
-          format: int64
-          type: integer
-        id:
-          description: The system id of the parcel assigned by the Civic Platform server.
-          type: string
-        improvedValue:
-          description: The total value of any improvements to the land within the parcel.
-          format: double
-          type: number
-        isPrimary:
-          description: Indicates whether or not to designate the parcel as the primary parcel.
-          type: string
-        landValue:
-          description: The total value of the land within the parcel.
-          format: double
-          type: number
-        legalDescription:
-          description: The legal description of the parcel.
-          type: string
-        lot:
-          description: The lot name.
-          type: string
-        mapNumber:
-          description: The unique map number that identifies the map for this parcel.
-          type: string
-        mapReferenceInfo:
-          description: The map reference for this parcel.
-          type: string
-        page:
-          description: A reference to the physical location of the parcel information in the records of the County Assessor (or other responsible department).
-          type: string
-        parcel:
-          description: The official parcel name or number, as determined by the county assessor or other responsible department.
-          type: string
-        parcelArea:
-          description: The total area of the parcel. Your agency determines the standard unit of measure.
-          format: double
-          type: number
-        parcelNumber:
-          description: The alpha-numeric parcel number.
-          type: string
-        planArea:
-          description: The total area of the parcel. Your agency determines the standard unit of measure.
-          type: string
-        range:
-          description: When land is surveyed using the rectangular-survey system, range represents the measure of units east and west of the base line.
-          type: string
-        section:
-          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
-          format: int64
-          type: integer
-        status:
-          type: object
-          description: The parcel status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        subdivision:
-          type: object
-          description: The name of the subdivision.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        supervisorDistrict:
-          description: The supervisor district to which the parcel belongs.
-          type: string
-        township:
-          description: When land is surveyed using the rectangular-survey system, township represents the measure of units North or South of the base line. Townships typically measure 6 miles to a side, or 36 square miles.
-          type: string
-        tract:
-          description: The name of the tract associated with this application. A tract may contain one or more related parcels.
-          type: string
-    ownerAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    recordTypeModel:
-      type: object
-      properties:
-        alias:
-          description: The record type alias.
-          type: string
-        category:
-          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        filterName:
-          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
-          type: string
-        group:
-          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        id:
-          description: The record type id.
-          type: string
-        module:
-          description: The module the record type belongs to.
-          type: string
-        subType:
-          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        type:
-          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        value:
-          description: The stored value.
-          type: string
     addressModel:
       type: object
       properties:
@@ -1362,234 +1590,6 @@ components:
           type: number
           format: double
           description: The latitudinal coordinate for this address.
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
-    response_ownerModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/ownerModel'
-          type: array
-        page:
-          $ref: '#/components/schemas/pageModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    conditionModel:
-      type: object
-      properties:
-        actionbyDepartment:
-          type: object
-          description: The department responsible for the action.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        actionbyUser:
-          type: object
-          description: The individual responsible for the action.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        activeStatus:
-          type: object
-          description: Indicates whether or not the condition is active.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        additionalInformation:
-          description: An unlimited text field to use if other fields are filled.
-          type: string
-        appliedDate:
-          description: 'The date when condition is applied. The Applied Date defaults to the current date in any of the following scenarios: 1) you are adding a standard condition, 2) you are creating a new condition, or 3) The condition is auto-assigned to a record.'
-          format: date-time
-          type: string
-        appliedbyDepartment:
-          type: object
-          description: The department responsible for applying the condition.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        appliedbyUser:
-          type: object
-          description: The staff member responsible for applying the condition.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        displayNoticeInAgency:
-          description: Indicates whether or not to display the condition notice in Civic Platform when a condition is applied.
-          type: boolean
-        displayNoticeInCitizens:
-          description: Indicates whether or not to display the condition notice in Citizen Access when a condition to a record or parcel is applied.
-          type: boolean
-        displayNoticeInCitizensFee:
-          description: Indicates whether or not to display the condition notice in Citizen Access Fee Estimate page when a condition to a record or parcel is applied.
-          type: boolean
-        effectiveDate:
-          description: The date when the condition becomes effective.
-          format: date-time
-          type: string
-        expirationDate:
-          description: The date when the condition expires.
-          format: date-time
-          type: string
-        group:
-          type: object
-          description: The condition group, which is a set of condition types.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The condition system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        inheritable:
-          type: object
-          description: Indicates whether or not Civic Platform checks for inheritable conditions when a user associates a child record with a parent record.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        isIncludeNameInNotice:
-          description: Indicates whether or not to display the condition name in the notice.
-          type: boolean
-        isIncludeShortCommentsInNotice:
-          description: Indicates whether or not to display the condition comments in the notice.
-          type: boolean
-        longComments:
-          description: Narrative comments to help identify the purpose or uses of the standard condition.
-          type: string
-        name:
-          description: The full name for the application contact.
-          type: string
-        ownerNumber:
-          description: (For owner conditions only) The owner number the condition applies to.
-          type: string
-        parcelNumber:
-          description: (For parcel conditions only) The parcel number the condition applies to.
-          type: string
-        priority:
-          type: object
-          description: The priority level assigned to the condition.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        publicDisplayMessage:
-          description: Text entered into this field displays in the condition notice or condition status bar for the Condition Name for the public user in Accela IVR (AIVR) and Citizen Access (ACA).
-          type: string
-        resolutionAction:
-          description: The action performed in response to a condition.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        severity:
-          type: object
-          description: Indicates the severity of the condition.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        shortComments:
-          description: A brief description of the condition name. For example, the text may describe the situation that requires the system to apply the condition. You can set these short comments to display when a user accesses an application with this condition applied to it
-          type: string
-        status:
-          type: object
-          description: The condition status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        statusDate:
-          description: The date when the current status changed.
-          format: date-time
-          type: string
-        statusType:
-          description: The status type for a standard condition or an approval condition, applied or not applied for example.
-          type: string
-        type:
-          type: object
-          description: The condition type.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    customAttributeModel:
-      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom form data uses the configured address-parcel-owner template metadata. The custom fields use the configured address-parcel-owner template metadata. Note the following custom field data types: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
-      type: object
-      properties:
-        id:
-          description: The custom form id.
-          type: string
-        <aCustomFieldName>:
-          description: The name of a custom field.
-          type: string
-        <aCustomFieldValue>:
-          description: The value of a custom field.
-          type: string
-    response_simpleRecordModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/simpleRecordModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

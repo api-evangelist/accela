@@ -496,14 +496,75 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_citizenProfileModel:
+    response_resultModelArray:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/request_citizenProfileModel'
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
         status:
           type: integer
           description: The HTTP return status.
+    publicUserQuestionModel:
+      type: object
+      properties:
+        answer:
+          description: The answer to the security question for password reset.
+          type: string
+        order:
+          description: The order of the security question.
+          type: string
+        question:
+          description: The security question for password reset.
+          type: string
+    response_userPINModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/userPINModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_trustAccountModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/trustAccountModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    userPINModel:
+      type: object
+      properties:
+        active:
+          description: Indicates whether or not the account is active. If the account is not activated, the user cannot login Accela Citizen Access.
+          type: string
+        agentId:
+          description: The ID of the associated agent of the logged-in user.
+          type: string
+        serviceProviderCode:
+          description: The agency id.
+          type: string
+        status:
+          description: The citizen userid status.
+          type: string
+        userId:
+          description: The citizen userid.
+          format: int64
+          type: integer
     request_citizenProfileModel:
       type: object
       properties:
@@ -543,174 +604,6 @@ components:
           - AUTH_AGENT
           - SELF_CERTIFIED_INSPECTOR
           type: string
-    resultCountModel:
-      type: object
-      properties:
-        failedCount:
-          description: The number of failed results.
-          format: int64
-          type: integer
-        failedIDs:
-          description: The IDs of the entities on which the operation failed.
-          type: string
-        successCount:
-          description: The number of successful results.
-          format: int64
-          type: integer
-        successIDs:
-          description: The IDs of the entities on which the operation succeeded.
-          type: string
-    publicUserPasswordModel:
-      type: object
-      properties:
-        password:
-          description: The citizen user's password.
-          type: string
-    publicUserQuestionModel:
-      type: object
-      properties:
-        answer:
-          description: The answer to the security question for password reset.
-          type: string
-        order:
-          description: The order of the security question.
-          type: string
-        question:
-          description: The security question for password reset.
-          type: string
-    publicUserRegisterModel:
-      type: object
-      required:
-      - userName
-      properties:
-        associatedLicenseIds:
-          description: Contains license ID's associated with the citizen user.
-          items:
-            format: int64
-            type: integer
-          type: array
-        cellPhone:
-          description: The citizen user's cell phone number.
-          type: string
-        contacts:
-          items:
-            $ref: '#/components/schemas/peopleModel'
-          type: array
-        email:
-          description: The citizen user's email address.
-          type: string
-        password:
-          description: The citizen user's password.
-          type: string
-        questions:
-          description: Contains the security questions for password reset.
-          items:
-            $ref: '#/components/schemas/publicUserQuestionModel'
-          type: array
-        receiveSMS:
-          description: Indicates whether or not the user prefers to receive SMS messages.
-          enum:
-          - Y
-          - N
-          type: string
-        role:
-          description: The citizen user's role
-          enum:
-          - CONTRACT_INSPECTOR
-          - CITIZEN
-          - AUTH_AGENT_CLERK
-          - AUTH_AGENT
-          - SELF_CERTIFIED_INSPECTOR
-          type: string
-        servProvCode:
-          description: The unique agency identifier.
-          type: string
-        userName:
-          description: The user's unique username.
-          type: string
-    response_userPINModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/userPINModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_resultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    publicUserModel:
-      type: object
-      properties:
-        active:
-          description: Indicates whether or not the user is active.
-          enum:
-          - 'Yes'
-          - 'No'
-          type: string
-        contacts:
-          items:
-            $ref: '#/components/schemas/peopleModel'
-          type: array
-        email:
-          description: The citizen user's email address.
-          type: string
-        id:
-          description: The citizen id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        loginName:
-          description: The citizen user's login name.
-          type: string
-        mobilePhone:
-          description: The citizen user's 10-digit cell phone number.
-          type: string
-        receiveSMS:
-          description: Indicates whether or not the user prefers to receive SMS messages.
-          enum:
-          - Y
-          - N
-          type: string
-        registerDate:
-          description: The citizen user's registration date.
-          format: date-time
-          type: string
-        role:
-          description: The citizen user's role
-          enum:
-          - CONTRACT_INSPECTOR
-          - CITIZEN
-          - AUTH_AGENT_CLERK
-          - AUTH_AGENT
-          - SELF_CERTIFIED_INSPECTOR
-          type: string
-    response_publicUserModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/publicUserModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     trustAccountModel:
       type: object
       properties:
@@ -934,16 +827,156 @@ components:
             value:
               description: The data value.
               type: string
-    response_trustAccountModelArray:
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    publicUserRegisterModel:
+      type: object
+      required:
+      - userName
+      properties:
+        associatedLicenseIds:
+          description: Contains license ID's associated with the citizen user.
+          items:
+            format: int64
+            type: integer
+          type: array
+        cellPhone:
+          description: The citizen user's cell phone number.
+          type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
+          type: string
+        password:
+          description: The citizen user's password.
+          type: string
+        questions:
+          description: Contains the security questions for password reset.
+          items:
+            $ref: '#/components/schemas/publicUserQuestionModel'
+          type: array
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          enum:
+          - Y
+          - N
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+        servProvCode:
+          description: The unique agency identifier.
+          type: string
+        userName:
+          description: The user's unique username.
+          type: string
+    response_citizenProfileModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/trustAccountModel'
-          type: array
+          $ref: '#/components/schemas/request_citizenProfileModel'
         status:
           type: integer
           description: The HTTP return status.
+    publicUserPasswordModel:
+      type: object
+      properties:
+        password:
+          description: The citizen user's password.
+          type: string
+    resultCountModel:
+      type: object
+      properties:
+        failedCount:
+          description: The number of failed results.
+          format: int64
+          type: integer
+        failedIDs:
+          description: The IDs of the entities on which the operation failed.
+          type: string
+        successCount:
+          description: The number of successful results.
+          format: int64
+          type: integer
+        successIDs:
+          description: The IDs of the entities on which the operation succeeded.
+          type: string
+    response_resultCountModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultCountModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    publicUserModel:
+      type: object
+      properties:
+        active:
+          description: Indicates whether or not the user is active.
+          enum:
+          - 'Yes'
+          - 'No'
+          type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
+          type: string
+        id:
+          description: The citizen id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        loginName:
+          description: The citizen user's login name.
+          type: string
+        mobilePhone:
+          description: The citizen user's 10-digit cell phone number.
+          type: string
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          enum:
+          - Y
+          - N
+          type: string
+        registerDate:
+          description: The citizen user's registration date.
+          format: date-time
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
     peopleModel:
       type: object
       properties:
@@ -1199,30 +1232,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_resultCountModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultCountModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     ownerAddressModel:
       type: object
       properties:
@@ -1261,36 +1270,17 @@ components:
             value:
               description: The data value.
               type: string
-    userPINModel:
+    response_publicUserModelArray:
       type: object
       properties:
-        active:
-          description: Indicates whether or not the account is active. If the account is not activated, the user cannot login Accela Citizen Access.
-          type: string
-        agentId:
-          description: The ID of the associated agent of the logged-in user.
-          type: string
-        serviceProviderCode:
-          description: The agency id.
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserModel'
+          type: array
         status:
-          description: The citizen userid status.
-          type: string
-        userId:
-          description: The citizen userid.
-          format: int64
           type: integer
+          description: The HTTP return status.
   parameters:
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
@@ -1306,13 +1296,6 @@ components:
       schema:
         type: integer
         format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
@@ -1320,6 +1303,23 @@ components:
       required: false
       schema:
         type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

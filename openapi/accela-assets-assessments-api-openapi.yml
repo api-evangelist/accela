@@ -60,28 +60,6 @@ paths:
         description: 'Asset attributes to be added. Ex. [{ "field1": "field1Val", "field2": "field2Val"}]'
         required: true
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    idAssetPathParam:
-      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
   schemas:
     response_resultModelArray:
       type: object
@@ -93,6 +71,31 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
     request_assessmentModel:
       type: object
       required:
@@ -130,31 +133,28 @@ components:
         timeSpent:
           description: The number of hours spent on the assessment.
           type: string
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: The name of a custom field.
-          type: string
-        aCustomFieldValue:
-          description: The value of a custom field.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    idAssetPathParam:
+      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

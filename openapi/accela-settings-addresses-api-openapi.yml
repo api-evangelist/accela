@@ -335,31 +335,16 @@ components:
         customFormType:
           type: string
           description: Indicates whether the custom form is for an address, parcel, or owner.
-    settingValueModelAddressTypes:
+    response_apo_customForms_metadata:
       type: object
       properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
-    settingValueModel:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        addressTypes:
+        result:
           items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
+            $ref: '#/components/schemas/apo_customForms_metadata'
           type: array
+        status:
+          type: integer
+          description: The return status code.
     response_settingValueModelArray:
       type: object
       properties:
@@ -371,16 +356,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_apo_customForms_metadata:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/apo_customForms_metadata'
-          type: array
-        status:
-          type: integer
-          description: The return status code.
     apo_customForms_metadata_fields:
       description: "Describes the metadata of a custom field. \n\nAdded in Civic Platform version: 9.2.0"
       type: object
@@ -462,19 +437,44 @@ components:
         sharedDropdownListName:
           type: string
           description: The name of the shared dropdown list, if the field is a dropdown field type.
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
   parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
       name: Authorization
       required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

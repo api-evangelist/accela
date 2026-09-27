@@ -104,37 +104,12 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
     response_inspectorModel:
       type: object
       properties:
         result:
           $ref: '#/components/schemas/inspectorModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_inspectorModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/inspectorModel'
-          type: array
         status:
           type: integer
           description: The HTTP return status.
@@ -172,6 +147,31 @@ components:
         preferredChannel:
           description: The method by which the inspector prefers to be notified, by phone for example.
           type: string
+    response_inspectorModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectorModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

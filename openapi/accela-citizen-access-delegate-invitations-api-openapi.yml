@@ -130,62 +130,35 @@ paths:
         description: Delegate information including the delegate status to be updated.
         required: true
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
   schemas:
-    response_publicUserDelegateModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/publicUserDelegateModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    publicUserDelegateStatusModel:
+    publicUserDelegateModel:
       type: object
       properties:
         delegateStatus:
           description: The status of the delegate request.
           enum:
+          - PENDING
           - ACCEPT
           - REJECT
-          type: string
-    response_publicUserDelegateStatusModel:
-      type: object
-      properties:
-        delegateStatus:
-          description: The status of the delegate request.
+          - EXPIRED
           type: string
         id:
-          description: The id of the user who sent the delegate request.
+          description: The delegate id assigned by the Civic Platform server.
           format: int64
           type: integer
+        invitationMessage:
+          description: The invitation message sent to the delegate.
+          type: string
+        name:
+          description: The delegate's name.
+          type: string
+        permissions:
+          items:
+            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
+          type: array
+        userName:
+          description: The delegate's login name.
+          type: string
     publicUserDelegatePermissionModel:
       type: object
       properties:
@@ -216,34 +189,61 @@ components:
         viewRecordAllowed:
           description: If true, the delegate is allowed to view records.
           type: boolean
-    publicUserDelegateModel:
+    response_publicUserDelegateModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserDelegateModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_publicUserDelegateStatusModel:
+      type: object
+      properties:
+        delegateStatus:
+          description: The status of the delegate request.
+          type: string
+        id:
+          description: The id of the user who sent the delegate request.
+          format: int64
+          type: integer
+    publicUserDelegateStatusModel:
       type: object
       properties:
         delegateStatus:
           description: The status of the delegate request.
           enum:
-          - PENDING
           - ACCEPT
           - REJECT
-          - EXPIRED
           type: string
-        id:
-          description: The delegate id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        invitationMessage:
-          description: The invitation message sent to the delegate.
-          type: string
-        name:
-          description: The delegate's name.
-          type: string
-        permissions:
-          items:
-            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
-          type: array
-        userName:
-          description: The delegate's login name.
-          type: string
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

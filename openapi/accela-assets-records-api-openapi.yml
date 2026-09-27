@@ -107,31 +107,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    recordsArrayInAssetsRecordsArray:
-      type: object
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-    assetsRecordsArray:
-      type: object
-      properties:
-        id:
-          type: string
-        page:
-          type: object
-          properties:
-            offset:
-              type: string
-            limit:
-              type: string
-            hasmore:
-              type: boolean
-        records:
-          items:
-            $ref: '#/components/schemas/recordsArrayInAssetsRecordsArray'
-          type: array
     recordTypeModel:
       type: object
       properties:
@@ -459,12 +434,47 @@ components:
         value:
           description: The record value.
           type: string
+    assetsRecordsArray:
+      type: object
+      properties:
+        id:
+          type: string
+        page:
+          type: object
+          properties:
+            offset:
+              type: string
+            limit:
+              type: string
+            hasmore:
+              type: boolean
+        records:
+          items:
+            $ref: '#/components/schemas/recordsArrayInAssetsRecordsArray'
+          type: array
+    recordsArrayInAssetsRecordsArray:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
     response_assetsRecordsModel:
       type: object
       properties:
         result:
           items:
             $ref: '#/components/schemas/assetsRecordsArray'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_simpleRecordModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/simpleRecordModel'
           type: array
         status:
           type: integer
@@ -486,22 +496,19 @@ components:
             value:
               description: The data value.
               type: string
-    response_simpleRecordModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/simpleRecordModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
   parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
-      name: lang
+      name: fields
       required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
         type: string
     assetIdPathParam:
@@ -509,21 +516,6 @@ components:
       in: path
       name: assetId
       required: true
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
       schema:
         type: string
     offset:
@@ -534,13 +526,21 @@ components:
       schema:
         type: integer
         format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

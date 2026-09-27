@@ -167,6 +167,16 @@ paths:
         required: true
 components:
   schemas:
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     response_feeItemModel_1Array:
       type: object
       properties:
@@ -177,6 +187,149 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    feeItemBaseModel_1:
+      type: object
+      properties:
+        code:
+          type: object
+          description: The fee item code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The fee item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        notes:
+          description: "A note entered against a fee item.\t"
+          type: string
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        quantity:
+          description: The number of units for which the fee applies.
+          format: double
+          type: number
+        schedule:
+          type: object
+          description: Contains parameters that define the fee schedule. See [Get All Fee Schedules for Record Type](./api-settings.html#operation/v4.get.settings.records.types.id.fees.schedules).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        version:
+          type: object
+          description: The fee item version.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    feeItemBaseModel:
+      type: object
+      properties:
+        code:
+          type: object
+          description: The fee item code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        feeNotes:
+          description: Notes about the fee.
+          type: string
+        id:
+          description: The fee item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        schedule:
+          type: object
+          description: Contains parameters that define the fee schedule.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        version:
+          type: object
+          description: The fee schedule version.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     estimateFeeModel:
       type: object
       properties:
@@ -187,13 +340,11 @@ components:
           description: The total fee.
           format: double
           type: number
-    response_resultModelArray:
+    response_estimateFeeModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
+          $ref: '#/components/schemas/estimateFeeModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -345,165 +496,7 @@ components:
             value:
               description: The data value.
               type: string
-    feeItemBaseModel_1:
-      type: object
-      properties:
-        code:
-          type: object
-          description: The fee item code.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The fee item system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        notes:
-          description: "A note entered against a fee item.\t"
-          type: string
-        paymentPeriod:
-          type: object
-          description: The time interval for processing invoices.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        quantity:
-          description: The number of units for which the fee applies.
-          format: double
-          type: number
-        schedule:
-          type: object
-          description: Contains parameters that define the fee schedule. See [Get All Fee Schedules for Record Type](./api-settings.html#operation/v4.get.settings.records.types.id.fees.schedules).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        version:
-          type: object
-          description: The fee item version.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    feeItemBaseModel:
-      type: object
-      properties:
-        code:
-          type: object
-          description: The fee item code.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        feeNotes:
-          description: Notes about the fee.
-          type: string
-        id:
-          description: The fee item system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        paymentPeriod:
-          type: object
-          description: The time interval for processing invoices.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        quantity:
-          description: The number of units for which the same fee applies.
-          format: double
-          type: number
-        schedule:
-          type: object
-          description: Contains parameters that define the fee schedule.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        version:
-          type: object
-          description: The fee schedule version.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_estimateFeeModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/estimateFeeModel'
-        status:
-          type: integer
-          description: The HTTP return status.
   parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     recordId:
       description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
       in: path
@@ -523,6 +516,13 @@ components:
       in: header
       name: Authorization
       required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

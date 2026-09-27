@@ -328,35 +328,13 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
-    customTableMetadataModel:
-      description: Contains the metadata for a custom table.
+    customFormMetadataModel:
+      description: Contains the metadata for a custom form.
       type: object
       properties:
         displayOrder:
-          description: The custom table's display order.
+          description: The custom form's display order.
           format: int64
           type: integer
         fields:
@@ -364,10 +342,10 @@ components:
             $ref: '#/components/schemas/customFormField'
           type: array
         id:
-          description: The custom table id.
+          description: The custom form id.
           type: string
         text:
-          description: The custom table name.
+          description: The custom form name.
           type: string
     settingValueModelAddressTypes:
       type: object
@@ -381,16 +359,47 @@ components:
         required:
           description: Indicates whether or not it is required for an address type.
           type: boolean
-    childDrill:
+    aSITableDrill:
+      description: Contains drilldown field information.
       type: object
       properties:
-        drillId:
-          description: The ID of the drilldown child record.
-          format: int64
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
           type: integer
-        id:
-          description: The ID of the current record.
-          type: string
+          description: The HTTP return status.
+    response_customTableMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -440,12 +449,12 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    customFormMetadataModel:
-      description: Contains the metadata for a custom form.
+    customTableMetadataModel:
+      description: Contains the metadata for a custom table.
       type: object
       properties:
         displayOrder:
-          description: The custom form's display order.
+          description: The custom table's display order.
           format: int64
           type: integer
         fields:
@@ -453,22 +462,11 @@ components:
             $ref: '#/components/schemas/customFormField'
           type: array
         id:
-          description: The custom form id.
+          description: The custom table id.
           type: string
         text:
-          description: The custom form name.
+          description: The custom table name.
           type: string
-    response_settingValueModelArray:
-      type: object
-      properties:
-        result:
-          description: Contains the settings.
-          items:
-            $ref: '#/components/schemas/settingValueModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     settingValueModel:
       type: object
       properties:
@@ -482,36 +480,38 @@ components:
           items:
             $ref: '#/components/schemas/settingValueModelAddressTypes'
           type: array
-    response_customTableMetadataModelArray:
+    childDrill:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customTableMetadataModel'
-          type: array
-        status:
+        drillId:
+          description: The ID of the drilldown child record.
+          format: int64
           type: integer
-          description: The HTTP return status.
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    aSITableDrill:
-      description: Contains drilldown field information.
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
+        id:
+          description: The ID of the current record.
+          type: string
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

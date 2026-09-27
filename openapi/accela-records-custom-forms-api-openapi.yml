@@ -194,35 +194,6 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
     response_resultModelArray:
       type: object
@@ -234,13 +205,53 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    childDrill:
+    aSITableDrill:
       type: object
       properties:
-        drillId:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
           format: int64
           type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_customFormSubgroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormSubgroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
         id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
           type: string
     customFormSubgroupModel:
       type: object
@@ -259,6 +270,16 @@ components:
         text:
           description: The custom form subgroup name.
           type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -308,64 +329,43 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    response_customAttributeModelArray:
+    childDrill:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    customAttributeModel:
-      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
-      type: object
-      properties:
-        id:
-          description: The custom form id.
-          type: string
-        <aCustomFieldName>:
-          description: The name of a custom field.
-          type: string
-        <aCustomFieldValue>:
-          description: The value of a custom field.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
+        drillId:
           format: int64
           type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
+        id:
           type: string
-    response_customFormSubgroupModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormSubgroupModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    aSITableDrill:
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
+  parameters:
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

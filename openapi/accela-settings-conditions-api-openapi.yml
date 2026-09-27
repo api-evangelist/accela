@@ -177,44 +177,7 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
   schemas:
-    response_conditionTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
     response_conditionStatusModelArray:
       type: object
       properties:
@@ -225,43 +188,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    conditionTypeModel:
-      type: object
-      properties:
-        groups:
-          items:
-            type: object
-            description: The condition type group
-            properties:
-              text:
-                description: The localized display value.
-                type: string
-              value:
-                description: The data value.
-                type: string
-          type: array
-        id:
-          description: The condition type id.
-          type: string
-        text:
-          description: The condition type name.
-          type: string
-        value:
-          description: The condition type value.
-          type: string
-    settingValueModel:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
     response_settingValueModelArray:
       type: object
       properties:
@@ -297,6 +223,80 @@ components:
         value:
           description: The condition status value.
           type: string
+    response_conditionTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    conditionTypeModel:
+      type: object
+      properties:
+        groups:
+          items:
+            type: object
+            description: The condition type group
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        id:
+          description: The condition type id.
+          type: string
+        text:
+          description: The condition type name.
+          type: string
+        value:
+          description: The condition type value.
+          type: string
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched
