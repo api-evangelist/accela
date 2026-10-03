@@ -278,67 +278,7 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
   schemas:
-    response_assetRecordTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/assetRecordTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_assetUnitTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/assetUnitTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     assetTypeModel:
       type: object
       properties:
@@ -362,6 +302,55 @@ components:
         type:
           description: 'The type of asset. For example: Hydrant or Manhole. An Asset Type is an agencydefined classification of similar objects that share the same standard asset attributes. Related asset types belong to an asset group, and multiple asset types can share the same Class Type.'
           type: string
+    response_assetTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    assetUnitTypeModel:
+      type: object
+      properties:
+        recordStatus:
+          description: Indicates whether or not the attribute is active.
+          type: string
+        updatedBy:
+          description: The user who last updated the usage type.
+          type: string
+        updatedDate:
+          description: The date and time the usage type was last updated.
+          format: date-time
+          type: string
+        usageDescription:
+          description: The usage type's description.
+          type: string
+        usageType:
+          description: The usage type value.
+          type: string
+    response_assetRecordTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetRecordTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_assetUnitTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetUnitTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     assetRecordTypeModel:
       type: object
       properties:
@@ -412,22 +401,6 @@ components:
         value:
           description: The stored value.
           type: string
-    ratingTypeModel:
-      type: object
-      properties:
-        manualEntryRatingValue:
-          description: If 'Y', a user can create a rating formula. If the user creates a formula, the user can enter manual rating values in addition to the calculated rating values. If the user does not create a formula, the user must enter rating values manually. If 'N', the user must create a rating formula.
-          type: string
-        recordStatus:
-          description: The status of the rating type.
-          type: string
-        updatedBy:
-          description: The person who last updated the rating type.
-          type: string
-        updatedDate:
-          description: The date the rating type was last updated.
-          format: date-time
-          type: string
     gISLayerIdModel:
       description: The GIS layer in the GIS service to be used with the asset. The GIS layer should be a configured map layer on the GIS service in Accela GIS Administration.
       type: object
@@ -435,35 +408,6 @@ components:
         display:
           description: The display name of the GIS layer ID.
           type: string
-    assetUnitTypeModel:
-      type: object
-      properties:
-        recordStatus:
-          description: Indicates whether or not the attribute is active.
-          type: string
-        updatedBy:
-          description: The user who last updated the usage type.
-          type: string
-        updatedDate:
-          description: The date and time the usage type was last updated.
-          format: date-time
-          type: string
-        usageDescription:
-          description: The usage type's description.
-          type: string
-        usageType:
-          description: The usage type value.
-          type: string
-    response_assetTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/assetTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     recordTypeAssociationsModel:
       type: object
       properties:
@@ -516,6 +460,62 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    ratingTypeModel:
+      type: object
+      properties:
+        manualEntryRatingValue:
+          description: If 'Y', a user can create a rating formula. If the user creates a formula, the user can enter manual rating values in addition to the calculated rating values. If the user does not create a formula, the user must enter rating values manually. If 'N', the user must create a rating formula.
+          type: string
+        recordStatus:
+          description: The status of the rating type.
+          type: string
+        updatedBy:
+          description: The person who last updated the rating type.
+          type: string
+        updatedDate:
+          description: The date the rating type was last updated.
+          format: date-time
+          type: string
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

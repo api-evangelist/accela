@@ -159,12 +159,21 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
+    response_attributeMetadataModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/attributeMetadataModel'
           type: array
         status:
           type: integer
@@ -249,31 +258,22 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_attributeMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/attributeMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: The name of a custom field.
-          type: string
-        aCustomFieldValue:
-          description: The value of a custom field.
-          type: string
     response_customAttributeModelArray:
       type: object
       properties:
         result:
           items:
             $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
           type: array
         status:
           type: integer

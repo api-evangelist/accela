@@ -197,6 +197,52 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    request_assessmentModel:
+      type: object
+      required:
+      - status
+      properties:
+        attributes:
+          $ref: '#/components/schemas/customAttributeModel'
+        comment:
+          description: Comments or notes about the assessment.
+          type: string
+        conditionAssessment:
+          description: The condition assessment type. See [Get All Condition Assessment Types](./api-settings.html#operation/v4.get.settings.assessments.types).
+          type: string
+        inspectionDate:
+          description: The inspection date for the assessment, in yyyy-mm-dd format.
+          type: string
+        inspectionTime:
+          description: The inspection time for the assessment, in hh:mm AM/PM format.
+          type: string
+        inspectorId:
+          description: The ID of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        scheduleDate:
+          description: The scheduled assessment date, in yyyy-mm-dd format.
+          type: string
+        scheduleTime:
+          description: The scheduled assessment time, in hh:mm AM/PM format.
+          type: string
+        status:
+          description: The status of the condition assessment
+          enum:
+          - Completed
+          - Scheduled
+          type: string
+        timeSpent:
+          description: The number of hours spent on the assessment.
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
     assetDescriptionModel:
       type: object
       properties:
@@ -222,26 +268,6 @@ components:
         type:
           description: The asset type.
           type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_assetConditionAssessmentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/assetConditionAssessmentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -257,15 +283,6 @@ components:
           type: boolean
         message:
           description: The error message, if an error is encountered
-          type: string
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: The name of a custom field.
-          type: string
-        aCustomFieldValue:
-          description: The value of a custom field.
           type: string
     assetConditionAssessmentModel:
       type: object
@@ -307,65 +324,27 @@ components:
         type:
           description: The type of assessment.
           type: string
-    request_assessmentModel:
+    response_resultModelArray:
       type: object
-      required:
-      - status
       properties:
-        attributes:
-          $ref: '#/components/schemas/customAttributeModel'
-        comment:
-          description: Comments or notes about the assessment.
-          type: string
-        conditionAssessment:
-          description: The condition assessment type. See [Get All Condition Assessment Types](./api-settings.html#operation/v4.get.settings.assessments.types).
-          type: string
-        inspectionDate:
-          description: The inspection date for the assessment, in yyyy-mm-dd format.
-          type: string
-        inspectionTime:
-          description: The inspection time for the assessment, in hh:mm AM/PM format.
-          type: string
-        inspectorId:
-          description: The ID of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
-          type: string
-        scheduleDate:
-          description: The scheduled assessment date, in yyyy-mm-dd format.
-          type: string
-        scheduleTime:
-          description: The scheduled assessment time, in hh:mm AM/PM format.
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
         status:
-          description: The status of the condition assessment
-          enum:
-          - Completed
-          - Scheduled
-          type: string
-        timeSpent:
-          description: The number of hours spent on the assessment.
-          type: string
+          type: integer
+          description: The HTTP return status.
+    response_assetConditionAssessmentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetConditionAssessmentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    idAssessmentPathParam:
-      description: The ID of the condition assessment to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
       in: query
@@ -374,10 +353,10 @@ components:
       schema:
         type: integer
         format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
-      name: lang
+      name: fields
       required: false
       schema:
         type: string
@@ -389,6 +368,27 @@ components:
       schema:
         type: integer
         format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    idAssessmentPathParam:
+      description: The ID of the condition assessment to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

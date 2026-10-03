@@ -221,6 +221,77 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    refOwnerModel:
+      type: object
+      properties:
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        firstName:
+          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        fullName:
+          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        id:
+          description: The owner system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the owner as the primary owner.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        mailAddress:
+          $ref: '#/components/schemas/ownerAddressModel'
+        middleName:
+          description: The contact's middle name.
+          type: string
+        parcelId:
+          description: The unique Id generated for a parcel.
+          type: string
+        phone:
+          description: The telephone number of the owner.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        refOwnerId:
+          description: The reference owner id.
+          format: double
+          type: number
+        status:
+          type: object
+          description: The owner status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        taxId:
+          description: The owner's tax ID number.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        type:
+          description: The owner type.
+          type: string
     ownerAddressModel:
       type: object
       properties:
@@ -238,16 +309,6 @@ components:
           type: string
         state:
           $ref: '#/components/schemas/identifierModel'
-    response_recordParcelModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/recordParcelModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -264,13 +325,35 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    identifierModel:
+    recordIdModel:
       type: object
       properties:
-        text:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
           type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
         value:
+          description: The alphanumeric record id.
           type: string
+    response_recordParcelModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordParcelModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     recordParcelModel:
       type: object
       properties:
@@ -378,102 +461,19 @@ components:
         tract:
           description: The name of the tract associated with this application. A tract may contain one or more related parcels.
           type: string
-    refOwnerModel:
-      type: object
-      properties:
-        email:
-          description: The contact's email address.
-          type: string
-        fax:
-          description: The fax number for the contact.
-          type: string
-        firstName:
-          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
-          type: string
-        fullName:
-          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
-          type: string
-        id:
-          description: The owner system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        isPrimary:
-          description: Indicates whether or not to designate the owner as the primary owner.
-          type: string
-        lastName:
-          description: The last name (surname).
-          type: string
-        mailAddress:
-          $ref: '#/components/schemas/ownerAddressModel'
-        middleName:
-          description: The contact's middle name.
-          type: string
-        parcelId:
-          description: The unique Id generated for a parcel.
-          type: string
-        phone:
-          description: The telephone number of the owner.
-          type: string
-        phoneCountryCode:
-          description: The country code for the assoicated phone number.
-          type: string
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        refOwnerId:
-          description: The reference owner id.
-          format: double
-          type: number
-        status:
-          type: object
-          description: The owner status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        taxId:
-          description: The owner's tax ID number.
-          type: string
-        title:
-          description: The individual's business title.
-          type: string
-        type:
-          description: The owner type.
-          type: string
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

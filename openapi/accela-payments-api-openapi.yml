@@ -225,136 +225,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    paymentTransactionModel:
-      type: object
-      properties:
-        transactionId:
-          description: The payment transaction ID to be processed and commited by the Commit Payment API.
-          format: int64
-          type: integer
-    response_resultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_paymentCommitResultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/paymentCommitResultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_transaction_fees:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/transactionFeesModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    creditCardLastFourDigitsModel:
-      type: object
-      properties:
-        billingAddress:
-          $ref: '#/components/schemas/billingAddressV4_V4_put_payments_id'
-        businessName:
-          description: A secondary business name for the applicable individual.
-          type: string
-        cardNumberLastDigits:
-          description: The last 4 digits of the credit card number.
-          type: string
-        cardType:
-          description: The credit card type. For example, Visa, American Express, or Discover.
-          type: string
-        holderName:
-          description: The check holder's name.
-          type: string
-    billingAddressV4_V4_put_payments_id:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          type: string
-        addressLine3:
-          type: string
-        city:
-          type: string
-        countryCode:
-          type: string
-        postalCode:
-          type: string
-        state:
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The object's system id.
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered.
-          type: string
-    paymentInitializeModel:
-      type: object
-      properties:
-        entityIds:
-          description: An array containing the entity ID's to initialize the payment for.
-          items:
-            type: string
-          type: array
-        entityType:
-          description: The type of entity to initialize the payment for.
-          type: string
-          enum:
-          - record
-        merchantAccountId:
-          description: The account ID of the merchant receiving the payment.
-          type: string
-        paymentMethod:
-          description: The method of payment, either Credit Card or Check.
-          type: string
-          enum:
-          - Check
-          - Credit Card
-    paymentCommitResultModel:
-      type: object
-      properties:
-        completePayments:
-          $ref: '#/components/schemas/paymentCompleteModel'
-        message:
-          description: Response message for the payment transaction.
-          type: string
-    paymentCompleteModel:
-      type: object
-      properties:
-        paymentId:
-          description: The payment id.
-          type: string
-        paymentStatus:
-          description: The payment status (currently, this field always returns "PAID").
-          type: string
-        receiptId:
-          description: The payment receipt id.
-          type: string
-        recordId:
-          description: "The record id the payment is applied to.\t"
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
     transactionFeesModel:
       type: object
       properties:
@@ -483,32 +353,6 @@ components:
         invoiceNumber:
           description: The invoice number string.
           type: string
-    response_paymentTransactionModel:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/paymentTransactionModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    paymentVoidModel:
-      type: object
-      properties:
-        comments:
-          description: Comments or notes about the void payment transaction.
-          type: string
-        reason:
-          type: object
-          description: The void payment reason.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
     paymentCommitModel:
       type: object
       required:
@@ -545,6 +389,136 @@ components:
         paymentSystemTransactionId:
           description: The third party payment system's payment transaction ID.
           type: string
+    creditCardLastFourDigitsModel:
+      type: object
+      properties:
+        billingAddress:
+          $ref: '#/components/schemas/billingAddressV4_V4_put_payments_id'
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        cardNumberLastDigits:
+          description: The last 4 digits of the credit card number.
+          type: string
+        cardType:
+          description: The credit card type. For example, Visa, American Express, or Discover.
+          type: string
+        holderName:
+          description: The check holder's name.
+          type: string
+    paymentCommitResultModel:
+      type: object
+      properties:
+        completePayments:
+          $ref: '#/components/schemas/paymentCompleteModel'
+        message:
+          description: Response message for the payment transaction.
+          type: string
+    paymentCompleteModel:
+      type: object
+      properties:
+        paymentId:
+          description: The payment id.
+          type: string
+        paymentStatus:
+          description: The payment status (currently, this field always returns "PAID").
+          type: string
+        receiptId:
+          description: The payment receipt id.
+          type: string
+        recordId:
+          description: "The record id the payment is applied to.\t"
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+    billingAddressV4_V4_put_payments_id:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        countryCode:
+          type: string
+        postalCode:
+          type: string
+        state:
+          type: string
+    response_paymentTransactionModel:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/paymentTransactionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The object's system id.
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered.
+          type: string
+    paymentVoidModel:
+      type: object
+      properties:
+        comments:
+          description: Comments or notes about the void payment transaction.
+          type: string
+        reason:
+          type: object
+          description: The void payment reason.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    paymentInitializeModel:
+      type: object
+      properties:
+        entityIds:
+          description: An array containing the entity ID's to initialize the payment for.
+          items:
+            type: string
+          type: array
+        entityType:
+          description: The type of entity to initialize the payment for.
+          type: string
+          enum:
+          - record
+        merchantAccountId:
+          description: The account ID of the merchant receiving the payment.
+          type: string
+        paymentMethod:
+          description: The method of payment, either Credit Card or Check.
+          type: string
+          enum:
+          - Check
+          - Credit Card
+    paymentTransactionModel:
+      type: object
+      properties:
+        transactionId:
+          description: The payment transaction ID to be processed and commited by the Commit Payment API.
+          format: int64
+          type: integer
     recordIdModel:
       type: object
       properties:
@@ -564,6 +538,32 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
+    response_paymentCommitResultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/paymentCommitResultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_transaction_fees:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/transactionFeesModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.

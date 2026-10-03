@@ -324,6 +324,213 @@ paths:
         required: true
 components:
   schemas:
+    request_contactModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/compactAddressModel'
+        birthCity:
+          type: object
+          description: The city of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthDate:
+          description: The birth date.
+          format: date-time
+          type: string
+        birthRegion:
+          type: object
+          description: The country of birth or region of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthState:
+          type: object
+          description: The state of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        comment:
+          description: A comment about the inspection contact.
+          type: string
+        deceasedDate:
+          description: The deceased date.
+          format: date-time
+          type: string
+        driverLicenseNumber:
+          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
+          type: string
+        driverLicenseState:
+          type: object
+          description: The state that issued the driver's license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        fullName:
+          description: 'The contact''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The contact system id assigned by the Civic Platform server.
+          type: string
+        individualOrOrganization:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        middleName:
+          description: "The middle name.\t"
+          type: string
+        organizationName:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        passportNumber:
+          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        preferredChannel:
+          type: object
+          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        race:
+          type: object
+          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        relation:
+          type: object
+          description: The contact's relationship to the application or service request.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        socialSecurityNumber:
+          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        stateIdNumber:
+          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        status:
+          type: object
+          description: The contact status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        tradeName:
+          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
+          type: string
+        type:
+          type: object
+          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     response_contactModel:
       type: object
       properties:
@@ -332,12 +539,50 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_resultModelArray:
+    compactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: The address state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_contactModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/contactModel'
           type: array
         status:
           type: integer
@@ -553,16 +798,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_contactModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/contactModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -579,266 +814,17 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    compactAddressModel:
+    response_resultModelArray:
       type: object
       properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: The address state.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    request_contactModel:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/compactAddressModel'
-        birthCity:
-          type: object
-          description: The city of birth for an individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        birthDate:
-          description: The birth date.
-          format: date-time
-          type: string
-        birthRegion:
-          type: object
-          description: The country of birth or region of birth for an individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        birthState:
-          type: object
-          description: The state of birth for an individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        businessName:
-          description: A secondary business name for the applicable individual.
-          type: string
-        comment:
-          description: A comment about the inspection contact.
-          type: string
-        deceasedDate:
-          description: The deceased date.
-          format: date-time
-          type: string
-        driverLicenseNumber:
-          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
-          type: string
-        driverLicenseState:
-          type: object
-          description: The state that issued the driver's license.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        email:
-          description: The contact's email address.
-          type: string
-        fax:
-          description: The fax number for the contact.
-          type: string
-        faxCountryCode:
-          description: Fax Number Country Code
-          type: string
-        federalEmployerId:
-          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
-          type: string
-        firstName:
-          description: The contact's first name.
-          type: string
-        fullName:
-          description: 'The contact''s full name. '
-          type: string
-        gender:
-          type: object
-          description: The gender (male or female) of the individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The contact system id assigned by the Civic Platform server.
-          type: string
-        individualOrOrganization:
-          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
-          type: string
-        lastName:
-          description: The last name (surname).
-          type: string
-        middleName:
-          description: "The middle name.\t"
-          type: string
-        organizationName:
-          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
-          type: string
-        passportNumber:
-          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
-          type: string
-        phone1:
-          description: The primary telephone number of the contact.
-          type: string
-        phone1CountryCode:
-          description: Phone Number 1 Country Code
-          type: string
-        phone2:
-          description: The secondary telephone number of the contact.
-          type: string
-        phone2CountryCode:
-          description: Phone Number 2 Country Code
-          type: string
-        phone3:
-          description: The tertiary telephone number for the contact.
-          type: string
-        phone3CountryCode:
-          description: Phone Number 3 Country Code
-          type: string
-        postOfficeBox:
-          description: The post office box number.
-          type: string
-        preferredChannel:
-          type: object
-          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        race:
-          type: object
-          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        relation:
-          type: object
-          description: The contact's relationship to the application or service request.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        salutation:
-          type: object
-          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        socialSecurityNumber:
-          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
-          type: string
-        stateIdNumber:
-          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
         status:
-          type: object
-          description: The contact status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        suffix:
-          description: The contact name suffix.
-          type: string
-        title:
-          description: The individual's business title.
-          type: string
-        tradeName:
-          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
-          type: string
-        type:
-          type: object
-          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
+          type: integer
+          description: The HTTP return status.
   parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
       in: query
@@ -847,18 +833,11 @@ components:
       schema:
         type: integer
         format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
-      name: lang
+      name: fields
       required: false
-      schema:
-        type: string
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
       schema:
         type: string
     limit:
@@ -871,6 +850,27 @@ components:
         format: int64
         enum:
         - range[1,1000]
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

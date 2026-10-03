@@ -199,44 +199,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    customFormMetadataModel:
-      description: Contains the metadata for a custom table.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom table's display order.
-          format: int64
-          type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
-        id:
-          description: The custom table id.
-          type: string
-        text:
-          description: The custom table name.
-          type: string
-    aSITableDrill:
-      description: Contains drilldown field information.
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
     tableModel:
       type: object
       properties:
@@ -248,32 +210,6 @@ components:
             $ref: '#/components/schemas/rowModel'
           description: A table row containing custom fields.
           type: array
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_tableModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/tableModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     customAttributeModel:
       type: object
       properties:
@@ -293,20 +229,43 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    rowModel:
+    response_tableModelArray:
       type: object
       properties:
-        action:
-          description: The requested operation on the row.
-          enum:
-          - add
-          - update
-          - delete
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/tableModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    aSITableDrill:
+      description: Contains drilldown field information.
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    customFormMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
         fields:
-          $ref: '#/components/schemas/customAttributeModel'
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
         id:
-          description: The row id.
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
           type: string
     customFormField:
       type: object
@@ -357,6 +316,47 @@ components:
         value:
           description: The custom field stored value.
           type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    rowModel:
+      type: object
+      properties:
+        action:
+          description: The requested operation on the row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The row id.
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     childDrill:
       type: object
       properties:

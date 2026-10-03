@@ -197,59 +197,17 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    customFormModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    customFormMetadataModel:
-      description: Contains the metadata for a custom table.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom table's display order.
-          format: int64
-          type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
         id:
-          description: The custom table id.
+          description: The custom form id.
           type: string
-        text:
-          description: The custom table name.
+        <aCustomFieldName>:
+          description: A custom field name.
           type: string
-    aSITableDrill:
-      description: Contains drilldown field information.
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
+        <aCustomFieldValue>:
+          description: A custom field value.
           type: string
     customAttributeModel:
       type: object
@@ -270,28 +228,34 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    customFormModel:
+    aSITableDrill:
+      description: Contains drilldown field information.
       type: object
       properties:
-        id:
-          description: The custom form id.
-          type: string
-        <aCustomFieldName>:
-          description: A custom field name.
-          type: string
-        <aCustomFieldValue>:
-          description: A custom field value.
-          type: string
-    response_customAttributeModelArray:
-      type: object
-      properties:
-        result:
+        children:
           items:
-            $ref: '#/components/schemas/customAttributeModel'
+            $ref: '#/components/schemas/childDrill'
           type: array
-        status:
+        isRoot:
+          type: boolean
+    customFormMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
           type: integer
-          description: The HTTP return status.
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
+          type: string
     customFormField:
       type: object
       properties:
@@ -341,6 +305,42 @@ components:
         value:
           description: The custom field stored value.
           type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     childDrill:
       type: object
       properties:
@@ -359,17 +359,17 @@ components:
       required: false
       schema:
         type: string
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
       name: Authorization
+      required: true
+      schema:
+        type: string
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
       required: true
       schema:
         type: string

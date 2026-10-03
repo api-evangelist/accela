@@ -165,16 +165,6 @@ paths:
         required: true
 components:
   schemas:
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     response_costingModelArray:
       type: object
       properties:
@@ -310,6 +300,17 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
+    costingQuantityModel:
+      type: object
+      properties:
+        factor:
+          description: The cost factor.
+          format: double
+          type: number
+        minutes:
+          description: The number of minutes associated to the cost.
+          format: double
+          type: number
     recordIdModel:
       type: object
       properties:
@@ -329,6 +330,16 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     request_costingModelArray:
       type: object
       properties:
@@ -436,30 +447,19 @@ components:
           description: The order of the work order task.
           format: int64
           type: integer
-    costingQuantityModel:
-      type: object
-      properties:
-        factor:
-          description: The cost factor.
-          format: double
-          type: number
-        minutes:
-          description: The number of minutes associated to the cost.
-          format: double
-          type: number
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

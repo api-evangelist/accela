@@ -51,6 +51,14 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
   schemas:
     response_getAAVersionModel:
       type: object
@@ -64,14 +72,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-  parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

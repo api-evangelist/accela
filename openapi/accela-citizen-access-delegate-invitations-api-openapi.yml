@@ -131,6 +131,16 @@ paths:
         required: true
 components:
   schemas:
+    response_publicUserDelegateModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserDelegateModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     publicUserDelegateModel:
       type: object
       properties:
@@ -189,16 +199,15 @@ components:
         viewRecordAllowed:
           description: If true, the delegate is allowed to view records.
           type: boolean
-    response_publicUserDelegateModelArray:
+    publicUserDelegateStatusModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/publicUserDelegateModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+        delegateStatus:
+          description: The status of the delegate request.
+          enum:
+          - ACCEPT
+          - REJECT
+          type: string
     response_publicUserDelegateStatusModel:
       type: object
       properties:
@@ -209,15 +218,6 @@ components:
           description: The id of the user who sent the delegate request.
           format: int64
           type: integer
-    publicUserDelegateStatusModel:
-      type: object
-      properties:
-        delegateStatus:
-          description: The status of the delegate request.
-          enum:
-          - ACCEPT
-          - REJECT
-          type: string
   parameters:
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
@@ -227,13 +227,6 @@ components:
       schema:
         type: integer
         format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     limit:
       description: Search result size limit.
       in: query
@@ -244,6 +237,13 @@ components:
         format: int64
         enum:
         - range[1,1000]
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

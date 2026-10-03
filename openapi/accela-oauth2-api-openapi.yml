@@ -209,24 +209,18 @@ paths:
       - OAuth2
 components:
   schemas:
-    response_token:
+    response_error:
       type: object
       properties:
-        access_token:
+        error:
           type: string
-          description: The issued user access token.
-        token_type:
+          description: The error code. Refer [here](https://tools.ietf.org/html/rfc6749#section-4.1.2) for details.
+        error_description:
           type: string
-          description: The type of the token issued. It contains the fixed value "bearer" for authorization_code grant type.
-        expires_in:
+          description: The error description text.
+        error_uri:
           type: string
-          description: The lifetime in seconds of the access token. For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated.
-        refresh_token:
-          type: string
-          description: The refresh token that can be used to obtain a new access token.
-        scope:
-          type: string
-          description: The scope of the resources authenticated by the authorization server.
+          description: The URI of web page with more information about the error.
         state:
           type: string
           description: 'The exact value received from the client. '
@@ -257,57 +251,42 @@ components:
         scope:
           type: string
           description: 'The scope of the resources authenticated by the authorization server (for an implicit flow request where response_type=token). scope is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
-    response_error:
+    response_status:
       type: object
       properties:
-        error:
+        status:
           type: string
-          description: The error code. Refer [here](https://tools.ietf.org/html/rfc6749#section-4.1.2) for details.
-        error_description:
+          description: The HTTP error code.
+        code:
           type: string
-          description: The error description text.
-        error_uri:
+          description: The error code.
+        message:
           type: string
-          description: The URI of web page with more information about the error.
+          description: The error message.
+        traceId:
+          type: string
+          description: 'The traceid for debugging purposes. '
+    response_token:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The issued user access token.
+        token_type:
+          type: string
+          description: The type of the token issued. It contains the fixed value "bearer" for authorization_code grant type.
+        expires_in:
+          type: string
+          description: The lifetime in seconds of the access token. For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated.
+        refresh_token:
+          type: string
+          description: The refresh token that can be used to obtain a new access token.
+        scope:
+          type: string
+          description: The scope of the resources authenticated by the authorization server.
         state:
           type: string
           description: 'The exact value received from the client. '
-    request_authorize:
-      type: object
-      required:
-      - response_type
-      - client_id
-      - redirect_uri
-      - agency_name
-      - environment
-      properties:
-        response_type:
-          description: "Specifies whether the request is for an authorization code or access token. \n\t\t\t\t\t\n\nValid values:\n\t\t\t\t\t\n\n*code* - Request for an authorization code. See [Authorization Code Flow](../construct-authCodeFlow.html).\n\t\t\t\t\t\n\n*token* - Request for an access token. See [Implicit Flow](../construct-implicitFlow.html)."
-          enum:
-          - code
-          - token
-          type: string
-        client_id:
-          description: The app ID value from [Construct Developer Portal](https://developer.accela.com).
-          type: string
-        redirect_uri:
-          description: "The URI that is used to redirect to the client with an authorization code. This must be a valid URL.\n\t\t\t\t\t\n\n**Note**: Special characters in the URL should be encoded."
-          type: string
-        environment:
-          description: The Construct environment name, such as "PROD" and "TEST". The [Get All Agency Environments](./api-agencies.html#operation/v4.get.agencies.name.environments) API returns a list of configured environments available for a specific agency. The [Get Environment Status](./api-agencies.html#operation/v4.get.agencies.name.environments.env.status) checks connectivity with the Agency/Environment.
-          type: string
-        agency_name:
-          description: "The agency name defined in [Construct Administrator Portal](https://admin.accela.com). APIs such as [Get All Agencies](./api-agencies.html#operation/v4.get.agencies), [Get Agency](./api-agencies.html#operation/v4.get.agencies.name), and [Search Agencies](./api-search.html#operation/v4.post.search.agencies) return valid agency names. \n\t\t\t\t\t\n\n**Note**: For an **agency app**, agency is required.\nFor a **citizen app** that use dynamic agency routing functionality, agency_name is optional."
-          type: string
-        forcelogin:
-          description: "Indicates whether or not Accela Auth server forces end-user login each time client requests access token. \t\t\t\t\t\n\t\t\t\t\t\n\nValid values:\n\n\n*true*: Always force end-user login.\n\n\n*false*: Do not force end-user login. The sever determines if the current request needs login. This is the default behavior."
-          type: boolean
-        scope:
-          description: The scope of the resources that the client requests. Enter a list of APIs scope names separated by spaces. Get the scope names from the [Accela API Reference](./api-index.html).
-          type: string
-        state:
-          description: An opaque value that the client uses for maintaining the state between the request and callback. Enter a unique value. This can be used for [Cross-Site Request Forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) protection.
-          type: string
     request_token:
       type: object
       required:
@@ -361,21 +340,6 @@ components:
         state:
           description: "An opaque value that the client uses for maintaining the state between the request and callback. Enter a unique value. This can be used for [Cross-Site Request Forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) protection.\n\nThis parameter is not used when refreshing a token.\n\t\t\t\t\t\n\n**Note**: state is used and optional only when calling this API with grant_type=authorization_code for [Authorization Code Flow](../construct-authCodeFlow.html). "
           type: string
-    response_status:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The HTTP error code.
-        code:
-          type: string
-          description: The error code.
-        message:
-          type: string
-          description: The error message.
-        traceId:
-          type: string
-          description: 'The traceid for debugging purposes. '
     response_tokeninfo:
       type: object
       properties:
@@ -399,6 +363,42 @@ components:
         state:
           type: string
           description: 'The exact value received from the client. '
+    request_authorize:
+      type: object
+      required:
+      - response_type
+      - client_id
+      - redirect_uri
+      - agency_name
+      - environment
+      properties:
+        response_type:
+          description: "Specifies whether the request is for an authorization code or access token. \n\t\t\t\t\t\n\nValid values:\n\t\t\t\t\t\n\n*code* - Request for an authorization code. See [Authorization Code Flow](../construct-authCodeFlow.html).\n\t\t\t\t\t\n\n*token* - Request for an access token. See [Implicit Flow](../construct-implicitFlow.html)."
+          enum:
+          - code
+          - token
+          type: string
+        client_id:
+          description: The app ID value from [Construct Developer Portal](https://developer.accela.com).
+          type: string
+        redirect_uri:
+          description: "The URI that is used to redirect to the client with an authorization code. This must be a valid URL.\n\t\t\t\t\t\n\n**Note**: Special characters in the URL should be encoded."
+          type: string
+        environment:
+          description: The Construct environment name, such as "PROD" and "TEST". The [Get All Agency Environments](./api-agencies.html#operation/v4.get.agencies.name.environments) API returns a list of configured environments available for a specific agency. The [Get Environment Status](./api-agencies.html#operation/v4.get.agencies.name.environments.env.status) checks connectivity with the Agency/Environment.
+          type: string
+        agency_name:
+          description: "The agency name defined in [Construct Administrator Portal](https://admin.accela.com). APIs such as [Get All Agencies](./api-agencies.html#operation/v4.get.agencies), [Get Agency](./api-agencies.html#operation/v4.get.agencies.name), and [Search Agencies](./api-search.html#operation/v4.post.search.agencies) return valid agency names. \n\t\t\t\t\t\n\n**Note**: For an **agency app**, agency is required.\nFor a **citizen app** that use dynamic agency routing functionality, agency_name is optional."
+          type: string
+        forcelogin:
+          description: "Indicates whether or not Accela Auth server forces end-user login each time client requests access token. \t\t\t\t\t\n\t\t\t\t\t\n\nValid values:\n\n\n*true*: Always force end-user login.\n\n\n*false*: Do not force end-user login. The sever determines if the current request needs login. This is the default behavior."
+          type: boolean
+        scope:
+          description: The scope of the resources that the client requests. Enter a list of APIs scope names separated by spaces. Get the scope names from the [Accela API Reference](./api-index.html).
+          type: string
+        state:
+          description: An opaque value that the client uses for maintaining the state between the request and callback. Enter a unique value. This can be used for [Cross-Site Request Forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) protection.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

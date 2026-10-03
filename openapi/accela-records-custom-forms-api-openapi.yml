@@ -195,41 +195,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    aSITableDrill:
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     response_customFormSubgroupModelArray:
       type: object
       properties:
@@ -253,6 +218,15 @@ components:
         <aCustomFieldValue>:
           description: The value of a custom field.
           type: string
+    aSITableDrill:
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
     customFormSubgroupModel:
       type: object
       properties:
@@ -270,16 +244,6 @@ components:
         text:
           description: The custom form subgroup name.
           type: string
-    response_customAttributeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -329,6 +293,42 @@ components:
         value:
           description: The custom field stored value.
           type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     childDrill:
       type: object
       properties:
@@ -338,18 +338,18 @@ components:
         id:
           type: string
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

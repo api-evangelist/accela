@@ -323,12 +323,12 @@ components:
         virtualFolders:
           description: The virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_resultModelArray:
+    response_documentModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/documentModel'
           type: array
         status:
           type: integer
@@ -355,16 +355,6 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_documentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     userRolePrivilegeModel:
       type: object
       properties:
@@ -400,6 +390,16 @@ components:
         uploadAllowed:
           description: Indicates whether or not the permission to upload a document is allowed.
           type: boolean
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
@@ -415,13 +415,6 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     inspectionId:
       description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
       in: path
@@ -430,6 +423,13 @@ components:
       schema:
         type: integer
         format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -164,7 +164,70 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
   schemas:
+    response_reportDefinitionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/reportDefinitionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    reportParameterModel:
+      type: object
+      properties:
+        name:
+          description: The report parameter name.
+          type: string
+        nickname:
+          description: The report parameter alias or nickname.
+          type: string
+        required:
+          description: Indicates whether or not the report parameter is required
+          type: string
+        type:
+          description: The report parameter type.
+          type: string
     reportDefinitionModel:
       type: object
       properties:
@@ -189,21 +252,16 @@ components:
         servProvCode:
           description: The unique agency identifier.
           type: string
-    reportParameterModel:
+    response_categoryModelArray:
       type: object
       properties:
-        name:
-          description: The report parameter name.
-          type: string
-        nickname:
-          description: The report parameter alias or nickname.
-          type: string
-        required:
-          description: Indicates whether or not the report parameter is required
-          type: string
-        type:
-          description: The report parameter type.
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/categoryModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     categoryModel:
       type: object
       properties:
@@ -217,64 +275,6 @@ components:
         name:
           description: The name of the report category.
           type: string
-    response_reportDefinitionModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/reportDefinitionModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_categoryModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/categoryModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -210,59 +210,14 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    response_refOwnerModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
+          $ref: '#/components/schemas/refOwnerModel'
         status:
           type: integer
           description: The HTTP return status.
-    ownerAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          type: string
-        addressLine3:
-          type: string
-        city:
-          type: string
-        country:
-          $ref: '#/components/schemas/identifierModel'
-        postalCode:
-          type: string
-        state:
-          $ref: '#/components/schemas/identifierModel'
-    response_refOwnerModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/refOwnerModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     identifierModel:
       type: object
       properties:
@@ -334,14 +289,39 @@ components:
         type:
           description: The owner type.
           type: string
-    response_refOwnerModel:
+    ownerAddressModel:
       type: object
       properties:
-        result:
-          $ref: '#/components/schemas/refOwnerModel'
-        status:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        postalCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
           type: integer
-          description: The HTTP return status.
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
     recordIdModel:
       type: object
       properties:
@@ -361,19 +341,39 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_refOwnerModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/refOwnerModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

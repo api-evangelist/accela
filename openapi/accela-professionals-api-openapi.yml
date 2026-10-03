@@ -1160,69 +1160,7 @@ paths:
         description: A list of license models to be updated
         required: true
 components:
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
   schemas:
-    professionalsTemplateFormsArrary:
-      type: object
-      properties:
-        id:
-          description: REQUIRED. The custom table id.
-          type: string
-        TEMPLATE_FIELD_1:
-          description: The name of the template field 1.
-          type: string
-        TEMPLATE_FIELD_2:
-          description: The value of the template field 2.
-          type: string
-        date:
-          type: string
-          format: date
-          description: A date of the template.
-        SELECT:
-          type: string
-        DROPDOWN:
-          type: string
-        NUMBER:
-          type: string
     tableModel:
       type: object
       properties:
@@ -1234,27 +1172,30 @@ components:
             $ref: '#/components/schemas/rowModel'
           description: A table row containing custom fields.
           type: array
-    response_customFormsMeta:
+    customAttributeModel:
       type: object
       properties:
-        status:
-          type: integer
-          description: The HTTP return status.
-        result:
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              text:
-                type: string
-              displayOrder:
-                type: integer
-              fields:
-                items:
-                  $ref: '#/components/schemas/customFormsMetaFieldsArrary'
-                type: array
-          type: array
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
+          type: string
+    rowModel:
+      type: object
+      properties:
+        action:
+          description: The requested operation on the row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The row id.
+          type: string
     customFormsMetaFieldsArrary:
       type: object
       properties:
@@ -1281,6 +1222,32 @@ components:
               text:
                 type: string
           type: array
+    professionalsTemplateFormsArrary:
+      type: object
+      properties:
+        id:
+          description: REQUIRED. The custom table id.
+          type: string
+        TEMPLATE_FIELD_1:
+          description: The name of the template field 1.
+          type: string
+        TEMPLATE_FIELD_2:
+          description: The value of the template field 2.
+          type: string
+        date:
+          type: string
+          format: date
+          description: A date of the template.
+        SELECT:
+          type: string
+        DROPDOWN:
+          type: string
+        NUMBER:
+          type: string
+    request_professionals_customForms:
+      items:
+        $ref: '#/components/schemas/professionalsCustomFormsArrary'
+      type: array
     response_licenseModelArray:
       type: object
       properties:
@@ -1291,23 +1258,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: ''
-          type: string
-        aCustomFieldValue:
-          description: ''
-          type: string
-    request_professionals_customForms:
-      items:
-        $ref: '#/components/schemas/professionalsCustomFormsArrary'
-      type: array
-    request_professionals_templateForms:
-      items:
-        $ref: '#/components/schemas/professionalsTemplateFormsArrary'
-      type: array
     licenseModel:
       type: object
       properties:
@@ -1519,21 +1469,10 @@ components:
         workerInsuranceCompanyCode:
           description: The code associated with the Worker's Compensation Insurance Company.
           type: string
-    rowModel:
-      type: object
-      properties:
-        action:
-          description: The requested operation on the row.
-          enum:
-          - add
-          - update
-          - delete
-          type: string
-        fields:
-          $ref: '#/components/schemas/customAttributeModel'
-        id:
-          description: The row id.
-          type: string
+    request_professionals_templateForms:
+      items:
+        $ref: '#/components/schemas/professionalsTemplateFormsArrary'
+      type: array
     professionalsCustomFormsArrary:
       type: object
       properties:
@@ -1546,6 +1485,67 @@ components:
         <aCustomFieldValue>:
           description: The value of the custom field.
           type: string
+    response_customFormsMeta:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP return status.
+        result:
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              text:
+                type: string
+              displayOrder:
+                type: integer
+              fields:
+                items:
+                  $ref: '#/components/schemas/customFormsMetaFieldsArrary'
+                type: array
+          type: array
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

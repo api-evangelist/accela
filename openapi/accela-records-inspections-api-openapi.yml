@@ -107,52 +107,345 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
   schemas:
+    recordTypeModel:
+      type: object
+      properties:
+        alias:
+          description: The record type alias.
+          type: string
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    inspectionBeforeScheduledTime:
+      description: Specifies the number of days or hours before the scheduled time on the inspection date.
+      type: object
+      properties:
+        days:
+          description: Inspections can only be cancelled within this number of days before the scheduled time on the inspection date.
+          format: int64
+          type: integer
+        hours:
+          description: Inspections can only be cancelled within this number of hours before the scheduled time on the inspection date.
+          format: int64
+          type: integer
+        time:
+          description: Inspections can only be cancelled within the number of specified days or hours before this time ("hh:mm AM|PM") on the inspection date.
+          type: string
+    recordTypeNoAliasModel:
+      type: object
+      properties:
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type system id assigned by the Civic Platform server.
+          type: string
+        module:
+          description: Use to filter by the module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The record type display text
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The record type value.
+          type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_inspectionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    inspectionContactModel:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/ownerAddressModel'
+        birthCity:
+          type: object
+          description: The city of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthDate:
+          description: The birth date.
+          format: date-time
+          type: string
+        birthRegion:
+          type: object
+          description: The country of birth or region of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        birthState:
+          type: object
+          description: The state of birth for an individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        businessName:
+          description: A secondary business name for the applicable individual.
+          type: string
+        comment:
+          description: A comment about the inspection contact.
+          type: string
+        deceasedDate:
+          description: The deceased date.
+          format: date-time
+          type: string
+        driverLicenseNumber:
+          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
+          type: string
+        driverLicenseState:
+          type: object
+          description: The state that issued the driver's license.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        faxCountryCode:
+          description: Fax Number Country Code
+          type: string
+        federalEmployerId:
+          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
+          type: string
+        firstName:
+          description: The contact's first name.
+          type: string
+        fullName:
+          description: 'The contact''s full name. '
+          type: string
+        gender:
+          type: object
+          description: The gender (male or female) of the individual.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The contact system id assigned by the Civic Platform server.
+          type: string
+        individualOrOrganization:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        middleName:
+          description: "The middle name.\t"
+          type: string
+        organizationName:
+          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
+          type: string
+        passportNumber:
+          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        phone1:
+          description: The primary telephone number of the contact.
+          type: string
+        phone1CountryCode:
+          description: Phone Number 1 Country Code
+          type: string
+        phone2:
+          description: The secondary telephone number of the contact.
+          type: string
+        phone2CountryCode:
+          description: Phone Number 2 Country Code
+          type: string
+        phone3:
+          description: The tertiary telephone number for the contact.
+          type: string
+        phone3CountryCode:
+          description: Phone Number 3 Country Code
+          type: string
+        postOfficeBox:
+          description: The post office box number.
+          type: string
+        preferredChannel:
+          type: object
+          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        race:
+          type: object
+          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        relation:
+          type: object
+          description: The contact's relationship to the application or service request.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        salutation:
+          type: object
+          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        serviceProviderCode:
+          description: The unique agency identifier
+          type: string
+        socialSecurityNumber:
+          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        stateIdNumber:
+          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
+          type: string
+        status:
+          type: object
+          description: The contact status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        suffix:
+          description: The contact name suffix.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        tradeName:
+          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
+          type: string
+        type:
+          type: object
+          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     recordAddressModel:
       type: object
       properties:
@@ -425,565 +718,15 @@ components:
           type: number
           format: double
           description: The latitudinal coordinate for this address.
-    recordIdModel:
+    recordInspectionTypeModel:
       type: object
       properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
-    recordTypeModel:
-      type: object
-      properties:
-        alias:
-          description: The record type alias.
-          type: string
-        category:
-          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        filterName:
-          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
-          type: string
-        group:
-          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        id:
-          description: The record type id.
-          type: string
-        module:
-          description: The module the record type belongs to.
-          type: string
-        subType:
-          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        type:
-          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        value:
-          description: The stored value.
-          type: string
-    inspectionContactModel:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/ownerAddressModel'
-        birthCity:
-          type: object
-          description: The city of birth for an individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        birthDate:
-          description: The birth date.
-          format: date-time
-          type: string
-        birthRegion:
-          type: object
-          description: The country of birth or region of birth for an individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        birthState:
-          type: object
-          description: The state of birth for an individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        businessName:
-          description: A secondary business name for the applicable individual.
-          type: string
-        comment:
-          description: A comment about the inspection contact.
-          type: string
-        deceasedDate:
-          description: The deceased date.
-          format: date-time
-          type: string
-        driverLicenseNumber:
-          description: The driver's license number of the contact. This field is active only when the Contact Type selected is Individual.
-          type: string
-        driverLicenseState:
-          type: object
-          description: The state that issued the driver's license.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        email:
-          description: The contact's email address.
-          type: string
-        fax:
-          description: The fax number for the contact.
-          type: string
-        faxCountryCode:
-          description: Fax Number Country Code
-          type: string
-        federalEmployerId:
-          description: The Federal Employer Identification Number. It is used to identify a business for tax purposes.
-          type: string
-        firstName:
-          description: The contact's first name.
-          type: string
-        fullName:
-          description: 'The contact''s full name. '
-          type: string
-        gender:
-          type: object
-          description: The gender (male or female) of the individual.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The contact system id assigned by the Civic Platform server.
-          type: string
-        individualOrOrganization:
-          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
-          type: string
-        lastName:
-          description: The last name (surname).
-          type: string
-        middleName:
-          description: "The middle name.\t"
-          type: string
-        organizationName:
-          description: The organization to which the contact belongs. This field is only active when the Contact Type selected is Organization.
-          type: string
-        passportNumber:
-          description: The contact's passport number. This field is only active when the Contact Type selected is Individual.
-          type: string
-        phone1:
-          description: The primary telephone number of the contact.
-          type: string
-        phone1CountryCode:
-          description: Phone Number 1 Country Code
-          type: string
-        phone2:
-          description: The secondary telephone number of the contact.
-          type: string
-        phone2CountryCode:
-          description: Phone Number 2 Country Code
-          type: string
-        phone3:
-          description: The tertiary telephone number for the contact.
-          type: string
-        phone3CountryCode:
-          description: Phone Number 3 Country Code
-          type: string
-        postOfficeBox:
-          description: The post office box number.
-          type: string
-        preferredChannel:
-          type: object
-          description: The method by which the contact prefers to be notified, by phone for example. See [Get All Contact Preferred Channels](./api-settings.html#operation/v4.get.settings.contacts.preferredChannels).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        race:
-          type: object
-          description: The contact's race or ethnicity. See [Get All Contact Races](./api-settings.html#operation/v4.get.settings.contacts.races).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        relation:
-          type: object
-          description: The contact's relationship to the application or service request.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        salutation:
-          type: object
-          description: The salutation to be used when addressing the contact; for example Mr. oar Ms. This field is active only when Contact Type = Individual. See [Get All Contact Salutations](./api-settings.html#operation/v4.get.settings.contacts.salutations).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        serviceProviderCode:
-          description: The unique agency identifier
-          type: string
-        socialSecurityNumber:
-          description: The individual's social security number. This field is only active when the Contact Type selected is Individual.
-          type: string
-        stateIdNumber:
-          description: The contact's state ID number. This field is only active when the Contact Type selected is Individual.
-          type: string
-        status:
-          type: object
-          description: The contact status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        suffix:
-          description: The contact name suffix.
-          type: string
-        title:
-          description: The individual's business title.
-          type: string
-        tradeName:
-          description: The contact's preferred business or trade name. This field is active only when the Contact Type selected is Organization.
-          type: string
-        type:
-          type: object
-          description: The contact type. See [Get All Contact Types](./api-settings.html#operation/v4.get.settings.contacts.types).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    inspectionTypeSimpleModel:
-      type: object
-      properties:
-        group:
-          type: string
-        id:
-          format: int64
-          type: integer
-        ivrNumber:
-          format: int64
-          type: integer
-          description: "The IVR (Interactive Voice Response) number assigned to the inspection type. \n\nAdded in Civic Platform 9.3.0"
-        text:
-          type: string
-        value:
-          type: string
-    recordTypeNoAliasModel:
-      type: object
-      properties:
-        category:
-          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        filterName:
-          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
-          type: string
-        group:
-          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        id:
-          description: The record type system id assigned by the Civic Platform server.
-          type: string
-        module:
-          description: Use to filter by the module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
-          type: string
-        subType:
-          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        text:
-          description: The record type display text
-          type: string
-        type:
-          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        value:
-          description: The record type value.
-          type: string
-    inspectionBeforeScheduledTime:
-      description: Specifies the number of days or hours before the scheduled time on the inspection date.
-      type: object
-      properties:
-        days:
-          description: Inspections can only be cancelled within this number of days before the scheduled time on the inspection date.
-          format: int64
-          type: integer
-        hours:
-          description: Inspections can only be cancelled within this number of hours before the scheduled time on the inspection date.
-          format: int64
-          type: integer
-        time:
-          description: Inspections can only be cancelled within the number of specified days or hours before this time ("hh:mm AM|PM") on the inspection date.
-          type: string
-    response_recordInspectionTypeModelArray:
-      type: object
-      properties:
-        result:
+        inspectionTypes:
           items:
-            $ref: '#/components/schemas/recordInspectionTypeModel'
+            $ref: '#/components/schemas/inspectionTypeModel'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_inspectionModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/inspectionModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    rGuideSheetGroupModel:
-      type: object
-      properties:
-        id:
-          description: The inspection checklist sytem id assigned by the Civic Platform server.
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        value:
-          description: The stored value.
-          type: string
-    inspectionTypeAssociationsModel:
-      type: object
-      properties:
-        standardCommentGroup:
-          type: object
-          description: The name of the standard comment group associated with the inspection type.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    inspectionTypeModel:
-      type: object
-      properties:
-        allowFailChecklistItems:
-          description: Indicates whether or not to allow inspection to pass with failed checklist items for the current inspection type or from previous inspections.
-          enum:
-          - Y
-          - N
-          type: string
-        allowMultiInspections:
-          description: Indicates whether or not to allow the scheduling of multiple inspections for this inspection type.
-          enum:
-          - Y
-          - N
-          type: string
-        associations:
-          $ref: '#/components/schemas/inspectionTypeAssociationsModel'
-        cancelRestriction:
-          $ref: '#/components/schemas/inspectionRestrictionModel'
-        carryoverFlag:
-          description: "Indicates how failed guidesheet items for an inspection type are carried over to the next inspection guidesheet. \n\nNULL or empty string : Guidesheet items are not carried over. \n\n\"A\" : Automatic carry-over of failed guidesheet items to the next inspection guidesheet item."
-          enum:
-          - null
-          - A
-          type: string
-        defaultDepartment:
-          $ref: '#/components/schemas/departmentModel'
-        disciplines:
-          description: The inspection disciplines assigned to the inspection type.
-          items:
-            type: string
-          type: array
-        flowEnabledFlag:
-          description: Indicates whether or not to include the inspection in the inspection flow process.
-          enum:
-          - Y
-          - N
-          type: string
-        grade:
-          description: The name of the inspection grade.
-          type: string
-        group:
-          description: "The name of a group of inspection types.\t"
-          type: string
-        groupName:
-          type: object
-          description: The descriptive name associated to an inspection group code.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        guideGroup:
-          $ref: '#/components/schemas/rGuideSheetGroupModel'
-        hasCancelPermission:
-          description: Indicates whether or not the user can reschedule the inspection.
-          enum:
-          - Y
-          - N
-          type: string
-        hasFlowFlag:
-          description: Indicates whether or not to include the inspection in the inspection flow process.
-          enum:
-          - Y
-          - N
-          type: string
-        hasNextInspectionAdvance:
-          description: Indicates whether or not the next inspection can be scheduled in advance.
-          enum:
-          - Y
-          - N
-          type: string
-        hasReschdulePermission:
-          description: Indicates whether or not the user can reschedule the inspection.
-          enum:
-          - Y
-          - N
-          type: string
-        hasSchdulePermission:
-          description: Indicates whether or not the user can schedule the inspection. Note that hasSchdulePermission returns "Y" if result.inspectionTypes.schdulePermission is either "REQUEST_ONLY_PENDING", "REQUEST_SAME_DAY_NEXT_DAY", or "SCHEDULE_USING_CALENDAR". If result.inspectionTypes.schdulePermission is "NONE" or null, hasSchdulePermission returns "N".
-          enum:
-          - Y
-          - N
-          type: string
-        id:
-          description: The inspection type system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        inspectionEditable:
-          description: Indicates whether or not inspection result, grade or checklist can be edited.
-          enum:
-          - Y
-          - N
-          type: string
-        isAutoAssign:
-          description: Indicates whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
-          enum:
-          - Y
-          - N
-          type: string
-        isRequired:
-          description: Indicates whether or not the information is required.
-          enum:
-          - Y
-          - N
-          type: string
-        ivrNumber:
-          format: int64
-          type: integer
-          description: "The IVR (Interactive Voice Response) number assigned to the inspection type. \n\nAdded in Civic Platform 9.3.0"
-        maxPoints:
-          description: The number of points allowed for an inspection, after which the inspection fails.
-          format: double
-          type: number
-        priority:
-          description: The priority level assigned to the inspection type.
-          type: string
-        publicVisible:
-          description: Indicates whether or not Accela Citizen Access users can view comment about the inspection results.
-          enum:
-          - Y
-          - N
-          type: string
-        refereceNumber:
-          description: The reference number associated with an inspection.
-          type: string
-        rescheduleRestriction:
-          $ref: '#/components/schemas/inspectionRestrictionModel'
-        resultGroup:
-          description: The name of a grouping of Inspection results, usually indicative of a range of inspection scores.
-          type: string
-        schdulePermission:
-          description: "Returns one of the scheduling permissions in Citizen Access: \n\nNONE - Does not allow public users to schedule this inspection type online. \n\nREQUEST_ONLY_PENDING - Only allows public users to request for an inspection online. The agency coordinates the appointment for the inspection date and time. \n\nREQUEST_SAME_DAY_NEXT_DAY - Allows public users to request an inspection for the same day, next day, or next available day, based on the inspection type calendar parameters defined on the inspection type. \n\nSCHEDULE_USING_CALENDAR - Allows public users to schedule inspections based on the availability on the inspection type calendar."
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        totalScore:
-          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
-          format: int64
-          type: integer
-        totalScoreOption:
-          description: "Indicates the method for calculating total scores of checklist items. There are four options:  \n\nTOTAL - Gets the total score of all checklists as the inspection score. \n\nMAX - Gets the max score of all checklists as the inspection score. \n\nMIN - Gets the min score of all checklists as the inspection score. \n\nAVG - Gets the average score of all checklists as the inspection score. \n\nSUBTRACT - Subtracts the total score of all the checklist items from the Total Score defined for the inspection type."
-          enum:
-          - TOTAL
-          - MAX
-          - MIN
-          - AVG
-          - SUBTRACT
-          type: string
-        unitNumber:
-          description: The number of time units (see timeUnitDuration) comprising an inspection.
-          type: string
-        units:
-          description: The amount of time comprising the smallest time unit for conducting an inspection.
-          format: double
-          type: number
-        value:
-          description: The value for the specified parameter.
-          type: string
-    departmentModel:
-      type: object
-      properties:
-        agency:
-          description: The department agency
-          type: string
-        bureau:
-          description: The name of the bureau, which is an organization level within an agency.
-          type: string
-        division:
-          description: The name of the division, which is an organization level within a bureau.
-          type: string
-        group:
-          description: The department group.
-          type: string
-        id:
-          description: The department system id assigned by the Civic Platform server.
-          type: string
-        office:
-          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
-          type: string
-        section:
-          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        value:
-          description: The value for the specified parameter.
+        recordId:
+          description: The unique ID associated with a record.
           type: string
     inspectionModel:
       type: object
@@ -1225,45 +968,21 @@ components:
         vehicleId:
           description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
           type: string
-    identifierModel:
+    response_recordInspectionTypeModelArray:
       type: object
       properties:
-        text:
-          type: string
-        value:
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/recordInspectionTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     inspectionRestrictionModel:
       type: object
       properties:
         beforeScheduledTime:
           $ref: '#/components/schemas/inspectionBeforeScheduledTime'
-    recordInspectionTypeModel:
-      type: object
-      properties:
-        inspectionTypes:
-          items:
-            $ref: '#/components/schemas/inspectionTypeModel'
-          type: array
-        recordId:
-          description: The unique ID associated with a record.
-          type: string
-    ownerAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          type: string
-        addressLine3:
-          type: string
-        city:
-          type: string
-        country:
-          $ref: '#/components/schemas/identifierModel'
-        postalCode:
-          type: string
-        state:
-          $ref: '#/components/schemas/identifierModel'
     simpleRecordModel:
       type: object
       properties:
@@ -1541,16 +1260,90 @@ components:
         value:
           description: The record value.
           type: string
-    recordExpirationModel:
+    rGuideSheetGroupModel:
       type: object
       properties:
-        expirationDate:
-          description: The date when the condition expires.
-          format: date-time
+        id:
+          description: The inspection checklist sytem id assigned by the Civic Platform server.
           type: string
-        expirationStatus:
+        text:
+          description: The localized display text.
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    departmentModel:
+      type: object
+      properties:
+        agency:
+          description: The department agency
+          type: string
+        bureau:
+          description: The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: The department group.
+          type: string
+        id:
+          description: The department system id assigned by the Civic Platform server.
+          type: string
+        office:
+          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
+          type: string
+        section:
+          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        value:
+          description: The value for the specified parameter.
+          type: string
+    inspectionTypeSimpleModel:
+      type: object
+      properties:
+        group:
+          type: string
+        id:
+          format: int64
+          type: integer
+        ivrNumber:
+          format: int64
+          type: integer
+          description: "The IVR (Interactive Voice Response) number assigned to the inspection type. \n\nAdded in Civic Platform 9.3.0"
+        text:
+          type: string
+        value:
+          type: string
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        postalCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+    inspectionTypeAssociationsModel:
+      type: object
+      properties:
+        standardCommentGroup:
           type: object
-          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          description: The name of the standard comment group associated with the inspection type.
           properties:
             text:
               description: The localized display value.
@@ -1558,6 +1351,213 @@ components:
             value:
               description: The data value.
               type: string
+    inspectionTypeModel:
+      type: object
+      properties:
+        allowFailChecklistItems:
+          description: Indicates whether or not to allow inspection to pass with failed checklist items for the current inspection type or from previous inspections.
+          enum:
+          - Y
+          - N
+          type: string
+        allowMultiInspections:
+          description: Indicates whether or not to allow the scheduling of multiple inspections for this inspection type.
+          enum:
+          - Y
+          - N
+          type: string
+        associations:
+          $ref: '#/components/schemas/inspectionTypeAssociationsModel'
+        cancelRestriction:
+          $ref: '#/components/schemas/inspectionRestrictionModel'
+        carryoverFlag:
+          description: "Indicates how failed guidesheet items for an inspection type are carried over to the next inspection guidesheet. \n\nNULL or empty string : Guidesheet items are not carried over. \n\n\"A\" : Automatic carry-over of failed guidesheet items to the next inspection guidesheet item."
+          enum:
+          - null
+          - A
+          type: string
+        defaultDepartment:
+          $ref: '#/components/schemas/departmentModel'
+        disciplines:
+          description: The inspection disciplines assigned to the inspection type.
+          items:
+            type: string
+          type: array
+        flowEnabledFlag:
+          description: Indicates whether or not to include the inspection in the inspection flow process.
+          enum:
+          - Y
+          - N
+          type: string
+        grade:
+          description: The name of the inspection grade.
+          type: string
+        group:
+          description: "The name of a group of inspection types.\t"
+          type: string
+        groupName:
+          type: object
+          description: The descriptive name associated to an inspection group code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        guideGroup:
+          $ref: '#/components/schemas/rGuideSheetGroupModel'
+        hasCancelPermission:
+          description: Indicates whether or not the user can reschedule the inspection.
+          enum:
+          - Y
+          - N
+          type: string
+        hasFlowFlag:
+          description: Indicates whether or not to include the inspection in the inspection flow process.
+          enum:
+          - Y
+          - N
+          type: string
+        hasNextInspectionAdvance:
+          description: Indicates whether or not the next inspection can be scheduled in advance.
+          enum:
+          - Y
+          - N
+          type: string
+        hasReschdulePermission:
+          description: Indicates whether or not the user can reschedule the inspection.
+          enum:
+          - Y
+          - N
+          type: string
+        hasSchdulePermission:
+          description: Indicates whether or not the user can schedule the inspection. Note that hasSchdulePermission returns "Y" if result.inspectionTypes.schdulePermission is either "REQUEST_ONLY_PENDING", "REQUEST_SAME_DAY_NEXT_DAY", or "SCHEDULE_USING_CALENDAR". If result.inspectionTypes.schdulePermission is "NONE" or null, hasSchdulePermission returns "N".
+          enum:
+          - Y
+          - N
+          type: string
+        id:
+          description: The inspection type system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inspectionEditable:
+          description: Indicates whether or not inspection result, grade or checklist can be edited.
+          enum:
+          - Y
+          - N
+          type: string
+        isAutoAssign:
+          description: Indicates whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the information is required.
+          enum:
+          - Y
+          - N
+          type: string
+        ivrNumber:
+          format: int64
+          type: integer
+          description: "The IVR (Interactive Voice Response) number assigned to the inspection type. \n\nAdded in Civic Platform 9.3.0"
+        maxPoints:
+          description: The number of points allowed for an inspection, after which the inspection fails.
+          format: double
+          type: number
+        priority:
+          description: The priority level assigned to the inspection type.
+          type: string
+        publicVisible:
+          description: Indicates whether or not Accela Citizen Access users can view comment about the inspection results.
+          enum:
+          - Y
+          - N
+          type: string
+        refereceNumber:
+          description: The reference number associated with an inspection.
+          type: string
+        rescheduleRestriction:
+          $ref: '#/components/schemas/inspectionRestrictionModel'
+        resultGroup:
+          description: The name of a grouping of Inspection results, usually indicative of a range of inspection scores.
+          type: string
+        schdulePermission:
+          description: "Returns one of the scheduling permissions in Citizen Access: \n\nNONE - Does not allow public users to schedule this inspection type online. \n\nREQUEST_ONLY_PENDING - Only allows public users to request for an inspection online. The agency coordinates the appointment for the inspection date and time. \n\nREQUEST_SAME_DAY_NEXT_DAY - Allows public users to request an inspection for the same day, next day, or next available day, based on the inspection type calendar parameters defined on the inspection type. \n\nSCHEDULE_USING_CALENDAR - Allows public users to schedule inspections based on the availability on the inspection type calendar."
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        totalScore:
+          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
+          format: int64
+          type: integer
+        totalScoreOption:
+          description: "Indicates the method for calculating total scores of checklist items. There are four options:  \n\nTOTAL - Gets the total score of all checklists as the inspection score. \n\nMAX - Gets the max score of all checklists as the inspection score. \n\nMIN - Gets the min score of all checklists as the inspection score. \n\nAVG - Gets the average score of all checklists as the inspection score. \n\nSUBTRACT - Subtracts the total score of all the checklist items from the Total Score defined for the inspection type."
+          enum:
+          - TOTAL
+          - MAX
+          - MIN
+          - AVG
+          - SUBTRACT
+          type: string
+        unitNumber:
+          description: The number of time units (see timeUnitDuration) comprising an inspection.
+          type: string
+        units:
+          description: The amount of time comprising the smallest time unit for conducting an inspection.
+          format: double
+          type: number
+        value:
+          description: The value for the specified parameter.
+          type: string
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

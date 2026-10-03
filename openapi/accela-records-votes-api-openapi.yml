@@ -144,6 +144,46 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  schemas:
+    voteRequest:
+      type: object
+      properties:
+        vote:
+          description: The vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
+          type: boolean
+      required:
+      - vote
+    response_voteSummary:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/voteSummary'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_voteResult:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/voteResult'
+        status:
+          type: integer
+          description: The HTTP return status.
+    voteResult:
+      type: object
+      properties:
+        vote:
+          description: The result of a vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
+          type: boolean
+    voteSummary:
+      type: object
+      properties:
+        downCount:
+          description: The number of votes that disapprove the specified record.
+          type: integer
+        upCount:
+          description: The number of votes that approve the specified record.
+          type: integer
   parameters:
     recordId:
       description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
@@ -166,46 +206,6 @@ components:
       required: false
       schema:
         type: string
-  schemas:
-    voteSummary:
-      type: object
-      properties:
-        downCount:
-          description: The number of votes that disapprove the specified record.
-          type: integer
-        upCount:
-          description: The number of votes that approve the specified record.
-          type: integer
-    response_voteSummary:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/voteSummary'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_voteResult:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/voteResult'
-        status:
-          type: integer
-          description: The HTTP return status.
-    voteRequest:
-      type: object
-      properties:
-        vote:
-          description: The vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
-          type: boolean
-      required:
-      - vote
-    voteResult:
-      type: object
-      properties:
-        vote:
-          description: The result of a vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
-          type: boolean
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

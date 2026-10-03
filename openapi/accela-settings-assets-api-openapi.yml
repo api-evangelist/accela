@@ -145,6 +145,18 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
     settingValueModel:
       type: object
       properties:
@@ -158,18 +170,6 @@ components:
           items:
             $ref: '#/components/schemas/settingValueModelAddressTypes'
           type: array
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
   parameters:
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.

@@ -62,27 +62,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    apo_customForms_metadata:
-      description: 'Contains metadata description of a custom form, including the custom fields metadata. '
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the custom form
-        description:
-          type: string
-          description: Describes the usage or puporse of the custom form.
-        fields:
-          items:
-            $ref: '#/components/schemas/apo_customForms_metadata_fields'
-          type: array
-          description: Contains the field metadata.
-        id:
-          type: string
-          description: The unique string identifier of the custom form.
-        customFormType:
-          type: string
-          description: Indicates whether the custom form is for an address, parcel, or owner.
     apo_customForms_metadata_fields:
       description: "Describes the metadata of a custom field. \n\nAdded in Civic Platform version: 9.2.0"
       type: object
@@ -164,6 +143,27 @@ components:
         sharedDropdownListName:
           type: string
           description: The name of the shared dropdown list, if the field is a dropdown field type.
+    apo_customForms_metadata:
+      description: 'Contains metadata description of a custom form, including the custom fields metadata. '
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the custom form
+        description:
+          type: string
+          description: Describes the usage or puporse of the custom form.
+        fields:
+          items:
+            $ref: '#/components/schemas/apo_customForms_metadata_fields'
+          type: array
+          description: Contains the field metadata.
+        id:
+          type: string
+          description: The unique string identifier of the custom form.
+        customFormType:
+          type: string
+          description: Indicates whether the custom form is for an address, parcel, or owner.
     response_apo_customForms_metadata:
       type: object
       properties:

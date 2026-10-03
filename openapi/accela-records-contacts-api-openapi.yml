@@ -416,16 +416,106 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
+    response_contactAddressArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/contactAddress'
           type: array
         status:
           type: integer
           description: The HTTP return status.
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    compactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: The address state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_recordContactSimpleModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordContactSimpleModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
     contactAddress:
       type: object
       properties:
@@ -502,87 +592,6 @@ components:
           type: string
         unitType:
           $ref: '#/components/schemas/identifierModel'
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    compactAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: The address state.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    identifierModel:
-      type: object
-      properties:
-        text:
-          type: string
-        value:
-          type: string
-    response_contactAddressArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/contactAddress'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_recordContactSimpleModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/recordContactSimpleModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     recordContactSimpleModel:
       type: object
       properties:
@@ -806,33 +815,17 @@ components:
             value:
               description: The data value.
               type: string
-    recordIdModel:
+    response_resultModelArray:
       type: object
       properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
           type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
+          description: The HTTP return status.
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     contactId:
       description: The ID of the contact to fetch. See [Get All Contacts](./api-contacts-professionals.html#operation/v4.get.contacts).
       in: path
@@ -846,6 +839,13 @@ components:
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

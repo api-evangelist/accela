@@ -100,16 +100,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_userModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/userModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     departmentModel:
       type: object
       properties:
@@ -142,29 +132,6 @@ components:
           type: string
         value:
           description: The department value.
-          type: string
-    response_departmentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/departmentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    userGroupModel:
-      type: object
-      properties:
-        id:
-          description: The ID of the user group.
-          format: int64
-          type: integer
-        moduleName:
-          description: The module the user group belongs to.
-          type: string
-        name:
-          description: The name of the user group.
           type: string
     userModel:
       type: object
@@ -220,6 +187,39 @@ components:
         value:
           description: The ID of the individual.
           type: string
+    userGroupModel:
+      type: object
+      properties:
+        id:
+          description: The ID of the user group.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+    response_departmentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/departmentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_userModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/userModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
     authHeaderParam:
       description: Construct oAuth2 authentication token

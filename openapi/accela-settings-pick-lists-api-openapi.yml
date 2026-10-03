@@ -102,6 +102,61 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_sharedPickListModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/sharedPickListModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_sharedPickListValuesModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/sharedPickListValuesModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    sharedPickListValuesModel:
+      type: object
+      properties:
+        description:
+          description: The pick list description.
+          type: string
+        status:
+          type: object
+          description: The pick list status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        values:
+          description: Contains the pick list values.
+          items:
+            $ref: '#/components/schemas/pickListValueModel'
+          type: array
+    sharedPickListModel:
+      type: object
+      properties:
+        description:
+          description: The pick list description.
+          type: string
+        status:
+          type: object
+          description: The pick list status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     pickListValueModel:
       type: object
       properties:
@@ -135,61 +190,6 @@ components:
         value:
           description: The pick list value.
           type: string
-    response_sharedPickListValuesModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/sharedPickListValuesModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_sharedPickListModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/sharedPickListModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    sharedPickListModel:
-      type: object
-      properties:
-        description:
-          description: The pick list description.
-          type: string
-        status:
-          type: object
-          description: The pick list status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    sharedPickListValuesModel:
-      type: object
-      properties:
-        description:
-          description: The pick list description.
-          type: string
-        status:
-          type: object
-          description: The pick list status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        values:
-          description: Contains the pick list values.
-          items:
-            $ref: '#/components/schemas/pickListValueModel'
-          type: array
   parameters:
     authHeaderParam:
       description: Construct oAuth2 authentication token

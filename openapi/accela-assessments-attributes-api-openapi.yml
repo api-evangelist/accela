@@ -55,18 +55,18 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    idAssessmentPathParam:
-      description: The ID of the condition assessment to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    idAssessmentPathParam:
+      description: The ID of the condition assessment to fetch.
+      in: path
+      name: id
+      required: true
       schema:
         type: string
     authHeaderParam:

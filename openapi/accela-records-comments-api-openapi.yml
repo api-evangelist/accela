@@ -225,23 +225,11 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    response_recordCommentModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_recordCommentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/recordCommentModel'
-          type: array
+          $ref: '#/components/schemas/recordCommentModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -270,6 +258,28 @@ components:
         text:
           description: The comment text.
           type: string
+    response_recordCommentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordCommentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    commentModel:
+      type: object
+      properties:
+        displayOnInspection:
+          description: Indicates whether or not the comment is displayed on inspection.
+          enum:
+          - Y
+          - N
+          type: string
+        text:
+          description: The comment text.
+          type: string
     resultModel:
       type: object
       properties:
@@ -286,14 +296,6 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_recordCommentModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/recordCommentModel'
-        status:
-          type: integer
-          description: The HTTP return status.
     recordIdModel:
       type: object
       properties:
@@ -313,31 +315,29 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    commentModel:
+    response_resultModelArray:
       type: object
       properties:
-        displayOnInspection:
-          description: Indicates whether or not the comment is displayed on inspection.
-          enum:
-          - Y
-          - N
-          type: string
-        text:
-          description: The comment text.
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

@@ -324,26 +324,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_conditionModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_conditionApprovalModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     conditionModel:
       type: object
       properties:
@@ -525,21 +505,27 @@ components:
             value:
               description: The data value.
               type: string
+    response_conditionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_conditionApprovalModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    fields:
-      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
       in: query
@@ -548,10 +534,10 @@ components:
       schema:
         type: integer
         format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
       in: query
-      name: lang
+      name: fields
       required: false
       schema:
         type: string
@@ -563,6 +549,20 @@ components:
       schema:
         type: integer
         format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

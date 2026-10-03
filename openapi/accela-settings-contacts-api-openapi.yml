@@ -329,12 +329,22 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    customFormMetadataModel:
-      description: Contains the metadata for a custom form.
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customTableMetadataModel:
+      description: Contains the metadata for a custom table.
       type: object
       properties:
         displayOrder:
-          description: The custom form's display order.
+          description: The custom table's display order.
           format: int64
           type: integer
         fields:
@@ -342,23 +352,21 @@ components:
             $ref: '#/components/schemas/customFormField'
           type: array
         id:
-          description: The custom form id.
+          description: The custom table id.
           type: string
         text:
-          description: The custom form name.
+          description: The custom table name.
           type: string
-    settingValueModelAddressTypes:
+    response_customTableMetadataModelArray:
       type: object
       properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     aSITableDrill:
       description: Contains drilldown field information.
       type: object
@@ -376,26 +384,6 @@ components:
           description: Contains the settings.
           items:
             $ref: '#/components/schemas/settingValueModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_customTableMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customTableMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
           type: array
         status:
           type: integer
@@ -449,12 +437,12 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    customTableMetadataModel:
-      description: Contains the metadata for a custom table.
+    customFormMetadataModel:
+      description: Contains the metadata for a custom form.
       type: object
       properties:
         displayOrder:
-          description: The custom table's display order.
+          description: The custom form's display order.
           format: int64
           type: integer
         fields:
@@ -462,11 +450,23 @@ components:
             $ref: '#/components/schemas/customFormField'
           type: array
         id:
-          description: The custom table id.
+          description: The custom form id.
           type: string
         text:
-          description: The custom table name.
+          description: The custom form name.
           type: string
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
     settingValueModel:
       type: object
       properties:

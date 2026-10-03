@@ -105,11 +105,13 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_inspectorModel:
+    response_inspectorModelArray:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/inspectorModel'
+          items:
+            $ref: '#/components/schemas/inspectorModel'
+          type: array
         status:
           type: integer
           description: The HTTP return status.
@@ -147,13 +149,11 @@ components:
         preferredChannel:
           description: The method by which the inspector prefers to be notified, by phone for example.
           type: string
-    response_inspectorModelArray:
+    response_inspectorModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/inspectorModel'
-          type: array
+          $ref: '#/components/schemas/inspectorModel'
         status:
           type: integer
           description: The HTTP return status.

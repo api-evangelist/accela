@@ -62,6 +62,18 @@ components:
           type: string
         themeName:
           type: string
+    response_GISDynamicThemes:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/dynamicThemesArray'
+        status:
+          type: integer
+          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
     pageModel:
       type: object
       properties:
@@ -77,18 +89,6 @@ components:
         hasmore:
           type: boolean
           description: true if there are more results to fetch; false if all results have been fetched.
-    response_GISDynamicThemes:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/dynamicThemesArray'
-        status:
-          type: integer
-          description: The HTTP return status.
-        page:
-          $ref: '#/components/schemas/pageModel'
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

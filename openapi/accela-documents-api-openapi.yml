@@ -225,6 +225,14 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_documentModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/documentModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     documentModel:
       type: object
       properties:
@@ -320,14 +328,6 @@ components:
         virtualFolders:
           description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_documentModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/documentModel'
-        status:
-          type: integer
-          description: The HTTP return status.
     response_documentModelArray:
       type: object
       properties:
@@ -366,17 +366,17 @@ components:
       required: false
       schema:
         type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     documentIdPathParam:
       description: The ID of document to fetch.
       in: path
       name: documentId
+      required: true
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
       required: true
       schema:
         type: string

@@ -167,23 +167,11 @@ paths:
         required: true
 components:
   schemas:
-    response_resultModelArray:
+    response_estimateFeeModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_feeItemModel_1Array:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/feeItemModel_1'
-          type: array
+          $ref: '#/components/schemas/estimateFeeModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -257,6 +245,26 @@ components:
             value:
               description: The data value.
               type: string
+    estimateFeeModel:
+      type: object
+      properties:
+        currencyCode:
+          description: The standard ISO 4217 currency code. For example, "USD" for US Dollars
+          type: string
+        feeTotal:
+          description: The total fee.
+          format: double
+          type: number
+    response_feeItemModel_1Array:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/feeItemModel_1'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     recordIdModel:
       type: object
       properties:
@@ -276,75 +284,13 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    feeItemBaseModel:
-      type: object
-      properties:
-        code:
-          type: object
-          description: The fee item code.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        feeNotes:
-          description: Notes about the fee.
-          type: string
-        id:
-          description: The fee item system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        paymentPeriod:
-          type: object
-          description: The time interval for processing invoices.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        quantity:
-          description: The number of units for which the same fee applies.
-          format: double
-          type: number
-        schedule:
-          type: object
-          description: Contains parameters that define the fee schedule.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        version:
-          type: object
-          description: The fee schedule version.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    estimateFeeModel:
-      type: object
-      properties:
-        currencyCode:
-          description: The standard ISO 4217 currency code. For example, "USD" for US Dollars
-          type: string
-        feeTotal:
-          description: The total fee.
-          format: double
-          type: number
-    response_estimateFeeModel:
+    response_resultModelArray:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/estimateFeeModel'
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
         status:
           type: integer
           description: The HTTP return status.
@@ -496,19 +442,73 @@ components:
             value:
               description: The data value.
               type: string
+    feeItemBaseModel:
+      type: object
+      properties:
+        code:
+          type: object
+          description: The fee item code.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        feeNotes:
+          description: Notes about the fee.
+          type: string
+        id:
+          description: The fee item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        paymentPeriod:
+          type: object
+          description: The time interval for processing invoices.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        quantity:
+          description: The number of units for which the same fee applies.
+          format: double
+          type: number
+        schedule:
+          type: object
+          description: Contains parameters that define the fee schedule.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        version:
+          type: object
+          description: The fee schedule version.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

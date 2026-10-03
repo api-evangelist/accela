@@ -164,16 +164,100 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    response_inpsectionChecklistModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/inpsectionChecklistModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
+    checklistModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    inpsectionChecklistModel:
+      type: object
+      properties:
+        teamName:
+          description: Inspection Team name.
+          type: string
+        floor:
+          description: Inspection Floor.
+          type: string
+        floorUnit:
+          description: Inspection Floor Unit.
+          type: string
+        checklistDesc:
+          description: The checklist description.
+          type: string
+        checklistStatus:
+          description: The status of the checklist.
+          type: string
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        defaultOrderBy:
+          description: The field by which the checklist items are ordered by default.
+          type: string
+        entityType:
+          description: The type of entity, for example "INSPECTION".
+          type: string
+        group:
+          description: The inspection checklist group.
+          type: string
+        guideType:
+          type: object
+          description: The inspection checklist type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The checklist system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        inspectionId:
+          description: The ID of the inspection.
+          type: string
+        isRequired:
+          description: Indicates whether or not the checklist is required.
+          enum:
+          - Y
+          - N
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/inspectionChecklistItemModel'
+          type: array
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
     inspectionChecklistItemModel:
       type: object
       properties:
@@ -285,100 +369,6 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    inpsectionChecklistModel:
-      type: object
-      properties:
-        teamName:
-          description: Inspection Team name.
-          type: string
-        floor:
-          description: Inspection Floor.
-          type: string
-        floorUnit:
-          description: Inspection Floor Unit.
-          type: string
-        checklistDesc:
-          description: The checklist description.
-          type: string
-        checklistStatus:
-          description: The status of the checklist.
-          type: string
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        defaultOrderBy:
-          description: The field by which the checklist items are ordered by default.
-          type: string
-        entityType:
-          description: The type of entity, for example "INSPECTION".
-          type: string
-        group:
-          description: The inspection checklist group.
-          type: string
-        guideType:
-          type: object
-          description: The inspection checklist type.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The checklist system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        inspectionId:
-          description: The ID of the inspection.
-          type: string
-        isRequired:
-          description: Indicates whether or not the checklist is required.
-          enum:
-          - Y
-          - N
-          type: string
-        items:
-          items:
-            $ref: '#/components/schemas/inspectionChecklistItemModel'
-          type: array
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-    response_inpsectionChecklistModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/inpsectionChecklistModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    checklistModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     recordIdModel:
       type: object
       properties:
@@ -398,6 +388,16 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
     inspectionIdString:
       description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).

@@ -52,6 +52,15 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    conditionAssessmentModel:
+      type: object
+      properties:
+        conditionAssessment:
+          description: The condition assessment id, as defined on Civic Platform Administration.
+          type: string
+        description:
+          description: The condition assessment description. If the description is null, this field is not returned.
+          type: string
     response_conditionAssessmentModelArray:
       type: object
       properties:
@@ -62,15 +71,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    conditionAssessmentModel:
-      type: object
-      properties:
-        conditionAssessment:
-          description: The condition assessment id, as defined on Civic Platform Administration.
-          type: string
-        description:
-          description: The condition assessment description. If the description is null, this field is not returned.
-          type: string
   parameters:
     lang:
       description: Language parameter to support I18N. Default language is en_US.

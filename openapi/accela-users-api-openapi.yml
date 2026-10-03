@@ -156,27 +156,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    fields:
-      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    exclude:
-      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
-      in: query
-      name: exclude
-      required: false
-      schema:
-        type: string
-    groupId:
-      description: The id of the group that user belongs to
-      in: query
-      name: groupId
-      required: false
-      schema:
-        type: string
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
       in: query
@@ -185,6 +164,27 @@ components:
       schema:
         type: integer
         format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    groupName:
+      description: The name of the group that user belongs to
+      in: query
+      name: groupName
+      required: false
+      schema:
+        type: string
     module:
       description: The module that user belongs to
       in: query
@@ -192,10 +192,10 @@ components:
       required: false
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
+    exclude:
+      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
       in: query
-      name: lang
+      name: exclude
       required: false
       schema:
         type: string
@@ -213,13 +213,6 @@ components:
       required: false
       schema:
         type: string
-    groupName:
-      description: The name of the group that user belongs to
-      in: query
-      name: groupName
-      required: false
-      schema:
-        type: string
     limit:
       description: Search result size limit.
       in: query
@@ -228,86 +221,14 @@ components:
       schema:
         type: integer
         format: int64
+    groupId:
+      description: The id of the group that user belongs to
+      in: query
+      name: groupId
+      required: false
+      schema:
+        type: string
   schemas:
-    usergroupsModel:
-      type: object
-      properties:
-        module:
-          description: The module the user group belongs to.
-          type: string
-        status:
-          description: Enabled or Disabled
-          type: string
-        name:
-          description: The name of the user group.
-          type: string
-        id:
-          description: The user group system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-    response_userModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/userModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-        page:
-          $ref: '#/components/schemas/pageModel'
-    userGroupModel:
-      type: object
-      properties:
-        firstName:
-          description: The user's first name.
-          type: string
-        groups:
-          items:
-            $ref: '#/components/schemas/groupModel'
-          type: array
-        lastName:
-          description: The user's last name.
-          type: string
-        serviceProviderCode:
-          description: The agency the user belongs to.
-          type: string
-    userModel:
-      type: object
-      properties:
-        id:
-          description: The user system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        userGroups:
-          items:
-            $ref: '#/components/schemas/usergroupsModel'
-          type: array
-        email:
-          description: The email address.
-          type: string
-        status:
-          description: Enabled or Disabled
-          type: string
-        firstName:
-          description: The user's first name.
-          type: string
-        department:
-          $ref: '#/components/schemas/departmentModel'
-    groupModel:
-      type: object
-      properties:
-        id:
-          description: The user group system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        moduleName:
-          description: The module the user group belongs to.
-          type: string
-        name:
-          description: The name of the user group.
-          type: string
     myuserModel:
       type: object
       properties:
@@ -334,22 +255,69 @@ components:
         value:
           description: The user id value
           type: string
-    response_userGroupModel:
+    userModel:
+      type: object
+      properties:
+        id:
+          description: The user system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        userGroups:
+          items:
+            $ref: '#/components/schemas/usergroupsModel'
+          type: array
+        email:
+          description: The email address.
+          type: string
+        status:
+          description: Enabled or Disabled
+          type: string
+        firstName:
+          description: The user's first name.
+          type: string
+        department:
+          $ref: '#/components/schemas/departmentModel'
+    userGroupModel:
+      type: object
+      properties:
+        firstName:
+          description: The user's first name.
+          type: string
+        groups:
+          items:
+            $ref: '#/components/schemas/groupModel'
+          type: array
+        lastName:
+          description: The user's last name.
+          type: string
+        serviceProviderCode:
+          description: The agency the user belongs to.
+          type: string
+    groupModel:
+      type: object
+      properties:
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+    response_userModel:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/userGroupModel'
+          $ref: '#/components/schemas/userModel'
         status:
           type: integer
           description: The HTTP return status.
-    response_myuserModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/myuserModel'
-        status:
-          type: integer
-          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
     departmentModel:
       type: object
       properties:
@@ -383,6 +351,38 @@ components:
         value:
           description: The department value.
           type: string
+    usergroupsModel:
+      type: object
+      properties:
+        module:
+          description: The module the user group belongs to.
+          type: string
+        status:
+          description: Enabled or Disabled
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+    response_myuserModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/myuserModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_userGroupModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/userGroupModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     pageModel:
       type: object
       properties:

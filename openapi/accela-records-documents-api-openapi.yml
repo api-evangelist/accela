@@ -240,6 +240,16 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_documentTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     documentModel:
       type: object
       properties:
@@ -335,16 +345,6 @@ components:
         virtualFolders:
           description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     documentTypeModel:
       type: object
       properties:
@@ -379,6 +379,16 @@ components:
         viewable:
           description: Indicates whether or not you can view the document category associated with the record.
           type: boolean
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -395,26 +405,6 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_documentTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_documentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     userRolePrivilegeModel:
       type: object
       properties:
@@ -450,19 +440,29 @@ components:
         uploadAllowed:
           description: Indicates whether or not the permission to upload a document is allowed.
           type: boolean
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
     authHeaderParam:

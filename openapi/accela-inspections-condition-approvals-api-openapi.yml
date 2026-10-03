@@ -280,21 +280,13 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
+    response_inspectionConditionModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/inspectionConditionModel'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_inspectionConditionModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/inspectionConditionModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -487,6 +479,14 @@ components:
             value:
               description: The data value.
               type: string
+    response_inspectionConditionModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/inspectionConditionModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -509,12 +509,12 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_inspectionConditionModelArray:
+    response_resultModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/inspectionConditionModel'
+            $ref: '#/components/schemas/resultModel'
           type: array
         status:
           type: integer
@@ -534,13 +534,6 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     inspectionId:
       description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
       in: path
@@ -549,6 +542,13 @@ components:
       schema:
         type: integer
         format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

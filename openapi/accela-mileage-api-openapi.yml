@@ -61,16 +61,6 @@ paths:
         description: Mileage request information
 components:
   schemas:
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     mileageModel:
       type: object
       properties:
@@ -115,6 +105,16 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
     authHeaderParam:
       description: Construct oAuth2 authentication token
