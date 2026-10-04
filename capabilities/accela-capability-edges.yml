@@ -1,0 +1,47 @@
+slug: accela
+provider: Accela
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: CivicId
+  spec_file: accela-civicid-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: '"Civic ID is a userid that allows a user to login multiple Accela products ... it allows
+    a user to link multiple agency Citizen Access accounts to a single login account"; GET /v4/civicid/accounts  Get
+    All Linked User Accounts'
+  reason: A single-sign-on identity that links multiple agency accounts to one login, with operations
+    to create, read and delete linked accounts and read the identity profile. This is identity federation
+    / account linking, i.e. Identity & Access Management.
+- tag: Citizen Access User Management
+  spec_file: accela-citizen-access-user-management-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: PUT /v4/citizenaccess/citizens/{id}/accounts  Update Citizen Account Status; PUT /v4/citizenaccess/citizens/{id}/password  Update
+    Citizen Password
+  reason: Administrative lifecycle of portal user accounts — create users, enable/disable account status,
+    reset passwords, manage account-linked contacts. This is user account and access administration.
+- tag: Records/Invoices
+  spec_file: accela-records-invoices-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.7
+  evidence: '"Get All Record Invoices", "Create Record Invoices"; schemas invoiceModel, feeItemModel'
+  reason: Creating and retrieving invoices from fee items against a record is customer invoicing, the
+    core of Accounts Receivable Management. Confidence moderate because only invoice creation/read is
+    exposed — no collections or cash application.
