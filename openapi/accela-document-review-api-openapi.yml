@@ -484,90 +484,21 @@ paths:
         required: true
 components:
   schemas:
-    documentAssociationModel:
+    response_resultModel:
       type: object
       properties:
-        department:
-          description: The department responsible for the document review task.
-          type: string
-        discipline:
-          description: The inspection discipline related to the document review.
-          type: string
-        staff:
-          description: The staff responsible for the document review task.
-          type: string
+        result:
+          $ref: '#/components/schemas/resultModel'
         status:
-          type: object
-          description: The document review task status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    documentCommentUpdateModel:
-      type: object
-      properties:
-        comment:
-          description: Comments or notes about the document.
-          type: string
-        createdBy:
-          description: The user id of the individual who created the comment.
-          type: string
-        createdDate:
-          description: The date the comment is created.
-          format: date-time
-          type: string
-        discipline:
-          type: object
-          description: The inspection discipline related to the document review.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        pageNumber:
-          description: The document page number the comment applies to.
-          format: int64
           type: integer
-        status:
-          type: object
-          description: The document comment status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    response_documentCommentUpdateModel:
+          description: The HTTP return status.
+    response_resultModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/documentCommentUpdateModel'
+            $ref: '#/components/schemas/resultModel'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_documentCommentModel:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentCommentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_documentAssociationModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/documentAssociationModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -627,37 +558,112 @@ components:
         message:
           description: The error message, if an error is encountered.
           type: string
-    response_resultModelArray:
+    response_documentAssociationModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/documentAssociationModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_documentCommentModel:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/documentCommentModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
-    response_resultModel:
+    documentCommentUpdateModel:
+      type: object
+      properties:
+        comment:
+          description: Comments or notes about the document.
+          type: string
+        createdBy:
+          description: The user id of the individual who created the comment.
+          type: string
+        createdDate:
+          description: The date the comment is created.
+          format: date-time
+          type: string
+        discipline:
+          type: object
+          description: The inspection discipline related to the document review.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        pageNumber:
+          description: The document page number the comment applies to.
+          format: int64
+          type: integer
+        status:
+          type: object
+          description: The document comment status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    documentAssociationModel:
+      type: object
+      properties:
+        department:
+          description: The department responsible for the document review task.
+          type: string
+        discipline:
+          description: The inspection discipline related to the document review.
+          type: string
+        staff:
+          description: The staff responsible for the document review task.
+          type: string
+        status:
+          type: object
+          description: The document review task status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_documentCommentUpdateModel:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/resultModel'
+          items:
+            $ref: '#/components/schemas/documentCommentUpdateModel'
+          type: array
         status:
           type: integer
           description: The HTTP return status.
   parameters:
-    documentIdReviewPathParam:
-      description: The ID of document to review.
-      in: path
-      name: documentId
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
       required: true
       schema:
-        type: integer
-        format: int64
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -668,20 +674,14 @@ components:
       required: true
       schema:
         type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
+    documentIdReviewPathParam:
+      description: The ID of document to review.
+      in: path
+      name: documentId
       required: true
       schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
+        type: integer
+        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

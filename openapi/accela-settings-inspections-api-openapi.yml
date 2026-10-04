@@ -624,309 +624,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    inspectionBeforeScheduledTime:
-      description: Specifies the number of days or hours before the scheduled time on the inspection date.
-      type: object
-      properties:
-        days:
-          description: Inspections can only be cancelled within this number of days before the scheduled time on the inspection date.
-          format: int64
-          type: integer
-        hours:
-          description: Inspections can only be cancelled within this number of hours before the scheduled time on the inspection date.
-          format: int64
-          type: integer
-        time:
-          description: Inspections can only be cancelled within the number of specified days or hours before this time ("hh:mm AM|PM") on the inspection date.
-          type: string
-    checklistItemStatusModel:
-      type: object
-      properties:
-        criticalScore:
-          description: "\tThe critical score for the status of a guidesheet item that is a Major Violation/Critical Item."
-          format: int64
-          type: integer
-        displayOrder:
-          description: "\tThe order of the item in comparison to the other items."
-          format: int64
-          type: integer
-        lhsType:
-          description: "\tIndicates whether or not the checklist is for LHS (Life/Health/Safety). For LHS-type items, the maximum point value becomes the default score."
-          type: string
-        majorViolation:
-          description: "\tThe number of major violations."
-          type: string
-        nonCriticalScore:
-          description: "\tThe non-critical score for the status of a guidesheet item that is not a Major Violation/Critical Item."
-          format: int64
-          type: integer
-        resultType:
-          description: "\tThe type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app."
-          type: string
-        text:
-          description: The checklist status name.
-          type: string
-        value:
-          description: The checklist status value.
-          type: string
-    customFormMetadataModel:
-      description: Contains the metadata for a custom form.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom form's display order.
-          format: int64
-          type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
-        id:
-          description: The custom form id.
-          type: string
-        text:
-          description: The custom form name.
-          type: string
-    response_checklistModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/checklistModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    childDrill:
-      type: object
-      properties:
-        drillId:
-          description: The ID of the drilldown child record.
-          format: int64
-          type: integer
-        id:
-          description: The ID of the current record.
-          type: string
-    inspectionGradeModel:
-      type: object
-      properties:
-        grades:
-          description: Contains the inspection grades.
-          items:
-            $ref: '#/components/schemas/gradeModel'
-          type: array
-        group:
-          description: The inspection grade group.
-          type: string
-    customTableMetadataModel:
-      description: Contains the metadata for a custom table.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom table's display order.
-          format: int64
-          type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
-        id:
-          description: The custom table id.
-          type: string
-        text:
-          description: The custom table name.
-          type: string
-    gradeModel:
-      type: object
-      properties:
-        grade:
-          type: object
-          description: The name of the inspection grade.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        gradeImage:
-          description: The link to an image file associated to the inspection grade.
-          type: string
-        group:
-          description: The inspection grade group for the inspection grade value.
-          type: string
-        maximumMajorViolation:
-          description: "\tUsed with the maxMajorViolation field to define a range of the acceptable number of major violations for an inspection."
-          format: int64
-          type: integer
-        maximumScore:
-          description: "\tUsed with the minScore field to define a range of acceptable values for an inspection."
-          format: int64
-          type: integer
-        minimumMajorViolation:
-          description: "\tUsed with the maxMajorViolation field to define a range of the acceptable number of major violations for an inspection."
-          format: int64
-          type: integer
-        minimumScore:
-          description: "\tUsed with the maxScore field to define a range of acceptable values for an inspection."
-          format: int64
-          type: integer
-    standardCommentGroupModel:
-      type: object
-      properties:
-        text:
-          description: The standard comment group name.
-          type: string
-        value:
-          description: The standard comment group value.
-          type: string
-    customFormField:
-      type: object
-      properties:
-        displayOrder:
-          description: ''
-          format: int64
-          type: integer
-        drillDown:
-          $ref: '#/components/schemas/aSITableDrill'
-        fieldType:
-          description: The custom field data type.
-          type: string
-        id:
-          description: The custom field system id assigned by the Civic Platform server.
-          type: string
-        isReadonly:
-          description: Indicates whether or not the custom field is read-only.
-          enum:
-          - Y
-          - N
-          type: string
-        isRequired:
-          description: Indicates whether or not the custom field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        maxLength:
-          description: The custom field length
-          format: int64
-          type: integer
-        options:
-          items:
-            type: object
-            description: Contains dropdown option values.
-            properties:
-              text:
-                description: The localized display value.
-                type: string
-              value:
-                description: The data value.
-                type: string
-          type: array
-        text:
-          description: The custom field localized text.
-          type: string
-        value:
-          description: The custom field stored value.
-          type: string
-    response_checklistItemStatusModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/checklistItemStatusModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_checklistGroupModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/checklistGroupModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    inspectionRestrictionModel:
-      type: object
-      properties:
-        beforeScheduledTime:
-          $ref: '#/components/schemas/inspectionBeforeScheduledTime'
-    rGuideSheetGroupModel:
-      type: object
-      properties:
-        id:
-          description: The inspection checklist sytem id assigned by the Civic Platform server.
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        value:
-          description: The stored value.
-          type: string
-    response_customTableMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customTableMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    aSITableDrill:
-      description: Contains drilldown field information.
-      type: object
-      properties:
-        children:
-          items:
-            $ref: '#/components/schemas/childDrill'
-          type: array
-        isRoot:
-          type: boolean
-    checklistModel:
-      type: object
-      properties:
-        group:
-          items:
-            description: A checklist group.
-            type: string
-          type: array
-        id:
-          description: The checklist id.
-          type: string
-        items:
-          items:
-            $ref: '#/components/schemas/checklistItemModel'
-          type: array
-        serviceProviderCode:
-          description: The agency unique identifier.
-          type: string
-        text:
-          description: The checklist name.
-          type: string
-    response_inspectionTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/inspectionTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_inspectionGradeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/inspectionGradeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     response_inspectionResultStatusModelArray:
       type: object
       properties:
@@ -937,49 +634,11 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    departmentModel:
+    inspectionRestrictionModel:
       type: object
       properties:
-        agency:
-          description: The department agency
-          type: string
-        bureau:
-          description: The name of the bureau, which is an organization level within an agency.
-          type: string
-        division:
-          description: The name of the division, which is an organization level within a bureau.
-          type: string
-        group:
-          description: The department group.
-          type: string
-        id:
-          description: The department system id assigned by the Civic Platform server.
-          type: string
-        office:
-          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
-          type: string
-        section:
-          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier
-          type: string
-        text:
-          description: The department display text.
-          type: string
-        value:
-          description: The department value.
-          type: string
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+        beforeScheduledTime:
+          $ref: '#/components/schemas/inspectionBeforeScheduledTime'
     checklistItemModel:
       description: Contains the checklist items.
       type: object
@@ -1029,6 +688,138 @@ components:
         text:
           description: The checklist item name.
           type: string
+    response_inspectionTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_standardCommentGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/standardCommentGroupModel'
+          type: array
+    inspectionBeforeScheduledTime:
+      description: Specifies the number of days or hours before the scheduled time on the inspection date.
+      type: object
+      properties:
+        days:
+          description: Inspections can only be cancelled within this number of days before the scheduled time on the inspection date.
+          format: int64
+          type: integer
+        hours:
+          description: Inspections can only be cancelled within this number of hours before the scheduled time on the inspection date.
+          format: int64
+          type: integer
+        time:
+          description: Inspections can only be cancelled within the number of specified days or hours before this time ("hh:mm AM|PM") on the inspection date.
+          type: string
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    departmentModel:
+      type: object
+      properties:
+        agency:
+          description: The department agency
+          type: string
+        bureau:
+          description: The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: The department group.
+          type: string
+        id:
+          description: The department system id assigned by the Civic Platform server.
+          type: string
+        office:
+          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
+          type: string
+        section:
+          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier
+          type: string
+        text:
+          description: The department display text.
+          type: string
+        value:
+          description: The department value.
+          type: string
+    inspectionGradeModel:
+      type: object
+      properties:
+        grades:
+          description: Contains the inspection grades.
+          items:
+            $ref: '#/components/schemas/gradeModel'
+          type: array
+        group:
+          description: The inspection grade group.
+          type: string
+    customTableMetadataModel:
+      description: Contains the metadata for a custom table.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom table id.
+          type: string
+        text:
+          description: The custom table name.
+          type: string
+    aSITableDrill:
+      description: Contains drilldown field information.
+      type: object
+      properties:
+        children:
+          items:
+            $ref: '#/components/schemas/childDrill'
+          type: array
+        isRoot:
+          type: boolean
+    customFormMetadataModel:
+      description: Contains the metadata for a custom form.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom form's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom form id.
+          type: string
+        text:
+          description: The custom form name.
+          type: string
     inspectionTypeAssociationsModel:
       type: object
       properties:
@@ -1042,6 +833,213 @@ components:
             value:
               description: The data value.
               type: string
+    standardCommentGroupModel:
+      type: object
+      properties:
+        text:
+          description: The standard comment group name.
+          type: string
+        value:
+          description: The standard comment group value.
+          type: string
+    gradeModel:
+      type: object
+      properties:
+        grade:
+          type: object
+          description: The name of the inspection grade.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        gradeImage:
+          description: The link to an image file associated to the inspection grade.
+          type: string
+        group:
+          description: The inspection grade group for the inspection grade value.
+          type: string
+        maximumMajorViolation:
+          description: "\tUsed with the maxMajorViolation field to define a range of the acceptable number of major violations for an inspection."
+          format: int64
+          type: integer
+        maximumScore:
+          description: "\tUsed with the minScore field to define a range of acceptable values for an inspection."
+          format: int64
+          type: integer
+        minimumMajorViolation:
+          description: "\tUsed with the maxMajorViolation field to define a range of the acceptable number of major violations for an inspection."
+          format: int64
+          type: integer
+        minimumScore:
+          description: "\tUsed with the maxScore field to define a range of acceptable values for an inspection."
+          format: int64
+          type: integer
+    customFormField:
+      type: object
+      properties:
+        displayOrder:
+          description: ''
+          format: int64
+          type: integer
+        drillDown:
+          $ref: '#/components/schemas/aSITableDrill'
+        fieldType:
+          description: The custom field data type.
+          type: string
+        id:
+          description: The custom field system id assigned by the Civic Platform server.
+          type: string
+        isReadonly:
+          description: Indicates whether or not the custom field is read-only.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the custom field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        maxLength:
+          description: The custom field length
+          format: int64
+          type: integer
+        options:
+          items:
+            type: object
+            description: Contains dropdown option values.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The custom field localized text.
+          type: string
+        value:
+          description: The custom field stored value.
+          type: string
+    inspectionResultStatusModel:
+      type: object
+      properties:
+        group:
+          description: The inspection status group.
+          type: string
+        results:
+          description: Contains the inspection grades.
+          items:
+            $ref: '#/components/schemas/gradeModel'
+          type: array
+    response_customTableMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          description: The ID of the drilldown child record.
+          format: int64
+          type: integer
+        id:
+          description: The ID of the current record.
+          type: string
+    response_inspectionGradeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionGradeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    checklistModel:
+      type: object
+      properties:
+        group:
+          items:
+            description: A checklist group.
+            type: string
+          type: array
+        id:
+          description: The checklist id.
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/checklistItemModel'
+          type: array
+        serviceProviderCode:
+          description: The agency unique identifier.
+          type: string
+        text:
+          description: The checklist name.
+          type: string
+    response_checklistGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistGroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    rGuideSheetGroupModel:
+      type: object
+      properties:
+        id:
+          description: The inspection checklist sytem id assigned by the Civic Platform server.
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    checklistItemStatusModel:
+      type: object
+      properties:
+        criticalScore:
+          description: "\tThe critical score for the status of a guidesheet item that is a Major Violation/Critical Item."
+          format: int64
+          type: integer
+        displayOrder:
+          description: "\tThe order of the item in comparison to the other items."
+          format: int64
+          type: integer
+        lhsType:
+          description: "\tIndicates whether or not the checklist is for LHS (Life/Health/Safety). For LHS-type items, the maximum point value becomes the default score."
+          type: string
+        majorViolation:
+          description: "\tThe number of major violations."
+          type: string
+        nonCriticalScore:
+          description: "\tThe non-critical score for the status of a guidesheet item that is not a Major Violation/Critical Item."
+          format: int64
+          type: integer
+        resultType:
+          description: "\tThe type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app."
+          type: string
+        text:
+          description: The checklist status name.
+          type: string
+        value:
+          description: The checklist status value.
+          type: string
     inspectionTypeModel:
       type: object
       properties:
@@ -1197,24 +1195,16 @@ components:
         value:
           description: The value for the specified parameter.
           type: string
-    inspectionResultStatusModel:
-      type: object
-      properties:
-        group:
-          description: The inspection status group.
-          type: string
-        results:
-          description: Contains the inspection grades.
-          items:
-            $ref: '#/components/schemas/gradeModel'
-          type: array
-    response_standardCommentGroupModelArray:
+    response_checklistModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/standardCommentGroupModel'
+            $ref: '#/components/schemas/checklistModel'
           type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     checklistGroupModel:
       type: object
       properties:
@@ -1227,15 +1217,24 @@ components:
         value:
           description: The checklist group value.
           type: string
+    response_checklistItemStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistItemStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
-        type: integer
-        format: int64
+        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
@@ -1250,13 +1249,6 @@ components:
       required: false
       schema:
         type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     limit:
       description: Search result size limit.
       in: query
@@ -1267,6 +1259,14 @@ components:
         format: int64
         enum:
         - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

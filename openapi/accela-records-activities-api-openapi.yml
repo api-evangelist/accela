@@ -164,6 +164,91 @@ paths:
         required: true
 components:
   schemas:
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    request_activityUpdateModel:
+      type: object
+      properties:
+        activityStatus:
+          type: object
+          description: The status of the record activity.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        assignedDepartment:
+          type: object
+          description: The department responsible for the activity.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        assignedUser:
+          type: object
+          description: The staff member responsible for the activity.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        description:
+          description: The activity description
+          type: string
+        dueDate:
+          description: The desired completion date of the task.
+          format: date-time
+          type: string
+        name:
+          description: The activity name.
+          type: string
+        priority:
+          type: object
+          description: The priority level assigned to the activity.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        startDate:
+          description: The activity start date.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The activity status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type:
+          type: object
+          description: The activity type.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     activityModel:
       type: object
       properties:
@@ -245,16 +330,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_activityModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/activityModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     request_activityAddModel:
       type: object
       properties:
@@ -322,6 +397,16 @@ components:
             value:
               description: The data value.
               type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -338,98 +423,13 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    request_activityUpdateModel:
-      type: object
-      properties:
-        activityStatus:
-          type: object
-          description: The status of the record activity.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        assignedDepartment:
-          type: object
-          description: The department responsible for the activity.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        assignedUser:
-          type: object
-          description: The staff member responsible for the activity.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        description:
-          description: The activity description
-          type: string
-        dueDate:
-          description: The desired completion date of the task.
-          format: date-time
-          type: string
-        name:
-          description: The activity name.
-          type: string
-        priority:
-          type: object
-          description: The priority level assigned to the activity.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        startDate:
-          description: The activity start date.
-          format: date-time
-          type: string
-        status:
-          type: object
-          description: The activity status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        type:
-          type: object
-          description: The activity type.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    response_resultModelArray:
+    response_activityModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/activityModel'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_resultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -439,13 +439,6 @@ components:
       in: query
       name: fields
       required: false
-      schema:
-        type: string
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
       schema:
         type: string
     authHeaderParam:
@@ -460,6 +453,13 @@ components:
       in: query
       name: lang
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
 x-api-evangelist-provenance:

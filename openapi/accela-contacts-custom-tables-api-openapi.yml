@@ -199,46 +199,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    tableModel:
-      type: object
-      properties:
-        id:
-          description: The custom table id.
-          type: string
-        rows:
-          items:
-            $ref: '#/components/schemas/rowModel'
-          description: A table row containing custom fields.
-          type: array
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: ''
-          type: string
-        aCustomFieldValue:
-          description: ''
-          type: string
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_tableModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/tableModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     aSITableDrill:
       description: Contains drilldown field information.
       type: object
@@ -267,6 +227,97 @@ components:
         text:
           description: The custom table name.
           type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    childDrill:
+      type: object
+      properties:
+        drillId:
+          description: The ID of the drilldown child record.
+          format: int64
+          type: integer
+        id:
+          description: The ID of the current record.
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
+          type: string
+    rowModel:
+      type: object
+      properties:
+        action:
+          description: The requested operation on the row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The row id.
+          type: string
+    tableModel:
+      type: object
+      properties:
+        id:
+          description: The custom table id.
+          type: string
+        rows:
+          items:
+            $ref: '#/components/schemas/rowModel'
+          description: A table row containing custom fields.
+          type: array
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_tableModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/tableModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -316,66 +367,7 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    rowModel:
-      type: object
-      properties:
-        action:
-          description: The requested operation on the row.
-          enum:
-          - add
-          - update
-          - delete
-          type: string
-        fields:
-          $ref: '#/components/schemas/customAttributeModel'
-        id:
-          description: The row id.
-          type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    childDrill:
-      type: object
-      properties:
-        drillId:
-          description: The ID of the drilldown child record.
-          format: int64
-          type: integer
-        id:
-          description: The ID of the current record.
-          type: string
   parameters:
-    contactId:
-      description: The ID of the contact to fetch.
-      in: path
-      name: contactId
-      required: true
-      schema:
-        type: integer
-        format: int64
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
@@ -390,6 +382,14 @@ components:
       required: true
       schema:
         type: string
+    contactId:
+      description: The ID of the contact to fetch.
+      in: path
+      name: contactId
+      required: true
+      schema:
+        type: integer
+        format: int64
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query

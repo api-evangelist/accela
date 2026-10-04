@@ -178,6 +178,29 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_conditionTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
     conditionTypeModel:
       type: object
       properties:
@@ -202,6 +225,16 @@ components:
         value:
           description: The condition type value.
           type: string
+    response_conditionStatusModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionStatusModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     response_settingValueModelArray:
       type: object
       properties:
@@ -213,28 +246,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_conditionTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
     conditionStatusModel:
       type: object
       properties:
@@ -259,17 +270,7 @@ components:
         value:
           description: The condition status value.
           type: string
-    response_conditionStatusModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionStatusModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    settingValueModel:
+    settingValueModelAddressTypes:
       type: object
       properties:
         text:
@@ -278,10 +279,9 @@ components:
         value:
           description: The setting value.
           type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
   parameters:
     authHeaderParam:
       description: Construct oAuth2 authentication token

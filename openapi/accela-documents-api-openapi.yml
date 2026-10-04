@@ -225,14 +225,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_documentModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/documentModel'
-        status:
-          type: integer
-          description: The HTTP return status.
     documentModel:
       type: object
       properties:
@@ -328,16 +320,6 @@ components:
         virtualFolders:
           description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_documentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     userRolePrivilegeModel:
       type: object
       properties:
@@ -358,11 +340,43 @@ components:
           items:
             type: string
           type: array
+    response_documentModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/documentModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -371,20 +385,6 @@ components:
       in: path
       name: documentId
       required: true
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

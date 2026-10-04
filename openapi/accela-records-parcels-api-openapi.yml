@@ -211,120 +211,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    identifierModel:
-      type: object
-      properties:
-        text:
-          type: string
-        value:
-          type: string
-    refOwnerModel:
-      type: object
-      properties:
-        email:
-          description: The contact's email address.
-          type: string
-        fax:
-          description: The fax number for the contact.
-          type: string
-        firstName:
-          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
-          type: string
-        fullName:
-          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
-          type: string
-        id:
-          description: The owner system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        isPrimary:
-          description: Indicates whether or not to designate the owner as the primary owner.
-          type: string
-        lastName:
-          description: The last name (surname).
-          type: string
-        mailAddress:
-          $ref: '#/components/schemas/ownerAddressModel'
-        middleName:
-          description: The contact's middle name.
-          type: string
-        parcelId:
-          description: The unique Id generated for a parcel.
-          type: string
-        phone:
-          description: The telephone number of the owner.
-          type: string
-        phoneCountryCode:
-          description: The country code for the assoicated phone number.
-          type: string
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        refOwnerId:
-          description: The reference owner id.
-          format: double
-          type: number
-        status:
-          type: object
-          description: The owner status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        taxId:
-          description: The owner's tax ID number.
-          type: string
-        title:
-          description: The individual's business title.
-          type: string
-        type:
-          description: The owner type.
-          type: string
-    ownerAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          type: string
-        addressLine3:
-          type: string
-        city:
-          type: string
-        country:
-          $ref: '#/components/schemas/identifierModel'
-        postalCode:
-          type: string
-        state:
-          $ref: '#/components/schemas/identifierModel'
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     recordIdModel:
       type: object
       properties:
@@ -344,16 +230,39 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
-    response_recordParcelModelArray:
+    response_resultModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/recordParcelModel'
+            $ref: '#/components/schemas/resultModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
+    identifierModel:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
     recordParcelModel:
       type: object
       properties:
@@ -461,11 +370,116 @@ components:
         tract:
           description: The name of the tract associated with this application. A tract may contain one or more related parcels.
           type: string
+    refOwnerModel:
+      type: object
+      properties:
+        email:
+          description: The contact's email address.
+          type: string
+        fax:
+          description: The fax number for the contact.
+          type: string
+        firstName:
+          description: The contact's first name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        fullName:
+          description: The contact's full name. This field is only active when the Contact Type selected is Individual.
+          type: string
+        id:
+          description: The owner system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the owner as the primary owner.
+          type: string
+        lastName:
+          description: The last name (surname).
+          type: string
+        mailAddress:
+          $ref: '#/components/schemas/ownerAddressModel'
+        middleName:
+          description: The contact's middle name.
+          type: string
+        parcelId:
+          description: The unique Id generated for a parcel.
+          type: string
+        phone:
+          description: The telephone number of the owner.
+          type: string
+        phoneCountryCode:
+          description: The country code for the assoicated phone number.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        refOwnerId:
+          description: The reference owner id.
+          format: double
+          type: number
+        status:
+          type: object
+          description: The owner status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        taxId:
+          description: The owner's tax ID number.
+          type: string
+        title:
+          description: The individual's business title.
+          type: string
+        type:
+          description: The owner type.
+          type: string
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        city:
+          type: string
+        country:
+          $ref: '#/components/schemas/identifierModel'
+        postalCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/identifierModel'
+    response_recordParcelModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordParcelModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -474,20 +488,6 @@ components:
       in: path
       name: recordId
       required: true
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

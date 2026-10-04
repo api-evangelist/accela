@@ -394,279 +394,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    recordTypeModel:
-      type: object
-      properties:
-        alias:
-          description: The record type alias.
-          type: string
-        category:
-          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        filterName:
-          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
-          type: string
-        group:
-          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        id:
-          description: The record type id.
-          type: string
-        module:
-          description: The module the record type belongs to.
-          type: string
-        subType:
-          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        type:
-          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        value:
-          description: The stored value.
-          type: string
-    customAttributeModel:
-      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom form data uses the configured address-parcel-owner template metadata. The custom fields use the configured address-parcel-owner template metadata. Note the following custom field data types: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
-      type: object
-      properties:
-        id:
-          description: The custom form id.
-          type: string
-        <aCustomFieldName>:
-          description: The name of a custom field.
-          type: string
-        <aCustomFieldValue>:
-          description: The value of a custom field.
-          type: string
-    addressModel:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-          description: The first line of the address.
-        addressLine2:
-          type: string
-          description: The first line of the address.
-        addressTypeFlag:
-          type: object
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-          description: A code name or an abbreviation of the address type.
-        auditStatus:
-          type: string
-          description: The audit status of the address.
-        city:
-          type: string
-          description: The name of the city.
-        country:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        county:
-          type: string
-          description: The name of the county.
-        customForms:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        description:
-          type: string
-          description: A description of the address.
-        direction:
-          description: The street direction of the primary address associated with the application.
-          type: object
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        distance:
-          type: number
-          format: double
-          description: The distance from another landmark used to locate the address.
-        houseAlphaStart:
-          type: string
-          description: The beginning alphabetic unit in street address.
-        houseAlphaEnd:
-          type: string
-          description: The ending alphabetic unit in street address.
-        houseFractionStart:
-          type: object
-          description: Beginning fraction value used in combination with the Street number fields.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        houseFractionEnd:
-          type: object
-          description: Ending franction value used in combination with the Street number fields.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        houseNumberEndFrom:
-          type: number
-          description: The first of the ending house number range.
-          format: long
-        houseNumberEndTo:
-          type: number
-          description: The last of the ending house number range.
-          format: long
-        houseNumberStartFrom:
-          type: number
-          description: The first of the start house number range.
-          format: long
-        houseNumberStartTo:
-          type: number
-          description: The last of the start house number range.
-          format: long
-        id:
-          format: int64
-          type: integer
-          description: The unique address id assigned by the Civic Platform server.
-        inspectionDistrict:
-          type: string
-          description: The inspection district where the address is located.
-        inspectionDistrictPrefix:
-          type: string
-          description: The prefix for the inspection district where the address is located.
-        isPrimary:
-          type: string
-          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
-        levelStart:
-          type: string
-          description: The starting level number (floor number) that makes up the address within a complex.
-        levelEnd:
-          type: string
-          description: The ending level number (floor number) that makes up the address within a complex.
-        levelPrefix:
-          type: string
-          description: The prefix for the level numbers (floor numbers) that make up the address.
-        neighborhood:
-          type: string
-          description: The neighborhood where the address is located.
-        neighborhoodPrefix:
-          type: string
-          description: The prefix for neighborhood where the address is located.
-        postalCode:
-          type: string
-          description: The postal ZIP code for the address.
-        secondaryStreet:
-          type: string
-          description: This field (along with the Secondary Road Number field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
-        secondaryStreetNumber:
-          type: number
-          format: long
-          description: This field (along with the Secondary Road field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
-        sourceFlag:
-          type: string
-          description: The Accela permitting system that stores this address information, such as Civic Platform, Kiva, or Tidemark.
-        sourceNumber:
-          type: number
-          format: long
-          description: A number that identifies the Accela permitting system that stores this address information.
-        state:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        status:
-          type: object
-          description: The address status indicating whether the address is active or inactive.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        streetAddress:
-          type: string
-          description: The street address.
-        streetEnd:
-          type: number
-          format: long
-          description: The ending number of a street address range.
-        streetName:
-          type: string
-          description: The name of the street.
-        streetPrefix:
-          type: string
-          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
-        streetStart:
-          type: number
-          format: long
-          description: The starting number of a street address range.
-        streetSuffix:
-          type: object
-          description: The type of street such as "Lane" or "Boulevard".
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        streetSuffixDirection:
-          type: object
-          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        unitStart:
-          type: string
-          description: The starting value of a range of unit numbers.
-        unitEnd:
-          type: string
-          description: The ending value of a range of unit numbers.
-        unitType:
-          type: object
-          description: The unit type designation of the address.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        xCoordinate:
-          type: number
-          format: double
-          description: The longitudinal coordinate for this address.
-        yCoordinate:
-          type: number
-          format: double
-          description: The latitudinal coordinate for this address.
     addressModelWithCustomForms:
       type: object
       properties:
@@ -894,16 +621,40 @@ components:
           type: number
           format: double
           description: The latitudinal coordinate for this address.
-    recordExpirationModel:
+    pageModel:
       type: object
       properties:
-        expirationDate:
-          description: The date when the condition expires.
-          format: date-time
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_addressModelWithCustomForms:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/addressModelWithCustomForms'
+        status:
+          type: integer
+          description: The HTTP return status.
+    request_addressModelWithCustomForms:
+      type: object
+      properties:
+        addressLine1:
           type: string
-        expirationStatus:
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The first line of the address.
+        addressTypeFlag:
           type: object
-          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
           properties:
             text:
               description: The localized display value.
@@ -911,6 +662,463 @@ components:
             value:
               description: The data value.
               type: string
+          description: A code name or an abbreviation of the address type.
+        auditStatus:
+          type: string
+          description: The audit status of the address.
+        city:
+          type: string
+          description: The name of the city.
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        county:
+          type: string
+          description: The name of the county.
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        description:
+          type: string
+          description: A description of the address.
+        direction:
+          description: The street direction of the primary address associated with the application.
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        distance:
+          type: number
+          format: double
+          description: The distance from another landmark used to locate the address.
+        houseAlphaStart:
+          type: string
+          description: The beginning alphabetic unit in street address.
+        houseAlphaEnd:
+          type: string
+          description: The ending alphabetic unit in street address.
+        houseFractionStart:
+          type: object
+          description: Beginning fraction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        houseFractionEnd:
+          type: object
+          description: Ending franction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        houseNumberEndFrom:
+          type: number
+          description: The first of the ending house number range.
+          format: long
+        houseNumberEndTo:
+          type: number
+          description: The last of the ending house number range.
+          format: long
+        houseNumberStartFrom:
+          type: number
+          description: The first of the start house number range.
+          format: long
+        houseNumberStartTo:
+          type: number
+          description: The last of the start house number range.
+          format: long
+        inspectionDistrict:
+          type: string
+          description: The inspection district where the address is located.
+        inspectionDistrictPrefix:
+          type: string
+          description: The prefix for the inspection district where the address is located.
+        isPrimary:
+          type: string
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+        levelStart:
+          type: string
+          description: The starting level number (floor number) that makes up the address within a complex.
+        levelEnd:
+          type: string
+          description: The ending level number (floor number) that makes up the address within a complex.
+        levelPrefix:
+          type: string
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+        neighborhood:
+          type: string
+          description: The neighborhood where the address is located.
+        neighborhoodPrefix:
+          type: string
+          description: The prefix for neighborhood where the address is located.
+        postalCode:
+          type: string
+          description: The postal ZIP code for the address.
+        secondaryStreet:
+          type: string
+          description: This field (along with the Secondary Road Number field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        secondaryStreetNumber:
+          type: number
+          format: long
+          description: This field (along with the Secondary Road field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        sourceFlag:
+          type: string
+          description: The Accela permitting system that stores this address information, such as Civic Platform, Kiva, or Tidemark.
+        sourceNumber:
+          type: number
+          format: long
+          description: A number that identifies the Accela permitting system that stores this address information.
+        state:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          type: string
+          description: The street address.
+        streetEnd:
+          type: number
+          format: long
+          description: The ending number of a street address range.
+        streetName:
+          type: string
+          description: The name of the street.
+        streetPrefix:
+          type: string
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+        streetStart:
+          type: number
+          format: long
+          description: The starting number of a street address range.
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard".
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitStart:
+          type: string
+          description: The starting value of a range of unit numbers.
+        unitEnd:
+          type: string
+          description: The ending value of a range of unit numbers.
+        unitType:
+          type: object
+          description: The unit type designation of the address.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        xCoordinate:
+          type: number
+          format: double
+          description: The longitudinal coordinate for this address.
+        yCoordinate:
+          type: number
+          format: double
+          description: The latitudinal coordinate for this address.
+    customAttributeModel:
+      description: 'Contains a custom form consisting of the custom form id and custom field name and value pairs. For example in JSON, "My Custom Field": "My Custom Value". The custom form data uses the configured address-parcel-owner template metadata. The custom fields use the configured address-parcel-owner template metadata. Note the following custom field data types: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of a custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of a custom field.
+          type: string
+    response_conditionModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/conditionModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    addressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The first line of the address.
+        addressTypeFlag:
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+          description: A code name or an abbreviation of the address type.
+        auditStatus:
+          type: string
+          description: The audit status of the address.
+        city:
+          type: string
+          description: The name of the city.
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        county:
+          type: string
+          description: The name of the county.
+        customForms:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        description:
+          type: string
+          description: A description of the address.
+        direction:
+          description: The street direction of the primary address associated with the application.
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        distance:
+          type: number
+          format: double
+          description: The distance from another landmark used to locate the address.
+        houseAlphaStart:
+          type: string
+          description: The beginning alphabetic unit in street address.
+        houseAlphaEnd:
+          type: string
+          description: The ending alphabetic unit in street address.
+        houseFractionStart:
+          type: object
+          description: Beginning fraction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        houseFractionEnd:
+          type: object
+          description: Ending franction value used in combination with the Street number fields.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        houseNumberEndFrom:
+          type: number
+          description: The first of the ending house number range.
+          format: long
+        houseNumberEndTo:
+          type: number
+          description: The last of the ending house number range.
+          format: long
+        houseNumberStartFrom:
+          type: number
+          description: The first of the start house number range.
+          format: long
+        houseNumberStartTo:
+          type: number
+          description: The last of the start house number range.
+          format: long
+        id:
+          format: int64
+          type: integer
+          description: The unique address id assigned by the Civic Platform server.
+        inspectionDistrict:
+          type: string
+          description: The inspection district where the address is located.
+        inspectionDistrictPrefix:
+          type: string
+          description: The prefix for the inspection district where the address is located.
+        isPrimary:
+          type: string
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+        levelStart:
+          type: string
+          description: The starting level number (floor number) that makes up the address within a complex.
+        levelEnd:
+          type: string
+          description: The ending level number (floor number) that makes up the address within a complex.
+        levelPrefix:
+          type: string
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+        neighborhood:
+          type: string
+          description: The neighborhood where the address is located.
+        neighborhoodPrefix:
+          type: string
+          description: The prefix for neighborhood where the address is located.
+        postalCode:
+          type: string
+          description: The postal ZIP code for the address.
+        secondaryStreet:
+          type: string
+          description: This field (along with the Secondary Road Number field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        secondaryStreetNumber:
+          type: number
+          format: long
+          description: This field (along with the Secondary Road field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
+        sourceFlag:
+          type: string
+          description: The Accela permitting system that stores this address information, such as Civic Platform, Kiva, or Tidemark.
+        sourceNumber:
+          type: number
+          format: long
+          description: A number that identifies the Accela permitting system that stores this address information.
+        state:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          type: string
+          description: The street address.
+        streetEnd:
+          type: number
+          format: long
+          description: The ending number of a street address range.
+        streetName:
+          type: string
+          description: The name of the street.
+        streetPrefix:
+          type: string
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+        streetStart:
+          type: number
+          format: long
+          description: The starting number of a street address range.
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard".
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitStart:
+          type: string
+          description: The starting value of a range of unit numbers.
+        unitEnd:
+          type: string
+          description: The ending value of a range of unit numbers.
+        unitType:
+          type: object
+          description: The unit type designation of the address.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        xCoordinate:
+          type: number
+          format: double
+          description: The longitudinal coordinate for this address.
+        yCoordinate:
+          type: number
+          format: double
+          description: The latitudinal coordinate for this address.
     response_addressModelArray:
       type: object
       properties:
@@ -1028,6 +1236,31 @@ components:
         tract:
           description: The name of the tract associated with this application. A tract may contain one or more related parcels.
           type: string
+    response_parcelModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/parcelModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     simpleRecordModel:
       type: object
       properties:
@@ -1305,14 +1538,39 @@ components:
         value:
           description: The record value.
           type: string
-    response_parcelModel:
+    recordTypeModel:
       type: object
       properties:
-        result:
-          $ref: '#/components/schemas/parcelModel'
-        status:
-          type: integer
-          description: The HTTP return status.
+        alias:
+          description: The record type alias.
+          type: string
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The stored value.
+          type: string
     response_simpleRecordModelArray:
       type: object
       properties:
@@ -1501,265 +1759,14 @@ components:
             value:
               description: The data value.
               type: string
-    response_conditionModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionModel'
-          type: array
-        page:
-          $ref: '#/components/schemas/pageModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    request_addressModelWithCustomForms:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-          description: The first line of the address.
-        addressLine2:
-          type: string
-          description: The first line of the address.
-        addressTypeFlag:
-          type: object
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-          description: A code name or an abbreviation of the address type.
-        auditStatus:
-          type: string
-          description: The audit status of the address.
-        city:
-          type: string
-          description: The name of the city.
-        country:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        county:
-          type: string
-          description: The name of the county.
-        customForms:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        description:
-          type: string
-          description: A description of the address.
-        direction:
-          description: The street direction of the primary address associated with the application.
-          type: object
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        distance:
-          type: number
-          format: double
-          description: The distance from another landmark used to locate the address.
-        houseAlphaStart:
-          type: string
-          description: The beginning alphabetic unit in street address.
-        houseAlphaEnd:
-          type: string
-          description: The ending alphabetic unit in street address.
-        houseFractionStart:
-          type: object
-          description: Beginning fraction value used in combination with the Street number fields.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        houseFractionEnd:
-          type: object
-          description: Ending franction value used in combination with the Street number fields.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        houseNumberEndFrom:
-          type: number
-          description: The first of the ending house number range.
-          format: long
-        houseNumberEndTo:
-          type: number
-          description: The last of the ending house number range.
-          format: long
-        houseNumberStartFrom:
-          type: number
-          description: The first of the start house number range.
-          format: long
-        houseNumberStartTo:
-          type: number
-          description: The last of the start house number range.
-          format: long
-        inspectionDistrict:
-          type: string
-          description: The inspection district where the address is located.
-        inspectionDistrictPrefix:
-          type: string
-          description: The prefix for the inspection district where the address is located.
-        isPrimary:
-          type: string
-          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
-        levelStart:
-          type: string
-          description: The starting level number (floor number) that makes up the address within a complex.
-        levelEnd:
-          type: string
-          description: The ending level number (floor number) that makes up the address within a complex.
-        levelPrefix:
-          type: string
-          description: The prefix for the level numbers (floor numbers) that make up the address.
-        neighborhood:
-          type: string
-          description: The neighborhood where the address is located.
-        neighborhoodPrefix:
-          type: string
-          description: The prefix for neighborhood where the address is located.
-        postalCode:
-          type: string
-          description: The postal ZIP code for the address.
-        secondaryStreet:
-          type: string
-          description: This field (along with the Secondary Road Number field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
-        secondaryStreetNumber:
-          type: number
-          format: long
-          description: This field (along with the Secondary Road field) displays an extra description for the location when two roads that cross or a street with two names makes up the address of the location.
-        sourceFlag:
-          type: string
-          description: The Accela permitting system that stores this address information, such as Civic Platform, Kiva, or Tidemark.
-        sourceNumber:
-          type: number
-          format: long
-          description: A number that identifies the Accela permitting system that stores this address information.
-        state:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        status:
-          type: object
-          description: The address status indicating whether the address is active or inactive.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        streetAddress:
-          type: string
-          description: The street address.
-        streetEnd:
-          type: number
-          format: long
-          description: The ending number of a street address range.
-        streetName:
-          type: string
-          description: The name of the street.
-        streetPrefix:
-          type: string
-          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
-        streetStart:
-          type: number
-          format: long
-          description: The starting number of a street address range.
-        streetSuffix:
-          type: object
-          description: The type of street such as "Lane" or "Boulevard".
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        streetSuffixDirection:
-          type: object
-          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        unitStart:
-          type: string
-          description: The starting value of a range of unit numbers.
-        unitEnd:
-          type: string
-          description: The ending value of a range of unit numbers.
-        unitType:
-          type: object
-          description: The unit type designation of the address.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        xCoordinate:
-          type: number
-          format: double
-          description: The longitudinal coordinate for this address.
-        yCoordinate:
-          type: number
-          format: double
-          description: The latitudinal coordinate for this address.
-    response_addressModelWithCustomForms:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/addressModelWithCustomForms'
-        status:
-          type: integer
-          description: The HTTP return status.
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
   parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
     idAddressPathParam:
       description: The system id of the address to fetch.
       in: path
@@ -1768,18 +1775,10 @@ components:
       schema:
         type: integer
         format: int64
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+    conditionStatusQueryParam:
+      description: Filter by condition status. See [Get All Standard Condition Statuses](./api-settings.html#operation/v4.get.settings.conditions.statuses), [Get All Approval Condition Statuses](./api-settings.html#operation/v4.get.settings.conditionApprovals.statuses)
       in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    conditionTypeQueryParam:
-      description: Filter by condition type. See [Get All Condition Types](./api-settings.html#operation/v4.get.settings.conditions.types)
-      in: query
-      name: type
+      name: status
       schema:
         type: string
     lang:
@@ -1796,17 +1795,10 @@ components:
       required: false
       schema:
         type: string
-    conditionStatusQueryParam:
-      description: Filter by condition status. See [Get All Standard Condition Statuses](./api-settings.html#operation/v4.get.settings.conditions.statuses), [Get All Approval Condition Statuses](./api-settings.html#operation/v4.get.settings.conditionApprovals.statuses)
+    conditionTypeQueryParam:
+      description: Filter by condition type. See [Get All Condition Types](./api-settings.html#operation/v4.get.settings.conditions.types)
       in: query
-      name: status
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+      name: type
       schema:
         type: string
     conditionNameQueryParam:
@@ -1819,6 +1811,14 @@ components:
       description: Search result size limit.
       in: query
       name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
       required: false
       schema:
         type: integer

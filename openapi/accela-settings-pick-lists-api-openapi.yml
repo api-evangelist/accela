@@ -101,6 +101,21 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
   schemas:
     response_sharedPickListModelArray:
       type: object
@@ -112,6 +127,39 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    pickListValueModel:
+      type: object
+      properties:
+        description:
+          type: object
+          description: The pick list value description.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        displayOrder:
+          description: The order of the item in comparison to the other items.
+          format: int64
+          type: integer
+        status:
+          type: object
+          description: The pick list value status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        text:
+          description: The pick list display label.
+          type: string
+        value:
+          description: The pick list value.
+          type: string
     response_sharedPickListValuesModel:
       type: object
       properties:
@@ -157,54 +205,6 @@ components:
             value:
               description: The data value.
               type: string
-    pickListValueModel:
-      type: object
-      properties:
-        description:
-          type: object
-          description: The pick list value description.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        displayOrder:
-          description: The order of the item in comparison to the other items.
-          format: int64
-          type: integer
-        status:
-          type: object
-          description: The pick list value status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        text:
-          description: The pick list display label.
-          type: string
-        value:
-          description: The pick list value.
-          type: string
-  parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

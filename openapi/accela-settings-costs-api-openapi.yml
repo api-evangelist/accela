@@ -279,6 +279,21 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
   schemas:
     response_settingCostsTypeItems:
       type: object
@@ -293,6 +308,19 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
     settingCostsTypeItemsArray:
       type: object
       properties:
@@ -302,6 +330,21 @@ components:
         text:
           description: The setting label.
           type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
     response_settingValueModelArray:
       type: object
       properties:
@@ -325,49 +368,6 @@ components:
         required:
           description: Indicates whether or not it is required for an address type.
           type: boolean
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
-    settingValueModel:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
-  parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -209,18 +209,26 @@ paths:
       - OAuth2
 components:
   schemas:
-    response_error:
+    response_tokeninfo:
       type: object
       properties:
-        error:
+        appId:
           type: string
-          description: The error code. Refer [here](https://tools.ietf.org/html/rfc6749#section-4.1.2) for details.
-        error_description:
+          description: The app ID value from [Construct Developer Portal](https://developer.accela.com). This value is passed in your access token request.
+        userId:
           type: string
-          description: The error description text.
-        error_uri:
+          description: The logged in user's unique id.
+        agencyName:
           type: string
-          description: The URI of web page with more information about the error.
+          description: 'The agency name defined in the Accela Administrator Portal. The agency name is passed by client request or chosen by the end-user during access token request flow. '
+        scopes:
+          items:
+            description: A scope the request has access to.
+            type: string
+          type: array
+        expiresIn:
+          type: integer
+          description: The lifetime in seconds of the access token.
         state:
           type: string
           description: 'The exact value received from the client. '
@@ -251,21 +259,21 @@ components:
         scope:
           type: string
           description: 'The scope of the resources authenticated by the authorization server (for an implicit flow request where response_type=token). scope is returned as a parameter in the redirection URI using the "application/x-www-form-urlencoded" format. '
-    response_status:
+    response_error:
       type: object
       properties:
-        status:
+        error:
           type: string
-          description: The HTTP error code.
-        code:
+          description: The error code. Refer [here](https://tools.ietf.org/html/rfc6749#section-4.1.2) for details.
+        error_description:
           type: string
-          description: The error code.
-        message:
+          description: The error description text.
+        error_uri:
           type: string
-          description: The error message.
-        traceId:
+          description: The URI of web page with more information about the error.
+        state:
           type: string
-          description: 'The traceid for debugging purposes. '
+          description: 'The exact value received from the client. '
     response_token:
       type: object
       properties:
@@ -340,29 +348,21 @@ components:
         state:
           description: "An opaque value that the client uses for maintaining the state between the request and callback. Enter a unique value. This can be used for [Cross-Site Request Forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) protection.\n\nThis parameter is not used when refreshing a token.\n\t\t\t\t\t\n\n**Note**: state is used and optional only when calling this API with grant_type=authorization_code for [Authorization Code Flow](../construct-authCodeFlow.html). "
           type: string
-    response_tokeninfo:
+    response_status:
       type: object
       properties:
-        appId:
+        status:
           type: string
-          description: The app ID value from [Construct Developer Portal](https://developer.accela.com). This value is passed in your access token request.
-        userId:
+          description: The HTTP error code.
+        code:
           type: string
-          description: The logged in user's unique id.
-        agencyName:
+          description: The error code.
+        message:
           type: string
-          description: 'The agency name defined in the Accela Administrator Portal. The agency name is passed by client request or chosen by the end-user during access token request flow. '
-        scopes:
-          items:
-            description: A scope the request has access to.
-            type: string
-          type: array
-        expiresIn:
-          type: integer
-          description: The lifetime in seconds of the access token.
-        state:
+          description: The error message.
+        traceId:
           type: string
-          description: 'The exact value received from the client. '
+          description: 'The traceid for debugging purposes. '
     request_authorize:
       type: object
       required:

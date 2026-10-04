@@ -71,6 +71,66 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    recordTypeModel:
+      type: object
+      properties:
+        alias:
+          description: The record type alias.
+          type: string
+        category:
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
+          type: string
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        id:
+          description: The record type id.
+          type: string
+        module:
+          description: The module the record type belongs to.
+          type: string
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        text:
+          description: The localized display text.
+          type: string
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
+          type: string
+        value:
+          description: The stored value.
+          type: string
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_simpleRecordModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/simpleRecordModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     simpleRecordModel:
       type: object
       properties:
@@ -365,66 +425,6 @@ components:
         value:
           description: The record value.
           type: string
-    recordTypeModel:
-      type: object
-      properties:
-        alias:
-          description: The record type alias.
-          type: string
-        category:
-          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        filterName:
-          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
-          type: string
-        group:
-          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        id:
-          description: The record type id.
-          type: string
-        module:
-          description: The module the record type belongs to.
-          type: string
-        subType:
-          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        text:
-          description: The localized display text.
-          type: string
-        type:
-          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        value:
-          description: The stored value.
-          type: string
-    recordExpirationModel:
-      type: object
-      properties:
-        expirationDate:
-          description: The date when the condition expires.
-          format: date-time
-          type: string
-        expirationStatus:
-          type: object
-          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    response_simpleRecordModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/simpleRecordModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
   parameters:
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
@@ -434,10 +434,31 @@ components:
       schema:
         type: integer
         format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -451,27 +472,6 @@ components:
         format: int64
         enum:
         - range[1,1000]
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

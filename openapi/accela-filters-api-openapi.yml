@@ -165,7 +165,83 @@ paths:
                   type: string
         description: Contains optional filter parameters.
 components:
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    fields:
+      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
+    response_filterModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/filterModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_filterResults:
+      type: object
+      properties:
+        result:
+          items:
+            type: object
+            description: "The result schema depends on the type of requested search filter type. \n\nFor records, see the record schema in [Get Records](./api-records.html#operation/v4.get.records.ids). \n\nFor inspections, see the inspection schema in [Get Inspections](./api-inspections.html#operation/v4.get.inspections.ids). \n\nFor work order tasks, see the work order task schema in [Get Workflow Tasks](./api-misc.html#operation/v4.get.workflowTasks.mine)."
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
     filterModel:
       type: object
       properties:
@@ -188,82 +264,6 @@ components:
         type:
           description: The type of search filter.
           type: string
-    response_filterResults:
-      type: object
-      properties:
-        result:
-          items:
-            type: object
-            description: "The result schema depends on the type of requested search filter type. \n\nFor records, see the record schema in [Get Records](./api-records.html#operation/v4.get.records.ids). \n\nFor inspections, see the inspection schema in [Get Inspections](./api-inspections.html#operation/v4.get.inspections.ids). \n\nFor work order tasks, see the work order task schema in [Get Workflow Tasks](./api-misc.html#operation/v4.get.workflowTasks.mine)."
-          type: array
-        page:
-          $ref: '#/components/schemas/pageModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_filterModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/filterModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
-  parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    fields:
-      description: 'Comma-delimited names of fields to be returned in the response. Note: Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.'
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

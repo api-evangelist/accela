@@ -232,14 +232,6 @@ components:
       required: false
       schema:
         type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
@@ -261,6 +253,14 @@ components:
       required: true
       schema:
         type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
     documentModel:
       type: object
@@ -357,32 +357,6 @@ components:
         virtualFolders:
           description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_documentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     userRolePrivilegeModel:
       type: object
       properties:
@@ -424,6 +398,32 @@ components:
         result:
           items:
             $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
           type: array
         status:
           type: integer

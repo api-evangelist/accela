@@ -156,14 +156,13 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
-        type: integer
-        format: int64
+        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
@@ -178,32 +177,11 @@ components:
       required: false
       schema:
         type: string
-    groupName:
-      description: The name of the group that user belongs to
-      in: query
-      name: groupName
-      required: false
-      schema:
-        type: string
     module:
       description: The module that user belongs to
       in: query
       name: module
       required: false
-      schema:
-        type: string
-    exclude:
-      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
-      in: query
-      name: exclude
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
       schema:
         type: string
     userStatus:
@@ -221,6 +199,28 @@ components:
       schema:
         type: integer
         format: int64
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    groupName:
+      description: The name of the group that user belongs to
+      in: query
+      name: groupName
+      required: false
+      schema:
+        type: string
+    exclude:
+      description: 'Supported values are userGroups: exclude user groups. And publicUsers: exclude public users'
+      in: query
+      name: exclude
+      required: false
+      schema:
+        type: string
     groupId:
       description: The id of the group that user belongs to
       in: query
@@ -229,6 +229,19 @@ components:
       schema:
         type: string
   schemas:
+    groupModel:
+      type: object
+      properties:
+        id:
+          description: The user group system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
+          type: string
+        name:
+          description: The name of the user group.
+          type: string
     myuserModel:
       type: object
       properties:
@@ -255,69 +268,45 @@ components:
         value:
           description: The user id value
           type: string
-    userModel:
+    usergroupsModel:
       type: object
       properties:
-        id:
-          description: The user system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        userGroups:
-          items:
-            $ref: '#/components/schemas/usergroupsModel'
-          type: array
-        email:
-          description: The email address.
+        module:
+          description: The module the user group belongs to.
           type: string
         status:
           description: Enabled or Disabled
           type: string
-        firstName:
-          description: The user's first name.
+        name:
+          description: The name of the user group.
           type: string
-        department:
-          $ref: '#/components/schemas/departmentModel'
-    userGroupModel:
-      type: object
-      properties:
-        firstName:
-          description: The user's first name.
-          type: string
-        groups:
-          items:
-            $ref: '#/components/schemas/groupModel'
-          type: array
-        lastName:
-          description: The user's last name.
-          type: string
-        serviceProviderCode:
-          description: The agency the user belongs to.
-          type: string
-    groupModel:
-      type: object
-      properties:
         id:
           description: The user group system id assigned by the Civic Platform server.
           format: int64
           type: integer
-        moduleName:
-          description: The module the user group belongs to.
-          type: string
-        name:
-          description: The name of the user group.
-          type: string
-    response_userModel:
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_userGroupModel:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/userModel'
+          $ref: '#/components/schemas/userGroupModel'
         status:
           type: integer
           description: The HTTP return status.
-        page:
-          $ref: '#/components/schemas/pageModel'
     departmentModel:
       type: object
       properties:
@@ -351,22 +340,56 @@ components:
         value:
           description: The department value.
           type: string
-    usergroupsModel:
+    userGroupModel:
       type: object
       properties:
-        module:
-          description: The module the user group belongs to.
+        firstName:
+          description: The user's first name.
+          type: string
+        groups:
+          items:
+            $ref: '#/components/schemas/groupModel'
+          type: array
+        lastName:
+          description: The user's last name.
+          type: string
+        serviceProviderCode:
+          description: The agency the user belongs to.
+          type: string
+    userModel:
+      type: object
+      properties:
+        id:
+          description: The user system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        userGroups:
+          items:
+            $ref: '#/components/schemas/usergroupsModel'
+          type: array
+        email:
+          description: The email address.
           type: string
         status:
           description: Enabled or Disabled
           type: string
-        name:
-          description: The name of the user group.
+        firstName:
+          description: The user's first name.
           type: string
-        id:
-          description: The user group system id assigned by the Civic Platform server.
-          format: int64
+        department:
+          $ref: '#/components/schemas/departmentModel'
+    response_userModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/userModel'
+        status:
           type: integer
+          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
     response_myuserModel:
       type: object
       properties:
@@ -375,29 +398,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_userGroupModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/userGroupModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

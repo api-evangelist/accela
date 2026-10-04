@@ -158,6 +158,19 @@ components:
         zip:
           description: The zip code for the part location.
           type: string
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
     response_settingValueModelArray:
       type: object
       properties:
@@ -165,6 +178,16 @@ components:
           description: Contains the settings.
           items:
             $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_partLocationModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/partLocationModel'
           type: array
         status:
           type: integer
@@ -181,29 +204,6 @@ components:
         required:
           description: Indicates whether or not it is required for an address type.
           type: boolean
-    response_partLocationModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/partLocationModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    settingValueModel:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
   parameters:
     authHeaderParam:
       description: Construct oAuth2 authentication token

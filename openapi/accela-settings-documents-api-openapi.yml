@@ -402,43 +402,61 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
   schemas:
-    customFormModel:
+    fieldModel:
       type: object
       properties:
-        fields:
-          items:
-            $ref: '#/components/schemas/fieldModel'
-          type: array
         id:
+          type: string
+        fieldType:
           type: string
         text:
           type: string
+        maxLength:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/optionsModel'
         displayOrder:
           type: integer
-    customTableModel:
-      type: object
-      properties:
-        fields:
-          items:
-            $ref: '#/components/schemas/fieldModel'
-          type: array
-        id:
+        isRequired:
           type: string
-        text:
+        isReadonly:
           type: string
-        displayOrder:
-          type: integer
-    response_documentTypeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentTypeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     optionsModel:
       type: object
       properties:
@@ -470,6 +488,16 @@ components:
         value:
           description: The document type value.
           type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -486,6 +514,85 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
+    customTableModel:
+      type: object
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/fieldModel'
+          type: array
+        id:
+          type: string
+        text:
+          type: string
+        displayOrder:
+          type: integer
+    folderGroupModel:
+      type: object
+      properties:
+        description:
+          description: The folder group description.
+          type: string
+        id:
+          description: The ID of the folder group assigned by the Civic Platform server.
+          type: string
+        isActive:
+          description: Indicates whether or not the folder group is active.
+          enum:
+          - Y
+          - N
+          type: string
+        name:
+          description: The folder group name.
+          type: string
+        type:
+          description: The folder group type.
+          type: string
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    response_documentTypeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentTypeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_documentFolderModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentFolderModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_folderGroupModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/folderGroupModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     documentFolderModel:
       type: object
       properties:
@@ -558,126 +665,19 @@ components:
           description: The HTTP return status.
         page:
           $ref: '#/components/schemas/pageModel'
-    pageModel:
+    customFormModel:
       type: object
       properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
-    response_documentFolderModelArray:
-      type: object
-      properties:
-        result:
+        fields:
           items:
-            $ref: '#/components/schemas/documentFolderModel'
+            $ref: '#/components/schemas/fieldModel'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    folderGroupModel:
-      type: object
-      properties:
-        description:
-          description: The folder group description.
-          type: string
         id:
-          description: The ID of the folder group assigned by the Civic Platform server.
-          type: string
-        isActive:
-          description: Indicates whether or not the folder group is active.
-          enum:
-          - Y
-          - N
-          type: string
-        name:
-          description: The folder group name.
-          type: string
-        type:
-          description: The folder group type.
-          type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_folderGroupModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/folderGroupModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    fieldModel:
-      type: object
-      properties:
-        id:
-          type: string
-        fieldType:
           type: string
         text:
           type: string
-        maxLength:
-          type: integer
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/optionsModel'
         displayOrder:
           type: integer
-        isRequired:
-          type: string
-        isReadonly:
-          type: string
-  parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

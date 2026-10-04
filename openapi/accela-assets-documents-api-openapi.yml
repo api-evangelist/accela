@@ -217,6 +217,13 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
+    assetIdPathParam:
+      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+      in: path
+      name: assetId
+      required: true
+      schema:
+        type: string
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
       in: query
@@ -232,25 +239,10 @@ components:
       required: false
       schema:
         type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
       name: Authorization
-      required: true
-      schema:
-        type: string
-    assetIdPathParam:
-      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
-      in: path
-      name: assetId
       required: true
       schema:
         type: string
@@ -261,6 +253,14 @@ components:
       required: false
       schema:
         type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
     documentModel:
       type: object
@@ -357,32 +357,6 @@ components:
         virtualFolders:
           description: This is the virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    response_documentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     userRolePrivilegeModel:
       type: object
       properties:
@@ -424,6 +398,32 @@ components:
         result:
           items:
             $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
           type: array
         status:
           type: integer

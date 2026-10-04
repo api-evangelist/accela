@@ -55,6 +55,21 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
     dynamicThemesArray:
       type: object
       properties:
@@ -74,21 +89,6 @@ components:
           description: The HTTP return status.
         page:
           $ref: '#/components/schemas/pageModel'
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

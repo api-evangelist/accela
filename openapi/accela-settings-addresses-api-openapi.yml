@@ -314,17 +314,29 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_settingValueModelArray:
+    response_apo_customForms_metadata:
       type: object
       properties:
         result:
-          description: Contains the settings.
           items:
-            $ref: '#/components/schemas/settingValueModel'
+            $ref: '#/components/schemas/apo_customForms_metadata'
           type: array
         status:
           type: integer
-          description: The HTTP return status.
+          description: The return status code.
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
     apo_customForms_metadata_fields:
       description: "Describes the metadata of a custom field. \n\nAdded in Civic Platform version: 9.2.0"
       type: object
@@ -406,18 +418,6 @@ components:
         sharedDropdownListName:
           type: string
           description: The name of the shared dropdown list, if the field is a dropdown field type.
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
     apo_customForms_metadata:
       description: 'Contains metadata description of a custom form, including the custom fields metadata. '
       type: object
@@ -439,17 +439,18 @@ components:
         customFormType:
           type: string
           description: Indicates whether the custom form is for an address, parcel, or owner.
-    response_apo_customForms_metadata:
+    response_settingValueModelArray:
       type: object
       properties:
         result:
+          description: Contains the settings.
           items:
-            $ref: '#/components/schemas/apo_customForms_metadata'
+            $ref: '#/components/schemas/settingValueModel'
           type: array
         status:
           type: integer
-          description: The return status code.
-    settingValueModel:
+          description: The HTTP return status.
+    settingValueModelAddressTypes:
       type: object
       properties:
         text:
@@ -458,10 +459,9 @@ components:
         value:
           description: The setting value.
           type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
   parameters:
     authHeaderParam:
       description: Construct oAuth2 authentication token

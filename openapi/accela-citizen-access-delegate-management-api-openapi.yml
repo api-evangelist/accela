@@ -216,6 +216,50 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_delegatePrivilegeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/delegatePrivilegeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_publicUserDelegateModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserDelegateModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
     delegatePrivilegeModel:
       type: object
       properties:
@@ -236,16 +280,32 @@ components:
         userName:
           description: The user who assigned the permission.
           type: string
-    response_publicUserDelegateModelArray:
+    resultCountModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/publicUserDelegateModel'
-          type: array
-        status:
+        failedCount:
+          description: The number of failed results.
+          format: int64
           type: integer
-          description: The HTTP return status.
+        failedIDs:
+          description: The IDs of the entities on which the operation failed.
+          type: string
+        successCount:
+          description: The number of successful results.
+          format: int64
+          type: integer
+        successIDs:
+          description: The IDs of the entities on which the operation succeeded.
+          type: string
+    permissionLevelModel:
+      type: object
+      properties:
+        MODULE:
+          description: The Civic Platform module the delegate has access to.
+          type: string
+        AGENCY:
+          description: The agency the delegate has access to, for a multi-agency environment.
+          type: string
     publicUserDelegateModel:
       type: object
       properties:
@@ -274,6 +334,48 @@ components:
         userName:
           description: The delegate's login name.
           type: string
+    request_publicUserDelegateModel:
+      type: object
+      properties:
+        invitationMessage:
+          description: The invitation message sent to the delegate.
+          type: string
+        name:
+          description: The delegate's name.
+          type: string
+        permissions:
+          items:
+            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
+          type: array
+        userName:
+          description: The delegate's login name.
+          type: string
+    response_resultCountModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultCountModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    permissionModel:
+      type: object
+      properties:
+        level:
+          $ref: '#/components/schemas/permissionLevelModel'
+        allowedActions:
+          description: An action the user is allowed to perform
+          enum:
+          - ViewRecords
+          - CreateRecords
+          - RenewRecords
+          - ManageInsps
+          - ManageDocs
+          - MakePayments
+          - AmendRecords
+          items:
+            type: string
+          type: array
     publicUserDelegatePermissionModel:
       type: object
       properties:
@@ -304,108 +406,6 @@ components:
         viewRecordAllowed:
           description: If true, the delegate is allowed to view records.
           type: boolean
-    permissionLevelModel:
-      type: object
-      properties:
-        MODULE:
-          description: The Civic Platform module the delegate has access to.
-          type: string
-        AGENCY:
-          description: The agency the delegate has access to, for a multi-agency environment.
-          type: string
-    response_resultCountModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultCountModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    permissionModel:
-      type: object
-      properties:
-        level:
-          $ref: '#/components/schemas/permissionLevelModel'
-        allowedActions:
-          description: An action the user is allowed to perform
-          enum:
-          - ViewRecords
-          - CreateRecords
-          - RenewRecords
-          - ManageInsps
-          - ManageDocs
-          - MakePayments
-          - AmendRecords
-          items:
-            type: string
-          type: array
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    request_publicUserDelegateModel:
-      type: object
-      properties:
-        invitationMessage:
-          description: The invitation message sent to the delegate.
-          type: string
-        name:
-          description: The delegate's name.
-          type: string
-        permissions:
-          items:
-            $ref: '#/components/schemas/publicUserDelegatePermissionModel'
-          type: array
-        userName:
-          description: The delegate's login name.
-          type: string
-    response_delegatePrivilegeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/delegatePrivilegeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultCountModel:
-      type: object
-      properties:
-        failedCount:
-          description: The number of failed results.
-          format: int64
-          type: integer
-        failedIDs:
-          description: The IDs of the entities on which the operation failed.
-          type: string
-        successCount:
-          description: The number of successful results.
-          format: int64
-          type: integer
-        successIDs:
-          description: The IDs of the entities on which the operation succeeded.
-          type: string
-    response_resultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
   parameters:
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
@@ -415,6 +415,13 @@ components:
       schema:
         type: integer
         format: int64
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
     limit:
       description: Search result size limit.
       in: query
@@ -425,13 +432,6 @@ components:
         format: int64
         enum:
         - range[1,1000]
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

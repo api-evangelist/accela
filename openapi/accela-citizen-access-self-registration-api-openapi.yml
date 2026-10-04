@@ -239,6 +239,60 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_publicUserRegisterModel:
+      type: object
+      required:
+      - userName
+      properties:
+        associatedLicenseIds:
+          description: Contains license ID's associated with the citizen user.
+          items:
+            format: int64
+            type: integer
+          type: array
+        cellPhone:
+          description: The citizen user's cell phone number.
+          type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
+          type: string
+        id:
+          description: The citizen id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        password:
+          description: The citizen user's password.
+          type: string
+        questions:
+          description: Contains the security questions for password reset.
+          items:
+            $ref: '#/components/schemas/publicUserQuestionModel'
+          type: array
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          enum:
+          - Y
+          - N
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+        servProvCode:
+          description: The unique agency identifier.
+          type: string
+        userName:
+          description: The user's unique username.
+          type: string
     publicUserRegisterModel:
       type: object
       required:
@@ -289,6 +343,208 @@ components:
         userName:
           description: The user's unique username.
           type: string
+    citizenProfileModel:
+      type: object
+      properties:
+        email:
+          description: The citizen user's email address.
+          type: string
+        id:
+          description: The user id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        loginName:
+          description: The citizen user's login name.
+          type: string
+        mobilePhone:
+          description: The citizen user's 10-digit cell phone number.
+          type: string
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          type: string
+        registerDate:
+          description: The citizen user's registration date.
+          format: date-time
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+    resultCountModel:
+      type: object
+      properties:
+        failedCount:
+          description: The number of failed results.
+          format: int64
+          type: integer
+        failedIDs:
+          description: The IDs of the entities on which the operation failed.
+          type: string
+        successCount:
+          description: The number of successful results.
+          format: int64
+          type: integer
+        successIDs:
+          description: The IDs of the entities on which the operation succeeded.
+          type: string
+    contactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The first line of the address.
+        city:
+          type: string
+          description: The name of the city.
+        country:
+          type: object
+          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        direction:
+          description: The street direction of the primary address associated with the application.
+          type: object
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        effectiveDate:
+          description: ''
+          format: date-time
+          type: string
+        expirationDate:
+          description: ''
+          format: date-time
+          type: string
+        fax:
+          description: ''
+          type: string
+        faxCountryCode:
+          description: ''
+          type: string
+        houseAlphaStart:
+          type: string
+          description: The beginning alphabetic unit in street address.
+        houseAlphaEnd:
+          type: string
+          description: The ending alphabetic unit in street address.
+        id:
+          format: int64
+          type: integer
+          description: The unique address id assigned by the Civic Platform server.
+        isPrimary:
+          type: string
+          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
+        levelStart:
+          type: string
+          description: The starting level number (floor number) that makes up the address within a complex.
+        levelEnd:
+          type: string
+          description: The ending level number (floor number) that makes up the address within a complex.
+        levelPrefix:
+          type: string
+          description: The prefix for the level numbers (floor numbers) that make up the address.
+        phone:
+          description: ''
+          type: string
+        phoneCountryCode:
+          description: ''
+          type: string
+        postalCode:
+          type: string
+          description: The postal ZIP code for the address.
+        recipient:
+          description: ''
+          type: string
+        state:
+          type: object
+          description: The name of the state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        status:
+          type: object
+          description: The address status indicating whether the address is active or inactive.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetAddress:
+          type: string
+          description: The street address.
+        streetEnd:
+          type: number
+          format: long
+          description: The ending number of a street address range.
+        streetName:
+          type: string
+          description: The name of the street.
+        streetPrefix:
+          type: string
+          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
+        streetStart:
+          type: number
+          format: long
+          description: The starting number of a street address range.
+        streetSuffix:
+          type: object
+          description: The type of street such as "Lane" or "Boulevard".
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        streetSuffixDirection:
+          type: object
+          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        unitStart:
+          type: string
+          description: The starting value of a range of unit numbers.
+        unitEnd:
+          type: string
+          description: The ending value of a range of unit numbers.
+        unitType:
+          type: object
+          description: The unit type designation of the address.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     citizenContactModel:
       type: object
       properties:
@@ -493,6 +749,52 @@ components:
         typeFlag:
           description: Indicates whether the contact is an individual or organization.
           type: string
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_resultCountModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultCountModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     publicUserQuestionModel:
       type: object
       properties:
@@ -760,308 +1062,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_resultCountModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultCountModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    ownerAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    contactAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-          description: The first line of the address.
-        addressLine2:
-          type: string
-          description: The first line of the address.
-        city:
-          type: string
-          description: The name of the city.
-        country:
-          type: object
-          description: The name of the country. See [Get All Address Countries](./api-settings.html#operation/v4.get.settings.addresses.countries).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        direction:
-          description: The street direction of the primary address associated with the application.
-          type: object
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        effectiveDate:
-          description: ''
-          format: date-time
-          type: string
-        expirationDate:
-          description: ''
-          format: date-time
-          type: string
-        fax:
-          description: ''
-          type: string
-        faxCountryCode:
-          description: ''
-          type: string
-        houseAlphaStart:
-          type: string
-          description: The beginning alphabetic unit in street address.
-        houseAlphaEnd:
-          type: string
-          description: The ending alphabetic unit in street address.
-        id:
-          format: int64
-          type: integer
-          description: The unique address id assigned by the Civic Platform server.
-        isPrimary:
-          type: string
-          description: Indicates whether or not to designate the address as the primary address. Only one address can be primary at any given time.
-        levelStart:
-          type: string
-          description: The starting level number (floor number) that makes up the address within a complex.
-        levelEnd:
-          type: string
-          description: The ending level number (floor number) that makes up the address within a complex.
-        levelPrefix:
-          type: string
-          description: The prefix for the level numbers (floor numbers) that make up the address.
-        phone:
-          description: ''
-          type: string
-        phoneCountryCode:
-          description: ''
-          type: string
-        postalCode:
-          type: string
-          description: The postal ZIP code for the address.
-        recipient:
-          description: ''
-          type: string
-        state:
-          type: object
-          description: The name of the state.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        status:
-          type: object
-          description: The address status indicating whether the address is active or inactive.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        streetAddress:
-          type: string
-          description: The street address.
-        streetEnd:
-          type: number
-          format: long
-          description: The ending number of a street address range.
-        streetName:
-          type: string
-          description: The name of the street.
-        streetPrefix:
-          type: string
-          description: Any part of an address that appears before a street name or number. For example, if the address is 123 West Main, "West" is the street prefix.
-        streetStart:
-          type: number
-          format: long
-          description: The starting number of a street address range.
-        streetSuffix:
-          type: object
-          description: The type of street such as "Lane" or "Boulevard".
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        streetSuffixDirection:
-          type: object
-          description: The direction appended to the street suffix. For example, if the address is 500 56th Avenue NW, "NW" is the street suffix direction.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        unitStart:
-          type: string
-          description: The starting value of a range of unit numbers.
-        unitEnd:
-          type: string
-          description: The ending value of a range of unit numbers.
-        unitType:
-          type: object
-          description: The unit type designation of the address.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    citizenProfileModel:
-      type: object
-      properties:
-        email:
-          description: The citizen user's email address.
-          type: string
-        id:
-          description: The user id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        loginName:
-          description: The citizen user's login name.
-          type: string
-        mobilePhone:
-          description: The citizen user's 10-digit cell phone number.
-          type: string
-        receiveSMS:
-          description: Indicates whether or not the user prefers to receive SMS messages.
-          type: string
-        registerDate:
-          description: The citizen user's registration date.
-          format: date-time
-          type: string
-        role:
-          description: The citizen user's role
-          enum:
-          - CONTRACT_INSPECTOR
-          - CITIZEN
-          - AUTH_AGENT_CLERK
-          - AUTH_AGENT
-          - SELF_CERTIFIED_INSPECTOR
-          type: string
-    response_publicUserRegisterModel:
-      type: object
-      required:
-      - userName
-      properties:
-        associatedLicenseIds:
-          description: Contains license ID's associated with the citizen user.
-          items:
-            format: int64
-            type: integer
-          type: array
-        cellPhone:
-          description: The citizen user's cell phone number.
-          type: string
-        contacts:
-          items:
-            $ref: '#/components/schemas/peopleModel'
-          type: array
-        email:
-          description: The citizen user's email address.
-          type: string
-        id:
-          description: The citizen id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        password:
-          description: The citizen user's password.
-          type: string
-        questions:
-          description: Contains the security questions for password reset.
-          items:
-            $ref: '#/components/schemas/publicUserQuestionModel'
-          type: array
-        receiveSMS:
-          description: Indicates whether or not the user prefers to receive SMS messages.
-          enum:
-          - Y
-          - N
-          type: string
-        role:
-          description: The citizen user's role
-          enum:
-          - CONTRACT_INSPECTOR
-          - CITIZEN
-          - AUTH_AGENT_CLERK
-          - AUTH_AGENT
-          - SELF_CERTIFIED_INSPECTOR
-          type: string
-        servProvCode:
-          description: The unique agency identifier.
-          type: string
-        userName:
-          description: The user's unique username.
-          type: string
-    resultCountModel:
-      type: object
-      properties:
-        failedCount:
-          description: The number of failed results.
-          format: int64
-          type: integer
-        failedIDs:
-          description: The IDs of the entities on which the operation failed.
-          type: string
-        successCount:
-          description: The number of successful results.
-          format: int64
-          type: integer
-        successIDs:
-          description: The IDs of the entities on which the operation succeeded.
-          type: string
   parameters:
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.

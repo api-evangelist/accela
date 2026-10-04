@@ -75,15 +75,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    appSettings:
-      type: object
-      properties:
-        key:
-          description: An app setting name.
-          type: string
-        value:
-          description: An app setting value.
-          type: string
     response_appSettingsArray:
       type: object
       properties:
@@ -94,6 +85,15 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    appSettings:
+      type: object
+      properties:
+        key:
+          description: An app setting name.
+          type: string
+        value:
+          description: An app setting value.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

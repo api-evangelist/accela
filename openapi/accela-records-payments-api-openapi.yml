@@ -154,16 +154,6 @@ components:
           description: A unique number, assigned by the system, that indentifies the transaction.
           format: int64
           type: integer
-    response_paymentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/paymentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     recordIdModel:
       type: object
       properties:
@@ -183,11 +173,35 @@ components:
         value:
           description: The alphanumeric record id.
           type: string
+    response_paymentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/paymentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -196,20 +210,6 @@ components:
       in: path
       name: recordId
       required: true
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

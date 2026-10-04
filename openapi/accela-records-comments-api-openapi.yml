@@ -225,49 +225,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_recordCommentModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/recordCommentModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    recordCommentModel:
-      type: object
-      properties:
-        createdBy:
-          description: The user who added the record comment.
-          type: string
-        createdDate:
-          description: The date when the record comment was added.
-          format: date-time
-          type: string
-        displayOnInspection:
-          description: Indicates whether or not the comment is displayed on inspection.
-          enum:
-          - Y
-          - N
-          type: string
-        id:
-          description: The comment system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        text:
-          description: The comment text.
-          type: string
-    response_recordCommentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/recordCommentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     commentModel:
       type: object
       properties:
@@ -279,22 +236,6 @@ components:
           type: string
         text:
           description: The comment text.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
           type: string
     recordIdModel:
       type: object
@@ -325,19 +266,71 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_recordCommentModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/recordCommentModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_recordCommentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordCommentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordCommentModel:
+      type: object
+      properties:
+        createdBy:
+          description: The user who added the record comment.
+          type: string
+        createdDate:
+          description: The date when the record comment was added.
+          format: date-time
+          type: string
+        displayOnInspection:
+          description: Indicates whether or not the comment is displayed on inspection.
+          enum:
+          - Y
+          - N
+          type: string
+        id:
+          description: The comment system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        text:
+          description: The comment text.
+          type: string
   parameters:
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
       required: false
-      schema:
-        type: string
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
       schema:
         type: string
     authHeaderParam:
@@ -352,6 +345,13 @@ components:
       in: query
       name: lang
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
 x-api-evangelist-provenance:

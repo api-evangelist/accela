@@ -1161,67 +1161,39 @@ paths:
         required: true
 components:
   schemas:
-    tableModel:
+    response_customFormsMeta:
       type: object
       properties:
-        id:
-          description: The custom table id.
-          type: string
-        rows:
-          items:
-            $ref: '#/components/schemas/rowModel'
-          description: A table row containing custom fields.
-          type: array
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: ''
-          type: string
-        aCustomFieldValue:
-          description: ''
-          type: string
-    rowModel:
-      type: object
-      properties:
-        action:
-          description: The requested operation on the row.
-          enum:
-          - add
-          - update
-          - delete
-          type: string
-        fields:
-          $ref: '#/components/schemas/customAttributeModel'
-        id:
-          description: The row id.
-          type: string
-    customFormsMetaFieldsArrary:
-      type: object
-      properties:
-        id:
+        status:
           type: integer
-        text:
-          type: string
-        isReadonly:
-          type: integer
-        fieldType:
-          type: string
-        maxLength:
-          type: integer
-        isRequired:
-          type: string
-        displayOrder:
-          type: integer
-        options:
+          description: The HTTP return status.
+        result:
           items:
             type: object
             properties:
-              value:
-                type: string
+              id:
+                type: integer
               text:
                 type: string
+              displayOrder:
+                type: integer
+              fields:
+                items:
+                  $ref: '#/components/schemas/customFormsMetaFieldsArrary'
+                type: array
           type: array
+    professionalsCustomFormsArrary:
+      type: object
+      properties:
+        id:
+          description: REQUIRED. The custom table id.
+          type: string
+        <aCustomFieldName>:
+          description: The name of the custom field.
+          type: string
+        <aCustomFieldValue>:
+          description: The value of the custom field.
+          type: string
     professionalsTemplateFormsArrary:
       type: object
       properties:
@@ -1248,6 +1220,15 @@ components:
       items:
         $ref: '#/components/schemas/professionalsCustomFormsArrary'
       type: array
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
+          type: string
     response_licenseModelArray:
       type: object
       properties:
@@ -1258,6 +1239,32 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    rowModel:
+      type: object
+      properties:
+        action:
+          description: The requested operation on the row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The row id.
+          type: string
+    tableModel:
+      type: object
+      properties:
+        id:
+          description: The custom table id.
+          type: string
+        rows:
+          items:
+            $ref: '#/components/schemas/rowModel'
+          description: A table row containing custom fields.
+          type: array
     licenseModel:
       type: object
       properties:
@@ -1473,38 +1480,31 @@ components:
       items:
         $ref: '#/components/schemas/professionalsTemplateFormsArrary'
       type: array
-    professionalsCustomFormsArrary:
+    customFormsMetaFieldsArrary:
       type: object
       properties:
         id:
-          description: REQUIRED. The custom table id.
-          type: string
-        <aCustomFieldName>:
-          description: The name of the custom field.
-          type: string
-        <aCustomFieldValue>:
-          description: The value of the custom field.
-          type: string
-    response_customFormsMeta:
-      type: object
-      properties:
-        status:
           type: integer
-          description: The HTTP return status.
-        result:
+        text:
+          type: string
+        isReadonly:
+          type: integer
+        fieldType:
+          type: string
+        maxLength:
+          type: integer
+        isRequired:
+          type: string
+        displayOrder:
+          type: integer
+        options:
           items:
             type: object
             properties:
-              id:
-                type: integer
+              value:
+                type: string
               text:
                 type: string
-              displayOrder:
-                type: integer
-              fields:
-                items:
-                  $ref: '#/components/schemas/customFormsMetaFieldsArrary'
-                type: array
           type: array
   parameters:
     offset:
@@ -1515,10 +1515,24 @@ components:
       schema:
         type: integer
         format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -1532,20 +1546,6 @@ components:
         format: int64
         enum:
         - range[1,1000]
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

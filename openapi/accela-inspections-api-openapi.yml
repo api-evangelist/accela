@@ -957,325 +957,43 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
-  parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    idInspection:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
-      in: path
-      name: id
-      required: true
-      schema:
-        type: integer
-        format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    inspectionId:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
-      in: path
-      name: inspectionId
-      required: true
-      schema:
-        type: integer
-        format: int64
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
   schemas:
-    resultModel:
+    availableDatesArray:
       type: object
       properties:
-        code:
-          description: The error code, if an error is encountered.
+        date:
           type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
+          format: date
+          description: A date during which the inspector is available.
+        times:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/availableTimesArray'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    requestUpdate_inspectionModel:
+    availableTimesArray:
       type: object
       properties:
-        teamName:
-          description: Inspection Team name. It's not required if use department.
-          type: string
-        floor:
-          description: Inspection Floor.
-          type: string
-        floorUnit:
-          description: Inspection Floor Unit.
-          type: string
-        billable:
-          description: This defines whether or not the item is billable.
-          enum:
-          - Y
-          - N
-          type: string
-        category:
-          description: The inspection category, which is used to organize inspection types. An inspection type is assigned to one or more inspection categories.
-          type: string
-        commentDisplay:
-          description: Indicates whether or not Accela Citizen Access users can view the inspection results comments.
-          type: string
-        commentPublicVisible:
-          description: "Specifies the type of user who can view the inspection result comments. \"All ACA Users\" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. \"Record Creator Only\" - the user who created the record can see the comments for the inspection results. \"Record Creator and Licensed Professional\" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.\t"
-          items:
-            type: string
-          type: array
-        completedAMPM:
-          description: Indicates whether completed time is "AM" or "PM".
-          type: string
-        completedDate:
-          description: The date of completion.
-          format: date-time
-          type: string
-        completedTime:
-          description: The time of completion.
-          type: string
-        contact:
-          $ref: '#/components/schemas/inspectionContactModel'
-        desiredAMPM:
-          description: Indicates whether the desired inspection time is AM or PM.
-          type: string
-        desiredDate:
-          description: The desired inspection date.
-          format: date-time
-          type: string
-        desiredTime:
-          description: The desired inspection time.
-          type: string
-        endMileage:
-          description: The ending mileage for the inspection.
-          format: float
-          type: number
-        endTime:
-          description: The time the inspection was completed.
-          format: date-time
-          type: string
-        estimatedEndTime:
-          description: inspection estimated end time.
-          type: string
-        estimatedStartTime:
-          description: The scheduled start time for the inspection.
-          type: string
-        gisAreaName:
-          description: The GIS Object ID of the parent application if the application that the inspection is scheduled for has a parent application that is a project application.
-          type: string
-        grade:
-          description: The name of the inspection grade.
-          type: string
-        inspectorId:
-          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
-          type: string
-        isAutoAssign:
-          description: This defines whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
-          type: string
-        latitude:
-          description: The angular distance of a place north or south of the earth's equator, usually expressed in degrees and minutes.
-          format: float
-          type: number
-        longitude:
-          description: The angular distance of a place east or west of the meridian at Greenwich, England, usually expressed in degrees and minutes.
-          format: float
-          type: number
-        majorViolation:
-          description: The number of major violations.
-          format: int64
-          type: integer
-        overtime:
-          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
-          type: string
-        publicVisible:
-          description: This defines whether or not Accela Citizen Access users can view comment about the inspection results.
-          type: string
-        requestAMPM:
-          description: The time segment, AM or PM, for the time specified in the requestTime field.
-          type: string
-        requestComment:
-          description: Comments about the new inspection. For example, you may identify who requested the inspection.
-          type: string
-        requestDate:
-          description: The date when an inspection request is submitted.
-          format: date-time
-          type: string
-        requestTime:
-          description: This time is automatically generated when a new inspection is scheduled and submitted.
-          type: string
-        requestorFirstName:
-          description: The first name of the person requesting an inspection-related operation.
-          type: string
-        requestorLastName:
-          description: The last name of the person requesting an inspection-related operation.
-          type: string
-        requestorMiddleName:
-          description: The middle name of the person requesting an inspection-related operation.
-          type: string
-        requestorPhone:
-          description: The telephone number for the person who processes the inspection request or schedules the inspection.
-          type: string
-        requestorPhoneIDD:
-          description: The telephone number for the person who processes the inspection request or schedules the inspection.
-          type: string
-        requiredInspection:
-          description: This defines whether the inspection is optional or required.
-          type: string
-        resultComment:
-          description: The inspection result comments.
-          type: string
-        resultType:
-          description: 'The type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app'
-          type: string
-        scheduleEndAMPM:
-          description: Indicates whether the scheduleEndTime is in the AM or PM.
-          enum:
-          - AM
-          - PM
-          type: string
-        scheduleEndTime:
-          description: The scheduled end time for the inspection.
-          type: string
-        scheduleStartAMPM:
-          description: AM indicates the 12 hour period from midnight to noon. PM indicates the 12 hour period from noon to midnight.
-          enum:
-          - AM
-          - PM
-          type: string
-        scheduleStartTime:
-          description: The scheduled start time for the inspection.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        startMileage:
-          description: The starting mileage for the inspection.
-          format: float
-          type: number
         startTime:
-          description: The time when you started the inspection.
-          format: date-time
           type: string
-        status:
-          type: object
-          description: The inspection status. See [Get All Inspection Statuses](./api-settings.html#operation/v4.get.settings.inspections.statuses).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        submitAMPM:
-          description: The time block for the scheduled inspection.
+          format: time
+          description: A start time (hh:mm:ss 24-hour format) the inspector is available.
+        endTime:
           type: string
-        submitDate:
-          description: The date that the inspection was submitted.
-          format: date-time
+          format: time
+          description: The corresponding end time (hh:mm:ss 24-hour format) the inspector is available.
+        startDate:
           type: string
-        submitTime:
-          description: The time that a new inspection is submitted. Civic Platform generates this value.
+          format: time
+          description: Deprecated.
+        endDate:
           type: string
-        totalMileage:
-          description: The total mileage for the inspection.
-          format: float
-          type: number
-        totalScore:
-          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
-          format: int64
-          type: integer
-        totalTime:
-          description: The total amount of time used to do an inspection.
-          format: double
-          type: number
-        type:
-          $ref: '#/components/schemas/inspectionTypeModel'
-        unitNumber:
-          description: The number of time units (see timeUnitDuration) comprising an inspection.
-          type: string
-        units:
-          description: The amount of time comprising the smallest time unit for conducting an inspection.
-          format: double
-          type: number
-        vehicleId:
-          description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
-          type: string
-    response_inspectionModelArray:
+          format: time
+          description: Deprecated.
+    response_inspectionCommentModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/inspectionModel'
+            $ref: '#/components/schemas/inspectionCommentModel'
           type: array
         status:
           type: integer
@@ -1487,22 +1205,462 @@ components:
             value:
               description: The data value.
               type: string
-    response_inspectionCommentModelArray:
+    inspectionCommentModel:
+      type: object
+      properties:
+        createdBy:
+          description: The userid of the individual that created the entry.
+          type: string
+        createdDate:
+          description: The date the comment was created.
+          type: string
+        inspectionId:
+          description: The ID of the inspection the comment is attached to.
+          format: int64
+          type: integer
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        text:
+          description: The comment.
+          type: string
+        type:
+          description: The comment type.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    requestUpdate_inspectionModel:
+      type: object
+      properties:
+        teamName:
+          description: Inspection Team name. It's not required if use department.
+          type: string
+        floor:
+          description: Inspection Floor.
+          type: string
+        floorUnit:
+          description: Inspection Floor Unit.
+          type: string
+        billable:
+          description: This defines whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        category:
+          description: The inspection category, which is used to organize inspection types. An inspection type is assigned to one or more inspection categories.
+          type: string
+        commentDisplay:
+          description: Indicates whether or not Accela Citizen Access users can view the inspection results comments.
+          type: string
+        commentPublicVisible:
+          description: "Specifies the type of user who can view the inspection result comments. \"All ACA Users\" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. \"Record Creator Only\" - the user who created the record can see the comments for the inspection results. \"Record Creator and Licensed Professional\" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.\t"
+          items:
+            type: string
+          type: array
+        completedAMPM:
+          description: Indicates whether completed time is "AM" or "PM".
+          type: string
+        completedDate:
+          description: The date of completion.
+          format: date-time
+          type: string
+        completedTime:
+          description: The time of completion.
+          type: string
+        contact:
+          $ref: '#/components/schemas/inspectionContactModel'
+        desiredAMPM:
+          description: Indicates whether the desired inspection time is AM or PM.
+          type: string
+        desiredDate:
+          description: The desired inspection date.
+          format: date-time
+          type: string
+        desiredTime:
+          description: The desired inspection time.
+          type: string
+        endMileage:
+          description: The ending mileage for the inspection.
+          format: float
+          type: number
+        endTime:
+          description: The time the inspection was completed.
+          format: date-time
+          type: string
+        estimatedEndTime:
+          description: inspection estimated end time.
+          type: string
+        estimatedStartTime:
+          description: The scheduled start time for the inspection.
+          type: string
+        gisAreaName:
+          description: The GIS Object ID of the parent application if the application that the inspection is scheduled for has a parent application that is a project application.
+          type: string
+        grade:
+          description: The name of the inspection grade.
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        isAutoAssign:
+          description: This defines whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
+          type: string
+        latitude:
+          description: The angular distance of a place north or south of the earth's equator, usually expressed in degrees and minutes.
+          format: float
+          type: number
+        longitude:
+          description: The angular distance of a place east or west of the meridian at Greenwich, England, usually expressed in degrees and minutes.
+          format: float
+          type: number
+        majorViolation:
+          description: The number of major violations.
+          format: int64
+          type: integer
+        overtime:
+          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+          type: string
+        publicVisible:
+          description: This defines whether or not Accela Citizen Access users can view comment about the inspection results.
+          type: string
+        requestAMPM:
+          description: The time segment, AM or PM, for the time specified in the requestTime field.
+          type: string
+        requestComment:
+          description: Comments about the new inspection. For example, you may identify who requested the inspection.
+          type: string
+        requestDate:
+          description: The date when an inspection request is submitted.
+          format: date-time
+          type: string
+        requestTime:
+          description: This time is automatically generated when a new inspection is scheduled and submitted.
+          type: string
+        requestorFirstName:
+          description: The first name of the person requesting an inspection-related operation.
+          type: string
+        requestorLastName:
+          description: The last name of the person requesting an inspection-related operation.
+          type: string
+        requestorMiddleName:
+          description: The middle name of the person requesting an inspection-related operation.
+          type: string
+        requestorPhone:
+          description: The telephone number for the person who processes the inspection request or schedules the inspection.
+          type: string
+        requestorPhoneIDD:
+          description: The telephone number for the person who processes the inspection request or schedules the inspection.
+          type: string
+        requiredInspection:
+          description: This defines whether the inspection is optional or required.
+          type: string
+        resultComment:
+          description: The inspection result comments.
+          type: string
+        resultType:
+          description: 'The type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app'
+          type: string
+        scheduleEndAMPM:
+          description: Indicates whether the scheduleEndTime is in the AM or PM.
+          enum:
+          - AM
+          - PM
+          type: string
+        scheduleEndTime:
+          description: The scheduled end time for the inspection.
+          type: string
+        scheduleStartAMPM:
+          description: AM indicates the 12 hour period from midnight to noon. PM indicates the 12 hour period from noon to midnight.
+          enum:
+          - AM
+          - PM
+          type: string
+        scheduleStartTime:
+          description: The scheduled start time for the inspection.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startMileage:
+          description: The starting mileage for the inspection.
+          format: float
+          type: number
+        startTime:
+          description: The time when you started the inspection.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The inspection status. See [Get All Inspection Statuses](./api-settings.html#operation/v4.get.settings.inspections.statuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        submitAMPM:
+          description: The time block for the scheduled inspection.
+          type: string
+        submitDate:
+          description: The date that the inspection was submitted.
+          format: date-time
+          type: string
+        submitTime:
+          description: The time that a new inspection is submitted. Civic Platform generates this value.
+          type: string
+        totalMileage:
+          description: The total mileage for the inspection.
+          format: float
+          type: number
+        totalScore:
+          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
+          format: int64
+          type: integer
+        totalTime:
+          description: The total amount of time used to do an inspection.
+          format: double
+          type: number
+        type:
+          $ref: '#/components/schemas/inspectionTypeModel'
+        unitNumber:
+          description: The number of time units (see timeUnitDuration) comprising an inspection.
+          type: string
+        units:
+          description: The amount of time comprising the smallest time unit for conducting an inspection.
+          format: double
+          type: number
+        vehicleId:
+          description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
+          type: string
+    response_inspectionModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/inspectionCommentModel'
-          type: array
+          $ref: '#/components/schemas/inspectionModel'
         status:
           type: integer
           description: The HTTP return status.
-    response_inspectionRelatedModelArray:
+    requestSchedule_inspectionModel:
+      type: object
+      properties:
+        teamName:
+          description: Inspection Team name. It's not required if use department.
+          type: string
+        floor:
+          description: Inspection Floor.
+          type: string
+        floorUnit:
+          description: Inspection Floor Unit.
+          type: string
+        billable:
+          description: This defines whether or not the item is billable.
+          enum:
+          - Y
+          - N
+          type: string
+        category:
+          description: The inspection category, which is used to organize inspection types. An inspection type is assigned to one or more inspection categories.
+          type: string
+        commentDisplay:
+          description: Indicates whether or not Accela Citizen Access users can view the inspection results comments.
+          type: string
+        commentPublicVisible:
+          description: "Specifies the type of user who can view the inspection result comments. \"All ACA Users\" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. \"Record Creator Only\" - the user who created the record can see the comments for the inspection results. \"Record Creator and Licensed Professional\" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.\t"
+          items:
+            type: string
+          type: array
+        completedAMPM:
+          description: Indicates whether completed time is "AM" or "PM".
+          type: string
+        completedDate:
+          description: The date of completion.
+          format: date-time
+          type: string
+        completedTime:
+          description: The time of completion.
+          type: string
+        contact:
+          $ref: '#/components/schemas/inspectionContactModel'
+        desiredAMPM:
+          description: Indicates whether the desired inspection time is AM or PM.
+          type: string
+        desiredDate:
+          description: The desired inspection date.
+          format: date-time
+          type: string
+        desiredTime:
+          description: The desired inspection time.
+          type: string
+        endMileage:
+          description: The ending mileage for the inspection.
+          format: float
+          type: number
+        endTime:
+          description: The time the inspection was completed.
+          format: date-time
+          type: string
+        estimatedEndTime:
+          description: inspection estimated end time.
+          type: string
+        estimatedStartTime:
+          description: The scheduled start time for the inspection.
+          type: string
+        gisAreaName:
+          description: The GIS Object ID of the parent application if the application that the inspection is scheduled for has a parent application that is a project application.
+          type: string
+        grade:
+          description: The name of the inspection grade.
+          type: string
+        inspectorId:
+          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
+          type: string
+        isAutoAssign:
+          description: This defines whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
+          type: string
+        latitude:
+          description: The angular distance of a place north or south of the earth's equator, usually expressed in degrees and minutes.
+          format: float
+          type: number
+        longitude:
+          description: The angular distance of a place east or west of the meridian at Greenwich, England, usually expressed in degrees and minutes.
+          format: float
+          type: number
+        majorViolation:
+          description: The number of major violations.
+          format: int64
+          type: integer
+        overtime:
+          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
+          type: string
+        priority:
+          description: The priority level assigned to the inspection.
+          format: double
+          type: number
+        publicVisible:
+          description: This defines whether or not Accela Citizen Access users can view comment about the inspection results.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        requestComment:
+          description: Comments about the new inspection. For example, you may identify who requested the inspection.
+          type: string
+        requestorFirstName:
+          description: The first name of the person requesting an inspection-related operation.
+          type: string
+        requestorLastName:
+          description: The last name of the person requesting an inspection-related operation.
+          type: string
+        requestorMiddleName:
+          description: The middle name of the person requesting an inspection-related operation.
+          type: string
+        requestorPhone:
+          description: The telephone number for the person who processes the inspection request or schedules the inspection.
+          type: string
+        requestorPhoneIDD:
+          description: The telephone number for the person who processes the inspection request or schedules the inspection.
+          type: string
+        requestorUserId:
+          description: The user Id of the person requesting an inspection-related operation.
+          type: string
+        requiredInspection:
+          description: This defines whether the inspection is optional or required.
+          type: string
+        resultComment:
+          description: The inspection result comments.
+          type: string
+        resultType:
+          description: 'The type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app'
+          type: string
+        scheduleEndAMPM:
+          description: Indicates whether the scheduleEndTime is in the AM or PM.
+          enum:
+          - AM
+          - PM
+          type: string
+        scheduleEndTime:
+          description: The scheduled end time for the inspection.
+          type: string
+        scheduleStartAMPM:
+          description: AM indicates the 12 hour period from midnight to noon. PM indicates the 12 hour period from noon to midnight.
+          enum:
+          - AM
+          - PM
+          type: string
+        scheduleStartTime:
+          description: The scheduled start time for the inspection.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        startMileage:
+          description: The starting mileage for the inspection.
+          format: float
+          type: number
+        startTime:
+          description: The time when you started the inspection.
+          format: date-time
+          type: string
+        status:
+          type: object
+          description: The inspection status. See [Get All Inspection Statuses](./api-settings.html#operation/v4.get.settings.inspections.statuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        totalMileage:
+          description: The total mileage for the inspection.
+          format: float
+          type: number
+        totalScore:
+          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
+          format: int64
+          type: integer
+        totalTime:
+          description: The total amount of time used to do an inspection.
+          format: double
+          type: number
+        type:
+          $ref: '#/components/schemas/inspectionTypeModel'
+        unitNumber:
+          description: The number of time units (see timeUnitDuration) comprising an inspection.
+          type: string
+        units:
+          description: The amount of time comprising the smallest time unit for conducting an inspection.
+          format: double
+          type: number
+        vehicleId:
+          description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
+          type: string
+    response_inspectionModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/inspectionRelatedModel'
+            $ref: '#/components/schemas/inspectionModel'
           type: array
         status:
           type: integer
@@ -1939,6 +2097,54 @@ components:
         vehicleId:
           description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
           type: string
+    ownerAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_inspectionAvailabilityArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionAvailabilityArray'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     inspectionRelatedModel:
       type: object
       properties:
@@ -2184,95 +2390,16 @@ components:
         vehicleId:
           description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
           type: string
-    availableTimesArray:
+    inspectionAvailabilityArray:
       type: object
       properties:
-        startTime:
-          type: string
-          format: time
-          description: A start time (hh:mm:ss 24-hour format) the inspector is available.
-        endTime:
-          type: string
-          format: time
-          description: The corresponding end time (hh:mm:ss 24-hour format) the inspector is available.
-        startDate:
-          type: string
-          format: time
-          description: Deprecated.
-        endDate:
-          type: string
-          format: time
-          description: Deprecated.
-    inspectionCommentModel:
-      type: object
-      properties:
-        createdBy:
-          description: The userid of the individual that created the entry.
-          type: string
-        createdDate:
-          description: The date the comment was created.
-          type: string
-        inspectionId:
-          description: The ID of the inspection the comment is attached to.
-          format: int64
-          type: integer
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        text:
-          description: The comment.
-          type: string
-        type:
-          description: The comment type.
-          type: string
-    response_inspectionModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/inspectionModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    recordTypeModel_2:
-      type: object
-      properties:
-        category:
-          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        filterName:
-          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
-          type: string
-        group:
-          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        id:
-          description: The record type system id assigned by the Civic Platform server.
-          type: string
-        module:
-          description: Use to filter by the module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
-          type: string
-        subType:
-          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        text:
-          description: The record type display text
-          type: string
-        type:
-          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
-          type: string
-        value:
-          description: The record type value.
-          type: string
-    availableDatesArray:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-          description: A date during which the inspector is available.
-        times:
+        availableDates:
           items:
-            $ref: '#/components/schemas/availableTimesArray'
+            $ref: '#/components/schemas/availableDatesArray'
           type: array
+        inspectorId:
+          type: string
+          description: The inspector userid whose availability is specified in availableDates[].
     inspectionAddressModel:
       type: object
       properties:
@@ -2495,258 +2622,65 @@ components:
           type: number
           format: double
           description: The latitudinal coordinate for this address.
-    response_inspectionAvailabilityArray:
+    recordTypeModel_2:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/inspectionAvailabilityArray'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    requestSchedule_inspectionModel:
-      type: object
-      properties:
-        teamName:
-          description: Inspection Team name. It's not required if use department.
-          type: string
-        floor:
-          description: Inspection Floor.
-          type: string
-        floorUnit:
-          description: Inspection Floor Unit.
-          type: string
-        billable:
-          description: This defines whether or not the item is billable.
-          enum:
-          - Y
-          - N
-          type: string
         category:
-          description: The inspection category, which is used to organize inspection types. An inspection type is assigned to one or more inspection categories.
+          description: The 4th level in a 4-level record type structure (Group-Type-Subtype-Category).
           type: string
-        commentDisplay:
-          description: Indicates whether or not Accela Citizen Access users can view the inspection results comments.
+        filterName:
+          description: The name of the record type filter which defines the record types to be displayed for the citizen user.
           type: string
-        commentPublicVisible:
-          description: "Specifies the type of user who can view the inspection result comments. \"All ACA Users\" - Both registered and anonymous Accela Citizen Access users can view the comments for inspection results. \"Record Creator Only\" - the user who created the record can see the comments for the inspection results. \"Record Creator and Licensed Professional\" - The user who created the record and the licensed professional associated with the record can see the comments for the inspection results.\t"
-          items:
-            type: string
-          type: array
-        completedAMPM:
-          description: Indicates whether completed time is "AM" or "PM".
+        group:
+          description: The 1st level in a 4-level record type structure (Group-Type-Subtype-Category).
           type: string
-        completedDate:
-          description: The date of completion.
-          format: date-time
+        id:
+          description: The record type system id assigned by the Civic Platform server.
           type: string
-        completedTime:
-          description: The time of completion.
+        module:
+          description: Use to filter by the module. See [Get All Modules](./api-settings.html#operation/v4.get.settings.modules).
           type: string
-        contact:
-          $ref: '#/components/schemas/inspectionContactModel'
-        desiredAMPM:
-          description: Indicates whether the desired inspection time is AM or PM.
+        subType:
+          description: The 3rd level in a 4-level record type structure (Group-Type-Subtype-Category).
           type: string
-        desiredDate:
-          description: The desired inspection date.
-          format: date-time
+        text:
+          description: The record type display text
           type: string
-        desiredTime:
-          description: The desired inspection time.
+        type:
+          description: The 2nd level in a 4-level record type structure (Group-Type-Subtype-Category).
           type: string
-        endMileage:
-          description: The ending mileage for the inspection.
-          format: float
-          type: number
-        endTime:
-          description: The time the inspection was completed.
-          format: date-time
+        value:
+          description: The record type value.
           type: string
-        estimatedEndTime:
-          description: inspection estimated end time.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
           type: string
-        estimatedStartTime:
-          description: The scheduled start time for the inspection.
-          type: string
-        gisAreaName:
-          description: The GIS Object ID of the parent application if the application that the inspection is scheduled for has a parent application that is a project application.
-          type: string
-        grade:
-          description: The name of the inspection grade.
-          type: string
-        inspectorId:
-          description: The ID number of the inspector. See [Get All Inspectors](./api-inspections.html#operation/v4.get.inspectors).
-          type: string
-        isAutoAssign:
-          description: This defines whether or not you want to automatically reschedule the inspection when the previous inspection status attains Approved status.
-          type: string
-        latitude:
-          description: The angular distance of a place north or south of the earth's equator, usually expressed in degrees and minutes.
-          format: float
-          type: number
-        longitude:
-          description: The angular distance of a place east or west of the meridian at Greenwich, England, usually expressed in degrees and minutes.
-          format: float
-          type: number
-        majorViolation:
-          description: The number of major violations.
-          format: int64
-          type: integer
-        overtime:
-          description: A labor cost factor that indicates time worked beyond a worker's regular working hours.
-          type: string
-        priority:
-          description: The priority level assigned to the inspection.
-          format: double
-          type: number
-        publicVisible:
-          description: This defines whether or not Accela Citizen Access users can view comment about the inspection results.
-          type: string
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        requestComment:
-          description: Comments about the new inspection. For example, you may identify who requested the inspection.
-          type: string
-        requestorFirstName:
-          description: The first name of the person requesting an inspection-related operation.
-          type: string
-        requestorLastName:
-          description: The last name of the person requesting an inspection-related operation.
-          type: string
-        requestorMiddleName:
-          description: The middle name of the person requesting an inspection-related operation.
-          type: string
-        requestorPhone:
-          description: The telephone number for the person who processes the inspection request or schedules the inspection.
-          type: string
-        requestorPhoneIDD:
-          description: The telephone number for the person who processes the inspection request or schedules the inspection.
-          type: string
-        requestorUserId:
-          description: The user Id of the person requesting an inspection-related operation.
-          type: string
-        requiredInspection:
-          description: This defines whether the inspection is optional or required.
-          type: string
-        resultComment:
-          description: The inspection result comments.
-          type: string
-        resultType:
-          description: 'The type of result that can be ascibed to an inspection. There are three result types: Approved: Approves (passes) the checklist item. Denied: Denies (fails) the checklist item. Informational: Indicates that the checklist items do not need a status of app'
-          type: string
-        scheduleEndAMPM:
-          description: Indicates whether the scheduleEndTime is in the AM or PM.
-          enum:
-          - AM
-          - PM
-          type: string
-        scheduleEndTime:
-          description: The scheduled end time for the inspection.
-          type: string
-        scheduleStartAMPM:
-          description: AM indicates the 12 hour period from midnight to noon. PM indicates the 12 hour period from noon to midnight.
-          enum:
-          - AM
-          - PM
-          type: string
-        scheduleStartTime:
-          description: The scheduled start time for the inspection.
+        id:
+          description: The record system id assigned by the Civic Platform server.
           type: string
         serviceProviderCode:
           description: The unique agency identifier.
           type: string
-        startMileage:
-          description: The starting mileage for the inspection.
-          format: float
-          type: number
-        startTime:
-          description: The time when you started the inspection.
-          format: date-time
-          type: string
-        status:
-          type: object
-          description: The inspection status. See [Get All Inspection Statuses](./api-settings.html#operation/v4.get.settings.inspections.statuses).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        totalMileage:
-          description: The total mileage for the inspection.
-          format: float
-          type: number
-        totalScore:
-          description: The overall score of the inspection that includes the inspection result, inspection grade, checklist total score and checklist major violation option.
+        trackingId:
+          description: The application tracking number (IVR tracking number).
           format: int64
           type: integer
-        totalTime:
-          description: The total amount of time used to do an inspection.
-          format: double
-          type: number
-        type:
-          $ref: '#/components/schemas/inspectionTypeModel'
-        unitNumber:
-          description: The number of time units (see timeUnitDuration) comprising an inspection.
+        value:
+          description: The alphanumeric record id.
           type: string
-        units:
-          description: The amount of time comprising the smallest time unit for conducting an inspection.
-          format: double
-          type: number
-        vehicleId:
-          description: A number, such as the license plate number or VIN, that identifies the vehicle used to complete an inspection.
-          type: string
-    ownerAddressModel:
+    response_resultModelArray:
       type: object
       properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    inspectionAvailabilityArray:
-      type: object
-      properties:
-        availableDates:
+        result:
           items:
-            $ref: '#/components/schemas/availableDatesArray'
+            $ref: '#/components/schemas/resultModel'
           type: array
-        inspectorId:
-          type: string
-          description: The inspector userid whose availability is specified in availableDates[].
+        status:
+          type: integer
+          description: The HTTP return status.
     inspectionTypeModel:
       type: object
       properties:
@@ -2763,6 +2697,72 @@ components:
         value:
           description: The inspection type value.
           type: string
+    response_inspectionRelatedModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/inspectionRelatedModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+  parameters:
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    idInspection:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

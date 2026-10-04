@@ -273,28 +273,6 @@ paths:
         description: Shopping cart information to update
         required: true
 components:
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
   schemas:
     shoppingCartModel:
       type: object
@@ -319,6 +297,16 @@ components:
           - PayFees
           - Renewal
           - PayFeeDue4Renewal
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -334,14 +322,6 @@ components:
         message:
           description: The error message, if an error is encountered.
           type: string
-    response_shoppingCartModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/shoppingCartModel'
-        status:
-          type: integer
-          description: The HTTP return status.
     response_shoppingCartModelArray:
       type: object
       properties:
@@ -352,16 +332,36 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_resultModelArray:
+    response_shoppingCartModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
+          $ref: '#/components/schemas/shoppingCartModel'
         status:
           type: integer
           description: The HTTP return status.
+  parameters:
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

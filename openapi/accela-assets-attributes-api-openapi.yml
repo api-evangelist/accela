@@ -159,25 +159,32 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: The name of a custom field.
-          type: string
-        aCustomFieldValue:
-          description: The value of a custom field.
-          type: string
-    response_attributeMetadataModelArray:
+    response_resultModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/attributeMetadataModel'
+            $ref: '#/components/schemas/resultModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
     attributeMetadataModel:
       type: object
       properties:
@@ -242,22 +249,6 @@ components:
         valueRequired:
           description: Indicates whether or not the attribute value is required.
           type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     response_customAttributeModelArray:
       type: object
       properties:
@@ -268,12 +259,21 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_resultModelArray:
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
+    response_attributeMetadataModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/attributeMetadataModel'
           type: array
         status:
           type: integer
@@ -293,18 +293,18 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
     idAssetPathParam:
       description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
       in: path
       name: id
       required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
 x-api-evangelist-provenance:

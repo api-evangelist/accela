@@ -167,13 +167,6 @@ components:
       schema:
         type: integer
         format: int64
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
@@ -181,14 +174,6 @@ components:
       required: false
       schema:
         type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
@@ -203,13 +188,28 @@ components:
       required: false
       schema:
         type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
-    response_assetMasterModelArray:
+    response_resultModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/assetMasterModel'
+            $ref: '#/components/schemas/resultModel'
           type: array
         status:
           type: integer
@@ -230,18 +230,16 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    gISObjectModel:
+    response_assetMasterModelArray:
       type: object
       properties:
-        gisId:
-          description: The GIS object id.
-          type: string
-        layerId:
-          description: The map layer id.
-          type: string
-        serviceId:
-          description: The map service id.
-          type: string
+        result:
+          items:
+            $ref: '#/components/schemas/assetMasterModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     assetMasterModel:
       type: object
       properties:
@@ -370,16 +368,18 @@ components:
             value:
               description: The data value.
               type: string
-    response_resultModelArray:
+    gISObjectModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+        gisId:
+          description: The GIS object id.
+          type: string
+        layerId:
+          description: The map layer id.
+          type: string
+        serviceId:
+          description: The map service id.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

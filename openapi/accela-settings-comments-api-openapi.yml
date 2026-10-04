@@ -115,43 +115,40 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
   schemas:
-    pageModel:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The requested offset start.
-        limit:
-          type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
-    standardCommentGroupModel:
-      type: object
-      properties:
-        text:
-          description: The standard comment group name.
-          type: string
-        value:
-          description: The standard comment group value.
-          type: string
-    response_standardCommentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/standardCommentModel'
-          type: array
-        page:
-          $ref: '#/components/schemas/pageModel'
-        status:
-          type: integer
-          description: The HTTP return status.
     standardCommentModel:
       type: object
       properties:
@@ -184,6 +181,42 @@ components:
         value:
           description: The comment value.
           type: string
+    standardCommentGroupModel:
+      type: object
+      properties:
+        text:
+          description: The standard comment group name.
+          type: string
+        value:
+          description: The standard comment group value.
+          type: string
+    response_standardCommentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/standardCommentModel'
+          type: array
+        page:
+          $ref: '#/components/schemas/pageModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    pageModel:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
     response_standardCommentGroupModelArray:
       type: object
       properties:
@@ -191,39 +224,6 @@ components:
           items:
             $ref: '#/components/schemas/standardCommentGroupModel'
           type: array
-  parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

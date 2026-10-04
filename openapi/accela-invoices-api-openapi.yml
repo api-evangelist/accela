@@ -63,16 +63,82 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_invoiceModelArray:
+    invoiceModel:
       type: object
       properties:
-        result:
+        amount:
+          description: The invoice fee amount.
+          format: double
+          type: number
+        auditStatus:
+          description: The audit status of the invoice fee item.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        dueDate:
+          description: The invoice due date.
+          format: date-time
+          type: string
+        fees:
           items:
-            $ref: '#/components/schemas/invoiceModel'
+            $ref: '#/components/schemas/feeItemModel'
           type: array
-        status:
+        id:
+          description: The unique id of the invoice.
+          format: int64
           type: integer
-          description: The HTTP return status.
+        invBatchDate:
+          description: The invoice batch date.
+          format: date-time
+          type: string
+        invComment:
+          description: A comment related to the invoice.
+          type: string
+        invoiceDate:
+          description: The invoice date.
+          format: date-time
+          type: string
+        invoiceNumber:
+          description: The invoice number string.
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        udf1:
+          description: Invoice user defined field 1.
+          type: string
+        udf2:
+          description: Invoice user defined field 2.
+          type: string
+        udf3:
+          description: Invoice user defined field 3.
+          type: string
+        udf4:
+          description: Invoice user defined field 4.
+          type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
     feeItemModel:
       type: object
       properties:
@@ -265,82 +331,16 @@ components:
             value:
               description: The data value.
               type: string
-    invoiceModel:
+    response_invoiceModelArray:
       type: object
       properties:
-        amount:
-          description: The invoice fee amount.
-          format: double
-          type: number
-        auditStatus:
-          description: The audit status of the invoice fee item.
-          type: string
-        balance:
-          description: The amount due.
-          format: double
-          type: number
-        dueDate:
-          description: The invoice due date.
-          format: date-time
-          type: string
-        fees:
+        result:
           items:
-            $ref: '#/components/schemas/feeItemModel'
+            $ref: '#/components/schemas/invoiceModel'
           type: array
-        id:
-          description: The unique id of the invoice.
-          format: int64
+        status:
           type: integer
-        invBatchDate:
-          description: The invoice batch date.
-          format: date-time
-          type: string
-        invComment:
-          description: A comment related to the invoice.
-          type: string
-        invoiceDate:
-          description: The invoice date.
-          format: date-time
-          type: string
-        invoiceNumber:
-          description: The invoice number string.
-          type: string
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        udf1:
-          description: Invoice user defined field 1.
-          type: string
-        udf2:
-          description: Invoice user defined field 2.
-          type: string
-        udf3:
-          description: Invoice user defined field 3.
-          type: string
-        udf4:
-          description: Invoice user defined field 4.
-          type: string
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
+          description: The HTTP return status.
   parameters:
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.

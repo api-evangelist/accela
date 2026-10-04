@@ -100,38 +100,18 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    departmentModel:
+    userGroupModel:
       type: object
       properties:
-        agency:
-          description: The department agency
-          type: string
-        bureau:
-          description: The name of the bureau, which is an organization level within an agency.
-          type: string
-        division:
-          description: The name of the division, which is an organization level within a bureau.
-          type: string
-        group:
-          description: The department group.
-          type: string
         id:
-          description: The department system id assigned by the Civic Platform server.
+          description: The ID of the user group.
+          format: int64
+          type: integer
+        moduleName:
+          description: The module the user group belongs to.
           type: string
-        office:
-          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
-          type: string
-        section:
-          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier
-          type: string
-        text:
-          description: The department display text.
-          type: string
-        value:
-          description: The department value.
+        name:
+          description: The name of the user group.
           type: string
     userModel:
       type: object
@@ -187,18 +167,48 @@ components:
         value:
           description: The ID of the individual.
           type: string
-    userGroupModel:
+    response_userModelArray:
       type: object
       properties:
-        id:
-          description: The ID of the user group.
-          format: int64
+        result:
+          items:
+            $ref: '#/components/schemas/userModel'
+          type: array
+        status:
           type: integer
-        moduleName:
-          description: The module the user group belongs to.
+          description: The HTTP return status.
+    departmentModel:
+      type: object
+      properties:
+        agency:
+          description: The department agency
           type: string
-        name:
-          description: The name of the user group.
+        bureau:
+          description: The name of the bureau, which is an organization level within an agency.
+          type: string
+        division:
+          description: The name of the division, which is an organization level within a bureau.
+          type: string
+        group:
+          description: The department group.
+          type: string
+        id:
+          description: The department system id assigned by the Civic Platform server.
+          type: string
+        office:
+          description: An organization level within a group. An office is the final level within an organization structure. Agency->Bureau->Division->Section->Group->Office.
+          type: string
+        section:
+          description: A piece of a township measuring 640 acres, one square mile, numbered with reference to the base line and meridian line.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier
+          type: string
+        text:
+          description: The department display text.
+          type: string
+        value:
+          description: The department value.
           type: string
     response_departmentModelArray:
       type: object
@@ -206,16 +216,6 @@ components:
         result:
           items:
             $ref: '#/components/schemas/departmentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_userModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/userModel'
           type: array
         status:
           type: integer

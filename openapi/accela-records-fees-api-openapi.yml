@@ -167,30 +167,6 @@ paths:
         required: true
 components:
   schemas:
-    response_estimateFeeModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/estimateFeeModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
     feeItemBaseModel_1:
       type: object
       properties:
@@ -245,26 +221,6 @@ components:
             value:
               description: The data value.
               type: string
-    estimateFeeModel:
-      type: object
-      properties:
-        currencyCode:
-          description: The standard ISO 4217 currency code. For example, "USD" for US Dollars
-          type: string
-        feeTotal:
-          description: The total fee.
-          format: double
-          type: number
-    response_feeItemModel_1Array:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/feeItemModel_1'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     recordIdModel:
       type: object
       properties:
@@ -291,6 +247,30 @@ components:
           items:
             $ref: '#/components/schemas/resultModel'
           type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_estimateFeeModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/estimateFeeModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -442,6 +422,26 @@ components:
             value:
               description: The data value.
               type: string
+    response_feeItemModel_1Array:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/feeItemModel_1'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    estimateFeeModel:
+      type: object
+      properties:
+        currencyCode:
+          description: The standard ISO 4217 currency code. For example, "USD" for US Dollars
+          type: string
+        feeTotal:
+          description: The total fee.
+          format: double
+          type: number
     feeItemBaseModel:
       type: object
       properties:
@@ -504,13 +504,6 @@ components:
       required: false
       schema:
         type: string
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
@@ -523,6 +516,13 @@ components:
       in: query
       name: lang
       required: false
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
       schema:
         type: string
 x-api-evangelist-provenance:

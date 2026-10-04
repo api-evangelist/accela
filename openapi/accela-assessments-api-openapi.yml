@@ -197,6 +197,51 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_assetConditionAssessmentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/assetConditionAssessmentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
+          type: string
     request_assessmentModel:
       type: object
       required:
@@ -233,56 +278,6 @@ components:
           type: string
         timeSpent:
           description: The number of hours spent on the assessment.
-          type: string
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: The name of a custom field.
-          type: string
-        aCustomFieldValue:
-          description: The value of a custom field.
-          type: string
-    assetDescriptionModel:
-      type: object
-      properties:
-        description:
-          description: The asset description.
-          type: string
-        group:
-          description: The group the asset belongs to.
-          type: string
-        id:
-          description: The asset system id assigned by the Civic Platform server.
-          type: string
-        status:
-          type: object
-          description: The asset status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        type:
-          description: The asset type.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
           type: string
     assetConditionAssessmentModel:
       type: object
@@ -324,26 +319,31 @@ components:
         type:
           description: The type of assessment.
           type: string
-    response_resultModelArray:
+    assetDescriptionModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
+        description:
+          description: The asset description.
+          type: string
+        group:
+          description: The group the asset belongs to.
+          type: string
+        id:
+          description: The asset system id assigned by the Civic Platform server.
+          type: string
         status:
-          type: integer
-          description: The HTTP return status.
-    response_assetConditionAssessmentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/assetConditionAssessmentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+          type: object
+          description: The asset status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        type:
+          description: The asset type.
+          type: string
   parameters:
     offset:
       description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
@@ -360,25 +360,10 @@ components:
       required: false
       schema:
         type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
       name: Authorization
-      required: true
-      schema:
-        type: string
-    idAssessmentPathParam:
-      description: The ID of the condition assessment to fetch.
-      in: path
-      name: id
       required: true
       schema:
         type: string
@@ -389,6 +374,21 @@ components:
       required: false
       schema:
         type: string
+    idAssessmentPathParam:
+      description: The ID of the condition assessment to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

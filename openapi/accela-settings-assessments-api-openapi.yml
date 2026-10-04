@@ -51,16 +51,22 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
   schemas:
-    conditionAssessmentModel:
-      type: object
-      properties:
-        conditionAssessment:
-          description: The condition assessment id, as defined on Civic Platform Administration.
-          type: string
-        description:
-          description: The condition assessment description. If the description is null, this field is not returned.
-          type: string
     response_conditionAssessmentModelArray:
       type: object
       properties:
@@ -71,21 +77,15 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
+    conditionAssessmentModel:
+      type: object
+      properties:
+        conditionAssessment:
+          description: The condition assessment id, as defined on Civic Platform Administration.
+          type: string
+        description:
+          description: The condition assessment description. If the description is null, this field is not returned.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched
