@@ -293,29 +293,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_linkedAccounts:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/linkedAccountsArrays'
-        status:
-          type: string
-          description: The HTTP return status.
-    accountInfo:
-      type: object
-      properties:
-        agencyDisplayName:
-          type: string
-          description: The name of the agency, as displayed in the application.
-        agencyName:
-          type: string
-          description: The name that identifies the agency.
-        id:
-          type: string
-          description: The account userid.
-        name:
-          type: string
-          description: The user's full name.
     linkedAccountInfo:
       type: object
       properties:
@@ -357,21 +334,24 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    linkedAccountsArrays:
+    response_linkedAccount:
       type: object
       properties:
-        agencyAccounts:
-          items:
-            $ref: '#/components/schemas/accountInfo'
-          type: array
-        citizenAccounts:
-          items:
-            $ref: '#/components/schemas/accountInfo'
-          type: array
-        socialAccounts:
-          items:
-            $ref: '#/components/schemas/accountInfo'
-          type: array
+        result:
+          type: string
+          description: The system id of the linked account.
+        status:
+          type: integer
+          description: The HTTP return status.
+        code:
+          type: string
+          description: The error code, if an error is encountered.
+        message:
+          type: string
+          description: The error message, if an error is encountered.
+        traceid:
+          type: string
+          description: The id of the trace log entry, if an error is encountered.
     department:
       type: object
       properties:
@@ -402,6 +382,29 @@ components:
         value:
           description: "\t(For agency token only) The display value."
           type: string
+    response_linkedAccounts:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/linkedAccountsArrays'
+        status:
+          type: string
+          description: The HTTP return status.
+    linkedAccountsArrays:
+      type: object
+      properties:
+        agencyAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+        citizenAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
+        socialAccounts:
+          items:
+            $ref: '#/components/schemas/accountInfo'
+          type: array
     accountModel:
       type: object
       properties:
@@ -417,6 +420,21 @@ components:
         password:
           type: string
           description: The password of the user to be linked to the logged-in CivicID.
+    accountInfo:
+      type: object
+      properties:
+        agencyDisplayName:
+          type: string
+          description: The name of the agency, as displayed in the application.
+        agencyName:
+          type: string
+          description: The name that identifies the agency.
+        id:
+          type: string
+          description: The account userid.
+        name:
+          type: string
+          description: The user's full name.
     civicIdProfile:
       type: object
       properties:
@@ -462,6 +480,14 @@ components:
         streetAddress:
           description: 'The street address. '
           type: string
+    response_linkedAccountInfo:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/linkedAccountInfo'
+        status:
+          type: integer
+          description: The HTTP return status.
     returnStatus:
       type: object
       properties:
@@ -477,32 +503,6 @@ components:
         traceid:
           type: string
           description: The id of the trace log entry, if an error is encountered.
-    response_linkedAccount:
-      type: object
-      properties:
-        result:
-          type: string
-          description: The system id of the linked account.
-        status:
-          type: integer
-          description: The HTTP return status.
-        code:
-          type: string
-          description: The error code, if an error is encountered.
-        message:
-          type: string
-          description: The error message, if an error is encountered.
-        traceid:
-          type: string
-          description: The id of the trace log entry, if an error is encountered.
-    response_linkedAccountInfo:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/linkedAccountInfo'
-        status:
-          type: integer
-          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

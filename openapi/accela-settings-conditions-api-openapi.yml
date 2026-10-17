@@ -177,7 +177,46 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
   schemas:
+    conditionStatusModel:
+      type: object
+      properties:
+        id:
+          description: The id of the condition status.
+          type: string
+        severity:
+          items:
+            type: object
+            description: The condition status severity.
+            properties:
+              text:
+                description: The localized display value.
+                type: string
+              value:
+                description: The data value.
+                type: string
+          type: array
+        text:
+          description: The condition status name.
+          type: string
+        value:
+          description: The condition status value.
+          type: string
     response_conditionTypeModelArray:
       type: object
       properties:
@@ -188,6 +227,18 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
     settingValueModel:
       type: object
       properties:
@@ -201,6 +252,17 @@ components:
           items:
             $ref: '#/components/schemas/settingValueModelAddressTypes'
           type: array
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     conditionTypeModel:
       type: object
       properties:
@@ -235,68 +297,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_settingValueModelArray:
-      type: object
-      properties:
-        result:
-          description: Contains the settings.
-          items:
-            $ref: '#/components/schemas/settingValueModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    conditionStatusModel:
-      type: object
-      properties:
-        id:
-          description: The id of the condition status.
-          type: string
-        severity:
-          items:
-            type: object
-            description: The condition status severity.
-            properties:
-              text:
-                description: The localized display value.
-                type: string
-              value:
-                description: The data value.
-                type: string
-          type: array
-        text:
-          description: The condition status name.
-          type: string
-        value:
-          description: The condition status value.
-          type: string
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
-  parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

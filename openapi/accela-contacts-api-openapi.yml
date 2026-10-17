@@ -324,25 +324,17 @@ paths:
         required: true
 components:
   parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -351,13 +343,6 @@ components:
       in: header
       name: Authorization
       required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
       schema:
         type: string
     limit:
@@ -370,13 +355,36 @@ components:
         format: int64
         enum:
         - range[1,1000]
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
-    response_resultModelArray:
+    response_contactModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/request_contactModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_contactModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/contactModel'
           type: array
         status:
           type: integer
@@ -608,6 +616,54 @@ components:
             value:
               description: The data value.
               type: string
+    compactAddressModel:
+      type: object
+      properties:
+        addressLine1:
+          description: The first line of the address.
+          type: string
+        addressLine2:
+          description: The second line of the address.
+          type: string
+        addressLine3:
+          description: The third line of the address.
+          type: string
+        city:
+          description: The name of the city.
+          type: string
+        country:
+          type: object
+          description: The name of the country.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
+          type: string
+        state:
+          type: object
+          description: The address state.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     request_contactModel:
       type: object
       properties:
@@ -815,62 +871,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_contactModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/request_contactModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    compactAddressModel:
-      type: object
-      properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: The name of the country.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: The address state.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    response_contactModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/contactModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

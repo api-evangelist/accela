@@ -107,28 +107,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    assetIdPathParam:
-      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
-      in: path
-      name: assetId
-      required: true
-      schema:
-        type: string
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
@@ -143,10 +121,32 @@ components:
       required: false
       schema:
         type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    assetIdPathParam:
+      description: The ID of the asset to fetch. See [Get All Assets](./api-assets-assessments.html#operation/v4.get.assets).
+      in: path
+      name: assetId
+      required: true
+      schema:
+        type: string
     limit:
       description: Search result size limit.
       in: query
       name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
       required: false
       schema:
         type: integer
@@ -195,24 +195,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    assetsRecordsArray:
-      type: object
-      properties:
-        id:
-          type: string
-        page:
-          type: object
-          properties:
-            offset:
-              type: string
-            limit:
-              type: string
-            hasmore:
-              type: boolean
-        records:
-          items:
-            $ref: '#/components/schemas/recordsArrayInAssetsRecordsArray'
-          type: array
     recordsArrayInAssetsRecordsArray:
       type: object
       properties:
@@ -220,23 +202,6 @@ components:
           type: string
         id:
           type: string
-    recordExpirationModel:
-      type: object
-      properties:
-        expirationDate:
-          description: The date when the condition expires.
-          format: date-time
-          type: string
-        expirationStatus:
-          type: object
-          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
     response_simpleRecordModelArray:
       type: object
       properties:
@@ -541,6 +506,41 @@ components:
         value:
           description: The record value.
           type: string
+    assetsRecordsArray:
+      type: object
+      properties:
+        id:
+          type: string
+        page:
+          type: object
+          properties:
+            offset:
+              type: string
+            limit:
+              type: string
+            hasmore:
+              type: boolean
+        records:
+          items:
+            $ref: '#/components/schemas/recordsArrayInAssetsRecordsArray'
+          type: array
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

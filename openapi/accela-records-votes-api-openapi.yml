@@ -145,18 +145,18 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
       name: lang
       required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
         type: string
     recordId:
@@ -167,20 +167,22 @@ components:
       schema:
         type: string
   schemas:
-    response_voteResult:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/voteResult'
-        status:
-          type: integer
-          description: The HTTP return status.
-    voteResult:
+    voteRequest:
       type: object
       properties:
         vote:
-          description: The result of a vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
+          description: The vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
           type: boolean
+      required:
+      - vote
+    response_voteSummary:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/voteSummary'
+        status:
+          type: integer
+          description: The HTTP return status.
     voteSummary:
       type: object
       properties:
@@ -190,22 +192,20 @@ components:
         upCount:
           description: The number of votes that approve the specified record.
           type: integer
-    response_voteSummary:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/voteSummary'
-        status:
-          type: integer
-          description: The HTTP return status.
-    voteRequest:
+    voteResult:
       type: object
       properties:
         vote:
-          description: The vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
+          description: The result of a vote on a record (agenda item in a hearing, for example). A value of true is a "yea" vote and a value of false indicates a "nay" vote.
           type: boolean
-      required:
-      - vote
+    response_voteResult:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/voteResult'
+        status:
+          type: integer
+          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

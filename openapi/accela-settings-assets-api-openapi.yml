@@ -149,6 +149,18 @@ components:
       schema:
         type: string
   schemas:
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
     settingValueModel:
       type: object
       properties:
@@ -173,18 +185,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    settingValueModelAddressTypes:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

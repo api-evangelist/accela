@@ -197,6 +197,18 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    customFormModel:
+      type: object
+      properties:
+        id:
+          description: The custom form id.
+          type: string
+        <aCustomFieldName>:
+          description: A custom field name.
+          type: string
+        <aCustomFieldValue>:
+          description: A custom field value.
+          type: string
     aSITableDrill:
       description: Contains drilldown field information.
       type: object
@@ -207,44 +219,6 @@ components:
           type: array
         isRoot:
           type: boolean
-    customFormMetadataModel:
-      description: Contains the metadata for a custom table.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom table's display order.
-          format: int64
-          type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
-        id:
-          description: The custom table id.
-          type: string
-        text:
-          description: The custom table name.
-          type: string
-    response_customAttributeModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customAttributeModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -271,25 +245,6 @@ components:
         id:
           description: The ID of the current record.
           type: string
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: ''
-          type: string
-        aCustomFieldValue:
-          description: ''
-          type: string
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -339,26 +294,64 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    customFormModel:
+    customFormMetadataModel:
+      description: Contains the metadata for a custom table.
       type: object
       properties:
+        displayOrder:
+          description: The custom table's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
         id:
-          description: The custom form id.
+          description: The custom table id.
           type: string
-        <aCustomFieldName>:
-          description: A custom field name.
+        text:
+          description: The custom table name.
           type: string
-        <aCustomFieldValue>:
-          description: A custom field value.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customAttributeModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customAttributeModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: ''
+          type: string
+        aCustomFieldValue:
+          description: ''
           type: string
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
@@ -366,18 +359,25 @@ components:
       required: false
       schema:
         type: string
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
       name: lang
       required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
       schema:
         type: string
 x-api-evangelist-provenance:

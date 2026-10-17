@@ -106,72 +106,6 @@ paths:
         required: true
 components:
   schemas:
-    invoiceModel:
-      type: object
-      properties:
-        amount:
-          description: The invoice fee amount.
-          format: double
-          type: number
-        auditStatus:
-          description: The audit status of the invoice fee item.
-          type: string
-        balance:
-          description: The amount due.
-          format: double
-          type: number
-        dueDate:
-          description: The invoice due date.
-          format: date-time
-          type: string
-        fees:
-          items:
-            $ref: '#/components/schemas/feeItemModel'
-          type: array
-        id:
-          description: The unique id of the invoice.
-          format: int64
-          type: integer
-        invBatchDate:
-          description: The invoice batch date.
-          format: date-time
-          type: string
-        invComment:
-          description: A comment related to the invoice.
-          type: string
-        invStatus:
-          description: The invoice status.
-          type: string
-        invoiceDate:
-          description: The invoice date.
-          format: date-time
-          type: string
-        invoiceNumber:
-          description: The invoice number string.
-          type: string
-        printed:
-          description: Indicates whether or not the invoice is printed.
-          enum:
-          - Y
-          - N
-          type: string
-        recordId:
-          $ref: '#/components/schemas/recordIdModel'
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        udf1:
-          description: Invoice user defined field 1.
-          type: string
-        udf2:
-          description: Invoice user defined field 2.
-          type: string
-        udf3:
-          description: Invoice user defined field 3.
-          type: string
-        udf4:
-          description: Invoice user defined field 4.
-          type: string
     response_resultModel:
       type: object
       properties:
@@ -180,25 +114,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
     resultModel:
       type: object
       properties:
@@ -417,12 +332,97 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    invoiceModel:
+      type: object
+      properties:
+        amount:
+          description: The invoice fee amount.
+          format: double
+          type: number
+        auditStatus:
+          description: The audit status of the invoice fee item.
+          type: string
+        balance:
+          description: The amount due.
+          format: double
+          type: number
+        dueDate:
+          description: The invoice due date.
+          format: date-time
+          type: string
+        fees:
+          items:
+            $ref: '#/components/schemas/feeItemModel'
+          type: array
+        id:
+          description: The unique id of the invoice.
+          format: int64
+          type: integer
+        invBatchDate:
+          description: The invoice batch date.
+          format: date-time
+          type: string
+        invComment:
+          description: A comment related to the invoice.
+          type: string
+        invStatus:
+          description: The invoice status.
+          type: string
+        invoiceDate:
+          description: The invoice date.
+          format: date-time
+          type: string
+        invoiceNumber:
+          description: The invoice number string.
+          type: string
+        printed:
+          description: Indicates whether or not the invoice is printed.
+          enum:
+          - Y
+          - N
+          type: string
+        recordId:
+          $ref: '#/components/schemas/recordIdModel'
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        udf1:
+          description: Invoice user defined field 1.
+          type: string
+        udf2:
+          description: Invoice user defined field 2.
+          type: string
+        udf3:
+          description: Invoice user defined field 3.
+          type: string
+        udf4:
+          description: Invoice user defined field 4.
+          type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
     fields:
@@ -432,11 +432,11 @@ components:
       required: false
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
         type: string
     recordId:

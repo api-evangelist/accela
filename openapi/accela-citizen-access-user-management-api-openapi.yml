@@ -496,89 +496,52 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_userPINModelArray:
+    response_resultModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/userPINModel'
-          type: array
+          $ref: '#/components/schemas/resultModel'
         status:
           type: integer
           description: The HTTP return status.
-    response_publicUserModelArray:
+    ownerAddressModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/publicUserModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    publicUserModel:
-      type: object
-      properties:
-        active:
-          description: Indicates whether or not the user is active.
-          enum:
-          - 'Yes'
-          - 'No'
+        addressLine1:
+          description: The first line of the address.
           type: string
-        contacts:
-          items:
-            $ref: '#/components/schemas/peopleModel'
-          type: array
-        email:
-          description: The citizen user's email address.
+        addressLine2:
+          description: The second line of the address.
           type: string
-        id:
-          description: The citizen id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        loginName:
-          description: The citizen user's login name.
+        addressLine3:
+          description: The third line of the address.
           type: string
-        mobilePhone:
-          description: The citizen user's 10-digit cell phone number.
+        city:
+          description: The name of the city.
           type: string
-        receiveSMS:
-          description: Indicates whether or not the user prefers to receive SMS messages.
-          enum:
-          - Y
-          - N
+        country:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        postalCode:
+          description: The postal ZIP code for the address.
           type: string
-        registerDate:
-          description: The citizen user's registration date.
-          format: date-time
-          type: string
-        role:
-          description: The citizen user's role
-          enum:
-          - CONTRACT_INSPECTOR
-          - CITIZEN
-          - AUTH_AGENT_CLERK
-          - AUTH_AGENT
-          - SELF_CERTIFIED_INSPECTOR
-          type: string
-    response_trustAccountModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/trustAccountModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_resultCountModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultCountModel'
-        status:
-          type: integer
-          description: The HTTP return status.
+        state:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
     request_citizenProfileModel:
       type: object
       properties:
@@ -618,22 +581,143 @@ components:
           - AUTH_AGENT
           - SELF_CERTIFIED_INSPECTOR
           type: string
-    resultModel:
+    publicUserRegisterModel:
+      type: object
+      required:
+      - userName
+      properties:
+        associatedLicenseIds:
+          description: Contains license ID's associated with the citizen user.
+          items:
+            format: int64
+            type: integer
+          type: array
+        cellPhone:
+          description: The citizen user's cell phone number.
+          type: string
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
+          type: string
+        password:
+          description: The citizen user's password.
+          type: string
+        questions:
+          description: Contains the security questions for password reset.
+          items:
+            $ref: '#/components/schemas/publicUserQuestionModel'
+          type: array
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
+          enum:
+          - Y
+          - N
+          type: string
+        role:
+          description: The citizen user's role
+          enum:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+        servProvCode:
+          description: The unique agency identifier.
+          type: string
+        userName:
+          description: The user's unique username.
+          type: string
+    resultCountModel:
       type: object
       properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
+        failedCount:
+          description: The number of failed results.
           format: int64
           type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
+        failedIDs:
+          description: The IDs of the entities on which the operation failed.
           type: string
+        successCount:
+          description: The number of successful results.
+          format: int64
+          type: integer
+        successIDs:
+          description: The IDs of the entities on which the operation succeeded.
+          type: string
+    trustAccountModel:
+      type: object
+      properties:
+        account:
+          description: The account ID number for the trust account.
+          type: string
+        associations:
+          type: object
+          description: The trust account associations.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        balance:
+          description: The balance of the trust account in dollars.
+          format: double
+          type: number
+        description:
+          description: The description of the trust account.
+          type: string
+        id:
+          description: The trust account system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        isPrimary:
+          description: Indicates whether or not to designate the trust account as the primary source.
+          type: string
+          enum:
+          - Y
+          - N
+        ledgerAccount:
+          description: The ledger account of the trust account.
+          type: string
+        overdraft:
+          type: object
+          description: Indicates whether or not the trust account can use the overdraft option.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        overdraftLimit:
+          description: The overdraft limit amount, in dollars, for the trust account.
+          format: double
+          type: number
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The status of the trust account.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+          enum:
+          - Active
+          - Closed
+        thresholdAmount:
+          description: The minimum amount required in a trust account.
+          format: double
+          type: number
     userPINModel:
       type: object
       properties:
@@ -653,44 +737,14 @@ components:
           description: The citizen userid.
           format: int64
           type: integer
-    ownerAddressModel:
+    response_resultCountModel:
       type: object
       properties:
-        addressLine1:
-          description: The first line of the address.
-          type: string
-        addressLine2:
-          description: The second line of the address.
-          type: string
-        addressLine3:
-          description: The third line of the address.
-          type: string
-        city:
-          description: The name of the city.
-          type: string
-        country:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        postalCode:
-          description: The postal ZIP code for the address.
-          type: string
-        state:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
+        result:
+          $ref: '#/components/schemas/resultCountModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     peopleModel:
       type: object
       properties:
@@ -946,22 +1000,21 @@ components:
             value:
               description: The data value.
               type: string
-    resultCountModel:
+    response_userPINModelArray:
       type: object
       properties:
-        failedCount:
-          description: The number of failed results.
-          format: int64
+        result:
+          items:
+            $ref: '#/components/schemas/userPINModel'
+          type: array
+        status:
           type: integer
-        failedIDs:
-          description: The IDs of the entities on which the operation failed.
-          type: string
-        successCount:
-          description: The number of successful results.
-          format: int64
-          type: integer
-        successIDs:
-          description: The IDs of the entities on which the operation succeeded.
+          description: The HTTP return status.
+    publicUserPasswordModel:
+      type: object
+      properties:
+        password:
+          description: The citizen user's password.
           type: string
     response_citizenProfileModel:
       type: object
@@ -971,81 +1024,96 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    trustAccountModel:
+    publicUserModel:
       type: object
       properties:
-        account:
-          description: The account ID number for the trust account.
+        active:
+          description: Indicates whether or not the user is active.
+          enum:
+          - 'Yes'
+          - 'No'
           type: string
-        associations:
-          type: object
-          description: The trust account associations.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        balance:
-          description: The balance of the trust account in dollars.
-          format: double
-          type: number
-        description:
-          description: The description of the trust account.
+        contacts:
+          items:
+            $ref: '#/components/schemas/peopleModel'
+          type: array
+        email:
+          description: The citizen user's email address.
           type: string
         id:
-          description: The trust account system id assigned by the Civic Platform server.
+          description: The citizen id assigned by the Civic Platform server.
           format: int64
           type: integer
-        isPrimary:
-          description: Indicates whether or not to designate the trust account as the primary source.
+        loginName:
+          description: The citizen user's login name.
           type: string
+        mobilePhone:
+          description: The citizen user's 10-digit cell phone number.
+          type: string
+        receiveSMS:
+          description: Indicates whether or not the user prefers to receive SMS messages.
           enum:
           - Y
           - N
-        ledgerAccount:
-          description: The ledger account of the trust account.
           type: string
-        overdraft:
-          type: object
-          description: Indicates whether or not the trust account can use the overdraft option.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        overdraftLimit:
-          description: The overdraft limit amount, in dollars, for the trust account.
-          format: double
-          type: number
-        serviceProviderCode:
-          description: The unique agency identifier.
+        registerDate:
+          description: The citizen user's registration date.
+          format: date-time
           type: string
-        status:
-          type: object
-          description: The status of the trust account.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
+        role:
+          description: The citizen user's role
           enum:
-          - Active
-          - Closed
-        thresholdAmount:
-          description: The minimum amount required in a trust account.
-          format: double
-          type: number
-    response_resultModel:
+          - CONTRACT_INSPECTOR
+          - CITIZEN
+          - AUTH_AGENT_CLERK
+          - AUTH_AGENT
+          - SELF_CERTIFIED_INSPECTOR
+          type: string
+    response_publicUserModelArray:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/resultModel'
+          items:
+            $ref: '#/components/schemas/publicUserModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    publicUserQuestionModel:
+      type: object
+      properties:
+        answer:
+          description: The answer to the security question for password reset.
+          type: string
+        order:
+          description: The order of the security question.
+          type: string
+        question:
+          description: The security question for password reset.
+          type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_trustAccountModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/trustAccountModel'
+          type: array
         status:
           type: integer
           description: The HTTP return status.
@@ -1059,56 +1127,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    publicUserRegisterModel:
-      type: object
-      required:
-      - userName
-      properties:
-        associatedLicenseIds:
-          description: Contains license ID's associated with the citizen user.
-          items:
-            format: int64
-            type: integer
-          type: array
-        cellPhone:
-          description: The citizen user's cell phone number.
-          type: string
-        contacts:
-          items:
-            $ref: '#/components/schemas/peopleModel'
-          type: array
-        email:
-          description: The citizen user's email address.
-          type: string
-        password:
-          description: The citizen user's password.
-          type: string
-        questions:
-          description: Contains the security questions for password reset.
-          items:
-            $ref: '#/components/schemas/publicUserQuestionModel'
-          type: array
-        receiveSMS:
-          description: Indicates whether or not the user prefers to receive SMS messages.
-          enum:
-          - Y
-          - N
-          type: string
-        role:
-          description: The citizen user's role
-          enum:
-          - CONTRACT_INSPECTOR
-          - CITIZEN
-          - AUTH_AGENT_CLERK
-          - AUTH_AGENT
-          - SELF_CERTIFIED_INSPECTOR
-          type: string
-        servProvCode:
-          description: The unique agency identifier.
-          type: string
-        userName:
-          description: The user's unique username.
-          type: string
     contactAddressModel:
       type: object
       properties:
@@ -1262,43 +1280,19 @@ components:
             value:
               description: The data value.
               type: string
-    publicUserQuestionModel:
-      type: object
-      properties:
-        answer:
-          description: The answer to the security question for password reset.
-          type: string
-        order:
-          description: The order of the security question.
-          type: string
-        question:
-          description: The security question for password reset.
-          type: string
-    publicUserPasswordModel:
-      type: object
-      properties:
-        password:
-          description: The citizen user's password.
-          type: string
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
       schema:
-        type: string
+        type: integer
+        format: int64
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
       name: lang
-      required: false
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
       required: false
       schema:
         type: string
@@ -1312,14 +1306,20 @@ components:
         format: int64
         enum:
         - range[1,1000]
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
-      name: offset
+      name: fields
       required: false
       schema:
-        type: integer
-        format: int64
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -268,11 +268,11 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_environmentStatus:
+    response_agency:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/environmentStatus'
+          $ref: '#/components/schemas/agency'
         status:
           type: integer
           description: The HTTP return status.
@@ -286,15 +286,14 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    environmentStatus:
+    response_environmentStatus:
       type: object
       properties:
-        isAvailable:
-          type: boolean
-          description: Indicates whether or not the requested environment is available. If the environment is unavailable or has been disabled on the [Construct Admin Portal](https://admin.accela.com), false is returned.
-        appServerVersion:
-          type: string
-          description: The Civic Platform app server version. Note that this API requires Accela Gateway 3.2.0+ to return an accurate version of the Civic Platform app server.
+        result:
+          $ref: '#/components/schemas/environmentStatus'
+        status:
+          type: integer
+          description: The HTTP return status.
     response_environmentArray:
       type: object
       properties:
@@ -314,6 +313,15 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    environmentStatus:
+      type: object
+      properties:
+        isAvailable:
+          type: boolean
+          description: Indicates whether or not the requested environment is available. If the environment is unavailable or has been disabled on the [Construct Admin Portal](https://admin.accela.com), false is returned.
+        appServerVersion:
+          type: string
+          description: The Civic Platform app server version. Note that this API requires Accela Gateway 3.2.0+ to return an accurate version of the Civic Platform app server.
     agency:
       type: object
       properties:
@@ -344,14 +352,6 @@ components:
         country:
           type: string
           description: The two-character code for the country that the agency belongs to, as configured on [Construct Admin Portal](https://admin.accela.com) > Agencies > {Agency} > Agency Info.
-    response_agency:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/agency'
-        status:
-          type: integer
-          description: The HTTP return status.
     environment:
       type: object
       properties:

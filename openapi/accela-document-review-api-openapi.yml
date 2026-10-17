@@ -492,90 +492,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    documentCommentModel:
-      type: object
-      properties:
-        comment:
-          description: Comments or notes about the document.
-          type: string
-        createdBy:
-          description: The user id of the individual who created the comment.
-          type: string
-        createdDate:
-          description: The date the comment is created.
-          format: date-time
-          type: string
-        discipline:
-          type: object
-          description: The inspection discipline related to the document review.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        pageNumber:
-          description: The document page number the comment applies to.
-          format: int64
-          type: integer
-        status:
-          type: object
-          description: The document comment status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The object's system id.
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered.
-          type: string
-    response_documentAssociationModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/documentAssociationModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_documentCommentModel:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentCommentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     documentCommentUpdateModel:
       type: object
       properties:
@@ -635,6 +551,21 @@ components:
             value:
               description: The data value.
               type: string
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The object's system id.
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered.
+          type: string
     response_documentCommentUpdateModel:
       type: object
       properties:
@@ -645,12 +576,81 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    response_documentAssociationModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/documentAssociationModel'
+        status:
+          type: integer
+          description: The HTTP return status.
+    documentCommentModel:
+      type: object
+      properties:
+        comment:
+          description: Comments or notes about the document.
+          type: string
+        createdBy:
+          description: The user id of the individual who created the comment.
+          type: string
+        createdDate:
+          description: The date the comment is created.
+          format: date-time
+          type: string
+        discipline:
+          type: object
+          description: The inspection discipline related to the document review.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        pageNumber:
+          description: The document page number the comment applies to.
+          format: int64
+          type: integer
+        status:
+          type: object
+          description: The document comment status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    response_documentCommentModel:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentCommentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
     fields:
@@ -660,17 +660,10 @@ components:
       required: false
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    documentIdPathParam:
-      description: The ID of document to fetch.
-      in: path
-      name: documentId
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
       required: true
       schema:
         type: string
@@ -682,6 +675,13 @@ components:
       schema:
         type: integer
         format: int64
+    documentIdPathParam:
+      description: The ID of document to fetch.
+      in: path
+      name: documentId
+      required: true
+      schema:
+        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -260,14 +260,24 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    customTablesStatusDetailModel:
+    customTablesModel:
       type: object
       properties:
         code:
-          format: int64
-          type: integer
+          type: string
         message:
           type: string
+        more:
+          type: string
+        page:
+          $ref: '#/components/schemas/pageModel'
+        resultStatus:
+          $ref: '#/components/schemas/customTablesStatusModel'
+        result:
+          type: string
+        status:
+          format: int64
+          type: integer
         traceId:
           type: string
     response_customTablesModelArray:
@@ -280,21 +290,63 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    pageModel:
+    inspectionChecklist_rowModel:
+      type: object
+      required:
+      - action
+      - fields
+      - id
+      properties:
+        action:
+          description: Specifies whether to add, update, or delete the custom table row.
+          enum:
+          - add
+          - update
+          - delete
+          type: string
+        fields:
+          $ref: '#/components/schemas/customAttributeModel'
+        id:
+          description: The unique identifier for the custom field. Required only if modifying or deleting a row.
+          type: string
+    response_customTableMetadataModelArray:
       type: object
       properties:
-        offset:
+        result:
+          items:
+            $ref: '#/components/schemas/customTableMetadataModel'
+          type: array
+        status:
           type: integer
-          description: The requested offset start.
-        limit:
+          description: The HTTP return status.
+    inpsectionChecklistItem_customTable:
+      type: object
+      properties:
+        id:
+          description: The custom table id.
+          type: string
+        rows:
+          items:
+            $ref: '#/components/schemas/inspectionChecklist_rowModel'
+          type: array
+    customAttributeModel:
+      description: 'A custom field name and value pair. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
+      type: object
+      properties:
+        <aCustomFieldName>:
+          type: string
+        <aCustomFieldValue>:
+          type: string
+    customTablesStatusDetailModel:
+      type: object
+      properties:
+        code:
+          format: int64
           type: integer
-          description: The requested result limit.
-        total:
-          type: integer
-          description: The total number of records found.
-        hasmore:
-          type: boolean
-          description: true if there are more results to fetch; false if all results have been fetched.
+        message:
+          type: string
+        traceId:
+          type: string
     customTableMetadataModel:
       description: Contains the metadata for a custom table.
       type: object
@@ -313,46 +365,29 @@ components:
         text:
           description: The custom table name.
           type: string
-    resultModel:
+    pageModel:
       type: object
       properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
+        offset:
+          type: integer
+          description: The requested offset start.
+        limit:
+          type: integer
+          description: The requested result limit.
+        total:
+          type: integer
+          description: The total number of records found.
+        hasmore:
+          type: boolean
+          description: true if there are more results to fetch; false if all results have been fetched.
+    customTablesStatusModel:
+      type: object
+      properties:
+        detail:
+          $ref: '#/components/schemas/customTablesStatusDetailModel'
+        status:
           format: int64
           type: integer
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    customAttributeModel:
-      description: 'A custom field name and value pair. For example in JSON, "My Custom Field": "My Custom Value". The custom field name and its data type are defined in Civic Platform custom forms or custom tables: <br/>**For a Text field**, the maximum length is 256.  <br/>**For a Number field**, any numeric form is allowed, including negative numbers.  <br/>**For a Date field**, the format is MM/dd/yyyy.  <br/>**For a Time field**, the format is hh:mm.  <br/>**For a TextArea field**, the maximum length is 4000 characters, and allows line return characters.  <br/>**For a DropdownList field**, the dropdown list values are in the options[] array.  <br/>**For a CheckBox field**, the (case-sensitive) valid values are "UNCHECKED" and "CHECKED".  <br/>**For a Radio(Y/N) field**, the (case-sensitive) valid values are "Yes" and "No".'
-      type: object
-      properties:
-        <aCustomFieldName>:
-          type: string
-        <aCustomFieldValue>:
-          type: string
-    inpsectionChecklistItem_customTable:
-      type: object
-      properties:
-        id:
-          description: The custom table id.
-          type: string
-        rows:
-          items:
-            $ref: '#/components/schemas/inspectionChecklist_rowModel'
-          type: array
     customTableMetadataFields:
       type: object
       properties:
@@ -382,34 +417,27 @@ components:
           description: The field's maximum field length.
           format: int64
           type: integer
-    response_customTableMetadataModelArray:
+    resultModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customTableMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    inspectionChecklist_rowModel:
-      type: object
-      required:
-      - action
-      - fields
-      - id
-      properties:
-        action:
-          description: Specifies whether to add, update, or delete the custom table row.
-          enum:
-          - add
-          - update
-          - delete
+        code:
+          description: The error code, if an error is encountered.
           type: string
-        fields:
-          $ref: '#/components/schemas/customAttributeModel'
         id:
-          description: The unique identifier for the custom field. Required only if modifying or deleting a row.
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
           type: string
     response_resultModelArray:
       type: object
@@ -421,42 +449,7 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    customTablesStatusModel:
-      type: object
-      properties:
-        detail:
-          $ref: '#/components/schemas/customTablesStatusDetailModel'
-        status:
-          format: int64
-          type: integer
-    customTablesModel:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        more:
-          type: string
-        page:
-          $ref: '#/components/schemas/pageModel'
-        resultStatus:
-          $ref: '#/components/schemas/customTablesStatusModel'
-        result:
-          type: string
-        status:
-          format: int64
-          type: integer
-        traceId:
-          type: string
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
@@ -464,17 +457,10 @@ components:
       required: false
       schema:
         type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    checklistId:
-      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
+    checklistItemId:
+      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
       in: path
-      name: checklistId
+      name: checklistItemId
       required: true
       schema:
         type: integer
@@ -487,10 +473,24 @@ components:
       schema:
         type: integer
         format: int64
-    checklistItemId:
-      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    checklistId:
+      description: The ID of the inspection checklist to fetch. See [Get All Inspection Checklists](./api-settings.html#operation/v4.get.settings.inspections.checklists), [Get All Checklists for Inspection](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists).
       in: path
-      name: checklistItemId
+      name: checklistId
       required: true
       schema:
         type: integer

@@ -70,17 +70,22 @@ paths:
         description: Report request parameters.
         required: true
 components:
+  parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
   schemas:
-    customAttributeModel:
-      description: Contains one or more custom report parameters.
-      type: object
-      properties:
-        <aCustomFieldName>:
-          type: string
-          description: A custom report parameter, as defined in Civic Platform Report Manager.
-        <aCustomFieldValue>:
-          type: string
-          description: The report parameter value.
     reportRequestModel:
       type: object
       properties:
@@ -97,21 +102,16 @@ components:
           - workflow
         parameters:
           $ref: '#/components/schemas/customAttributeModel'
-  parameters:
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
+    customAttributeModel:
+      description: Contains one or more custom report parameters.
+      type: object
+      properties:
+        <aCustomFieldName>:
+          type: string
+          description: A custom report parameter, as defined in Civic Platform Report Manager.
+        <aCustomFieldValue>:
+          type: string
+          description: The report parameter value.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

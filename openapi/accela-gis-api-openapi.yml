@@ -55,6 +55,25 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
+    response_GISDynamicThemes:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/dynamicThemesArray'
+        status:
+          type: integer
+          description: The HTTP return status.
+        page:
+          $ref: '#/components/schemas/pageModel'
+    dynamicThemesArray:
+      type: object
+      properties:
+        themeGroup:
+          type: string
+        themeName:
+          type: string
     pageModel:
       type: object
       properties:
@@ -70,25 +89,6 @@ components:
         hasmore:
           type: boolean
           description: true if there are more results to fetch; false if all results have been fetched.
-    dynamicThemesArray:
-      type: object
-      properties:
-        themeGroup:
-          type: string
-        themeName:
-          type: string
-    response_GISDynamicThemes:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/dynamicThemesArray'
-        status:
-          type: integer
-          description: The HTTP return status.
-        page:
-          $ref: '#/components/schemas/pageModel'
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

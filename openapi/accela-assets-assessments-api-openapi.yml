@@ -61,6 +61,13 @@ paths:
         required: true
 components:
   parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
     authHeaderParam:
       description: Construct oAuth2 authentication token
       in: header
@@ -75,24 +82,7 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
   schemas:
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     resultModel:
       type: object
       properties:
@@ -108,15 +98,6 @@ components:
           type: boolean
         message:
           description: The error message, if an error is encountered
-          type: string
-    customAttributeModel:
-      type: object
-      properties:
-        aCustomFieldName:
-          description: The name of a custom field.
-          type: string
-        aCustomFieldValue:
-          description: The value of a custom field.
           type: string
     request_assessmentModel:
       type: object
@@ -154,6 +135,25 @@ components:
           type: string
         timeSpent:
           description: The number of hours spent on the assessment.
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    customAttributeModel:
+      type: object
+      properties:
+        aCustomFieldName:
+          description: The name of a custom field.
+          type: string
+        aCustomFieldValue:
+          description: The value of a custom field.
           type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'

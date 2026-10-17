@@ -131,14 +131,6 @@ paths:
         required: true
 components:
   parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
@@ -156,17 +148,45 @@ components:
         format: int64
         enum:
         - range[1,1000]
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
-    response_publicUserDelegateModelArray:
+    publicUserDelegatePermissionModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/publicUserDelegateModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+        amendAllowed:
+          description: If true, the delegate is allowed to amend records.
+          type: boolean
+        createRecordAllowed:
+          description: If true, the delegate is allowed to create records.
+          type: boolean
+        documentAllowed:
+          description: If true, the delegate is allowed to manage documents.
+          type: boolean
+        inspectionAllowed:
+          description: If true, the delegate is allowed to manage inspections.
+          type: boolean
+        level:
+          description: The permission level.
+          type: string
+        levelValue:
+          description: The value for the permission level, as configured in Civic Platform Administration.
+          type: string
+        paymentAllowed:
+          description: If true, the delegate is allowed to make payments.
+          type: boolean
+        renewalAllowed:
+          description: If true, the delegate is allowed to renew records.
+          type: boolean
+        viewRecordAllowed:
+          description: If true, the delegate is allowed to view records.
+          type: boolean
     response_publicUserDelegateStatusModel:
       type: object
       properties:
@@ -177,6 +197,16 @@ components:
           description: The id of the user who sent the delegate request.
           format: int64
           type: integer
+    response_publicUserDelegateModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/publicUserDelegateModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     publicUserDelegateStatusModel:
       type: object
       properties:
@@ -214,36 +244,6 @@ components:
         userName:
           description: The delegate's login name.
           type: string
-    publicUserDelegatePermissionModel:
-      type: object
-      properties:
-        amendAllowed:
-          description: If true, the delegate is allowed to amend records.
-          type: boolean
-        createRecordAllowed:
-          description: If true, the delegate is allowed to create records.
-          type: boolean
-        documentAllowed:
-          description: If true, the delegate is allowed to manage documents.
-          type: boolean
-        inspectionAllowed:
-          description: If true, the delegate is allowed to manage inspections.
-          type: boolean
-        level:
-          description: The permission level.
-          type: string
-        levelValue:
-          description: The value for the permission level, as configured in Civic Platform Administration.
-          type: string
-        paymentAllowed:
-          description: If true, the delegate is allowed to make payments.
-          type: boolean
-        renewalAllowed:
-          description: If true, the delegate is allowed to renew records.
-          type: boolean
-        viewRecordAllowed:
-          description: If true, the delegate is allowed to view records.
-          type: boolean
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

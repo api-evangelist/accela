@@ -70,6 +70,53 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    idContactString:
+      description: The ID of the contact to fetch.
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        format: int64
   schemas:
     recordTypeModel:
       type: object
@@ -104,23 +151,6 @@ components:
         value:
           description: The stored value.
           type: string
-    recordExpirationModel:
-      type: object
-      properties:
-        expirationDate:
-          description: The date when the condition expires.
-          format: date-time
-          type: string
-        expirationStatus:
-          type: object
-          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
     response_simpleRecordModelArray:
       type: object
       properties:
@@ -425,53 +455,23 @@ components:
         value:
           description: The record value.
           type: string
-  parameters:
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    idContactString:
-      description: The ID of the contact to fetch.
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
+    recordExpirationModel:
+      type: object
+      properties:
+        expirationDate:
+          description: The date when the condition expires.
+          format: date-time
+          type: string
+        expirationStatus:
+          type: object
+          description: Indicates whether the expiration is enabled or disabled. See [Get All Record Expiration Statuses](./api-settings.html#operation/v4.get.settings.records.expirationStatuses).
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

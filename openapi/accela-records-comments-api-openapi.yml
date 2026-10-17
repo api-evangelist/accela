@@ -224,6 +224,35 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
   schemas:
     commentModel:
       type: object
@@ -237,32 +266,11 @@ components:
         text:
           description: The comment text.
           type: string
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
-    response_resultModelArray:
+    response_recordCommentModel:
       type: object
       properties:
         result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
+          $ref: '#/components/schemas/recordCommentModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -282,24 +290,6 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    response_recordCommentModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/recordCommentModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_recordCommentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/recordCommentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     recordCommentModel:
       type: object
       properties:
@@ -325,35 +315,45 @@ components:
         text:
           description: The comment text.
           type: string
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
+    response_recordCommentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/recordCommentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

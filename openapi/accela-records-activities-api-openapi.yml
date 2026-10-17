@@ -249,6 +249,42 @@ components:
             value:
               description: The data value.
               type: string
+    response_activityModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/activityModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     activityModel:
       type: object
       properties:
@@ -397,43 +433,14 @@ components:
             value:
               description: The data value.
               type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_activityModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/activityModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
   parameters:
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
@@ -446,13 +453,6 @@ components:
       in: header
       name: Authorization
       required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
       schema:
         type: string
     recordId:

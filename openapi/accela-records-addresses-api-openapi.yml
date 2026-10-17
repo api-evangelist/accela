@@ -217,36 +217,52 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    recordId:
+      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
+      in: path
+      name: recordId
+      required: true
+      schema:
+        type: string
   schemas:
-    recordIdModel:
+    resultModel:
       type: object
       properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+        code:
+          description: The error code, if an error is encountered.
           type: string
         id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
+          description: The system id of the object in this operation.
           format: int64
           type: integer
-        value:
-          description: The alphanumeric record id.
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
           type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     request_recordAddressModel:
       type: object
       properties:
@@ -497,21 +513,29 @@ components:
           type: string
         value:
           type: string
-    resultModel:
+    response_resultModelArray:
       type: object
       properties:
-        code:
-          description: The error code, if an error is encountered.
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    capIDModel:
+      type: object
+      properties:
+        customId:
           type: string
         id:
-          description: The system id of the object in this operation.
+          type: string
+        serviceProviderCode:
+          type: string
+        trackingId:
           format: int64
           type: integer
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
+        value:
           type: string
     recordAddressModel:
       type: object
@@ -785,20 +809,6 @@ components:
           type: number
           format: double
           description: The latitudinal coordinate for this address.
-    capIDModel:
-      type: object
-      properties:
-        customId:
-          type: string
-        id:
-          type: string
-        serviceProviderCode:
-          type: string
-        trackingId:
-          format: int64
-          type: integer
-        value:
-          type: string
     addressModel:
       type: object
       properties:
@@ -901,35 +911,25 @@ components:
         yCoordinate:
           format: double
           type: number
-  parameters:
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    recordId:
-      description: The ID of the record to fetch. See [Get All Records](./api-records.html#operation/v4.get.records), [Search Records](./api-search.html#operation/v4.post.search.records), or [Get My Records](./api-records.html#operation/v4.get.records.mine).
-      in: path
-      name: recordId
-      required: true
-      schema:
-        type: string
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

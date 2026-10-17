@@ -390,41 +390,262 @@ paths:
               - fileInfo
 components:
   schemas:
-    userRolePrivilegeModel:
+    response_checklistItemStatusModelArray:
       type: object
       properties:
-        contactAllowed:
-          description: Indicates whether or not the permission is given to a contact.
-          type: boolean
-        deleteAllowed:
-          description: "Indicates whether or not the permission to delete a document is allowed.\t"
-          type: boolean
-        downloadAllowed:
-          description: Indicates whether or not the permission to download a document is allowed.
-          type: boolean
-        licenseTypeRules:
+        result:
           items:
-            type: string
-            description: "A string array containing the types of licensed professionals who are given the permission.\t"
+            $ref: '#/components/schemas/checklistItemStatusModel'
           type: array
-        licensendProfessionalAllowed:
-          description: Indicates whether or not the permission is given to a licensed professional.
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_checklistModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/checklistModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    inspectionChecklistItemModel:
+      type: object
+      properties:
+        checklist:
+          description: The name of a checklist.
+          type: string
+        checklistId:
+          description: The unique ID associated with the checklist.
+          format: int64
+          type: integer
+        checklistItem:
+          type: object
+          description: An item in the checklist.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        comment:
+          type: object
+          description: Comments or notes about the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        customId:
+          description: The checklist item's custom ID.
+          type: string
+        displayOrder:
+          description: The item's display order.
+          format: int64
+          type: integer
+        id:
+          description: The checklist item system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        refGuideType:
+          description: The name of the checklist group the given item is originally from.
+          type: string
+        isCritical:
+          description: Indicates whether or not the checklist item is critical.
+          enum:
+          - Y
+          - N
+          type: string
+        isMajorViolation:
+          description: Indicates whether or not the checklist item is a major violation.
+          enum:
+          - Y
+          - N
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        score:
+          description: The inspection score for a checklist or checklist item.
+          format: int64
+          type: integer
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        status:
+          type: object
+          description: The checklist item status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+    chekclistItemHistoryModel:
+      type: object
+      properties:
+        checklistItemId:
+          description: The checklist item id.
+          format: int64
+          type: integer
+        comments:
+          description: Comments or note about the checklist item.
+          type: string
+        inspectionType:
+          description: The inspection type.
+          type: string
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        majorViolation:
+          type: object
+          description: The major violation related to the checklist item.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        score:
+          description: The inspection score related to the checklist item.
+          format: int64
+          type: integer
+        status:
+          description: The checklist item status.
+          type: string
+        updatedBy:
+          description: The user who last updated the checklist item.
+          type: string
+        updatedDate:
+          description: The date and time the checklist item was last updated.
+          format: date-time
+          type: string
+    checklistModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
           type: boolean
-        ownerAllowed:
-          description: Indicates whether or not the permission is given to an owner.
-          type: boolean
-        recordCreatorAllowed:
-          description: Indicates whether or not the permission is given to a record creator.
-          type: boolean
-        registeredUserAllowed:
-          description: Indicates whether or not the permission is given to a registered public user.
-          type: boolean
-        titleViewAllowed:
-          description: Indicates whether or not the permission to view a document name is allowed.
-          type: boolean
-        uploadAllowed:
-          description: Indicates whether or not the permission to upload a document is allowed.
-          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    documentModel:
+      type: object
+      properties:
+        category:
+          type: object
+          description: The document category. The list of category options varies depending on the document group.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        deletable:
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        department:
+          description: The name of the department where the inspector works.
+          type: string
+        description:
+          description: The description of the document.
+          type: string
+        downloadable:
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        entityId:
+          description: The unique ID of the entity or record.
+          type: string
+        entityType:
+          description: The type of entity.
+          type: string
+        fileName:
+          description: The name of the file as it displays in the source location.
+          type: string
+        group:
+          type: object
+          description: The document group which allows agencies to organize the different types of documents that users might need to add to certain applications.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          description: The document system id assigned by the Civic Platform server.
+          format: int64
+          type: integer
+        modifiedBy:
+          description: The user account that last modified the document.
+          type: string
+        modifiedDate:
+          description: The date the document was last modified.
+          format: date-time
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        size:
+          description: The file size of the document.
+          format: double
+          type: number
+        source:
+          description: The name for your agency's electronic document management system.
+          type: string
+        status:
+          type: object
+          description: The documet status.
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          description: The date when the current status changed.
+          format: date-time
+          type: string
+        titleViewable:
+          $ref: '#/components/schemas/userRolePrivilegeModel'
+        type:
+          description: The document type.
+          type: string
+        uploadedBy:
+          description: The user who uploaded the document to the record.
+          type: string
+        uploadedDate:
+          description: The date when the document was uploaded to the record.
+          format: date-time
+          type: string
+        virtualFolders:
+          description: The virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
+          type: string
     response_checklistItemStatusSearchModelArray:
       type: object
       properties:
@@ -520,151 +741,50 @@ components:
             value:
               description: The data value.
               type: string
-    inspectionChecklistItemModel:
+    response_chekclistItemHistoryModel:
       type: object
       properties:
-        checklist:
-          description: The name of a checklist.
-          type: string
-        checklistId:
-          description: The unique ID associated with the checklist.
-          format: int64
-          type: integer
-        checklistItem:
-          type: object
-          description: An item in the checklist.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        comment:
-          type: object
-          description: Comments or notes about the checklist item.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        customId:
-          description: The checklist item's custom ID.
-          type: string
-        displayOrder:
-          description: The item's display order.
-          format: int64
-          type: integer
-        id:
-          description: The checklist item system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        refGuideType:
-          description: The name of the checklist group the given item is originally from.
-          type: string
-        isCritical:
-          description: Indicates whether or not the checklist item is critical.
-          enum:
-          - Y
-          - N
-          type: string
-        isMajorViolation:
-          description: Indicates whether or not the checklist item is a major violation.
-          enum:
-          - Y
-          - N
-          type: string
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        score:
-          description: The inspection score for a checklist or checklist item.
-          format: int64
-          type: integer
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
+        result:
+          $ref: '#/components/schemas/chekclistItemHistoryModel'
         status:
-          type: object
-          description: The checklist item status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-    resultModel:
+          type: integer
+          description: The HTTP return status.
+    userRolePrivilegeModel:
       type: object
       properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
+        contactAllowed:
+          description: Indicates whether or not the permission is given to a contact.
           type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    chekclistItemHistoryModel:
-      type: object
-      properties:
-        checklistItemId:
-          description: The checklist item id.
-          format: int64
-          type: integer
-        comments:
-          description: Comments or note about the checklist item.
-          type: string
-        inspectionType:
-          description: The inspection type.
-          type: string
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        majorViolation:
-          type: object
-          description: The major violation related to the checklist item.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        score:
-          description: The inspection score related to the checklist item.
-          format: int64
-          type: integer
-        status:
-          description: The checklist item status.
-          type: string
-        updatedBy:
-          description: The user who last updated the checklist item.
-          type: string
-        updatedDate:
-          description: The date and time the checklist item was last updated.
-          format: date-time
-          type: string
-    checklistModel:
+        deleteAllowed:
+          description: "Indicates whether or not the permission to delete a document is allowed.\t"
+          type: boolean
+        downloadAllowed:
+          description: Indicates whether or not the permission to download a document is allowed.
+          type: boolean
+        licenseTypeRules:
+          items:
+            type: string
+            description: "A string array containing the types of licensed professionals who are given the permission.\t"
+          type: array
+        licensendProfessionalAllowed:
+          description: Indicates whether or not the permission is given to a licensed professional.
+          type: boolean
+        ownerAllowed:
+          description: Indicates whether or not the permission is given to an owner.
+          type: boolean
+        recordCreatorAllowed:
+          description: Indicates whether or not the permission is given to a record creator.
+          type: boolean
+        registeredUserAllowed:
+          description: Indicates whether or not the permission is given to a registered public user.
+          type: boolean
+        titleViewAllowed:
+          description: Indicates whether or not the permission to view a document name is allowed.
+          type: boolean
+        uploadAllowed:
+          description: Indicates whether or not the permission to upload a document is allowed.
+          type: boolean
+    resultModel:
       type: object
       properties:
         code:
@@ -696,108 +816,6 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    documentModel:
-      type: object
-      properties:
-        category:
-          type: object
-          description: The document category. The list of category options varies depending on the document group.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        deletable:
-          $ref: '#/components/schemas/userRolePrivilegeModel'
-        department:
-          description: The name of the department where the inspector works.
-          type: string
-        description:
-          description: The description of the document.
-          type: string
-        downloadable:
-          $ref: '#/components/schemas/userRolePrivilegeModel'
-        entityId:
-          description: The unique ID of the entity or record.
-          type: string
-        entityType:
-          description: The type of entity.
-          type: string
-        fileName:
-          description: The name of the file as it displays in the source location.
-          type: string
-        group:
-          type: object
-          description: The document group which allows agencies to organize the different types of documents that users might need to add to certain applications.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          description: The document system id assigned by the Civic Platform server.
-          format: int64
-          type: integer
-        modifiedBy:
-          description: The user account that last modified the document.
-          type: string
-        modifiedDate:
-          description: The date the document was last modified.
-          format: date-time
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        size:
-          description: The file size of the document.
-          format: double
-          type: number
-        source:
-          description: The name for your agency's electronic document management system.
-          type: string
-        status:
-          type: object
-          description: The documet status.
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        statusDate:
-          description: The date when the current status changed.
-          format: date-time
-          type: string
-        titleViewable:
-          $ref: '#/components/schemas/userRolePrivilegeModel'
-        type:
-          description: The document type.
-          type: string
-        uploadedBy:
-          description: The user who uploaded the document to the record.
-          type: string
-        uploadedDate:
-          description: The date when the document was uploaded to the record.
-          format: date-time
-          type: string
-        virtualFolders:
-          description: The virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
-          type: string
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     response_inspectionChecklistItemModelArray:
       type: object
       properties:
@@ -818,48 +836,54 @@ components:
         value:
           description: The status value.
           type: string
-    response_checklistModelArray:
+    response_resultModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/checklistModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_chekclistItemHistoryModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/chekclistItemHistoryModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_checklistItemStatusModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/checklistItemStatusModel'
+            $ref: '#/components/schemas/resultModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
   parameters:
-    inspectionId:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+    checklistItemIdString:
+      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
       in: path
-      name: inspectionId
+      name: checklistItemId
       required: true
+      schema:
+        type: string
+    offset:
+      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
+      in: query
+      name: offset
+      required: false
       schema:
         type: integer
         format: int64
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    limit:
+      description: Search result size limit.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int64
+        enum:
+        - range[1,1000]
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
       schema:
         type: string
     checklistIdString:
@@ -869,25 +893,26 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    checklistItemIdString:
-      description: The ID of the inspection checklist item to fetch. See [Get All Checklist Items for Checklist](./api-inspections.html#operation/v4.get.inspections.inspectionId.checklists.checklistId.checklistItems).
-      in: path
-      name: checklistItemId
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
       required: true
+      schema:
+        type: string
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    expand:
+      description: 'Parameter to bring comment group. '
+      in: query
+      name: expand
+      required: false
       schema:
         type: string
     inspectionIdString:
@@ -905,31 +930,6 @@ components:
       schema:
         type: integer
         format: int64
-    limit:
-      description: Search result size limit.
-      in: query
-      name: limit
-      required: false
-      schema:
-        type: integer
-        format: int64
-        enum:
-        - range[1,1000]
-    offset:
-      description: The offset position of the first record in the results response array. For example, if offset is 100, the first item in the results array in the response is the 100th record in the search result list.
-      in: query
-      name: offset
-      required: false
-      schema:
-        type: integer
-        format: int64
-    expand:
-      description: 'Parameter to bring comment group. '
-      in: query
-      name: expand
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

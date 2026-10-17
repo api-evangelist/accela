@@ -280,18 +280,18 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
     lang:
       description: Language parameter to support I18N. Default language is en_US.
       in: query
       name: lang
       required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
         type: string
   schemas:
@@ -308,7 +308,7 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    settingValueModel:
+    settingValueModelAddressTypes:
       type: object
       properties:
         text:
@@ -317,19 +317,9 @@ components:
         value:
           description: The setting value.
           type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
-    settingCostsTypeItemsArray:
-      type: object
-      properties:
-        value:
-          description: The setting value.
-          type: string
-        text:
-          description: The setting label.
-          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
     pageModel:
       type: object
       properties:
@@ -345,6 +335,19 @@ components:
         hasmore:
           type: boolean
           description: true if there are more results to fetch; false if all results have been fetched.
+    settingValueModel:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
     response_settingValueModelArray:
       type: object
       properties:
@@ -356,18 +359,15 @@ components:
         status:
           type: integer
           description: The HTTP return status.
-    settingValueModelAddressTypes:
+    settingCostsTypeItemsArray:
       type: object
       properties:
-        text:
-          description: The setting label.
-          type: string
         value:
           description: The setting value.
           type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
+        text:
+          description: The setting label.
+          type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

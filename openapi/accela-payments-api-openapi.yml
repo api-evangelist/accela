@@ -225,56 +225,6 @@ paths:
           description: Internal server error or bad connection.
 components:
   schemas:
-    response_paymentCommitResultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/paymentCommitResultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_resultModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/resultModel'
-        status:
-          type: integer
-          description: The HTTP return status.
-    recordIdModel:
-      type: object
-      properties:
-        customId:
-          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
-          type: string
-        id:
-          description: The record system id assigned by the Civic Platform server.
-          type: string
-        serviceProviderCode:
-          description: The unique agency identifier.
-          type: string
-        trackingId:
-          description: The application tracking number (IVR tracking number).
-          format: int64
-          type: integer
-        value:
-          description: The alphanumeric record id.
-          type: string
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The object's system id.
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered.
-          type: string
     creditCardLastFourDigitsModel:
       type: object
       properties:
@@ -292,6 +242,14 @@ components:
         holderName:
           description: The check holder's name.
           type: string
+    response_resultModel:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/resultModel'
+        status:
+          type: integer
+          description: The HTTP return status.
     paymentCompleteModel:
       type: object
       properties:
@@ -309,6 +267,46 @@ components:
           type: string
         serviceProviderCode:
           description: The unique agency identifier.
+          type: string
+    paymentCommitResultModel:
+      type: object
+      properties:
+        completePayments:
+          $ref: '#/components/schemas/paymentCompleteModel'
+        message:
+          description: Response message for the payment transaction.
+          type: string
+    paymentTransactionModel:
+      type: object
+      properties:
+        transactionId:
+          description: The payment transaction ID to be processed and commited by the Commit Payment API.
+          format: int64
+          type: integer
+    response_transaction_fees:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/transactionFeesModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The object's system id.
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered.
           type: string
     paymentCommitModel:
       type: object
@@ -346,13 +344,14 @@ components:
         paymentSystemTransactionId:
           description: The third party payment system's payment transaction ID.
           type: string
-    paymentTransactionModel:
+    response_paymentCommitResultModel:
       type: object
       properties:
-        transactionId:
-          description: The payment transaction ID to be processed and commited by the Commit Payment API.
-          format: int64
+        result:
+          $ref: '#/components/schemas/paymentCommitResultModel'
+        status:
           type: integer
+          description: The HTTP return status.
     billingAddressV4_V4_put_payments_id:
       type: object
       properties:
@@ -370,14 +369,6 @@ components:
           type: string
         state:
           type: string
-    paymentCommitResultModel:
-      type: object
-      properties:
-        completePayments:
-          $ref: '#/components/schemas/paymentCompleteModel'
-        message:
-          description: Response message for the payment transaction.
-          type: string
     paymentVoidModel:
       type: object
       properties:
@@ -394,16 +385,6 @@ components:
             value:
               description: The data value.
               type: string
-    response_paymentTransactionModel:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/paymentTransactionModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     transactionFeesModel:
       type: object
       properties:
@@ -554,22 +535,41 @@ components:
           enum:
           - Check
           - Credit Card
-    response_transaction_fees:
+    response_paymentTransactionModel:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/transactionFeesModel'
+            $ref: '#/components/schemas/paymentTransactionModel'
           type: array
         status:
           type: integer
           description: The HTTP return status.
+    recordIdModel:
+      type: object
+      properties:
+        customId:
+          description: An ID based on a different numbering convention from the numbering convention used by the record ID (xxxxx-xx-xxxxx). Accela Automation auto-generates and applies an alternate ID value when you submit a new application.
+          type: string
+        id:
+          description: The record system id assigned by the Civic Platform server.
+          type: string
+        serviceProviderCode:
+          description: The unique agency identifier.
+          type: string
+        trackingId:
+          description: The application tracking number (IVR tracking number).
+          format: int64
+          type: integer
+        value:
+          description: The alphanumeric record id.
+          type: string
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
     fields:
@@ -579,11 +579,11 @@ components:
       required: false
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
         type: string
 x-api-evangelist-provenance:

@@ -230,7 +230,114 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
+      schema:
+        type: integer
+        format: int64
   schemas:
+    userRolePrivilegeModel:
+      type: object
+      properties:
+        contactAllowed:
+          description: Indicates whether or not the permission is given to a contact.
+          type: boolean
+        deleteAllowed:
+          description: "Indicates whether or not the permission to delete a document is allowed.\t"
+          type: boolean
+        downloadAllowed:
+          description: Indicates whether or not the permission to download a document is allowed.
+          type: boolean
+        licenseTypeRules:
+          items:
+            type: string
+            description: "A string array containing the types of licensed professionals who are given the permission.\t"
+          type: array
+        licensendProfessionalAllowed:
+          description: Indicates whether or not the permission is given to a licensed professional.
+          type: boolean
+        ownerAllowed:
+          description: Indicates whether or not the permission is given to an owner.
+          type: boolean
+        recordCreatorAllowed:
+          description: Indicates whether or not the permission is given to a record creator.
+          type: boolean
+        registeredUserAllowed:
+          description: Indicates whether or not the permission is given to a registered public user.
+          type: boolean
+        titleViewAllowed:
+          description: Indicates whether or not the permission to view a document name is allowed.
+          type: boolean
+        uploadAllowed:
+          description: Indicates whether or not the permission to upload a document is allowed.
+          type: boolean
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The system id of the object in this operation.
+          format: int64
+          type: integer
+        isRequired:
+          description: Indicates whether or not the field is required.
+          enum:
+          - Y
+          - N
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered
+          type: string
+    response_documentModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/documentModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     documentModel:
       type: object
       properties:
@@ -323,113 +430,6 @@ components:
         virtualFolders:
           description: The virtual folder for storing the attachment. With virtual folders you can organize uploaded attachments in groups
           type: string
-    userRolePrivilegeModel:
-      type: object
-      properties:
-        contactAllowed:
-          description: Indicates whether or not the permission is given to a contact.
-          type: boolean
-        deleteAllowed:
-          description: "Indicates whether or not the permission to delete a document is allowed.\t"
-          type: boolean
-        downloadAllowed:
-          description: Indicates whether or not the permission to download a document is allowed.
-          type: boolean
-        licenseTypeRules:
-          items:
-            type: string
-            description: "A string array containing the types of licensed professionals who are given the permission.\t"
-          type: array
-        licensendProfessionalAllowed:
-          description: Indicates whether or not the permission is given to a licensed professional.
-          type: boolean
-        ownerAllowed:
-          description: Indicates whether or not the permission is given to an owner.
-          type: boolean
-        recordCreatorAllowed:
-          description: Indicates whether or not the permission is given to a record creator.
-          type: boolean
-        registeredUserAllowed:
-          description: Indicates whether or not the permission is given to a registered public user.
-          type: boolean
-        titleViewAllowed:
-          description: Indicates whether or not the permission to view a document name is allowed.
-          type: boolean
-        uploadAllowed:
-          description: Indicates whether or not the permission to upload a document is allowed.
-          type: boolean
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The system id of the object in this operation.
-          format: int64
-          type: integer
-        isRequired:
-          description: Indicates whether or not the field is required.
-          enum:
-          - Y
-          - N
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered
-          type: string
-    response_documentModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/documentModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-  parameters:
-    inspectionId:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
-      in: path
-      name: inspectionId
-      required: true
-      schema:
-        type: integer
-        format: int64
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

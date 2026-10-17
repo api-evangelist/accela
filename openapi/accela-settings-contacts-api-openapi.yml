@@ -328,17 +328,51 @@ paths:
         '500':
           description: Internal server error or bad connection.
 components:
+  parameters:
+    fields:
+      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
   schemas:
-    response_customTableMetadataModelArray:
+    aSITableDrill:
+      description: Contains drilldown field information.
       type: object
       properties:
-        result:
+        children:
           items:
-            $ref: '#/components/schemas/customTableMetadataModel'
+            $ref: '#/components/schemas/childDrill'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
+        isRoot:
+          type: boolean
+    settingValueModelAddressTypes:
+      type: object
+      properties:
+        text:
+          description: The setting label.
+          type: string
+        value:
+          description: The setting value.
+          type: string
+        required:
+          description: Indicates whether or not it is required for an address type.
+          type: boolean
     customTableMetadataModel:
       description: Contains the metadata for a custom table.
       type: object
@@ -357,47 +391,16 @@ components:
         text:
           description: The custom table name.
           type: string
-    aSITableDrill:
-      description: Contains drilldown field information.
+    response_customTableMetadataModelArray:
       type: object
       properties:
-        children:
+        result:
           items:
-            $ref: '#/components/schemas/childDrill'
+            $ref: '#/components/schemas/customTableMetadataModel'
           type: array
-        isRoot:
-          type: boolean
-    customFormMetadataModel:
-      description: Contains the metadata for a custom form.
-      type: object
-      properties:
-        displayOrder:
-          description: The custom form's display order.
-          format: int64
+        status:
           type: integer
-        fields:
-          items:
-            $ref: '#/components/schemas/customFormField'
-          type: array
-        id:
-          description: The custom form id.
-          type: string
-        text:
-          description: The custom form name.
-          type: string
-    settingValueModel:
-      type: object
-      properties:
-        text:
-          description: The setting label.
-          type: string
-        value:
-          description: The setting value.
-          type: string
-        addressTypes:
-          items:
-            $ref: '#/components/schemas/settingValueModelAddressTypes'
-          type: array
+          description: The HTTP return status.
     childDrill:
       type: object
       properties:
@@ -408,27 +411,6 @@ components:
         id:
           description: The ID of the current record.
           type: string
-    response_settingValueModelArray:
-      type: object
-      properties:
-        result:
-          description: Contains the settings.
-          items:
-            $ref: '#/components/schemas/settingValueModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_customFormMetadataModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/customFormMetadataModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
     customFormField:
       type: object
       properties:
@@ -478,7 +460,7 @@ components:
         value:
           description: The custom field stored value.
           type: string
-    settingValueModelAddressTypes:
+    settingValueModel:
       type: object
       properties:
         text:
@@ -487,31 +469,49 @@ components:
         value:
           description: The setting value.
           type: string
-        required:
-          description: Indicates whether or not it is required for an address type.
-          type: boolean
-  parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
-      schema:
-        type: string
-    fields:
-      description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
-      in: query
-      name: fields
-      required: false
-      schema:
-        type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
-      schema:
-        type: string
+        addressTypes:
+          items:
+            $ref: '#/components/schemas/settingValueModelAddressTypes'
+          type: array
+    customFormMetadataModel:
+      description: Contains the metadata for a custom form.
+      type: object
+      properties:
+        displayOrder:
+          description: The custom form's display order.
+          format: int64
+          type: integer
+        fields:
+          items:
+            $ref: '#/components/schemas/customFormField'
+          type: array
+        id:
+          description: The custom form id.
+          type: string
+        text:
+          description: The custom form name.
+          type: string
+    response_settingValueModelArray:
+      type: object
+      properties:
+        result:
+          description: Contains the settings.
+          items:
+            $ref: '#/components/schemas/settingValueModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
+    response_customFormMetadataModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/customFormMetadataModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

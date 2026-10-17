@@ -311,18 +311,17 @@ paths:
           description: Internal server error or bad connection.
 components:
   parameters:
-    inspectionId:
-      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
-      in: path
-      name: inspectionId
-      required: true
-      schema:
-        type: integer
-        format: int64
     fields:
       description: Comma-delimited names of fields to be returned in the response. Note - Field names are case-sensitive and only first-level fields are supported. Invalid field names are ignored.
       in: query
       name: fields
+      required: false
+      schema:
+        type: string
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
       required: false
       schema:
         type: string
@@ -333,29 +332,22 @@ components:
       required: true
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
+    inspectionId:
+      description: The ID of the inspection to fetch. See [Get All Inspections](./api-inspections.html#operation/v4.get.inspections), [Search Inspections](./api-search.html#operation/v4.post.search.inspections).
+      in: path
+      name: inspectionId
+      required: true
       schema:
-        type: string
+        type: integer
+        format: int64
   schemas:
-    response_resultModelArray:
+    response_conditionHistoryModelArray:
       type: object
       properties:
         result:
           items:
-            $ref: '#/components/schemas/resultModel'
+            $ref: '#/components/schemas/conditionHistoryModel'
           type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    response_inspectionConditionModel:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/inspectionConditionModel'
         status:
           type: integer
           description: The HTTP return status.
@@ -381,171 +373,24 @@ components:
         message:
           description: The error message, if an error is encountered
           type: string
-    conditionHistoryModel:
+    response_inspectionConditionModel:
       type: object
       properties:
-        actionbyDepartment:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        actionbyUser:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        activeStatus:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        additionalInformation:
-          type: string
-        additionalInformationPlainText:
-          type: string
-        appliedDate:
-          format: date-time
-          type: string
-        appliedbyDepartment:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        appliedbyUser:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        dispAdditionalInformationPlainText:
-          type: string
-        displayNoticeInAgency:
-          type: boolean
-        displayNoticeInCitizens:
-          type: boolean
-        displayNoticeInCitizensFee:
-          type: boolean
-        effectiveDate:
-          format: date-time
-          type: string
-        expirationDate:
-          format: date-time
-          type: string
-        group:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        id:
-          format: int64
-          type: integer
-        inheritable:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        isIncludeNameInNotice:
-          type: boolean
-        isIncludeShortCommentsInNotice:
-          type: boolean
-        longComments:
-          type: string
-        manipulationDate:
-          format: date-time
-          type: string
-        manipulationType:
-          type: string
-        name:
-          type: string
-        priority:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        publicDisplayMessage:
-          type: string
-        resAdditionalInformationPlainText:
-          type: string
-        resolutionAction:
-          type: string
-        serviceProviderCode:
-          type: string
-        severity:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        shortComments:
-          type: string
+        result:
+          $ref: '#/components/schemas/inspectionConditionModel'
         status:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
-        statusDate:
-          format: date-time
-          type: string
-        statusType:
-          type: string
-        type:
-          type: object
-          description: ''
-          properties:
-            text:
-              description: The localized display value.
-              type: string
-            value:
-              description: The data value.
-              type: string
+          type: integer
+          description: The HTTP return status.
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
     response_inspectionConditionModelArray:
       type: object
       properties:
@@ -745,16 +590,171 @@ components:
             value:
               description: The data value.
               type: string
-    response_conditionHistoryModelArray:
+    conditionHistoryModel:
       type: object
       properties:
-        result:
-          items:
-            $ref: '#/components/schemas/conditionHistoryModel'
-          type: array
-        status:
+        actionbyDepartment:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        actionbyUser:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        activeStatus:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        additionalInformation:
+          type: string
+        additionalInformationPlainText:
+          type: string
+        appliedDate:
+          format: date-time
+          type: string
+        appliedbyDepartment:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        appliedbyUser:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        dispAdditionalInformationPlainText:
+          type: string
+        displayNoticeInAgency:
+          type: boolean
+        displayNoticeInCitizens:
+          type: boolean
+        displayNoticeInCitizensFee:
+          type: boolean
+        effectiveDate:
+          format: date-time
+          type: string
+        expirationDate:
+          format: date-time
+          type: string
+        group:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        id:
+          format: int64
           type: integer
-          description: The HTTP return status.
+        inheritable:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        isIncludeNameInNotice:
+          type: boolean
+        isIncludeShortCommentsInNotice:
+          type: boolean
+        longComments:
+          type: string
+        manipulationDate:
+          format: date-time
+          type: string
+        manipulationType:
+          type: string
+        name:
+          type: string
+        priority:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        publicDisplayMessage:
+          type: string
+        resAdditionalInformationPlainText:
+          type: string
+        resolutionAction:
+          type: string
+        serviceProviderCode:
+          type: string
+        severity:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        shortComments:
+          type: string
+        status:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
+        statusDate:
+          format: date-time
+          type: string
+        statusType:
+          type: string
+        type:
+          type: object
+          description: ''
+          properties:
+            text:
+              description: The localized display value.
+              type: string
+            value:
+              description: The data value.
+              type: string
 x-api-evangelist-provenance:
   generated: '2026-09-06'
   method: searched

@@ -297,31 +297,6 @@ components:
           - PayFees
           - Renewal
           - PayFeeDue4Renewal
-    response_resultModelArray:
-      type: object
-      properties:
-        result:
-          items:
-            $ref: '#/components/schemas/resultModel'
-          type: array
-        status:
-          type: integer
-          description: The HTTP return status.
-    resultModel:
-      type: object
-      properties:
-        code:
-          description: The error code, if an error is encountered.
-          type: string
-        id:
-          description: The object's system id.
-          type: string
-        isSuccess:
-          description: Indicates whether or not the operation on the object is successful.
-          type: boolean
-        message:
-          description: The error message, if an error is encountered.
-          type: string
     response_shoppingCartModelArray:
       type: object
       properties:
@@ -340,12 +315,37 @@ components:
         status:
           type: integer
           description: The HTTP return status.
+    resultModel:
+      type: object
+      properties:
+        code:
+          description: The error code, if an error is encountered.
+          type: string
+        id:
+          description: The object's system id.
+          type: string
+        isSuccess:
+          description: Indicates whether or not the operation on the object is successful.
+          type: boolean
+        message:
+          description: The error message, if an error is encountered.
+          type: string
+    response_resultModelArray:
+      type: object
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/resultModel'
+          type: array
+        status:
+          type: integer
+          description: The HTTP return status.
   parameters:
-    authHeaderParam:
-      description: Construct oAuth2 authentication token
-      in: header
-      name: Authorization
-      required: true
+    lang:
+      description: Language parameter to support I18N. Default language is en_US.
+      in: query
+      name: lang
+      required: false
       schema:
         type: string
     fields:
@@ -355,11 +355,11 @@ components:
       required: false
       schema:
         type: string
-    lang:
-      description: Language parameter to support I18N. Default language is en_US.
-      in: query
-      name: lang
-      required: false
+    authHeaderParam:
+      description: Construct oAuth2 authentication token
+      in: header
+      name: Authorization
+      required: true
       schema:
         type: string
 x-api-evangelist-provenance:
