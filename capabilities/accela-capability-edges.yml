@@ -3,6 +3,7 @@ provider: Accela
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
+- Public Sector & Government
 - Software & Technology
 min_confidence: 0.7
 capability_model:
@@ -11,8 +12,68 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 3
+edge_count: 10
 edges:
+- tag: Inspections
+  spec_file: accela-inspections-api-openapi.yml
+  capability_id: BC-3240.40
+  capability_id_l1: BC-3240
+  capability_name: Inspection and Compliance Verification
+  confidence: 0.9
+  evidence: '"Schedule Inspection", "Result Inspection", "Assign Inspections"; "manage inspection records
+    ... from application submittal to permit issuance or license issuance"'
+  reason: Scheduling, assigning, resulting and cancelling government inspections tied to permit and licence
+    issuance — squarely Inspection and Compliance Verification within permits/licences management.
+- tag: Inspections/Checklists
+  spec_file: accela-inspections-checklists-api-openapi.yml
+  capability_id: BC-3240.40
+  capability_id_l1: BC-3240
+  capability_name: Inspection and Compliance Verification
+  confidence: 0.85
+  evidence: '"Get All Checklists for Inspection", "Create Inspection Checklist"; inpsectionChecklistModel'
+  reason: Checklists used to conduct agency inspections against permit/licence conditions; part of the
+    inspection and compliance verification capability.
+- tag: Inspections/Checklists/Checklist Items
+  spec_file: accela-inspections-checklists-checklist-items-api-openapi.yml
+  capability_id: BC-3240.40
+  capability_id_l1: BC-3240
+  capability_name: Inspection and Compliance Verification
+  confidence: 0.85
+  evidence: '"Get All Inspection Checklist Items", "Update Checklist Items", "Get All Inspection Checklist
+    Item Statuses"'
+  reason: Item-level recording of inspection findings and statuses with supporting documents — the execution
+    detail of government inspection and compliance verification.
+- tag: Records/Inspections
+  spec_file: accela-records-inspections-api-openapi.yml
+  capability_id: BC-3240.40
+  capability_id_l1: BC-3240
+  capability_name: Inspection and Compliance Verification
+  confidence: 0.85
+  evidence: GET /v4/records/{recordId}/inspections 'Get All Inspections for Record'; 'Get All Inspection
+    Types for Record'; schemas inspectionModel, inspectionTypeModel, rGuideSheetGroupModel
+  reason: Exposes inspections and inspection types tied to permit/licence records on a govtech permitting
+    platform — directly the inspection and compliance verification step of permit administration.
+- tag: Citizen Access Self-Registration
+  spec_file: accela-citizen-access-self-registration-api-openapi.yml
+  capability_id: BC-3220.20
+  capability_id_l1: BC-3220
+  capability_name: Citizen Identity & Authentication
+  confidence: 0.8
+  evidence: POST /v4/citizenaccess/register  Register Citizen; Get My Citizen Profile
+  reason: Self-registration and profile establishment of citizen users for agency online services (publicUserRegisterModel,
+    citizenProfileModel, publicUserQuestionModel). This is establishment of citizen digital identity/credentials
+    for government service access.
+- tag: Citizen Access User Management
+  spec_file: accela-citizen-access-user-management-api-openapi.yml
+  capability_id: BC-3220.20
+  capability_id_l1: BC-3220
+  capability_name: Citizen Identity & Authentication
+  confidence: 0.8
+  evidence: Create Citizen User / Update Citizen Profile / Update Citizen Account Status / Update Citizen
+    Password
+  reason: Agency-side administration of citizen portal accounts, profiles, credentials and account status
+    for access to government services — citizen identity and authentication management rather than generic
+    enterprise IAM, as the subjects are citizens of an agency.
 - tag: CivicId
   spec_file: accela-civicid-api-openapi.yml
   capability_id: BC-620.20
@@ -25,16 +86,27 @@ edges:
   reason: A single-sign-on identity that links multiple agency accounts to one login, with operations
     to create, read and delete linked accounts and read the identity profile. This is identity federation
     / account linking, i.e. Identity & Access Management.
-- tag: Citizen Access User Management
-  spec_file: accela-citizen-access-user-management-api-openapi.yml
-  capability_id: BC-620.20
-  capability_id_l1: BC-620
-  capability_name: Identity & Access Management
+- tag: Inspections/Condition Approvals
+  spec_file: accela-inspections-condition-approvals-api-openapi.yml
+  capability_id: BC-3240.40
+  capability_id_l1: BC-3240
+  capability_name: Inspection and Compliance Verification
   confidence: 0.75
-  evidence: PUT /v4/citizenaccess/citizens/{id}/accounts  Update Citizen Account Status; PUT /v4/citizenaccess/citizens/{id}/password  Update
-    Citizen Password
-  reason: Administrative lifecycle of portal user accounts — create users, enable/disable account status,
-    reset passwords, manage account-linked contacts. This is user account and access administration.
+  evidence: '"Get All Approval Conditions for Inspection"; "Create Inspection Approval Conditions"; schema
+    inspectionConditionModel'
+  reason: Manages the approval conditions recorded against an inspection in a permitting/licensing platform
+    — i.e. verification of compliance with permit conditions. L2 chosen over suspension/sanction because
+    the operations record conditions, not enforcement actions.
+- tag: Inspections/Conditions
+  spec_file: accela-inspections-conditions-api-openapi.yml
+  capability_id: BC-3240.40
+  capability_id_l1: BC-3240
+  capability_name: Inspection and Compliance Verification
+  confidence: 0.75
+  evidence: '"Get All Standard Conditions for Inspection"; "Get Inspection Condition History"; schema
+    conditionHistoryModel'
+  reason: Standard conditions attached to inspection records in the Civic Platform permitting lifecycle,
+    including history — inspection and compliance verification against permit conditions.
 - tag: Records/Invoices
   spec_file: accela-records-invoices-api-openapi.yml
   capability_id: BC-200.30
