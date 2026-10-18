@@ -12,18 +12,19 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 10
+edge_count: 12
 edges:
 - tag: Inspections
   spec_file: accela-inspections-api-openapi.yml
   capability_id: BC-3240.40
   capability_id_l1: BC-3240
   capability_name: Inspection and Compliance Verification
-  confidence: 0.9
-  evidence: '"Schedule Inspection", "Result Inspection", "Assign Inspections"; "manage inspection records
-    ... from application submittal to permit issuance or license issuance"'
-  reason: Scheduling, assigning, resulting and cancelling government inspections tied to permit and licence
-    issuance — squarely Inspection and Compliance Verification within permits/licences management.
+  confidence: 0.92
+  evidence: POST /v4/inspections/schedule  'Schedule Inspection'; PUT /v4/inspections/{id}/result  'Result
+    Inspection'; description 'manage inspection records during their complete lifecycle from application
+    submittal to permit issuance or license issuance'
+  reason: Scheduling, assigning, resulting and cancelling agency inspections tied to permits and licences
+    is squarely Inspection and Compliance Verification.
 - tag: Inspections/Checklists
   spec_file: accela-inspections-checklists-api-openapi.yml
   capability_id: BC-3240.40
@@ -86,27 +87,45 @@ edges:
   reason: A single-sign-on identity that links multiple agency accounts to one login, with operations
     to create, read and delete linked accounts and read the identity profile. This is identity federation
     / account linking, i.e. Identity & Access Management.
+- tag: CivicId
+  spec_file: accela-civicid-api-openapi.yml
+  capability_id: BC-3220.20
+  capability_id_l1: BC-3220
+  capability_name: Citizen Identity & Authentication
+  confidence: 0.78
+  evidence: '"Civic ID is agency agnostic; it allows a user to link multiple agency Citizen Access accounts
+    to a single login account"; Get All Linked User Accounts'
+  reason: A federated citizen login identity linking accounts across government agencies — squarely citizen
+    identity and authentication for government service access, not generic workforce IAM.
 - tag: Inspections/Condition Approvals
   spec_file: accela-inspections-condition-approvals-api-openapi.yml
   capability_id: BC-3240.40
   capability_id_l1: BC-3240
   capability_name: Inspection and Compliance Verification
-  confidence: 0.75
-  evidence: '"Get All Approval Conditions for Inspection"; "Create Inspection Approval Conditions"; schema
-    inspectionConditionModel'
-  reason: Manages the approval conditions recorded against an inspection in a permitting/licensing platform
-    — i.e. verification of compliance with permit conditions. L2 chosen over suspension/sanction because
-    the operations record conditions, not enforcement actions.
+  confidence: 0.78
+  evidence: '"Create Inspection Approval Conditions"; schema inspectionConditionModel'
+  reason: Manages approval conditions recorded against government inspections in a permitting/licensing
+    platform — inspection and compliance verification against permit conditions.
 - tag: Inspections/Conditions
   spec_file: accela-inspections-conditions-api-openapi.yml
   capability_id: BC-3240.40
   capability_id_l1: BC-3240
   capability_name: Inspection and Compliance Verification
-  confidence: 0.75
-  evidence: '"Get All Standard Conditions for Inspection"; "Get Inspection Condition History"; schema
-    conditionHistoryModel'
-  reason: Standard conditions attached to inspection records in the Civic Platform permitting lifecycle,
-    including history — inspection and compliance verification against permit conditions.
+  confidence: 0.78
+  evidence: '"Get All Standard Conditions for Inspection"; "Get Inspection Condition History"'
+  reason: Standard conditions attached to agency inspection records on permits/licences — directly the
+    inspection and compliance verification capability.
+- tag: Records
+  spec_file: accela-records-api-openapi.yml
+  capability_id: BC-3240
+  capability_id_l1: BC-3240
+  capability_name: Permits, Licences & Authorisations Management
+  confidence: 0.7
+  evidence: '"Create Record", "Create Partial Record", "Finalize Record"; vendor platform "runs permitting,
+    planning, licensing, code enforcement, inspections"'
+  reason: Records are the core permit/licence/application objects of Accela's government platform, so
+    the lifecycle operations realise permits, licences and authorisations management; record types span
+    permits, enforcement and service requests so no single L2 is safe.
 - tag: Records/Invoices
   spec_file: accela-records-invoices-api-openapi.yml
   capability_id: BC-200.30
