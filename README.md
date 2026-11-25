@@ -194,11 +194,39 @@ Model Context Protocol servers that expose the API to agents.
 
 - [accela-mcp.yml](https://apis.io/servers/accela/accela-mcp-yml/)
 
-#### Overlays (1)
+#### Overlays (23)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
+- [Accela Aa Version Api Certification Overlay](https://apis.io/overlays/accela/accela-aa-version-api-certification-overlay/)
+- [Accela App Settings Api Certification Overlay](https://apis.io/overlays/accela/accela-app-settings-api-certification-overlay/)
+- [Accela Assessments Api Certification Overlay](https://apis.io/overlays/accela/accela-assessments-api-certification-overlay/)
+- [Accela Assets Api Certification Overlay](https://apis.io/overlays/accela/accela-assets-api-certification-overlay/)
+- [Accela Citizen Access Delegate Invitations Api Certification Overlay](https://apis.io/overlays/accela/accela-citizen-access-delegate-invitations-api-certification-overlay/)
+- [Accela Citizen Access Delegate Management Api Certification Overlay](https://apis.io/overlays/accela/accela-citizen-access-delegate-management-api-certification-overlay/)
+- [Accela Citizen Access Self Registration Api Certification Overlay](https://apis.io/overlays/accela/accela-citizen-access-self-registration-api-certification-overlay/)
+- [Accela Citizen Access User Management Api Certification Overlay](https://apis.io/overlays/accela/accela-citizen-access-user-management-api-certification-overlay/)
+- [Accela Civicid Api Certification Overlay](https://apis.io/overlays/accela/accela-civicid-api-certification-overlay/)
+- [Accela Conditions Api Certification Overlay](https://apis.io/overlays/accela/accela-conditions-api-certification-overlay/)
+- [Accela Contacts Api Certification Overlay](https://apis.io/overlays/accela/accela-contacts-api-certification-overlay/)
+- [Accela Filters Api Certification Overlay](https://apis.io/overlays/accela/accela-filters-api-certification-overlay/)
+- [Accela Inspections Api Certification Overlay](https://apis.io/overlays/accela/accela-inspections-api-certification-overlay/)
+- [Accela Inspectors Api Certification Overlay](https://apis.io/overlays/accela/accela-inspectors-api-certification-overlay/)
+- [Accela Owners Api Certification Overlay](https://apis.io/overlays/accela/accela-owners-api-certification-overlay/)
+- [Accela Professionals Api Certification Overlay](https://apis.io/overlays/accela/accela-professionals-api-certification-overlay/)
+- [Accela Records Api Certification Overlay](https://apis.io/overlays/accela/accela-records-api-certification-overlay/)
 - [Accela Records Overlay](https://apis.io/overlays/accela/accela-records-overlay/)
+- [Accela Search Api Certification Overlay](https://apis.io/overlays/accela/accela-search-api-certification-overlay/)
+- [Accela Settings Activities Api Certification Overlay](https://apis.io/overlays/accela/accela-settings-activities-api-certification-overlay/)
+- [Accela Settings Addresses Api Certification Overlay](https://apis.io/overlays/accela/accela-settings-addresses-api-certification-overlay/)
+- [Accela Settings Assessments Api Certification Overlay](https://apis.io/overlays/accela/accela-settings-assessments-api-certification-overlay/)
+- [Accela Settings Asset Types Api Certification Overlay](https://apis.io/overlays/accela/accela-settings-asset-types-api-certification-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Accela API Rules](https://apis.io/rules/accela/accela-rules/)
 
 #### Security (2)
 
@@ -225,6 +253,12 @@ Published request limits.
 
 - [Accela Rate Limits](https://apis.io/rate-limits/accela/accela-rate-limits/)
 
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Accela Finops](https://apis.io/finops/accela/accela-finops/)
+
 ## Where to find this API
 
 Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
@@ -244,18 +278,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 51.1** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 54.9** — strong · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 78.6 |
-| Contract quality | 45.0 |
-| Contract governance | 18.2 |
-| Operational transparency | 18.4 |
+| Contract quality | 49.7 |
+| Contract governance | 31.8 |
+| Operational transparency | 19.0 |
 | Developer ergonomics | 73.2 |
-| Access clarity | 42.1 |
+| Access clarity | 51.1 |
 
-**Agent readiness 39.9** — agent-ready (gated down from agent-native)
+**Agent readiness 39.1** — agent-ready (gated down from agent-native)
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -280,8 +314,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | — |
 | Operation Distinctiveness | distinct |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
-**Regulatory alignment 47.1** — Government & Public Sector
+**Regulatory alignment 41.2** — Government & Public Sector
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/accela/](https://apis.io/providers/accela/).
 
